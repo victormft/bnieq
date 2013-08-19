@@ -2957,3 +2957,92 @@ Stack trace:
 REQUEST_URI=/bnieq/user/profile
 HTTP_REFERER=http://localhost/bnieq/user/profile/edit_basic
 ---
+2013/08/19 23:30:03 [error] [exception.CException] exception 'CException' with message '"data" attribute cannot be blank' in C:\wamp\www\bnieq\protected\extensions\bootstrap\widgets\TbSelect2.php:58
+Stack trace:
+#0 C:\wamp\www\bnieq\framework\web\CBaseController.php(147): TbSelect2->init()
+#1 C:\wamp\www\bnieq\framework\web\CBaseController.php(172): CBaseController->createWidget('bootstrap.widge...', Array)
+#2 C:\wamp\www\bnieq\protected\modules\user\views\profile\edit_basic.php(60): CBaseController->widget('bootstrap.widge...', Array)
+#3 C:\wamp\www\bnieq\framework\web\CBaseController.php(126): require('C:\wamp\www\bni...')
+#4 C:\wamp\www\bnieq\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\wamp\www\bni...', Array, true)
+#5 C:\wamp\www\bnieq\framework\web\CController.php(869): CBaseController->renderFile('C:\wamp\www\bni...', Array, true)
+#6 C:\wamp\www\bnieq\framework\web\CController.php(782): CController->renderPartial('edit_basic', Array, true)
+#7 C:\wamp\www\bnieq\protected\modules\user\controllers\ProfileController.php(94): CController->render('edit_basic', Array)
+#8 C:\wamp\www\bnieq\framework\web\actions\CInlineAction.php(49): ProfileController->actionEdit_Basic()
+#9 C:\wamp\www\bnieq\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\wamp\www\bnieq\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 C:\wamp\www\bnieq\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\wamp\www\bnieq\framework\web\CWebApplication.php(282): CController->run('edit_basic')
+#13 C:\wamp\www\bnieq\framework\web\CWebApplication.php(141): CWebApplication->runController('user/profile/ed...')
+#14 C:\wamp\www\bnieq\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\wamp\www\bnieq\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/bnieq/user/profile/edit_basic
+HTTP_REFERER=http://localhost/bnieq/user/profile
+---
+2013/08/19 23:30:08 [error] [exception.CException] exception 'CException' with message '"data" attribute cannot be blank' in C:\wamp\www\bnieq\protected\extensions\bootstrap\widgets\TbSelect2.php:58
+Stack trace:
+#0 C:\wamp\www\bnieq\framework\web\CBaseController.php(147): TbSelect2->init()
+#1 C:\wamp\www\bnieq\framework\web\CBaseController.php(172): CBaseController->createWidget('bootstrap.widge...', Array)
+#2 C:\wamp\www\bnieq\protected\modules\user\views\profile\edit_basic.php(60): CBaseController->widget('bootstrap.widge...', Array)
+#3 C:\wamp\www\bnieq\framework\web\CBaseController.php(126): require('C:\wamp\www\bni...')
+#4 C:\wamp\www\bnieq\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\wamp\www\bni...', Array, true)
+#5 C:\wamp\www\bnieq\framework\web\CController.php(869): CBaseController->renderFile('C:\wamp\www\bni...', Array, true)
+#6 C:\wamp\www\bnieq\framework\web\CController.php(782): CController->renderPartial('edit_basic', Array, true)
+#7 C:\wamp\www\bnieq\protected\modules\user\controllers\ProfileController.php(94): CController->render('edit_basic', Array)
+#8 C:\wamp\www\bnieq\framework\web\actions\CInlineAction.php(49): ProfileController->actionEdit_Basic()
+#9 C:\wamp\www\bnieq\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\wamp\www\bnieq\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 C:\wamp\www\bnieq\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\wamp\www\bnieq\framework\web\CWebApplication.php(282): CController->run('edit_basic')
+#13 C:\wamp\www\bnieq\framework\web\CWebApplication.php(141): CWebApplication->runController('user/profile/ed...')
+#14 C:\wamp\www\bnieq\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\wamp\www\bnieq\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/bnieq/user/profile/edit_basic
+HTTP_REFERER=http://localhost/bnieq/user/profile
+---
+2013/08/19 23:30:12 [error] [exception.CException] exception 'CException' with message '"data" attribute cannot be blank' in C:\wamp\www\bnieq\protected\extensions\bootstrap\widgets\TbSelect2.php:58
+Stack trace:
+#0 C:\wamp\www\bnieq\framework\web\CBaseController.php(147): TbSelect2->init()
+#1 C:\wamp\www\bnieq\framework\web\CBaseController.php(172): CBaseController->createWidget('bootstrap.widge...', Array)
+#2 C:\wamp\www\bnieq\protected\modules\user\views\profile\edit_basic.php(60): CBaseController->widget('bootstrap.widge...', Array)
+#3 C:\wamp\www\bnieq\framework\web\CBaseController.php(126): require('C:\wamp\www\bni...')
+#4 C:\wamp\www\bnieq\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\wamp\www\bni...', Array, true)
+#5 C:\wamp\www\bnieq\framework\web\CController.php(869): CBaseController->renderFile('C:\wamp\www\bni...', Array, true)
+#6 C:\wamp\www\bnieq\framework\web\CController.php(782): CController->renderPartial('edit_basic', Array, true)
+#7 C:\wamp\www\bnieq\protected\modules\user\controllers\ProfileController.php(94): CController->render('edit_basic', Array)
+#8 C:\wamp\www\bnieq\framework\web\actions\CInlineAction.php(49): ProfileController->actionEdit_Basic()
+#9 C:\wamp\www\bnieq\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 C:\wamp\www\bnieq\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 C:\wamp\www\bnieq\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\wamp\www\bnieq\framework\web\CWebApplication.php(282): CController->run('edit_basic')
+#13 C:\wamp\www\bnieq\framework\web\CWebApplication.php(141): CWebApplication->runController('user/profile/ed...')
+#14 C:\wamp\www\bnieq\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\wamp\www\bnieq\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/bnieq/user/profile/edit_basic
+HTTP_REFERER=http://localhost/bnieq/user/profile
+---
+2013/08/19 23:37:00 [error] [exception.CException] exception 'CException' with message 'Property "TbSelect2.multiple" is not defined.' in C:\wamp\www\bnieq\framework\base\CComponent.php:173
+Stack trace:
+#0 C:\wamp\www\bnieq\framework\web\CWidgetFactory.php(161): CComponent->__set('multiple', 'true')
+#1 C:\wamp\www\bnieq\framework\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(ProfileController), 'bootstrap.widge...', Array)
+#2 C:\wamp\www\bnieq\framework\web\CBaseController.php(172): CBaseController->createWidget('bootstrap.widge...', Array)
+#3 C:\wamp\www\bnieq\protected\modules\user\views\profile\edit_basic.php(60): CBaseController->widget('bootstrap.widge...', Array)
+#4 C:\wamp\www\bnieq\framework\web\CBaseController.php(126): require('C:\wamp\www\bni...')
+#5 C:\wamp\www\bnieq\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\wamp\www\bni...', Array, true)
+#6 C:\wamp\www\bnieq\framework\web\CController.php(869): CBaseController->renderFile('C:\wamp\www\bni...', Array, true)
+#7 C:\wamp\www\bnieq\framework\web\CController.php(782): CController->renderPartial('edit_basic', Array, true)
+#8 C:\wamp\www\bnieq\protected\modules\user\controllers\ProfileController.php(94): CController->render('edit_basic', Array)
+#9 C:\wamp\www\bnieq\framework\web\actions\CInlineAction.php(49): ProfileController->actionEdit_Basic()
+#10 C:\wamp\www\bnieq\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 C:\wamp\www\bnieq\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 C:\wamp\www\bnieq\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 C:\wamp\www\bnieq\framework\web\CWebApplication.php(282): CController->run('edit_basic')
+#14 C:\wamp\www\bnieq\framework\web\CWebApplication.php(141): CWebApplication->runController('user/profile/ed...')
+#15 C:\wamp\www\bnieq\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\wamp\www\bnieq\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/bnieq/user/profile/edit_basic
+HTTP_REFERER=http://localhost/bnieq/user/profile
+---

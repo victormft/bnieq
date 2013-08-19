@@ -36,8 +36,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	<?php echo $form->textFieldRow($model, 'email', array('append'=>'@')); ?>
 
-    <?php echo $form->datepickerRow($profile, 'birthday',
-        array('append'=>'<i class="icon-calendar"></i>', 'options'=>array('format'=>'dd-mm-yyyy'))); ?>	
+    <?php echo $form->datepickerRow($profile, 'birthday', array(
+        'append'=>'<i class="icon-calendar"></i>', 
+        'options'=>array('format'=>'dd-mm-yyyy'))); ?>	
 	
     <?php echo $form->dropDownListRow($profile, 'gender', $profile->getGenderOptions()); ?>
 	
@@ -45,16 +46,20 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 	<?php echo $form->textFieldRow($profile, 'skype'); ?>
    
-	<legend>About you</legend>
-    
+	<legend>About you</legend>    
+   
     <?php $this->widget('bootstrap.widgets.TbSelect2', array(
-        'asDropDownList' => false,
-        'name' => 'clevertech',
+        'asDropDownList' => true,
+        'name' => 'roles',        
+        'data' => array(0=>'clever',1=>'is'),
         'options' => array(
-            'tags' => array('clever','is', 'better', 'clevertech'),
-            'placeholder' => 'disciplines',
+            'placeholder' => 'Select your Roles...',
             'width' => '40%',
-            'tokenSeparators' => array(',', ' ')
+            'tokenSeparators' => array(',', ' '),
+        ),
+        'htmlOptions'=>array(
+            'multiple'=>'multiple',
+            'class'=>'controls',
     ))); ?>
     
 		

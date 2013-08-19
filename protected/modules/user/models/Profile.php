@@ -57,7 +57,7 @@ class Profile extends UActiveRecord
 	}	
 	
 	/**
-	 * funÃ§Ãµes para salvar o birthday
+	 * funções para salvar o birthday
 	 */
 	protected function afterFind(){
 		parent::afterFind();
