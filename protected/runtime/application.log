@@ -2957,3 +2957,14 @@ Stack trace:
 REQUEST_URI=/bnieq/user/profile
 HTTP_REFERER=http://localhost/bnieq/user/profile/edit_basic
 ---
+2013/08/19 23:41:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "startup".' in C:\wamp\www\bnieq\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\wamp\www\bnieq\framework\web\CWebApplication.php(141): CWebApplication->runController('startup')
+#1 C:\wamp\www\bnieq\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\wamp\www\bnieq\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/bnieq/startup
+---
+2013/08/19 23:41:47 [warning] [application] Failed to set unsafe attribute "verifyCode" of "RegistrationForm".
+in C:\wamp\www\bnieq\protected\modules\user\controllers\RegistrationController.php (30)
+in C:\wamp\www\bnieq\index.php (13)
