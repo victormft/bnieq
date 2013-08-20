@@ -9,7 +9,8 @@
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>99)); ?>
 
-	
+	<?php echo $form->textFieldRow($model,'logo',array('class'=>'span5','maxlength'=>20)); ?>
+
 	<?php echo $form->textAreaRow($model,'one_line_pitch',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
 	<?php echo $form->textAreaRow($model,'product_description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
@@ -34,7 +35,8 @@
 
 	<?php echo $form->textFieldRow($model,'blog',array('class'=>'span5','maxlength'=>150)); ?>
 
-	
+	<?php echo $form->textFieldRow($model,'address',array('class'=>'span5','maxlength'=>20)); ?>
+
 	<?php echo $form->textAreaRow($model,'client_segment',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
 	<?php echo $form->textAreaRow($model,'value_proposition',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
