@@ -2968,3 +2968,21 @@ REQUEST_URI=/bnieq/startup
 2013/08/19 23:41:47 [warning] [application] Failed to set unsafe attribute "verifyCode" of "RegistrationForm".
 in C:\wamp\www\bnieq\protected\modules\user\controllers\RegistrationController.php (30)
 in C:\wamp\www\bnieq\index.php (13)
+2013/08/20 00:13:39 [error] [exception.CException] exception 'CException' with message 'CAssetManager.basePath "C:\wamp\www\bnieq\assets" is invalid. Please make sure the directory exists and is writable by the Web server process.' in C:\wamp\www\bnieq\framework\web\CAssetManager.php:138
+Stack trace:
+#0 C:\wamp\www\bnieq\framework\web\CAssetManager.php(123): CAssetManager->setBasePath('C:\wamp\www\bni...')
+#1 C:\wamp\www\bnieq\framework\web\CAssetManager.php(217): CAssetManager->getBasePath()
+#2 C:\wamp\www\bnieq\protected\extensions\bootstrap\components\Bootstrap.php(478): CAssetManager->publish('C:\wamp\www\bni...', false, -1, false)
+#3 C:\wamp\www\bnieq\protected\extensions\bootstrap\components\packages.php(15): Bootstrap->getAssetsUrl()
+#4 C:\wamp\www\bnieq\protected\extensions\bootstrap\components\Bootstrap.php(218): require('C:\wamp\www\bni...')
+#5 C:\wamp\www\bnieq\protected\extensions\bootstrap\components\Bootstrap.php(203): Bootstrap->appendUserSuppliedPackagesToOurs()
+#6 C:\wamp\www\bnieq\protected\extensions\bootstrap\components\Bootstrap.php(171): Bootstrap->includeAssets()
+#7 C:\wamp\www\bnieq\framework\base\CModule.php(387): Bootstrap->init()
+#8 C:\wamp\www\bnieq\framework\base\CModule.php(523): CModule->getComponent('bootstrap')
+#9 C:\wamp\www\bnieq\framework\base\CApplication.php(163): CModule->preloadComponents()
+#10 C:\wamp\www\bnieq\framework\YiiBase.php(125): CApplication->__construct('C:\wamp\www\bni...')
+#11 C:\wamp\www\bnieq\framework\YiiBase.php(98): YiiBase::createApplication('CWebApplication', 'C:\wamp\www\bni...')
+#12 C:\wamp\www\bnieq\index.php(13): YiiBase::createWebApplication('C:\wamp\www\bni...')
+#13 {main}
+REQUEST_URI=/bnieq/
+---
