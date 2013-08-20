@@ -59,7 +59,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         ),
         'htmlOptions'=>array(
             'multiple'=>'multiple',
-            'class'=>'controls',
+            'class'=>'controlsa',
     ))); ?>
     
 		
