@@ -44,6 +44,10 @@
  */
 class Startup extends CActiveRecord
 {
+
+	//to upload logo
+	public $pic;	
+		
 	/**
 	 * @return string the associated database table name
 	 */
@@ -60,6 +64,10 @@ class Startup extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+		
+			//validation for pic
+			array('pic', 'file', 'types'=>'jpg, gif, png, jpeg', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 2, 'tooLarge' => 'Size should be less then 2MB !!!'),
+			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
 			array('name, one_line_pitch', 'required'),
 			array('name, email, skype', 'length', 'max'=>99),
 			array('logo, address', 'length', 'max'=>20),

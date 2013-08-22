@@ -18,6 +18,8 @@
         array(
             'class'=>'bootstrap.widgets.TbMenu',
             'items'=>array(
+				array('label'=>'Startup', 'url'=>array('/startup/index')),
+				array('label'=>'Contact', 'url'=>array('/site/contact')),
                 array('label'=>'Startups', 'url'=>array('/site/index')),
 				array('label'=>'Community', 'url'=>array('#')),
 				array('label'=>'Invest', 'url'=>array('#')),

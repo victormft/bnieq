@@ -1,31 +1,15 @@
-<div class="view">
+<div class="view-list">
 
-		<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
+		
+	
+
+	<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img" alt="asdasd" />', array('view', 'name'=>$data->name)); ?>
+	
+	<?php echo CHtml::link(CHtml::encode($data->name),array('view','name'=>$data->name));?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
-	<?php echo CHtml::encode($data->name); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('logo')); ?>:</b>
-	<?php echo CHtml::encode($data->logo); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('one_line_pitch')); ?>:</b>
+	<!--<b><?php /*echo CHtml::encode($data->getAttributeLabel('one_line_pitch')); */?>:</b>-->
 	<?php echo CHtml::encode($data->one_line_pitch); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('product_description')); ?>:</b>
-	<?php echo CHtml::encode($data->product_description); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('company_size')); ?>:</b>
-	<?php echo CHtml::encode($data->company_size); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('company_stage')); ?>:</b>
-	<?php echo CHtml::encode($data->company_stage); ?>
 	<br />
 
 	<?php /*

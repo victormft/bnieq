@@ -187,6 +187,7 @@ abstract class CBaseListView extends CWidget
 	 */
 	public function renderKeys()
 	{
+		
 		echo CHtml::openTag('div',array(
 			'class'=>'keys',
 			'style'=>'display:none',
@@ -195,6 +196,7 @@ abstract class CBaseListView extends CWidget
 		foreach($this->dataProvider->getKeys() as $key)
 			echo "<span>".CHtml::encode($key)."</span>";
 		echo "</div>\n";
+		
 	}
 
 	/**
