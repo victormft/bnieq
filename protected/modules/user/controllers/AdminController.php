@@ -90,7 +90,7 @@ class AdminController extends Controller
 					$profile->user_id=$model->id;
 					$profile->save();
 				}
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('/user/profile','id'=>$model->id));
 			} else $profile->validate();
 		}
 

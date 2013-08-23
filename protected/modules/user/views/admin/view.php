@@ -9,8 +9,7 @@ $this->menu=array(
     array('label'=>UserModule::t('Create User'), 'url'=>array('create')),
     array('label'=>UserModule::t('Update User'), 'url'=>array('update','id'=>$model->id)),
     array('label'=>UserModule::t('Delete User'), 'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>UserModule::t('Are you sure to delete this item?'))),
-    array('label'=>UserModule::t('Manage Users'), 'url'=>array('admin')),
-    array('label'=>UserModule::t('Manage Profile Field'), 'url'=>array('profileField/admin')),
+    array('label'=>UserModule::t('Manage Users'), 'url'=>array('admin')),    
     array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
 );
 ?>
@@ -22,19 +21,19 @@ $this->menu=array(
 		'id',
 		'username',
 	);
-	
-	$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
-	if ($profileFields) {
-		foreach($profileFields as $field) {
-			array_push($attributes,array(
-					'label' => UserModule::t($field->title),
-					'name' => $field->varname,
-					'type'=>'raw',
-					'value' => (($field->widgetView($model->profile))?$field->widgetView($model->profile):(($field->range)?Profile::range($field->range,$model->profile->getAttribute($field->varname)):$model->profile->getAttribute($field->varname))),
-				));
-		}
-	}
-	
+//	
+//	$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
+//	if ($profileFields) {
+//		foreach($profileFields as $field) {
+//			array_push($attributes,array(
+//					'label' => UserModule::t($field->title),
+//					'name' => $field->varname,
+//					'type'=>'raw',
+//					'value' => (($field->widgetView($model->profile))?$field->widgetView($model->profile):(($field->range)?Profile::range($field->range,$model->profile->getAttribute($field->varname)):$model->profile->getAttribute($field->varname))),
+//				));
+//		}
+//	}
+//	
 	array_push($attributes,
 		'password',
 		'email',

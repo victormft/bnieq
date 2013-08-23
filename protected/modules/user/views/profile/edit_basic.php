@@ -27,24 +27,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <fieldset>
  
     <legend>Basics</legend>
- 
-    <?php echo $form->textFieldRow($profile,'firstname'); ?>
-	
-    <?php echo $form->textFieldRow($profile, 'lastname'); ?>
-	
+ 	
     <?php echo $form->textFieldRow($model, 'username'); ?>
-	
-	<?php echo $form->textFieldRow($model, 'email', array('append'=>'@')); ?>
-
-    <?php echo $form->datepickerRow($profile, 'birthday', array(
-        'append'=>'<i class="icon-calendar"></i>', 
-        'options'=>array('format'=>'dd-mm-yyyy'))); ?>	
-	
-    <?php echo $form->dropDownListRow($profile, 'gender', $profile->getGenderOptions()); ?>
-	
-	<?php echo $form->textFieldRow($profile, 'telephone'); ?>
-	
-	<?php echo $form->textFieldRow($profile, 'skype'); ?>
     
     <div class="control-group">
     <?php echo $form->labelEx($profile,'address'); ?>
@@ -90,9 +74,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             'multiple'=>'multiple',
             'class'=>'controls',
     ))); ?>
-    
-    <?php echo $form->textAreaRow($profile, 'resume', array('class'=>'span5', 'rows'=>5)); ?>
-		
+    		
 	<legend>Links</legend>
     
     <?php echo $form->textFieldRow($profile, 'facebook', array('class'=>'span5')); ?>

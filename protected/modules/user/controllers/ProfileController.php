@@ -21,42 +21,6 @@ class ProfileController extends Controller
 	    ));
 	}
 
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionEdit()
-	{
-		$model = $this->loadUser();
-		$profile=$model->profile;
-		
-		// ajax validator
-		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
-		{
-			echo UActiveForm::validate(array($model,$profile));
-			Yii::app()->end();
-		}
-		
-		if(isset($_POST['User']))
-		{
-			$model->attributes=$_POST['User'];
-			$profile->attributes=$_POST['Profile'];
-			
-			if($model->validate()&&$profile->validate()) {
-				$model->save();
-				$profile->save();
-                Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes are saved."));
-				$this->redirect(array('/user/profile'));
-			} else $profile->validate();
-		}
-
-		$this->render('edit',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
-	}
 	
 	/**
 	 * Updates a particular model.
@@ -85,24 +49,30 @@ class ProfileController extends Controller
 				$profile->save();
                 
                 //save the roles of the user
-                foreach ($_POST['rolesU'] as $role)
-                {
-                    $roles[] = Role::model()->find('role_id=:id', array(':id'=>$role));
+                if(isset($_POST['rolesU']))
+                {                    
+                    foreach ($_POST['rolesU'] as $role)
+                    {
+                        $roles[] = Role::model()->find('role_id=:id', array(':id'=>$role));
+                    }
+                    $model->roles = $roles;
+                    $model->saveWithRelated(array('roles'));
                 }
-                $model->roles = $roles;
-                $model->saveWithRelated(array('roles'));
                 
                 //save the universities of the user
-                foreach ($_POST['univerU'] as $uni)
-                {
-                    $unis[] = University::model()->find('university_id=:id', array(':id'=>$uni));
-                }
-                $model->universities = $unis;
-                $model->saveWithRelated(array('universities'));
-                                
+                if(isset($_POST['univerU']))
+                { 
+                    foreach ($_POST['univerU'] as $uni)
+                    {
+                        $unis[] = University::model()->find('university_id=:id', array(':id'=>$uni));
+                    }
+                    $model->universities = $unis;
+                    $model->saveWithRelated(array('universities'));
+                }               
+                    
                 Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes are saved."));
-				$this->redirect(array('/user/profile'));
+				$this->redirect(array('/user/profile', 'id'=>$model->id));
 			} else $profile->validate();
 		}
 
@@ -158,14 +128,14 @@ class ProfileController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable
 	 */
-	public function loadUser()
+	public function loadUser($id=null)
 	{
 		if($this->_model===null)
 		{
-			if(Yii::app()->user->id)
-				$this->_model=Yii::app()->controller->module->user();
+			if($id!==null || isset($_GET['id']))
+				$this->_model=User::model()->findbyPk($id!==null ? $id : $_GET['id']);
 			if($this->_model===null)
-				$this->redirect(Yii::app()->controller->module->loginUrl);
+				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_model;
 	}

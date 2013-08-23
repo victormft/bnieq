@@ -1,18 +1,36 @@
 <?php
 
-class Profile extends UActiveRecord
+
+/**
+ * This is the model class for table "profile".
+ *
+ * The followings are the available columns in table 'profile':
+ * @property string $user_id
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $profile_picture
+ * @property string $birthday
+ * @property string $gender
+ * @property string $telephone
+ * @property string $skype
+ * @property string $resume
+ * @property string $address
+ * @property string $facebook
+ * @property string $linkedin
+ * @property string $twitter
+ * @property string $experiences
+ * @property string $interests
+ *
+ * The followings are the available model relations:
+ * @property Address $address0
+ * @property Image $profilePicture
+ */
+
+class Profile extends CActiveRecord
 {
-	/**
-	 * The followings are the available columns in table 'profile':
-	 * @var integer $id
-	 * @var boolean $regMode
-	 */
-	public $regMode = false;
-	
-	private $_model;
-	private $_modelReg;
-	private $_rules = array();
-	
+    
+    public $regMode = false;
+    
 	//constantes para Gender
 	const GENDER_MALE="M";
 	const GENDER_FEMALE="F";
@@ -49,28 +67,15 @@ class Profile extends UActiveRecord
 			array('telephone, skype', 'length', 'max'=>45),
 			array('facebook, linkedin, twitter', 'length', 'max'=>150),
 			array('birthday, resume, experiences, interests', 'safe'),
-			array('birthday', 'date', 'format'=>'d-M-yyyy', 'message'=>"Wrong format"),
+			array('birthday', 'date', 'format'=>'yyyy-mm-dd', 'message'=>"Wrong format"),
+            array('gender', 'in', 'range'=>array('M','F')),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, address, facebook, linkedin, twitter, experiences, interests', 'safe', 'on'=>'search'),
 		);
 	}	
 	
-	/**
-	 * funções para salvar o birthday
-	 */
-	protected function afterFind(){
-		parent::afterFind();
-		$this->birthday=date('d-m-Y', strtotime(str_replace("-", "", $this->birthday)));       
-	}
-	protected function beforeSave(){
-		if(parent::beforeSave()){
-			$this->birthday=date('Y-m-d', strtotime(str_replace(",", "", $this->birthday)));
-			return TRUE;
-		}
-		else return false;
-	}
-	
+    
 	/**
 	 * @return array relational rules.
 	 */
@@ -91,79 +96,34 @@ class Profile extends UActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		$labels = array(
-			'user_id' => UserModule::t('User ID'),
-			'birthday' => UserModule::t('Birthday'),
-			'resume' => UserModule::t('Resume'),
+		return array(
+			'user_id' => 'User',
+			'firstname' => 'Firstname',
+			'lastname' => 'Lastname',
+			'profile_picture' => 'Profile Picture',
+			'birthday' => 'Birthday',
+			'gender' => 'Gender',
+			'telephone' => 'Telephone',
+			'skype' => 'Skype',
+			'resume' => 'Resume',
+			'address' => 'Address',
+			'facebook' => 'Facebook',
+			'linkedin' => 'Linkedin',
+			'twitter' => 'Twitter',
+			'experiences' => 'Experiences',
+			'interests' => 'Interests',
 		);
-		$model=$this->getFields();
-		
-		foreach ($model as $field)
-			$labels[$field->varname] = ((Yii::app()->getModule('user')->fieldsMessage)?UserModule::t($field->title,array(),Yii::app()->getModule('user')->fieldsMessage):UserModule::t($field->title));
-			
-		return $labels;
-	}
-	
-	private function rangeRules($str) {
-		$rules = explode(';',$str);
-		for ($i=0;$i<count($rules);$i++)
-			$rules[$i] = current(explode("==",$rules[$i]));
-		return $rules;
-	}
-	
-	static public function range($str,$fieldValue=NULL) {
-		$rules = explode(';',$str);
-		$array = array();
-		for ($i=0;$i<count($rules);$i++) {
-			$item = explode("==",$rules[$i]);
-			if (isset($item[0])) $array[$item[0]] = ((isset($item[1]))?$item[1]:$item[0]);
-		}
-		if (isset($fieldValue)) 
-			if (isset($array[$fieldValue])) return $array[$fieldValue]; else return '';
-		else
-			return $array;
-	}
-	
-	public function widgetAttributes() {
-		$data = array();
-		$model=$this->getFields();
-		
-		foreach ($model as $field) {
-			if ($field->widget) $data[$field->varname]=$field->widget;
-		}
-		return $data;
-	}
-	
-	public function widgetParams($fieldName) {
-		$data = array();
-		$model=$this->getFields();
-		
-		foreach ($model as $field) {
-			if ($field->widget) $data[$field->varname]=$field->widgetparams;
-		}
-		return $data[$fieldName];
-	}
-	
-	public function getFields() {
-		if ($this->regMode) {
-			if (!$this->_modelReg)
-				$this->_modelReg=ProfileField::model()->forRegistration()->findAll();
-			return $this->_modelReg;
-		} else {
-			if (!$this->_model)
-				$this->_model=ProfileField::model()->forOwner()->findAll();
-			return $this->_model;
-		}
 	}
 	
 	public function getGenderOptions()
 	{
 		return array(
-			'0'=>UserModule::t('Select gender...'),
+			''=>UserModule::t('Select gender...'),
 			self::GENDER_MALE=>UserModule::t('Male'),
 			self::GENDER_FEMALE=>UserModule::t('Female'),
 		);
 	}
+    
 	
 	
 	

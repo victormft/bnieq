@@ -56,13 +56,13 @@ class User extends CActiveRecord
 			array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
 			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
 			array('status', 'in', 'range'=>array(self::STATUS_NOACTIVE,self::STATUS_ACTIVE,self::STATUS_BANNED)),
-			array('superuser', 'in', 'range'=>array(0,1)),
+			array('superuser, investor_profile', 'in', 'range'=>array(0,1)),
             array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
-			array('superuser, status', 'numerical', 'integerOnly'=>true),
+			array('superuser, status, investor_profile', 'numerical', 'integerOnly'=>true),
 			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status', 'safe', 'on'=>'search'),
-		):((Yii::app()->user->id==$this->id)?array(
+            ):((Yii::app()->user->id==$this->id)?array(
 			array('username, email', 'required'),
 			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
 			array('email', 'email'),
@@ -77,14 +77,20 @@ class User extends CActiveRecord
 	 */
 	public function relations()
 	{
-        $relations = Yii::app()->getModule('user')->relations;
-        if (!isset($relations['profile']))
-            $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
+        return array(
+            'profile' => array(self::HAS_ONE, 'Profile', 'user_id'),
+			'senders' => array(self::HAS_MANY, 'Message', 'sender_id'),
+			'receivers' => array(self::HAS_MANY, 'Message', 'receiver_id'),
+			'startups' => array(self::MANY_MANY, 'Startup', 'user_startup(user_id, startup_id)'),
+			'followers' => array(self::HAS_MANY, 'UserFollow', 'follower_id'),
+			'following' => array(self::HAS_MANY, 'UserFollow', 'followed_id'),
+			'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'),
+			'sectors' => array(self::MANY_MANY, 'Sector', 'user_sector(user_id, sector_id)'),
+			'skills' => array(self::MANY_MANY, 'Skill', 'user_skill(user_id, skill_name)'),
+			'universities' => array(self::MANY_MANY, 'University', 'user_university(user_id, university_id)'),
+			'userWebsites' => array(self::HAS_MANY, 'UserWebsite', 'user_id'),
+		);
         
-		$relations['roles'] = array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)');
-        $relations['universities'] = array(self::MANY_MANY, 'University', 'user_university(user_id, university_id)');
-        
-        return $relations;
 	}
 
 	/**
@@ -105,7 +111,8 @@ class User extends CActiveRecord
 			
 			'lastvisit_at' => UserModule::t("Last visit"),
 			'superuser' => UserModule::t("Superuser"),
-			'status' => UserModule::t("Status"),
+			'status' => UserModule::t("Status"),            
+			'investor_profile' => 'Investor Profile',
 		);
 	}
  
@@ -125,8 +132,14 @@ class User extends CActiveRecord
     public function getRoleNames()
     {
         $string="";
-        foreach ($this->roles as $role)
-            $string = $string . $role->name.' - ';
+        $array = $this->roles;
+        
+        $lastElement = end($array);
+        foreach ($array as $role)
+        {
+            $string = $string . $role->name;
+            if($role !== $lastElement) $string = $string . ' - ';
+        }
         
         return $string;
     }
