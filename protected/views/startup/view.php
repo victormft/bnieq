@@ -13,9 +13,17 @@ array('label'=>'Manage Startup','url'=>array('admin')),
 );
 ?>
 
-<h1>View Startup #<?php echo $model->id; ?></h1>
+<h1><?php echo $model->name; ?></h1>
 
-<?php $this->widget('bootstrap.widgets.TbDetailView',array(
+<?php 
+
+$this->renderPartial('_profile',array(
+	'model'=>$model,
+	)); 
+
+
+/*
+$this->widget('bootstrap.widgets.TbDetailView',array(
 'data'=>$model,
 'attributes'=>array(
 		'id',
@@ -44,4 +52,6 @@ array('label'=>'Manage Startup','url'=>array('admin')),
 		'video',
 		'create_time',
 ),
-)); ?>
+)); 
+*/
+?>

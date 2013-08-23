@@ -23,26 +23,36 @@
 
 .view-list
 {
-	margin-left:50px; 
-	margin-bottom: 30px;
+	padding: 15px 0 15px 20px;
+	overflow: auto;
+	border-bottom: 1px solid #aaa;
 }
 
 #Startup-list-img
 {
 	float:left; 
 	margin-right:10px; 
-	border: 1px solid black; 
-	width:60px; 
-	height:60px;
+	border: 1px solid #aaa; 
+	width:80px; 
+	height:80px;
+	border-radius: 5px;
 }
 
 #startupslistview
 {
 	float:left;
-	width: 600px
+	width: 600px;
+	border-top: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	border-right: 1px solid #aaa;
+	padding-top:0px;
+	margin-top:20px;
+	border-radius: 5px;
+	background: #fff;
 }
 
 .search-form
 {
 	float:left;
+	margin-left:50px;
 }
