@@ -17,6 +17,7 @@ $this->menu=array(
 
 <h1><?php echo $profile->firstname.' '.$profile->lastname; ?></h1>
 
+
 <?php $this->widget('bootstrap.widgets.TbButton', array(
     'label'=>'Edit',
     'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
@@ -30,26 +31,49 @@ $this->menu=array(
 </div>
 <?php endif; ?>
 
+<?php
+    $this->widget('bootstrap.widgets.TbEditableField', array(
+        'type'      => 'text',
+        'model'     => $profile,
+        'attribute' => 'firstname',
+        'url'       => array('update'),  //url for submit data
+        'placement' => 'right',
+     ));
+?>
+
 <?php $this->widget('bootstrap.widgets.TbDetailView',array(
 	'data'=>$profile,
 	'attributes'=>array(
-		'user_id',
-		'profile.firstname',
+		'firstname',
 		'lastname',
 		'profile_picture',
-		'birthday',
-		'gender',
-		'telephone',
-		'skype',
 		'resume',
 		'address',
-		'facebook',
-		'linkedin',
-		'twitter',
-		'experiences',
-		'interests',
+		array(               
+            'label'=>'Facebook',
+            'type'=>'raw',
+            'value'=>CHtml::link(CHtml::encode($profile->facebook), $profile->facebook),
+        ),
+		array(               
+            'label'=>'Linkedin',
+            'type'=>'raw',
+            'value'=>CHtml::link(CHtml::encode($profile->linkedin), $profile->linkedin),
+        ),
+		array(               
+            'label'=>'Twitter',
+            'type'=>'raw',
+            'value'=>CHtml::link(CHtml::encode($profile->twitter), $profile->twitter),
+        ),
+        array(               
+            'label'=>'Roles',
+            'type'=>'raw',
+            'value'=> $model->getRoleNames(),
+        ),
 	),
 )); ?>
+
+
+<h3>About</h3>
 
 <!--<table class="dataGrid">
 	<tr>

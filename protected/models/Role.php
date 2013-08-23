@@ -43,7 +43,7 @@ class Role extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'users' => array(self::MANY_MANY, 'User', 'user_role(role_name, user_id)'),
+			'users' => array(self::MANY_MANY, 'User', 'user_role(role_id, user_id)'),
 		);
 	}
 
@@ -56,6 +56,15 @@ class Role extends CActiveRecord
 			'name' => 'Name',
 		);
 	}
+    
+    /**
+	 * added to handle saving MANY_TO_MANY 
+	 */
+    public function behaviors(){
+        return array('ESaveRelatedBehavior' => array(
+            'class' => 'application.components.ESaveRelatedBehavior')
+        );
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -93,13 +102,29 @@ class Role extends CActiveRecord
 		return parent::model($className);
 	}
 	
-	public function getOptions()
+	public function getOptions($userId=NULL)
 	{
-		$roles=$this->findAll();
+		if($userId==NULL)
+            $roles=$this->findAll();
+        else
+            $roles=User::model()->findByPk($userId)->roles;
 		$names = array();
 		foreach($roles as $role)
 		{
-			$names[]=$role->name;
+			$names[$role->role_id]=$role->name;
+		}
+		return $names;
+	}
+    public function getOptionsIds($userId=NULL)
+	{
+		if($userId==NULL)
+            $roles=$this->findAll();
+        else
+            $roles=User::model()->findByPk($userId)->roles;
+		$names = array();
+		foreach($roles as $role)
+		{
+			$names[]=$role->role_id;
 		}
 		return $names;
 	}

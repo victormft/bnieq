@@ -26,6 +26,7 @@ return array(
 		//yii-user
 		'application.modules.user.models.*',
         'application.modules.user.components.*',
+        'application.extensions.bootstrap.widgets.*',
 	),
 
 	'modules'=>array(

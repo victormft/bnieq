@@ -19,7 +19,7 @@
             'class'=>'bootstrap.widgets.TbMenu',
             'items'=>array(
                 array('label'=>'Startups', 'url'=>array('/site/index')),
-				array('label'=>'Community', 'url'=>array('#')),
+				array('label'=>'Community', 'url'=>array('/user')),
 				array('label'=>'Invest', 'url'=>array('#')),
 				array('label'=>'Get Investment', 'url'=>array('/site/page', 'view'=>'getinvestment')),
 				array('label'=>'How it works', 'url'=>array('/site/page', 'view'=>'howitworks')),

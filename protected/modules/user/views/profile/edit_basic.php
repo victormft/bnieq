@@ -45,13 +45,27 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<?php echo $form->textFieldRow($profile, 'telephone'); ?>
 	
 	<?php echo $form->textFieldRow($profile, 'skype'); ?>
+    
+    <div class="control-group">
+    <?php echo $form->labelEx($profile,'address'); ?>
+    <div class="controls">      
+        <div class="controls">
+            <input name="zipcode" id="zipcode" type="text" maxlength="20">
+        </div>
+        <?php echo CHtml::ajaxLink('Verificar CEP', array('checkzipcode', 'zipcode'=>'shit'),array(
+            'onclick'=>'$("#address").dialog("open"); return false;',
+            'update'=>'#address'
+            ),array('id'=>'zipCodeChecker'));?>
+        <div id="address"></div>
+    </div>
+    </div>
    
-	<legend>About you</legend>    
-   
+	<legend>About you</legend>   
+    
     <?php $this->widget('bootstrap.widgets.TbSelect2', array(
-        'asDropDownList' => true,
-        'name' => 'roles',        
-        'data' => array(0=>'clever',1=>'is'),
+        'name' => 'rolesU',        
+        'data' => Role::model()->getOptions(),
+        'value'=> Role::model()->getOptionsIds($model->id),
         'options' => array(
             'placeholder' => 'Select your Roles...',
             'width' => '40%',
@@ -59,26 +73,35 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         ),
         'htmlOptions'=>array(
             'multiple'=>'multiple',
-            'class'=>'controlsa',
+            'class'=>'controls',
     ))); ?>
     
+    <?php $this->widget('bootstrap.widgets.TbSelect2', array(
+        
+        'name' => 'univerU',        
+        'data' => University::model()->getOptions(),
+        'value'=> University::model()->getOptionsIds($model->id),
+        'options' => array(
+            'placeholder' => 'Select your Universities...',
+            'width' => '40%',
+            'tokenSeparators' => array(',', ' '),
+        ),
+        'htmlOptions'=>array(
+            'multiple'=>'multiple',
+            'class'=>'controls',
+    ))); ?>
+    
+    <?php echo $form->textAreaRow($profile, 'resume', array('class'=>'span5', 'rows'=>5)); ?>
 		
-	<legend>Tags</legend>
- 
-    <?php $this->widget('bootstrap.widgets.TbTypeahead', array(
-		'name'=>'typeahead',		
-		'model'=>$profile,
-		'attribute'=>'linkedin',
-		'options'=>array(
-			'source'=>Role::model()->getOptions(),
-			//array('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Dakota', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'),
-			'items'=>6,
-			'matcher'=>"js:function(item) {
-				return ~item.toLowerCase().indexOf(this.query.toLowerCase());
-			}",
-		),
-	)); ?>
-     
+	<legend>Links</legend>
+    
+    <?php echo $form->textFieldRow($profile, 'facebook', array('class'=>'span5')); ?>
+    
+    <?php echo $form->textFieldRow($profile, 'linkedin', array('class'=>'span5')); ?>
+         
+    <?php echo $form->textFieldRow($profile, 'twitter', array('class'=>'span5')); ?>
+    
+    
 </fieldset>
  
 <div class="form-actions">
@@ -87,4 +110,5 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 </div>
  
 <?php $this->endWidget(); ?>
+
 
