@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 	$this->menu=array(
 	array('label'=>'List Startup','url'=>array('index')),
 	array('label'=>'Create Startup','url'=>array('create')),
-	array('label'=>'View Startup','url'=>array('view','id'=>$model->id)),
+	array('label'=>'View Startup','url'=>array('view','name'=>$model->name)),
 	array('label'=>'Manage Startup','url'=>array('admin')),
 	);
 	?>

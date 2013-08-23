@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 array('label'=>'List Startup','url'=>array('index')),
 array('label'=>'Create Startup','url'=>array('create')),
-array('label'=>'Update Startup','url'=>array('update','id'=>$model->id)),
+array('label'=>'Update Startup','url'=>array('update','name'=>$model->name)),
 array('label'=>'Delete Startup','url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 array('label'=>'Manage Startup','url'=>array('admin')),
 );

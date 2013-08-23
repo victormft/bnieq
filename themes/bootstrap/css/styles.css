@@ -1,4 +1,5 @@
-#page {
+#page 
+{
     padding-top: 60px;
 }
 
@@ -9,4 +10,39 @@
 	font-size: 0.8em;
 	text-align: center;
 	border-top: 1px solid #C9E0ED;
+}
+
+#Startup_pic /*create startup*/
+{
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	padding-top: 5px;
+	line-height: 20px;
+
+}
+
+.view-list
+{
+	margin-left:50px; 
+	margin-bottom: 30px;
+}
+
+#Startup-list-img
+{
+	float:left; 
+	margin-right:10px; 
+	border: 1px solid black; 
+	width:60px; 
+	height:60px;
+}
+
+#startupslistview
+{
+	float:left;
+	width: 600px
+}
+
+.search-form
+{
+	float:left;
 }
