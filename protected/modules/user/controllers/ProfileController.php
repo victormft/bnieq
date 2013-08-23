@@ -78,10 +78,28 @@ class ProfileController extends Controller
 		{
 			$model->attributes=$_POST['User'];
 			$profile->attributes=$_POST['Profile'];
-			
+            
+            
 			if($model->validate()&&$profile->validate()) {
 				$model->save();
 				$profile->save();
+                
+                //save the roles of the user
+                foreach ($_POST['rolesU'] as $role)
+                {
+                    $roles[] = Role::model()->find('role_id=:id', array(':id'=>$role));
+                }
+                $model->roles = $roles;
+                $model->saveWithRelated(array('roles'));
+                
+                //save the universities of the user
+                foreach ($_POST['univerU'] as $uni)
+                {
+                    $unis[] = University::model()->find('university_id=:id', array(':id'=>$uni));
+                }
+                $model->universities = $unis;
+                $model->saveWithRelated(array('universities'));
+                                
                 Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes are saved."));
 				$this->redirect(array('/user/profile'));
@@ -93,6 +111,13 @@ class ProfileController extends Controller
 			'profile'=>$profile,
 		));
 	}
+    
+    
+    public function actionUpdate()
+    {
+        $es = new TbEditableSaver('Profile');  //'User' is name of model to be updated
+        $es->update();
+    }
 	
 	/**
 	 * Change password
@@ -122,8 +147,13 @@ class ProfileController extends Controller
 			$this->render('changepassword',array('model'=>$model));
 	    }
 	}
+    
+    public function ActionCheckZipCode()
+    {
+        echo $_GET['zipcode'];
+    }
 
-	/**
+    /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable

@@ -8,7 +8,7 @@ class User extends CActiveRecord
 	
 	//TODO: Delete for next version (backward compatibility)
 	const STATUS_BANED=-1;
-	
+	    
 	/**
 	 * The followings are the available columns in table 'users':
 	 * @var integer $id
@@ -80,7 +80,10 @@ class User extends CActiveRecord
         $relations = Yii::app()->getModule('user')->relations;
         if (!isset($relations['profile']))
             $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
-		$relations['roles'] = array(self::MANY_MANY, 'Role', 'user_role(user_id, role_name)');
+        
+		$relations['roles'] = array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)');
+        $relations['universities'] = array(self::MANY_MANY, 'University', 'user_university(user_id, university_id)');
+        
         return $relations;
 	}
 
@@ -105,7 +108,30 @@ class User extends CActiveRecord
 			'status' => UserModule::t("Status"),
 		);
 	}
-	
+ 
+    /**
+	 * added to handle saving MANY_TO_MANY 
+	 */
+    public function behaviors()
+    {
+        return array('ESaveRelatedBehavior' => array(
+            'class' => 'application.components.ESaveRelatedBehavior')
+        );
+    }
+    
+    /**
+	 * @return a string with the role names 
+	 */
+    public function getRoleNames()
+    {
+        $string="";
+        foreach ($this->roles as $role)
+            $string = $string . $role->name.' - ';
+        
+        return $string;
+    }
+            
+
 	public function scopes()
     {
         return array(
