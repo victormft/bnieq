@@ -25,6 +25,14 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/c
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span4','maxlength'=>30)); ?>
 	
+	<script type='text/javascript'>
+	
+		  $(function() {
+			$('#Startup_name').tooltip({trigger: 'focus', placement: 'right', title: 'Enter Startup Name'});
+		  });
+	
+	</script>
+	
 	<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => 'Logo'))); ?>
 	
 	<?php echo $form->textFieldRow($model,'one_line_pitch',array('class'=>'span4','maxlength'=>30)); ?>

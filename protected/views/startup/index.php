@@ -57,7 +57,7 @@ function SearchFunc()   {
 'template'=>'{items} {pager}',
 )); ?>
 
-<div class="search-form" style="float:right;">
+<div class="search-form">
 	<?php 
 	//$this->renderPartial('_customsearch',array(
 	//'dataProvider'=>$dataProvider,
