@@ -12,7 +12,16 @@ $this->menu=array(
     array('label'=>UserModule::t('Change password'), 'url'=>array('changepassword')),
     array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
 );
+
+$apply = true; //apply Editable fields or not
+if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id) 
+{
+    $apply = false;    
+    $profile->birthday=date('d/m/Y', strtotime(str_replace("-", "", $profile->birthday)));    
+}
+
 ?>
+
 
 <h1>
 <?php
@@ -22,7 +31,7 @@ $this->menu=array(
         'attribute' => 'firstname',
         'url'       => array('update'),  //url for submit data          
         'placement' => 'bottom',
-        'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
+        'apply'     => $apply,
      ));
      echo ' ';
      $this->widget('bootstrap.widgets.TbEditableField', array(
@@ -31,37 +40,80 @@ $this->menu=array(
         'attribute' => 'lastname',
         'url'       => array('update'),             
         'placement' => 'right',
-        'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
+        'apply'     => $apply,
      ));
 ?>
 </h1>
 
-<?php
+<div class="btn_follow" style="float:right;">
+ <?php $this->widget('bootstrap.widgets.TbButton', array(
+        'label'=>'Follow',
+        'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+        'size'=>'large', // null, 'large', 'small' or 'mini'
+        'url'=>array('follow', 'id'=>$model->id),
+    )); ?>
+</div>
+
+<p><?php
     $this->widget('bootstrap.widgets.TbEditableField', array(
         'type'      => 'textarea',
         'model'     => $profile,
         'attribute' => 'resume',
         'url'       => array('update'),  
         'placement' => 'right',
-        'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
+        'apply'     => $apply,
      ));
-?>
+?></p>
 
-<?php echo $model->getRoleNames(); ?>
+<?php $this->renderPartial('_roles', array('model'=>$model, 'profile'=>$profile)); ?>
 
-
-<?php $this->widget('bootstrap.widgets.TbButton', array(
-    'label'=>'Edit',
-    'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-    'size'=>'small', // null, 'large', 'small' or 'mini'
-	'url'=>array('edit_basic', 'id'=>$model->id),
+<?php $this->widget('bootstrap.widgets.TbBox', array(
+    'title' => 'PORTFOLIO',
+    'headerIcon' => 'icon-home',
+    'content' => 'Portfolio will come here.', // $this->renderPartial('_view')
+    'htmlOptions' => array('style'=>'margin-top:30px; padding-right:300px'),
 )); ?>
 
-<div class="socials">    
-    <a href=<?php echo $profile->facebook; ?>> <img src=<?php echo Yii::app()->request->baseUrl.'/images/facebook.png>';?> </a>
-    <a href=<?php echo $profile->linkedin; ?>> <img src=<?php echo Yii::app()->request->baseUrl.'/images/linkedin.png>';?> </a>
-    <a href=<?php echo $profile->twitter; ?>> <img src=<?php echo Yii::app()->request->baseUrl.'/images/twitter.png>';?> </a>
+<h3>What I do</h3>
+<div class="">
+    <p> <?php echo '<b>Working experiences: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'textarea',
+            'model'     => $profile,
+            'attribute' => 'experiences',
+            'url'       => array('update'),  
+            'placement' => 'right',
+            'apply'  => $apply,
+         )); ?>    
+    </p>
+     
+    <div class="">
+        <?php echo '<b>Skills:</b> (VER COMO VAI SER)'; ?>
+        
+    </div>
 </div>
+
+<h3>What I'm looking for</h3>
+<div class="interests">
+    <p> <?php echo '<b>Interests: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'textarea',
+            'model'     => $profile,
+            'attribute' => 'interests',
+            'url'       => array('update'),  
+            'placement' => 'right',
+            'apply'  => $apply,
+         )); ?>    
+    </p>
+    
+    <div class="sectors_wrap">
+        <?php $this->renderPartial('_sectors', array('model'=>$model, 'profile'=>$profile)); ?>
+    </div>
+    
+</div>
+
+
+
 
 <h3>Personal</h3>
 <div class="">
@@ -74,7 +126,7 @@ $this->menu=array(
             'placement' => 'right',
             'format'      => 'yyyy-mm-dd', //format in which date is expected from model and submitted to server
             'viewformat'  => 'dd/mm/yyyy', //format in which date is displayed
-            'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
+            'apply'      => $apply,
          )); ?>  
     </p>
     
@@ -86,46 +138,11 @@ $this->menu=array(
             'url'       => array('update'),  
             'source'    => $profile->getGenderOptions(), 
             'placement' => 'right',
-            'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
+            'apply'     => $apply,
          )); ?> 
     </p>
-</div>
-
-<h3>Experiences</h3>
-<div class="">
-    <?php echo '<b>Working experiences: </b>'; ?>
     
-    <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-        'type'      => 'textarea',
-        'model'     => $profile,
-        'attribute' => 'experiences',
-        'url'       => array('update'),  
-        'placement' => 'right',
-        'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
-     )); ?>    
-</div>
-
-<div class="">
-    <?php echo '<b>Skills:</b> (definir skills padroes)'; ?>
-    
-</div>
-
-<h3>Interests</h3>
-<div class="">
-    <?php echo '<b>Interests: </b>'; ?>    
-    <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-        'type'      => 'textarea',
-        'model'     => $profile,
-        'attribute' => 'interests',
-        'url'       => array('update'),  
-        'placement' => 'right',
-        'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
-     )); ?>    
-</div>
-
-<div class="">
-    <?php echo '<b>Sectors of interest:</b> (definir skills padroes)'; ?>
-    
+    <p>Location</p>
 </div>
 
 <h3>Contacts</h3>
@@ -140,7 +157,7 @@ $this->menu=array(
             'attribute' => 'telephone',
             'url'       => array('update'),  
             'placement' => 'right',
-            'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
+            'apply'  => $apply,
          )); ?>  
     </p>
     
@@ -152,7 +169,7 @@ $this->menu=array(
             'attribute' => 'skype',
             'url'       => array('update'),  
             'placement' => 'right',
-            'apply'  => ((UserModule::isAdmin() || $model->id == Yii::app()->user->id)	? true : false),
+            'apply'  => $apply,
          )); ?>  
     </p>
 </div>

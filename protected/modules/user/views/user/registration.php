@@ -13,10 +13,10 @@ $this->breadcrumbs=array(
 <?php else: ?>
 
 <div class="form">
-<?php $form=$this->beginWidget('UActiveForm', array(
+<?php $form=$this->beginWidget('TbActiveForm', array(
 	'id'=>'registration-form',
 	'enableAjaxValidation'=>true,
-	'disableAjaxValidationAttributes'=>array('RegistrationForm_verifyCode'),
+	//'disableAjaxValidationAttributes'=>array('RegistrationForm_verifyCode'),
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),

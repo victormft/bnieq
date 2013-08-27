@@ -2,7 +2,7 @@
 
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 $this->breadcrumbs=array(
-	UserModule::t("Profile")=>array('profile'),
+	UserModule::t("Profile")=>array('profile', 'id'=>$model->id),
 	UserModule::t("Edit"),
 );
 
@@ -30,19 +30,6 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
  	
     <?php echo $form->textFieldRow($model, 'username'); ?>
     
-    <div class="control-group">
-    <?php echo $form->labelEx($profile,'address'); ?>
-    <div class="controls">      
-        <div class="controls">
-            <input name="zipcode" id="zipcode" type="text" maxlength="20">
-        </div>
-        <?php echo CHtml::ajaxLink('Verificar CEP', array('checkzipcode', 'zipcode'=>'shit'),array(
-            'onclick'=>'$("#address").dialog("open"); return false;',
-            'update'=>'#address'
-            ),array('id'=>'zipCodeChecker'));?>
-        <div id="address"></div>
-    </div>
-    </div>
    
 	<legend>About you</legend>   
     
@@ -60,8 +47,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
             'class'=>'controls',
     ))); ?>
     
-    <?php $this->widget('bootstrap.widgets.TbSelect2', array(
-        
+    <?php $this->widget('bootstrap.widgets.TbSelect2', array(        
         'name' => 'univerU',        
         'data' => University::model()->getOptions(),
         'value'=> University::model()->getOptionsIds($model->id),
