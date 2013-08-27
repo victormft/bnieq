@@ -69,6 +69,7 @@ class Profile extends CActiveRecord
 			array('birthday, resume, experiences, interests', 'safe'),
 			array('birthday', 'date', 'format'=>'yyyy-mm-dd', 'message'=>"Wrong format"),
             array('gender', 'in', 'range'=>array('M','F')),
+            array('gender', 'default', 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, address, facebook, linkedin, twitter, experiences, interests', 'safe', 'on'=>'search'),

@@ -102,19 +102,6 @@ class Role extends CActiveRecord
 		return parent::model($className);
 	}
 	
-	public function getOptions($userId=NULL)
-	{
-		if($userId==NULL)
-            $roles=$this->findAll();
-        else
-            $roles=User::model()->findByPk($userId)->roles;
-		$names = array();
-		foreach($roles as $role)
-		{
-			$names[$role->role_id]=$role->name;
-		}
-		return $names;
-	}
     public function getOptionsIds($userId=NULL)
 	{
 		if($userId==NULL)

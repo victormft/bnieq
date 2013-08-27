@@ -60,6 +60,15 @@ class Sector extends CActiveRecord
 			'name' => 'Name',
 		);
 	}
+    
+    /**
+	 * added to handle saving MANY_TO_MANY 
+	 */
+    public function behaviors(){
+        return array('ESaveRelatedBehavior' => array(
+            'class' => 'application.components.ESaveRelatedBehavior')
+        );
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -96,5 +105,19 @@ class Sector extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+    
+    public function getOptionsIds($userId=NULL)
+	{
+		if($userId==NULL)
+            $sectors=$this->findAll();
+        else
+            $sectors=User::model()->findByPk($userId)->sectors;
+		$names = array();
+		foreach($sectors as $sector)
+		{
+			$names[]=$sector->sector_id;
+		}
+		return $names;
 	}
 }

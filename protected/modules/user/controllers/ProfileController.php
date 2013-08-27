@@ -26,7 +26,7 @@ class ProfileController extends Controller
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionEdit_Basic()
+	public function actionEdit()
 	{
 		$model = $this->loadUser();
 		$profile=$model->profile;
@@ -41,13 +41,10 @@ class ProfileController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
-			$profile->attributes=$_POST['Profile'];
+			$profile->attributes=$_POST['Profile'];            
             
-            
-			if($model->validate()&&$profile->validate()) {
-				$model->save();
-				$profile->save();
-                
+			if($model->save()&&$profile->save()) {
+				
                 //save the roles of the user
                 if(isset($_POST['rolesU']))
                 {                    
@@ -76,13 +73,70 @@ class ProfileController extends Controller
 			} else $profile->validate();
 		}
 
-		$this->render('edit_basic',array(
+		$this->render('edit',array(
 			'model'=>$model,
 			'profile'=>$profile,
 		));
 	}
     
+    public function actionEditRoles()
+    {
+        $model = $this->loadUser();
+        $profile=$model->profile;
+        
+        //save the roles of the user
+        if(isset($_POST['Profile']))
+        {           
+            $profile->attributes=$_POST['Profile'];
+            
+            if($profile->save(false))
+            {              
+                if(isset($_POST['roles']))
+                {                    
+                    foreach ($_POST['roles'] as $role)
+                    {
+                        $roles[] = Role::model()->find('role_id=:id', array(':id'=>$role));
+                    }
+                    $model->roles = $roles;
+                    $model->saveWithRelated(array('roles'));
+                }
+                else 
+                {
+                    $model->roles = array();
+                    $model->saveWithRelated(array('roles'));
+                }
+                $this->renderPartial('_roles', array('model'=>$model, 'profile'=>$profile,));
+            }            
+        }   
+    }
     
+    public function actionEditSectors()
+    {
+        $model = $this->loadUser();
+         
+        if(isset($_POST['sectors']))
+        {                    
+            foreach ($_POST['sectors'] as $sector)
+            {
+                $sectors[] = Sector::model()->find('sector_id=:id', array(':id'=>$sector));
+            }
+            $model->sectors = $sectors;
+            $model->saveWithRelated(array('sectors'));
+        }
+        else 
+        {
+            $model->sectors = array();
+            $model->saveWithRelated(array('sectors'));
+        }
+        $this->renderPartial('_sectors', array('model'=>$model, 'profile'=>$model->profile)); 
+    }
+    
+    public function actionFollow($id)
+    {
+        $model = $this->loadUser();
+    }
+
+        
     public function actionUpdate()
     {
         $es = new TbEditableSaver('Profile');  //'User' is name of model to be updated

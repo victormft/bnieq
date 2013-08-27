@@ -23,6 +23,8 @@ class User extends CActiveRecord
      * @var timestamp $create_at
      * @var timestamp $lastvisit_at
 	 */
+    
+    public $_roles;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -139,6 +141,24 @@ class User extends CActiveRecord
         {
             $string = $string . $role->name;
             if($role !== $lastElement) $string = $string . ' - ';
+        }
+        
+        return $string;
+    }
+    
+    /**
+	 * @return a string with the sector names 
+	 */
+    public function getSectorNames()
+    {
+        $string="";
+        $array = $this->sectors;
+        
+        $lastElement = end($array);
+        foreach ($array as $sector)
+        {
+            $string = $string . $sector->name;
+            if($sector !== $lastElement) $string = $string . ' - ';
         }
         
         return $string;
