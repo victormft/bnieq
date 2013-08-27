@@ -116,8 +116,12 @@ class StartupController extends Controller
 	* If update is successful, the browser will be redirected to the 'view' page.
 	* @param integer $id the ID of the model to be updated
 	*/
-	public function actionUpdate($name)
+	public function actionUpdate(/*$name*/)
 	{
+		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
+        $es->update();
+	
+	/*
 		$model=$this->loadModel($name);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -133,6 +137,8 @@ class StartupController extends Controller
 		$this->render('update',array(
 			'model'=>$model,
 		));
+		
+	*/	
 	}
 
 	/**
@@ -163,9 +169,18 @@ class StartupController extends Controller
 		$model=new Startup('search');
 		$model->unsetAttributes();  // clear any default values
 		
-		if(isset($_GET['Startup']))
-			$model->attributes=$_GET['Startup'];
+		if(isset($_GET['n']))
+			$model->name=$_GET['n'];
 		
+		if(isset($_GET['o']))
+			$model->one_line_pitch=$_GET['o'];
+			
+		if(isset($_GET['c_size']))
+			$model->company_size=$_GET['c_size'];	
+		
+		//if(isset($_GET['Startup']))
+		//	$model->attributes=$_GET['Startup'];
+		/*
 		if(isset($_GET['ajax']) && $_GET['ajax']=='startupslistview')   {
             $this->renderPartial('index',array(
                 'dataProvider'=>$model,
@@ -175,6 +190,11 @@ class StartupController extends Controller
                 'dataProvider'=>$model,
             ));
         }    
+		*/
+		
+		 $this->render('index',array(
+                'dataProvider'=>$model,
+            ));
 		
 		/*
 		$this->render('index',array(

@@ -32,7 +32,7 @@
 
 <fieldset>
 <legend>Company</legend>
-<div class="">
+
     <p> <?php echo '<b>One Line Pitch: </b>'; ?>    
         <?php $this->widget('bootstrap.widgets.TbEditableField', array(
             'type'      => 'text',
@@ -49,7 +49,7 @@
             'model'     => $model,
             'attribute' => 'company_size',
             'url'       => array('update'),  
-            'source'    => '',//$profile->getGenderOptions(), 
+            'source'    => $model->getCompanySizeOptions(), 
             'placement' => 'right',
          )); ?> 
     </p>
@@ -60,7 +60,7 @@
             'model'     => $model,
             'attribute' => 'company_stage',
             'url'       => array('update'),  
-            'source'    => '',//$profile->getGenderOptions(), 
+            'source'    => $model->getCompanyStageOptions(), 
             'placement' => 'right',
          )); ?> 
     </p>
@@ -107,7 +107,7 @@
          )); ?>  
     </p>
 	
-	<p> <?php echo '<b>One Line Pitch: </b>'; ?>    
+	<p> <?php echo '<b>Company Number: </b>'; ?>    
         <?php $this->widget('bootstrap.widgets.TbEditableField', array(
             'type'      => 'text',
             'model'     => $model,
@@ -119,13 +119,102 @@
 	
 	
 	
-</div>
+
 </fieldset>
 
 
+<fieldset>
+<legend>Links</legend>
 
-
+    <p> <?php echo '<b>Website: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'website',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
 	
+	<p> <?php echo '<b>Facebook: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'facebook',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Twitter: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'twitter',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Blog: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'blog',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+
+</fieldset>
+
+<fieldset>
+<legend>Sector and Location</legend>
+
+    <p> <?php echo '<b>Sector: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'select',
+            'model'     => $model,
+            'attribute' => 'sector',
+            'url'       => array('update'),
+			'source'    => CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), 			
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Full Address: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'address',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Post Code: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'post_code',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>City: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'city',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+
+</fieldset>	
 	
 <!--
 	<b><?php echo CHtml::encode($model->getAttributeLabel('one_line_pitch')); ?>:</b>

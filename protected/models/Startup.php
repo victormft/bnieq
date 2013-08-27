@@ -47,6 +47,19 @@ class Startup extends CActiveRecord
 
 	//to upload logo
 	public $pic;	
+	
+	//to groups in listing
+	public $group;
+	
+	//company size
+	const SIZE_1="1-10";
+	const SIZE_2="11-20";
+	const SIZE_3="20+";
+	
+	//company stage
+	const STAGE_1="Startup";
+	const STAGE_2="Early Stage";
+	const STAGE_3="Growth Stage";
 		
 	/**
 	 * @return string the associated database table name
@@ -194,4 +207,24 @@ class Startup extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	public function getCompanySizeOptions()
+	{
+		return array(
+			self::SIZE_1=>'1-10',
+			self::SIZE_2=>'11-20',
+			self::SIZE_3=>'20+',
+		);
+	}	
+	
+	public function getCompanyStageOptions()
+	{
+		return array(
+			self::STAGE_1=>'Startup',
+			self::STAGE_2=>'Early Stage',
+			self::STAGE_3=>'Growth Stage',
+		);
+	}	
+		
+	
 }
