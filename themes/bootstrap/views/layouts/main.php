@@ -11,35 +11,41 @@
 
 </head>
 
-<body>
-
-<?php $this->widget('bootstrap.widgets.TbNavbar',array(
-    'items'=>array(
-        array(
-            'class'=>'bootstrap.widgets.TbMenu',
-            'items'=>array(
-				array('label'=>'Startup', 'url'=>array('/startup/index')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
-                array('label'=>'Startups', 'url'=>array('/site/index')),
-				array('label'=>'Community', 'url'=>array('/user')),
-				array('label'=>'Invest', 'url'=>array('#')),
-				array('label'=>'Get Investment', 'url'=>array('/site/page', 'view'=>'getinvestment')),
-				array('label'=>'How it works', 'url'=>array('/site/page', 'view'=>'howitworks')),
-				array('label'=>'About us', 'url'=>array('/site/page', 'view'=>'about')),
-				//array('label'=>'Home', 'url'=>array('/site/index')),
-				//array('label'=>'Contact', 'url'=>array('/site/contact')),
-				//
-				//yii-user
-				array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
-				array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Register"), 'visible'=>Yii::app()->user->isGuest),
-				array('url'=>array('/user/profile', 'id'=>Yii::app()->user->id), 'label'=>Yii::app()->getModule('user')->t("Profile"), 'visible'=>!Yii::app()->user->isGuest),
-				array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>Yii::app()->getModule('user')->t("Logout").' ('.Yii::app()->user->name.')', 'visible'=>!Yii::app()->user->isGuest),
-            ),
-        ),
-    ),
-)); ?>
-
-<div class="container" id="page">
+<body>   
+    
+<div class="navbar navbar-inverse">
+    <div class="navbar-inner" style="border-radius: 0">
+        <form class="navbar-search pull-left" style="margin-left: 80px">
+            <input type="text" class="search-query" placeholder="Search">
+        </form>
+        <ul class="nav pull-right" style="margin-right: 80px">
+            <li><a href= <?php echo Yii::app()->homeUrl; ?> >Home</a></li>
+            <li><a href= <?php echo Yii::app()->homeUrl . '/site/contact'?> >Contact us</a></li>
+            <?php if(Yii::app()->user->isGuest):?>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/login'?> >Login</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/registration'?> >Register</a></li>
+            <?php else: ?>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/profile/' . Yii::app()->user->id ?> >Profile</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> >Logout</a></li>
+            <?php endif?>
+        </ul>
+    </div>
+</div>
+    
+<div class="container" id="page">    
+        
+    <div class="navbar">
+        <div class="navbar-inner" style="border-radius: 0; margin: 0 auto; display: table;">
+            <ul class="nav" style="">
+                <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> >Startups</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl; ?> >Community</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl; ?> >Invest</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl; ?> >Get investment</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl; ?> >How it works</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/site/page?view=about' ?> >About us</a></li>              
+            </ul>
+        </div>
+    </div>
 
 	<?php if(isset($this->breadcrumbs)):?>
 		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(

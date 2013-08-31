@@ -22,21 +22,7 @@
                 <?php echo CHtml::checkBoxList('roles', Role::model()->getOptionsIds($model->id), 
                     CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('labelOptions'=>array('style'=>'display:inline'))
                 ); ?>
-                
-                <?php /*$this->widget('bootstrap.widgets.TbSelect2', array(
-                    //'name' => 'roles',        
-                    'data' => CHtml::listData(Role::model()->findAll(), 'role_id', 'name'),
-                    'value'=> Role::model()->getOptionsIds($model->id),
-                    'options' => array(
-                        'placeholder' => 'Select your Roles...',
-                        'width' => '40%',
-                        'tokenSeparators' => array(',', ' '),
-                    ),
-                    'htmlOptions'=>array(
-                        'multiple'=>'multiple',
-                        'class'=>'controls',
-                )));*/ ?>
-                
+                                
                 <legend>Links</legend>
     
                     <?php echo $form->textFieldRow($profile, 'facebook', array('class'=>'span3')); ?>

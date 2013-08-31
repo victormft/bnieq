@@ -14,7 +14,7 @@
  * @property string $telephone
  * @property string $skype
  * @property string $resume
- * @property string $address
+ * @property string $location
  * @property string $facebook
  * @property string $linkedin
  * @property string $twitter
@@ -22,7 +22,7 @@
  * @property string $interests
  *
  * The followings are the available model relations:
- * @property Address $address0
+ * @property Location $city
  * @property Image $profilePicture
  */
 
@@ -62,7 +62,7 @@ class Profile extends CActiveRecord
 		return array(
 			array('firstname, lastname', 'required'),
 			array('firstname, lastname', 'length', 'max'=>50),
-			array('profile_picture, address', 'length', 'max'=>20),
+			array('profile_picture, location', 'length', 'max'=>20),
 			array('gender', 'length', 'max'=>1),
 			array('telephone, skype', 'length', 'max'=>45),
 			array('facebook, linkedin, twitter', 'length', 'max'=>150),
@@ -72,7 +72,7 @@ class Profile extends CActiveRecord
             array('gender', 'default', 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, address, facebook, linkedin, twitter, experiences, interests', 'safe', 'on'=>'search'),
+			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, location, facebook, linkedin, twitter, experiences, interests', 'safe', 'on'=>'search'),
 		);
 	}	
 	
@@ -86,7 +86,7 @@ class Profile extends CActiveRecord
 		// class name for the relations automatically generated below.
 		$relations = array(
 			'user'=>array(self::HAS_ONE, 'User', 'id'),
-			'address' => array(self::BELONGS_TO, 'Address', 'address'),
+			'city' => array(self::BELONGS_TO, 'Location', 'location'),
 			'profilePicture' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
 		);
 		return $relations;
@@ -107,7 +107,7 @@ class Profile extends CActiveRecord
 			'telephone' => 'Telephone',
 			'skype' => 'Skype',
 			'resume' => 'Resume',
-			'address' => 'Address',
+			'location' => 'Location',
 			'facebook' => 'Facebook',
 			'linkedin' => 'Linkedin',
 			'twitter' => 'Twitter',
@@ -119,7 +119,7 @@ class Profile extends CActiveRecord
 	public function getGenderOptions()
 	{
 		return array(
-			''=>UserModule::t('Select gender...'),
+			''=>'',
 			self::GENDER_MALE=>UserModule::t('Male'),
 			self::GENDER_FEMALE=>UserModule::t('Female'),
 		);

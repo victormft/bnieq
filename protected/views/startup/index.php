@@ -136,7 +136,7 @@ function SearchFunc()   {
 		
 		<?php echo CHtml::activeLabel($dataProvider,'company_size'); ?>
 		
-		<?php echo CHtml::activeDropDownList($dataProvider,'company_size', array_merge(array('empty'=>'Selecione...'), $dataProvider->getCompanySizeOptions()), array('name'=>'c_size')) ?>
+		<?php echo CHtml::activeDropDownList($dataProvider,'company_size', array_merge(array(''=>'Selecione...'), $dataProvider->getCompanySizeOptions()), array('name'=>'c_size')) ?>
 		
 		<?php echo CHtml::activeLabel($dataProvider,'sectors'); ?>
 		

@@ -136,10 +136,18 @@ class ProfileController extends Controller
         $model = $this->loadUser();
     }
 
-        
     public function actionUpdate()
     {
-        $es = new TbEditableSaver('Profile');  //'User' is name of model to be updated
+        $model = $this->loadUser($_POST['pk']);
+        $profile = $model->profile;
+        $profile->location = $_POST['value'];
+        $profile->save();
+         
+    }
+        
+    public function actionUpdateEd()
+    {
+        $es = new TbEditableSaver('Profile');  //'Profile' is name of model to be updated
         $es->update();
     }
 	

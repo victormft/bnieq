@@ -8,7 +8,7 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'BNI Equity',
-	'homeUrl'=>'/bnieq/site/index',
+	'homeUrl'=>'/bnieq',
 	'theme'=>'bootstrap',
 	
 	// preloading 'log' component

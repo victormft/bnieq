@@ -29,7 +29,7 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
         'type'      => 'text',
         'model'     => $profile,
         'attribute' => 'firstname',
-        'url'       => array('update'),  //url for submit data          
+        'url'       => array('updateEd'),  //url for submit data          
         'placement' => 'bottom',
         'apply'     => $apply,
      ));
@@ -38,7 +38,7 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
         'type'      => 'text',
         'model'     => $profile,
         'attribute' => 'lastname',
-        'url'       => array('update'),             
+        'url'       => array('updateEd'),             
         'placement' => 'right',
         'apply'     => $apply,
      ));
@@ -59,7 +59,7 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
         'type'      => 'textarea',
         'model'     => $profile,
         'attribute' => 'resume',
-        'url'       => array('update'),  
+        'url'       => array('updateEd'),  
         'placement' => 'right',
         'apply'     => $apply,
      ));
@@ -81,7 +81,7 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
             'type'      => 'textarea',
             'model'     => $profile,
             'attribute' => 'experiences',
-            'url'       => array('update'),  
+            'url'       => array('updateEd'),  
             'placement' => 'right',
             'apply'  => $apply,
          )); ?>    
@@ -100,7 +100,7 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
             'type'      => 'textarea',
             'model'     => $profile,
             'attribute' => 'interests',
-            'url'       => array('update'),  
+            'url'       => array('updateEd'),  
             'placement' => 'right',
             'apply'  => $apply,
          )); ?>    
@@ -122,7 +122,7 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
             'type'      => 'date',
             'model'     => $profile,
             'attribute' => 'birthday',
-            'url'       => array('update'),  
+            'url'       => array('updateEd'),  
             'placement' => 'right',
             'format'      => 'yyyy-mm-dd', //format in which date is expected from model and submitted to server
             'viewformat'  => 'dd/mm/yyyy', //format in which date is displayed
@@ -135,14 +135,19 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
             'type'      => 'select',
             'model'     => $profile,
             'attribute' => 'gender',
-            'url'       => array('update'),  
+            'url'       => array('updateEd'),  
             'source'    => $profile->getGenderOptions(), 
             'placement' => 'right',
             'apply'     => $apply,
          )); ?> 
     </p>
     
-    <p>Location</p>
+    <p> <?php echo '<b>Location: </b>'; ?> 
+        
+        <a href="#" id="location" data-original-title="Input country"></a>
+  
+
+    </p>
 </div>
 
 <h3>Contacts</h3>
@@ -152,10 +157,10 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
     <p>
         <?php echo '<b>Telephone: </b>'?>
         <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'textarea',
+            'type'      => 'text',
             'model'     => $profile,
             'attribute' => 'telephone',
-            'url'       => array('update'),  
+            'url'       => array('updateEd'),  
             'placement' => 'right',
             'apply'  => $apply,
          )); ?>  
@@ -164,13 +169,29 @@ if (!UserModule::isAdmin() && $model->id !== Yii::app()->user->id)
     <p>
         <?php echo '<b>Skype: </b>'?>
         <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'textarea',
+            'type'      => 'text',
             'model'     => $profile,
             'attribute' => 'skype',
-            'url'       => array('update'),  
+            'url'       => array('updateEd'),  
             'placement' => 'right',
             'apply'  => $apply,
          )); ?>  
     </p>
+    
+    <?php print_r( CHtml::listData(Location::model()->findAll(), 'location_id', 'name') )?>
+    
 </div>
 
+<script>
+    
+    var locations = <?php echo Location::model()->getOptions() ?>;
+        
+    $('#location').editable({
+        type: 'typeahead',
+        pk: '<?php echo $model->id ?>',
+        value: '<?php echo (isset($profile->city)) ? $profile->city->location_id : "" ?>',    
+        url: 'update',
+        source: locations,
+    });
+
+</script>

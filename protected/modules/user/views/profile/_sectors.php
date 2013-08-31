@@ -3,8 +3,8 @@
     <?php echo '<b>Sectors of interest:</b>'; ?>
     <?php echo $model->getSectorNames(); ?>
     
-    <button type="button" data-toggle="modal" data-target="#myModal2">Launch modal</button>
-    <div id="myModal2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <button type="button" data-toggle="modal" data-target="#sectors">Launch modal</button>
+    <div id="sectors" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
             <h3 id="myModalLabel">Modal header</h3>
