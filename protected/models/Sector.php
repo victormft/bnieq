@@ -120,4 +120,18 @@ class Sector extends CActiveRecord
 		}
 		return $names;
 	}
+	
+	public function getOptionsStartupIds($startupId=NULL)
+	{
+		if($startupId==NULL)
+            $sectors=$this->findAll();
+        else
+            $sectors=Startup::model()->findByPk($startupId)->sectors;
+		$names = array();
+		foreach($sectors as $sector)
+		{
+			$names[]=$sector->sector_id;
+		}
+		return $names;
+	}
 }

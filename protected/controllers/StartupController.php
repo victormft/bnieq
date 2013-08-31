@@ -29,7 +29,7 @@ class StartupController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'viewName'),
+				'actions'=>array('index','view', 'viewName', 'editsectors'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -169,15 +169,16 @@ class StartupController extends Controller
 		$model=new Startup('search');
 		$model->unsetAttributes();  // clear any default values
 		
-		if(isset($_GET['n']))
+		if(isset($_GET['n'])) {
 			$model->name=$_GET['n'];
-		
-		if(isset($_GET['o']))
-			$model->one_line_pitch=$_GET['o'];
-			
+			$model->one_line_pitch=$_GET['n'];
+		}
 		if(isset($_GET['c_size']))
 			$model->company_size=$_GET['c_size'];	
 		
+		if(isset($_GET['sec']))
+			$model->sectors=$_GET['sec'];	
+			
 		//if(isset($_GET['Startup']))
 		//	$model->attributes=$_GET['Startup'];
 		/*
@@ -248,4 +249,25 @@ class StartupController extends Controller
 			Yii::app()->end();
 		}
 	}
+	
+	public function actionEditSectors()
+    {	
+		$model = $this->loadModel($_GET['name']);
+         
+        if(isset($_POST['sectors']))
+        {                    
+            foreach ($_POST['sectors'] as $sector)
+            {
+                $sectors[] = Sector::model()->find('sector_id=:id', array(':id'=>$sector));
+            }
+            $model->sectors = $sectors;
+            $model->saveWithRelated(array('sectors'));
+        }
+        else 
+        {
+            $model->sectors = array();
+            $model->saveWithRelated(array('sectors'));
+        }
+        $this->renderPartial('_sectors', array('model'=>$model)); 
+    }
 }

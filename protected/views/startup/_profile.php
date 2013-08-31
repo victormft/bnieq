@@ -183,6 +183,10 @@
          )); ?>  
     </p>
 	
+	<div class="sectors_wrap">
+        <?php $this->renderPartial('_sectors', array('model'=>$model)); ?>
+    </div>
+	
 	<p> <?php echo '<b>Full Address: </b>'; ?>    
         <?php $this->widget('bootstrap.widgets.TbEditableField', array(
             'type'      => 'text',
@@ -215,6 +219,96 @@
 	
 
 </fieldset>	
+	
+<legend style="font-size:30px; font-weight:bold;">!!!!! Private Profile !!!!!</legend>
+<fieldset>
+<legend>Business Model</legend>
+
+    <p> <?php echo '<b>Client Segment: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'client_segment',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Value Proposition: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'value_proposition',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Market Size: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'market_size',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Sales/Marketing Proposition: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'sales_marketing',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Revenue Generation: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'revenue_generation',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Competitors: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'competitors',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+	<p> <?php echo '<b>Competitive Advantage: </b>'; ?>    
+        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
+            'type'      => 'text',
+            'model'     => $model,
+            'attribute' => 'competitive_advantage',
+            'url'       => array('update'),  
+            'placement' => 'right',
+         )); ?>  
+    </p>
+	
+
+</fieldset>
+
+	
+<div class="content-wrap">
+
+	<div class="content-head">Header</div>
+	
+	<div class="content-info">
+	Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum 
+	</div>
+	
+	
+
+</div>	
 	
 <!--
 	<b><?php echo CHtml::encode($model->getAttributeLabel('one_line_pitch')); ?>:</b>

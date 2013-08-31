@@ -108,7 +108,7 @@ class Startup extends CActiveRecord
 			'logo0' => array(self::BELONGS_TO, 'Image', 'logo'),
 			'users' => array(self::MANY_MANY, 'User', 'startup_follow(startup_id, user_id)'),
 			'images' => array(self::MANY_MANY, 'Image', 'startup_image(startup_id, image_id)'),
-			'sectors' => array(self::MANY_MANY, 'Sector', 'startup_sector(startup_id, sector_name)'),
+			'sectors' => array(self::MANY_MANY, 'Sector', 'startup_sector(startup_id, sector_id)'),
 			'startupWebsites' => array(self::HAS_MANY, 'StartupWebsite', 'startup_id'),
 			'users1' => array(self::MANY_MANY, 'User', 'user_startup(startup_id, user_id)'),
 		);
@@ -147,6 +147,16 @@ class Startup extends CActiveRecord
 			'create_time' => 'Create Time',
 		);
 	}
+	
+	/**
+	 * added to handle saving MANY_TO_MANY 
+	 */
+    public function behaviors()
+    {
+        return array('ESaveRelatedBehavior' => array(
+            'class' => 'application.components.ESaveRelatedBehavior')
+        );
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -166,31 +176,37 @@ class Startup extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('logo',$this->logo,true);
-		$criteria->compare('one_line_pitch',$this->one_line_pitch,true);
-		$criteria->compare('product_description',$this->product_description,true);
-		$criteria->compare('company_size',$this->company_size,true);
-		$criteria->compare('company_stage',$this->company_stage,true);
-		$criteria->compare('foundation',$this->foundation,true);
-		$criteria->compare('email',$this->email,true);
-		$criteria->compare('telephone',$this->telephone,true);
-		$criteria->compare('skype',$this->skype,true);
-		$criteria->compare('company_number',$this->company_number,true);
-		$criteria->compare('facebook',$this->facebook,true);
-		$criteria->compare('twitter',$this->twitter,true);
-		$criteria->compare('blog',$this->blog,true);
-		$criteria->compare('address',$this->address,true);
-		$criteria->compare('client_segment',$this->client_segment,true);
-		$criteria->compare('value_proposition',$this->value_proposition,true);
-		$criteria->compare('market_size',$this->market_size,true);
-		$criteria->compare('sales_marketing',$this->sales_marketing,true);
-		$criteria->compare('revenue_generation',$this->revenue_generation,true);
-		$criteria->compare('competitors',$this->competitors,true);
-		$criteria->compare('competitive_advantage',$this->competitive_advantage,true);
-		$criteria->compare('video',$this->video,true);
-		$criteria->compare('create_time',$this->create_time,true);
+		$criteria->compare('t.id',$this->id,true);
+		$criteria->compare('t.name',$this->name,true);
+		$criteria->compare('t.logo',$this->logo,true);
+		$criteria->compare('t.one_line_pitch',$this->one_line_pitch,true, 'OR');
+		$criteria->compare('t.product_description',$this->product_description,true);
+		$criteria->compare('t.company_size',$this->company_size,true);
+		$criteria->compare('t.company_stage',$this->company_stage,true);
+		$criteria->compare('t.foundation',$this->foundation,true);
+		$criteria->compare('t.email',$this->email,true);
+		$criteria->compare('t.telephone',$this->telephone,true);
+		$criteria->compare('t.skype',$this->skype,true);
+		$criteria->compare('t.company_number',$this->company_number,true);
+		$criteria->compare('t.facebook',$this->facebook,true);
+		$criteria->compare('t.twitter',$this->twitter,true);
+		$criteria->compare('t.blog',$this->blog,true);
+		$criteria->compare('t.address',$this->address,true);
+		$criteria->compare('t.client_segment',$this->client_segment,true);
+		$criteria->compare('t.value_proposition',$this->value_proposition,true);
+		$criteria->compare('t.market_size',$this->market_size,true);
+		$criteria->compare('t.sales_marketing',$this->sales_marketing,true);
+		$criteria->compare('t.revenue_generation',$this->revenue_generation,true);
+		$criteria->compare('t.competitors',$this->competitors,true);
+		$criteria->compare('t.competitive_advantage',$this->competitive_advantage,true);
+		$criteria->compare('t.video',$this->video,true);
+		$criteria->compare('t.t.create_time',$this->create_time,true);
+		
+		if($this->sectors){
+			$criteria->with = array('sectors');
+			$criteria->together = true;
+			$criteria->compare('sectors.sector_id', $this->sectors,true);
+		}
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -224,7 +240,22 @@ class Startup extends CActiveRecord
 			self::STAGE_2=>'Early Stage',
 			self::STAGE_3=>'Growth Stage',
 		);
-	}	
+	}
+
+	public function getSectorNames()
+    {
+        $string="";
+        $array = $this->sectors;
+        
+        $lastElement = end($array);
+        foreach ($array as $sector)
+        {
+            $string = $string . $sector->name;
+            if($sector !== $lastElement) $string = $string . ' - ';
+        }
+        
+        return $string;
+    }
 		
 	
 }

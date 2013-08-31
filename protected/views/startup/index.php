@@ -19,12 +19,54 @@ Yii::app()->clientScript->registerScript('search',
 "
 
 $('#searchform').change(function(event) {
-			var n = encodeURIComponent($('#n').val());
-			var o = $('#o').val();
-			var c_size = $('#c_size').val();
-            location.href = 'startup?n='+n+'&o='+o+'&c_size='+c_size;
+			var group = (getUrlVars()['group'] == null) ? '' : getUrlVars()['group'];
+			
+			var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
+			var c_size = ($('#c_size').val()=='') ? '' : '&c_size='+encodeURIComponent($('#c_size').val());
+			
+			
+			var sec=[]; 
+			$('input[type=checkbox]:checked').each(function(){
+				sec.push($(this).val());
+			});
+	
+			var secs = '';
+			
+			for (var i = 0, len = sec.length; i < len; i++) {
+				secs=secs+'&sec['+i+']='+encodeURIComponent(sec[i]);
+			
+			};
+			
+            location.href = 'startup?group='+group+n+c_size+secs;
 });
 
+$('.g').click(function(event) {
+			var group = $(this).text();
+			var n = (getUrlVars()['n'] == null) ? '' : getUrlVars()['n'];
+			var c_size = (getUrlVars()['c_size'] == null) ? '' : getUrlVars()['c_size'];
+			
+			location.href = 'startup?group='+group+'&n='+n+'&c_size='+c_size+'&sec='+sec;
+			
+});
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+$('.sec-label').toggle(function(event) {
+		$('#search-sector').css('display', 'block');
+		}, function () {
+			$('#search-sector').css('display', 'none');
+});
 
 
 ");
@@ -108,8 +150,8 @@ function SearchFunc()   {
 	
 	<div id="G-Selection">
 		<div class="group-title">Group Selection</div>
-		<span class="group" name="group" value="selecionadas"><p <?php if(isset($_GET['group']) && $_GET['group']=="selecionadas") echo 'style="background:#fff;"'; ?>>Selecionadas</p></span>
-		<a href="" onclick="location.href += '?group=todas'; " ><p <?php if(isset($_GET['group']) && $_GET['group']=="todas") echo 'style="background:#fff;"'; ?>>Todas</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Selecionadas") echo 'style="background:#fff;"'; ?>>Selecionadas</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Todas") echo 'style="background:#fff;"'; ?>>Todas</p></a>
 		<p>asdsd</p>
 		<p>asdsd</p>
 	</div>
@@ -119,29 +161,28 @@ function SearchFunc()   {
 
 
     <div class="row">
-        <?php echo CHtml::activeLabel($dataProvider,'name'); ?>
+        <?php echo CHtml::label('Nome', false); ?>
         
-		<?php echo CHtml::activeTextField($dataProvider,'name', array('name'=>'n')) ?>
-		
-		<?php	
-		$this->widget('bootstrap.widgets.TbButton',array(
-			'label' => 'Search',
-			'size' => 'small'
-		));
-		?>
-		
-		<?php echo CHtml::activeLabel($dataProvider,'one_line_pitch'); ?>
-		
-		<?php echo CHtml::activeTextField($dataProvider,'one_line_pitch', array('name'=>'o')) ?>
+		<div id="search-name">
+			<?php echo CHtml::activeTextField($dataProvider,'name', array('name'=>'n')) ?>
+			
+			<?php	
+			$this->widget('bootstrap.widgets.TbButton',array(
+				'label' => 'Search',
+				'size' => 'small'
+			));
+			?>
+		</div>
 		
 		<?php echo CHtml::activeLabel($dataProvider,'company_size'); ?>
 		
-		<?php echo CHtml::activeDropDownList($dataProvider,'company_size', array_merge(array('empty'=>'Selecione...'), $dataProvider->getCompanySizeOptions()), array('name'=>'c_size')) ?>
+		<?php echo CHtml::activeDropDownList($dataProvider,'company_size', array_merge(array(''=>'Selecione...'), $dataProvider->getCompanySizeOptions()), array('name'=>'c_size')) ?>
 		
-		<?php echo CHtml::activeLabel($dataProvider,'sectors'); ?>
+		 <?php echo CHtml::label('Setores >', false, array('class'=>'sec-label')); ?>
 		
-		<?php echo CHtml::activeDropDownList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec')) ?>
-	
+		<div id="search-sector">
+			<?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) ?>
+		</div>
 	
 	</div>
     <?php echo CHtml::endForm(); ?>
