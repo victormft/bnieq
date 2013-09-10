@@ -18,8 +18,8 @@
  * @property string $company_number
  * @property string $facebook
  * @property string $twitter
- * @property string $blog
- * @property string $address
+ * @property string $linkedin
+ * @property string $location
  * @property string $client_segment
  * @property string $value_proposition
  * @property string $market_size
@@ -34,7 +34,7 @@
  * @property File[] $files
  * @property Investment[] $investments
  * @property Pitch[] $pitches
- * @property Address $address0
+ * @property Location $location0
  * @property Image $logo0
  * @property User[] $users
  * @property Image[] $images
@@ -79,17 +79,17 @@ class Startup extends CActiveRecord
 		return array(
 		
 			//validation for pic
-			array('pic', 'file', 'types'=>'jpg, gif, png, jpeg', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 2, 'tooLarge' => 'Size should be less then 2MB !!!'),
+			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
 			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
 			array('name, one_line_pitch', 'required'),
 			array('name, email, skype', 'length', 'max'=>99),
-			array('logo, address', 'length', 'max'=>20),
+			array('logo', 'length', 'max'=>20),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
-			array('facebook, twitter, blog, video', 'length', 'max'=>150),
+			array('facebook, twitter, linkedin, video', 'length', 'max'=>150),
 			array('product_description, foundation, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, create_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, blog, address, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, video, create_time', 'safe', 'on'=>'search'),
+			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, video, create_time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -104,7 +104,7 @@ class Startup extends CActiveRecord
 			'files' => array(self::HAS_MANY, 'File', 'startup_id'),
 			'investments' => array(self::HAS_MANY, 'Investment', 'startup_id'),
 			'pitches' => array(self::HAS_MANY, 'Pitch', 'startup_id'),
-			'address0' => array(self::BELONGS_TO, 'Address', 'address'),
+			'location0' => array(self::BELONGS_TO, 'Location', 'location'),
 			'logo0' => array(self::BELONGS_TO, 'Image', 'logo'),
 			'users' => array(self::MANY_MANY, 'User', 'startup_follow(startup_id, user_id)'),
 			'images' => array(self::MANY_MANY, 'Image', 'startup_image(startup_id, image_id)'),
@@ -134,8 +134,8 @@ class Startup extends CActiveRecord
 			'company_number' => 'Company Number',
 			'facebook' => 'Facebook',
 			'twitter' => 'Twitter',
-			'blog' => 'Blog',
-			'address' => 'Address',
+			'linkedin' => 'Linkedin',
+			'location' => 'Location',
 			'client_segment' => 'Client Segment',
 			'value_proposition' => 'Value Proposition',
 			'market_size' => 'Market Size',
@@ -190,8 +190,8 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.company_number',$this->company_number,true);
 		$criteria->compare('t.facebook',$this->facebook,true);
 		$criteria->compare('t.twitter',$this->twitter,true);
-		$criteria->compare('t.blog',$this->blog,true);
-		$criteria->compare('t.address',$this->address,true);
+		$criteria->compare('t.linkedin',$this->linkedin,true);
+		$criteria->compare('t.location',$this->location,true);
 		$criteria->compare('t.client_segment',$this->client_segment,true);
 		$criteria->compare('t.value_proposition',$this->value_proposition,true);
 		$criteria->compare('t.market_size',$this->market_size,true);
@@ -250,12 +250,25 @@ class Startup extends CActiveRecord
         $lastElement = end($array);
         foreach ($array as $sector)
         {
-            $string = $string . $sector->name;
-            if($sector !== $lastElement) $string = $string . ' - ';
+            $string = $string .'<span class="label">'. $sector->name . '</span>';
+            if($sector !== $lastElement) $string = $string . ' ';
         }
         
         return $string;
     }
+	
+	public function hasUserFollowing($id)
+	{
+		foreach ($this->users as $user)
+			{
+				if($user->id==$id)
+				{	
+					return true;
+				}
+			}
+		
+		return false;
+	}
 		
 	
 }

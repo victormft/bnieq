@@ -21,7 +21,7 @@ array('label'=>'Manage Startup','url'=>array('admin')),
 -->
 <?php 
 
-$this->renderPartial('_profile',array(
+$this->renderPartial('_edit',array(
 	'model'=>$model,
 	)); 
 

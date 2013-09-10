@@ -3,7 +3,7 @@
 		
 	
 
-	<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img" alt="asdasd" />', array('view', 'name'=>$data->name)); ?>
+	<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img"/>', array('view', 'name'=>$data->name)); ?>
 	
 
 	<?php echo CHtml::link(CHtml::encode($data->name),array('view','name'=>$data->name), array('class'=>'startup-view-name'));?>
@@ -25,6 +25,8 @@
 		
 		?>
 	</div>
+	
+	Followers: <?php echo count($data->users); ?>
 	
 	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('foundation')); ?>:</b>

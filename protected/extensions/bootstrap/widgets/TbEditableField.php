@@ -74,7 +74,7 @@ class TbEditableField extends CWidget
 	 * @var string text shown on empty field. If `null` - default X-editable value is used: `Empty`
 	 * @see x-editable
 	 */
-	public $emptytext = null;
+	public $emptytext = 'Vazio';
 
 	/**
 	 * @var boolean will editable be initially disabled. It means editable plugin will be applied to element,

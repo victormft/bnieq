@@ -29,7 +29,7 @@ class StartupController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'viewName', 'editsectors'),
+				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -54,7 +54,90 @@ class StartupController extends Controller
 	{
 		$this->render('view',array(
 		'model'=>$this->loadModel($name),
-	));
+		));
+	}
+	
+	public function actionEdit($name)
+	{
+	
+		$model=$this->loadModel($name);
+		
+		if(isset($_POST['Startup']['pic']))
+		{
+			
+			$model->pic=CUploadedFile::getInstance($model,'pic');
+			
+			if($model->pic !== null && $model->validate())
+			{
+			
+				if($model->logo==1)
+				{
+					$fileName=$model->pic;
+					$rnd = rand(0,99999999);  // generate random number between 0-99999999
+					$extension_array = explode('.', $fileName); //extension of the file
+					$extension=end($extension_array);
+					$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
+								
+					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+
+					$model_img=new Image;
+					$model_img->name=$newFileName;
+					$model_img->extension=$model->pic->type;
+					$model_img->size=$model->pic->size;	
+				
+				
+					if($model_img->save()){
+						$model->logo=$model_img->id;
+					}
+					
+					if($model->save())
+					{
+						$this->render('view_edit',array(
+						'model'=>$this->loadModel($name),
+						));
+					}
+				}
+				else
+				{
+					/*
+					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$model->logo0->name);
+					
+					$img=Image::model()->findByPk($model->logo);
+					$ext_arr = explode('.', $img->name);
+					$ext = end($ext_arr);
+					$new_name=md5($img->name).'.'.$ext;
+					
+					$img->name=$new_name;
+					
+					$img->save();
+					
+					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+					$this->refresh();
+					*/
+					unlink(Yii::getPathOfAlias('webroot').'/images/'.$model->logo0->name);
+					
+					$img=Image::model()->findByPk($model->logo);
+					$ext_arr = explode('.', $img->name);
+					$ext = end($ext_arr);
+					$new_name=md5($img->name).'.'.$ext;
+					
+					$img->name=$new_name;
+					
+					$img->save();
+					
+					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+					$this->refresh();
+				}
+			}
+		}
+		
+		
+		
+		$this->render('view_edit',array(
+		'model'=>$model,
+		));
 	}
 	
 
@@ -80,10 +163,16 @@ class StartupController extends Controller
 			
 			
 			if($model->pic !== null && $model->validate()){
-	
-				$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$model->pic);
+				
+				$fileName=$model->pic;
+				$rnd = rand(0,99999999);  // generate random number between 0-99999999
+				$extension_array = explode('.', $fileName); //extension of the file
+				$extension=end($extension_array);
+				$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
+							
+				$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
 				$model_img=new Image;
-				$model_img->name=$model->pic->name;
+				$model_img->name=$newFileName;
 				$model_img->extension=$model->pic->type;
 				$model_img->size=$model->pic->size;	
 			
@@ -270,4 +359,55 @@ class StartupController extends Controller
         }
         $this->renderPartial('_sectors', array('model'=>$model)); 
     }
+	
+	public function actionFollow()
+	{
+		if(Yii::app()->request->isAjaxRequest )
+		{
+			$model = $this->loadModel($_GET['name']);
+			
+			if(!$model->users)
+			{
+				$model->users=User::model()->findbyPk(Yii::app()->user->id);
+				$model->saveWithRelated(array('users'));
+				return count($model->users);
+			}
+			
+			else 
+			{
+				
+				if($model->hasUserFollowing(Yii::app()->user->id))
+				{
+					return count($model->users);
+				}
+				
+				$model->users=User::model()->findbyPk(Yii::app()->user->id);
+				$model->saveWithRelated( array('users' => array('append' => true)));
+				return count($model->users);
+			}		
+		}
+		
+		else
+			throw new CHttpException(404, 'Page not found.');
+	}
+	
+	public function actionUnfollow()
+	{
+		if(Yii::app()->request->isAjaxRequest )
+		{
+			$model = $this->loadModel($_GET['name']);
+			
+			if ($model->hasUserFollowing(Yii::app()->user->id))
+			{
+				$startup_follow=StartupFollow::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>Yii::app()->user->id, ':s_id'=>$model->id));
+				$startup_follow->delete();
+				return count($model->users);
+			}
+			
+			return count($model->users);
+		}
+		
+		else
+			throw new CHttpException(404, 'Page not found.');	
+	}
 }

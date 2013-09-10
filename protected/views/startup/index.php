@@ -49,6 +49,12 @@ $('.g').click(function(event) {
 			
 });
 
+$('#yw2').click(function(event) {
+			
+			location.href = 'startup';
+			
+});
+
 function getUrlVars()
 {
     var vars = [], hash;
@@ -150,10 +156,10 @@ function SearchFunc()   {
 	
 	<div id="G-Selection">
 		<div class="group-title">Group Selection</div>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Selecionadas") echo 'style="background:#fff;"'; ?>>Selecionadas</p></a>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Todas") echo 'style="background:#fff;"'; ?>>Todas</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Selecionadas") echo 'style="background:#fff; color:#000; font-weight:bold;"'; ?>>Selecionadas</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Todas") echo 'style="background:#fff; color:#000; font-weight:bold;"'; ?>>Todas</p></a>
 		<p>asdsd</p>
-		<p>asdsd</p>
+		<p class="last-p">asdsd</p>
 	</div>
 	
 	<div class="form-vertical">
@@ -183,6 +189,14 @@ function SearchFunc()   {
 		<div id="search-sector">
 			<?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) ?>
 		</div>
+	
+	
+		<?php	
+			$this->widget('bootstrap.widgets.TbButton',array(
+				'label' => 'Reset',
+				'size' => 'small'
+			));
+			?>
 	
 	</div>
     <?php echo CHtml::endForm(); ?>

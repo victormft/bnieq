@@ -6,6 +6,7 @@
 	<meta name="language" content="en" />
 
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/font-awesome/css/font-awesome.min.css" />
 
 	
 
@@ -14,6 +15,7 @@
 </head>
 
 <body>   
+
     
 <div class="navbar navbar-inverse">
     <div class="navbar-inner" style="border-radius: 0">
@@ -65,6 +67,8 @@
 	</div><!-- footer -->
 
 </div><!-- page -->
+
+
 
 </body>
 </html>
