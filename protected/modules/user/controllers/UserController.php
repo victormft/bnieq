@@ -28,9 +28,6 @@ class UserController extends Controller
 				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
 		);
 	}	
 
@@ -50,19 +47,31 @@ class UserController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('User', array(
-			'criteria'=>array(
-		        'condition'=>'status>'.User::STATUS_BANNED,
-		    ),
-				
-			'pagination'=>array(
-				'pageSize'=>Yii::app()->controller->module->user_page_size,
-			),
-		));
-
+		$model=new Profile('search');
+		$model->unsetAttributes();  // clear any default values
+		/*
+		if(isset($_GET['n'])) {
+			$model->name=$_GET['n'];
+			$model->one_line_pitch=$_GET['n'];
+		}
+		if(isset($_GET['c_size']))
+			$model->company_size=$_GET['c_size'];	
+		
+		if(isset($_GET['sec']))
+			$model->sectors=$_GET['sec'];	
+		*/	
+		
+        
+		 $this->render('index',array(
+                'dataProvider'=>$model,
+            ));
+		
+		/*
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$model->search(),
+			'model'=>$model,
 		));
+		*/
 	}
 
 	/**

@@ -3,6 +3,8 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
+Yii::setPathOfAlias('editable', dirname(__FILE__).'/../extensions/x-editable');
+
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
@@ -27,6 +29,7 @@ return array(
 		'application.modules.user.models.*',
         'application.modules.user.components.*',
         'application.extensions.bootstrap.widgets.*',
+        'application.extensions.editable.*' //easy include of editable classes        
 	),
 
 	'modules'=>array(
@@ -92,6 +95,16 @@ return array(
 			'class' => 'WebUser',
 			'loginUrl' => array('/user/login'),
 		),
+        
+        //X-editable config
+        'editable' => array(
+            'class'     => 'editable.EditableConfig',
+            'form'      => 'bootstrap',        //form style: 'bootstrap', 'jqueryui', 'plain' 
+            'mode'      => 'popup',            //mode: 'popup' or 'inline'  
+            'defaults'  => array(              //default settings for all editable elements
+               'emptytext' => 'Vazio'
+            )
+        ), 
 		// uncomment the following to enable URLs in path-format
 		
 		'urlManager'=>array(
@@ -141,6 +154,10 @@ return array(
             'class'=>'ext.bootstrap.components.Bootstrap',
 			'responsiveCss' => true,
         ),
+        
+        'cache'=>array(
+			'class'=>'system.caching.CFileCache',
+		),
 		
 	),
 

@@ -1,23 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "location".
+ * This is the model class for table "cidade".
  *
- * The followings are the available columns in table 'location':
- * @property string $location_id
- * @property string $name
+ * The followings are the available columns in table 'cidade':
+ * @property integer $id
+ * @property string $nome
  *
  * The followings are the available model relations:
  * @property Profile[] $profiles
  */
-class Location extends CActiveRecord
+class Cidade extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'location';
+		return 'cidade';
 	}
 
 	/**
@@ -28,11 +28,10 @@ class Location extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
-			array('name', 'length', 'max'=>255),
+			array('nome', 'length', 'max'=>120),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('location_id, name', 'safe', 'on'=>'search'),
+			array('id, nome', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,8 +53,8 @@ class Location extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'location_id' => 'Location',
-			'name' => 'Name',
+			'id' => 'ID',
+			'nome' => 'Nome',
 		);
 	}
 
@@ -77,8 +76,8 @@ class Location extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('location_id',$this->location_id,true);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('id',$this->id);
+		$criteria->compare('nome',$this->nome,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -89,25 +88,35 @@ class Location extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Location the static model class
+	 * @return Cidade the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
     
-    public function getOptions()
-	{
-        $locations = Location::model()->findAll();
-        
-        $string = "[{\'id\':\'0\',\'text\':\'\'},";
-        
-        foreach ($locations as $location) 
+    public function getCities()
+    {
+        //see if it is in the cache, if so, just return it
+        if( ($cache=Yii::app()->cache)!==null)
         {
-            $string = $string . '{\'id\':\'' . $location->location_id . '\',\'text\':\'' . $location->name . '\'},';
+            $key='cidades.dessa.porra';
+            if(($cities=$cache->get($key))!==false)
+            return $cities;
         }
-        $string = $string . ']';
+        //The system message was either not found in the cache, or
+        //there is no cache component defined for the application
+        //retrieve the system message from the database
+        $cities = CHtml::listData(Cidade::model()->findAll(), 'id', 'nome');
+        if($cities != null)
+        {
+            //a valid message was found. Store it in cache for future retrievals
+            if(isset($key))
+            $cache->set($key,$cities,1800);
+            return $cities;
+        }
+        else
+            return null;
         
-        return $string;
-	}
+    }
 }

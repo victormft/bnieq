@@ -20,129 +20,59 @@ class ProfileController extends Controller
             'profile'=>$model->profile,
 	    ));
 	}
-
-	
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionEdit()
-	{
-		$model = $this->loadUser();
-		$profile=$model->profile;
-		
-		// ajax validator
-		if(isset($_POST['ajax']) && $_POST['ajax']==='profile-form')
-		{
-			echo UActiveForm::validate(array($model,$profile));
-			Yii::app()->end();
-		}
-		
-		if(isset($_POST['User']))
-		{
-			$model->attributes=$_POST['User'];
-			$profile->attributes=$_POST['Profile'];            
-            
-			if($model->save()&&$profile->save()) {
-				
-                //save the roles of the user
-                if(isset($_POST['rolesU']))
-                {                    
-                    foreach ($_POST['rolesU'] as $role)
-                    {
-                        $roles[] = Role::model()->find('role_id=:id', array(':id'=>$role));
-                    }
-                    $model->roles = $roles;
-                    $model->saveWithRelated(array('roles'));
-                }
-                
-                //save the universities of the user
-                if(isset($_POST['univerU']))
-                { 
-                    foreach ($_POST['univerU'] as $uni)
-                    {
-                        $unis[] = University::model()->find('university_id=:id', array(':id'=>$uni));
-                    }
-                    $model->universities = $unis;
-                    $model->saveWithRelated(array('universities'));
-                }               
-                    
-                Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes are saved."));
-				$this->redirect(array('/user/profile', 'id'=>$model->id));
-			} else $profile->validate();
-		}
-
-		$this->render('edit',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
-	}
     
-    public function actionEditRoles()
-    {
-        $model = $this->loadUser();
-        $profile=$model->profile;
-        
-        //save the roles of the user
-        if(isset($_POST['Profile']))
-        {           
-            $profile->attributes=$_POST['Profile'];
-            
-            if($profile->save(false))
-            {              
-                if(isset($_POST['roles']))
-                {                    
-                    foreach ($_POST['roles'] as $role)
-                    {
-                        $roles[] = Role::model()->find('role_id=:id', array(':id'=>$role));
-                    }
-                    $model->roles = $roles;
-                    $model->saveWithRelated(array('roles'));
-                }
-                else 
-                {
-                    $model->roles = array();
-                    $model->saveWithRelated(array('roles'));
-                }
-                $this->renderPartial('_roles', array('model'=>$model, 'profile'=>$profile,));
-            }            
-        }   
-    }
-    
-    public function actionEditSectors()
-    {
-        $model = $this->loadUser();
-         
-        if(isset($_POST['sectors']))
-        {                    
-            foreach ($_POST['sectors'] as $sector)
-            {
-                $sectors[] = Sector::model()->find('sector_id=:id', array(':id'=>$sector));
-            }
-            $model->sectors = $sectors;
-            $model->saveWithRelated(array('sectors'));
-        }
-        else 
-        {
-            $model->sectors = array();
-            $model->saveWithRelated(array('sectors'));
-        }
-        $this->renderPartial('_sectors', array('model'=>$model, 'profile'=>$model->profile)); 
-    }
-    
-    public function actionFollow($id)
-    {
-        $model = $this->loadUser();
-    }
-
-    public function actionUpdate()
+    public function actionUpdateLocation()
     {
         $model = $this->loadUser($_POST['pk']);
         $profile = $model->profile;
-        $profile->location = $_POST['value'];
-        $profile->save();
-         
+        if($_POST['value']==0) $profile->location=NULL;
+        else $profile->location = $_POST['value'];
+        $profile->save();         
+    }
+    
+    public function actionUpdateRoles()
+    {        
+        $model = $this->loadUser($_POST['pk']);
+        $vals = array();
+        if(isset($_POST['value']))
+        {
+            foreach ($_POST['value'] as $val)
+            {
+                $vals[] = Role::model()->find('role_id=:id', array(':id'=>$val));
+            }
+        }
+        $model->roles = $vals;
+        $model->saveWithRelated(array('roles'));            
+    }
+    
+    public function actionUpdateSkills()
+    {
+        $model = $this->loadUser($_POST['pk']);
+        $vals = array();
+        if(isset($_POST['value']))
+        {
+            foreach ($_POST['value'] as $val)
+            {
+                $vals[] = Skill::model()->find('skill_id=:id', array(':id'=>$val));
+            }
+        }
+        $model->skills = $vals;
+        $model->saveWithRelated(array('skills'));            
+    }
+    
+    public function actionUpdateSectors()
+    {
+        $model = $this->loadUser($_POST['pk']);
+        $vals = array();
+        if(isset($_POST['value']))
+        {
+            foreach ($_POST['value'] as $val)
+            {
+                $vals[] = Sector::model()->find('sector_id=:id', array(':id'=>$val));
+            }
+        }
+        $model->sectors = $vals;
+        $model->saveWithRelated(array('sectors'));            
     }
         
     public function actionUpdateEd()
@@ -180,11 +110,6 @@ class ProfileController extends Controller
 	    }
 	}
     
-    public function ActionCheckZipCode()
-    {
-        echo $_GET['zipcode'];
-    }
-
     /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

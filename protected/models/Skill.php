@@ -1,23 +1,23 @@
 <?php
 
 /**
- * This is the model class for table "location".
+ * This is the model class for table "skill".
  *
- * The followings are the available columns in table 'location':
- * @property string $location_id
+ * The followings are the available columns in table 'skill':
+ * @property string $skill_id
  * @property string $name
  *
  * The followings are the available model relations:
- * @property Profile[] $profiles
+ * @property User[] $users
  */
-class Location extends CActiveRecord
+class Skill extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'location';
+		return 'skill';
 	}
 
 	/**
@@ -29,10 +29,10 @@ class Location extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('name', 'required'),
-			array('name', 'length', 'max'=>255),
+			array('name', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('location_id, name', 'safe', 'on'=>'search'),
+			array('skill_id, name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -44,7 +44,7 @@ class Location extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'profiles' => array(self::HAS_MANY, 'Profile', 'location'),
+			'users' => array(self::MANY_MANY, 'User', 'user_skill(skill_id, user_id)'),
 		);
 	}
 
@@ -54,7 +54,7 @@ class Location extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'location_id' => 'Location',
+			'skill_id' => 'Skill',
 			'name' => 'Name',
 		);
 	}
@@ -77,7 +77,7 @@ class Location extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('location_id',$this->location_id,true);
+		$criteria->compare('skill_id',$this->skill_id,true);
 		$criteria->compare('name',$this->name,true);
 
 		return new CActiveDataProvider($this, array(
@@ -89,25 +89,10 @@ class Location extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Location the static model class
+	 * @return Skill the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
-    
-    public function getOptions()
-	{
-        $locations = Location::model()->findAll();
-        
-        $string = "[{\'id\':\'0\',\'text\':\'\'},";
-        
-        foreach ($locations as $location) 
-        {
-            $string = $string . '{\'id\':\'' . $location->location_id . '\',\'text\':\'' . $location->name . '\'},';
-        }
-        $string = $string . ']';
-        
-        return $string;
 	}
 }

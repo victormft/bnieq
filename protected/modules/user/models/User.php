@@ -88,7 +88,7 @@ class User extends CActiveRecord
 			'following' => array(self::HAS_MANY, 'UserFollow', 'followed_id'),
 			'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'),
 			'sectors' => array(self::MANY_MANY, 'Sector', 'user_sector(user_id, sector_id)'),
-			'skills' => array(self::MANY_MANY, 'Skill', 'user_skill(user_id, skill_name)'),
+			'skills' => array(self::MANY_MANY, 'Skill', 'user_skill(user_id, skill_id)'),
 			'universities' => array(self::MANY_MANY, 'University', 'user_university(user_id, university_id)'),
 			'userWebsites' => array(self::HAS_MANY, 'UserWebsite', 'user_id'),
 		);
@@ -117,53 +117,6 @@ class User extends CActiveRecord
 			'investor_profile' => 'Investor Profile',
 		);
 	}
- 
-    /**
-	 * added to handle saving MANY_TO_MANY 
-	 */
-    public function behaviors()
-    {
-        return array('ESaveRelatedBehavior' => array(
-            'class' => 'application.components.ESaveRelatedBehavior')
-        );
-    }
-    
-    /**
-	 * @return a string with the role names 
-	 */
-    public function getRoleNames()
-    {
-        $string="";
-        $array = $this->roles;
-        
-        $lastElement = end($array);
-        foreach ($array as $role)
-        {
-            $string = $string . $role->name;
-            if($role !== $lastElement) $string = $string . ' - ';
-        }
-        
-        return $string;
-    }
-    
-    /**
-	 * @return a string with the sector names 
-	 */
-    public function getSectorNames()
-    {
-        $string="";
-        $array = $this->sectors;
-        
-        $lastElement = end($array);
-        foreach ($array as $sector)
-        {
-            $string = $string . $sector->name;
-            if($sector !== $lastElement) $string = $string . ' - ';
-        }
-        
-        return $string;
-    }
-            
 
 	public function scopes()
     {
@@ -256,4 +209,120 @@ class User extends CActiveRecord
     public function setLastvisit($value) {
         $this->lastvisit_at=date('Y-m-d H:i:s',$value);
     }
+    
+    /**
+	 * added to handle saving MANY_TO_MANY 
+	 */
+    public function behaviors()
+    {
+        return array('ESaveRelatedBehavior' => array(
+            'class' => 'application.components.ESaveRelatedBehavior')
+        );
+    }
+    
+    /**
+	 * @return a string with the role names 
+	 */
+    public function getRoleNames()
+    {
+        $string="";
+        $array = $this->roles;
+        
+        $lastElement = end($array);
+        foreach ($array as $role)
+        {
+            $string = $string . $role->name;
+            if($role !== $lastElement) $string = $string . ', ';
+        }
+        
+        return $string;
+    }
+    
+    /**
+	 * @return a string with the role names 
+	 */
+    public function getRoleIds()
+    {        
+        $roles = $this->roles;
+        $arr = array();
+        $i=0;
+        foreach ($roles as $role)
+        {
+            $arr[$i] = $role->role_id;
+            $i++;
+        }
+        
+        return $arr;
+    }
+    
+    /**
+	 * @return a string with the sector names 
+	 */
+    public function getSectorNames()
+    {
+        $string="";
+        $array = $this->sectors;
+        
+        $lastElement = end($array);
+        foreach ($array as $sector)
+        {
+            $string = $string . $sector->name;
+            if($sector !== $lastElement) $string = $string . ', ';
+        }
+        
+        return $string;
+    }
+    
+    /**
+	 * @return a string with the role names 
+	 */
+    public function getSectorIds()
+    {        
+        $sectors = $this->sectors;
+        $arr = array();
+        $i=0;
+        foreach ($sectors as $sector)
+        {
+            $arr[$i] = $sector->sector_id;
+            $i++;
+        }
+        
+        return $arr;
+    }
+    
+    /**
+	 * @return a string with the role names 
+	 */
+    public function getSkillNames()
+    {
+        $string="";
+        $array = $this->skills;
+        
+        $lastElement = end($array);
+        foreach ($array as $skill)
+        {
+            $string = $string . $skill->name;
+            if($skill !== $lastElement) $string = $string . ', ';
+        }
+        
+        return $string;
+    }
+    
+    /**
+	 * @return a string with the role names 
+	 */
+    public function getSkillIds()
+    {        
+        $skills = $this->skills;
+        $arr = array();
+        $i=0;
+        foreach ($skills as $skill)
+        {
+            $arr[$i] = $skill->skill_id;
+            $i++;
+        }
+        
+        return $arr;
+    }
+    
 }

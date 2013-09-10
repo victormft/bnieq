@@ -31,9 +31,6 @@ class Profile extends CActiveRecord
     
     public $regMode = false;
     
-	//constantes para Gender
-	const GENDER_MALE="M";
-	const GENDER_FEMALE="F";
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -86,7 +83,7 @@ class Profile extends CActiveRecord
 		// class name for the relations automatically generated below.
 		$relations = array(
 			'user'=>array(self::HAS_ONE, 'User', 'id'),
-			'city' => array(self::BELONGS_TO, 'Location', 'location'),
+			'city' => array(self::BELONGS_TO, 'Cidade', 'location'),
 			'profilePicture' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
 		);
 		return $relations;
@@ -115,14 +112,45 @@ class Profile extends CActiveRecord
 			'interests' => 'Interests',
 		);
 	}
-	
-	public function getGenderOptions()
+	    
+    
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 *
+	 * Typical usecase:
+	 * - Initialize the model fields with values from filter form.
+	 * - Execute this method to get CActiveDataProvider instance which will filter
+	 * models according to data in model fields.
+	 * - Pass data provider to CGridView, CListView or any similar widget.
+	 *
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
+	 */
+	public function search()
 	{
-		return array(
-			''=>'',
-			self::GENDER_MALE=>UserModule::t('Male'),
-			self::GENDER_FEMALE=>UserModule::t('Female'),
-		);
+		// @todo Please modify the following code to remove attributes that should not be searched.
+
+		$criteria=new CDbCriteria;
+
+		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('firstname',$this->firstname,true);
+		$criteria->compare('lastname',$this->lastname,true);
+		$criteria->compare('profile_picture',$this->profile_picture,true);
+		$criteria->compare('birthday',$this->birthday,true);
+		$criteria->compare('gender',$this->gender,true);
+		$criteria->compare('telephone',$this->telephone,true);
+		$criteria->compare('skype',$this->skype,true);
+		$criteria->compare('resume',$this->resume,true);
+		$criteria->compare('location',$this->location,true);
+		$criteria->compare('facebook',$this->facebook,true);
+		$criteria->compare('linkedin',$this->linkedin,true);
+		$criteria->compare('twitter',$this->twitter,true);
+		$criteria->compare('experiences',$this->experiences,true);
+		$criteria->compare('interests',$this->interests,true);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
 	}
     
 	
