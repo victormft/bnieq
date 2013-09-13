@@ -29,7 +29,7 @@
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/login'?> >Login</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/registration'?> >Register</a></li>
             <?php else: ?>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/user/profile/' . Yii::app()->user->id ?> >Profile</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/profile?username=' . Yii::app()->user->username ?> >Profile</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> >Logout</a></li>
             <?php endif?>
         </ul>
@@ -42,7 +42,7 @@
         <div class="navbar-inner" style="border-radius: 0; margin: 0 auto; display: table;">
             <ul class="nav" style="">
                 <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> >Startups</a></li>
-                <li><a href= <?php echo Yii::app()->homeUrl; ?> >Community</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/user' ?> >Community</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl; ?> >Invest</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl; ?> >Get investment</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl; ?> >How it works</a></li>

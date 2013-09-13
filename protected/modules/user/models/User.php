@@ -231,7 +231,7 @@ class User extends CActiveRecord
         $lastElement = end($array);
         foreach ($array as $role)
         {
-            $string = $string . $role->name;
+            $string = $string . $role->name ;
             if($role !== $lastElement) $string = $string . ', ';
         }
         
@@ -272,6 +272,7 @@ class User extends CActiveRecord
         
         return $string;
     }
+    
     
     /**
 	 * @return a string with the role names 

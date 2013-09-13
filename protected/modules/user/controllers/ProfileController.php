@@ -12,13 +12,22 @@ class ProfileController extends Controller
 	/**
 	 * Shows a particular model.
 	 */
-	public function actionProfile()
+	public function actionProfile($username)
 	{
-        $model = $this->loadUser();
+        $model = $this->loadModel($username);
 	    $this->render('profile',array(
             'model'=>$model,
             'profile'=>$model->profile,
 	    ));
+	}
+    
+    public function actionEdit($username)
+	{	
+		$model = $this->loadModel($username);
+		$this->render('edit',array(
+            'model'=>$model,
+            'profile'=>$model->profile,
+		));
 	}
     
     public function actionUpdateLocation()
@@ -125,5 +134,17 @@ class ProfileController extends Controller
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_model;
+	}   
+    
+    //load User from username
+    public function loadModel($username)
+	{
+		$model=User::model()->find('username=:username',
+										array(
+										  ':username'=>$username,
+										));
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 }
