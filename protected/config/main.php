@@ -26,10 +26,14 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		//yii-user
+        'application.modules.user.UserModule',
 		'application.modules.user.models.*',
         'application.modules.user.components.*',
         'application.extensions.bootstrap.widgets.*',
-        'application.extensions.editable.*' //easy include of editable classes        
+        'application.extensions.editable.*', //easy include of editable classes  
+        //rights
+        'application.modules.rights.*', 
+        'application.modules.rights.components.*',
 	),
 
 	'modules'=>array(
@@ -53,34 +57,44 @@ return array(
 			'tableProfiles' => 'profile',
 			'tableProfileFields' => 'profile_field',
 			# encrypting method (php hash function)
-            'hash' => 'md5',
- 
+            'hash' => 'md5', 
             # send activation email
-            'sendActivationMail' => true,
- 
+            'sendActivationMail' => true, 
             # allow access for non-activated users
-            'loginNotActiv' => false,
- 
+            'loginNotActiv' => false, 
             # activate user on registration (only sendActivationMail = false)
-            'activeAfterRegister' => false,
- 
+            'activeAfterRegister' => false, 
             # automatically login from registration
-            'autoLogin' => true,
- 
+            'autoLogin' => true, 
             # registration path
-            'registrationUrl' => array('/user/registration'),
- 
+            'registrationUrl' => array('/user/registration'), 
             # recovery password path
-            'recoveryUrl' => array('/user/recovery'),
- 
+            'recoveryUrl' => array('/user/recovery'), 
             # login form path
-            'loginUrl' => array('/user/login'),
- 
+            'loginUrl' => array('/user/login'), 
             # page after login
-            'returnUrl' => array('/user/profile'),
- 
+            'returnUrl' => array('/user/profile'), 
             # page after logout
             'returnLogoutUrl' => array('/user/login'),
+        ),
+        
+        //private-messagin module
+        'message' => array(
+            'userModel' => 'User',
+            'getNameMethod' => 'getFullName',
+            'getSuggestMethod' => 'getSuggest',
+        ),
+        
+        //mailbox
+        'mailbox'=> array(  
+            'userClass' => 'User',
+            'userIdColumn' => 'id',
+            'usernameColumn' =>  'username',
+        ),
+        
+        //rights
+        'rights'=>array( 
+            'install'=>false,            // Enables the installer. 
         ),
 				
 	),
@@ -92,7 +106,7 @@ return array(
 			'allowAutoLogin'=>true,
 			
 			//yii-user
-			'class' => 'WebUser',
+			'class' => 'RWebUser',                      //rights: Allows super users access implicitly.
 			'loginUrl' => array('/user/login'),
 		),
         
@@ -158,6 +172,10 @@ return array(
         'cache'=>array(
 			'class'=>'system.caching.CFileCache',
 		),
+        //rights
+        'authManager'=>array(               // Provides support authorization item sorting
+            'class'=>'RDbAuthManager',
+        )
 		
 	),
 

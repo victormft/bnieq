@@ -24,9 +24,81 @@ class ProfileController extends Controller
     public function actionEdit($username)
 	{	
 		$model = $this->loadModel($username);
+        $profile = $model->profile;
+        
+        if(isset($_POST['Profile']['pic']))
+		{			
+			$profile->pic=CUploadedFile::getInstance($profile,'pic');
+			
+			if($profile->pic !== null && $profile->validate())
+			{
+			
+				if($profile->profile_picture==1)
+				{
+					$fileName=$profile->pic;
+					$rnd = rand(0,99999999);  // generate random number between 0-99999999
+					$extension_array = explode('.', $fileName); //extension of the file
+					$extension=end($extension_array);
+					$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
+								
+					$profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+
+					$model_img=new Image;
+					$model_img->name=$newFileName;
+					$model_img->extension=$profile->pic->type;
+					$model_img->size=$profile->pic->size;	
+				
+				
+					if($model_img->save()){
+						$profile->profile_picture=$model_img->id;
+					}
+					
+					if($profile->save())
+					{
+						$this->render('edit',array(
+                            'model'=>$model,
+                            'profile'=>$profile,
+                        ));
+					}
+				}
+				else
+				{
+					/*
+					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$model->logo0->name);
+					
+					$img=Image::model()->findByPk($model->logo);
+					$ext_arr = explode('.', $img->name);
+					$ext = end($ext_arr);
+					$new_name=md5($img->name).'.'.$ext;
+					
+					$img->name=$new_name;
+					
+					$img->save();
+					
+					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+					$this->refresh();
+					*/
+					unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
+					
+					$img=Image::model()->findByPk($profile->profile_picture);
+					$ext_arr = explode('.', $img->name);
+					$ext = end($ext_arr);
+					$new_name=md5($img->name).'.'.$ext;
+					
+					$img->name=$new_name;
+					
+					$img->save();
+					
+					$profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+					$this->refresh();
+				}
+			}
+		}
 		$this->render('edit',array(
             'model'=>$model,
-            'profile'=>$model->profile,
+            'profile'=>$profile,
 		));
 	}
     

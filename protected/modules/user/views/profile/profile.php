@@ -7,10 +7,64 @@ $this->breadcrumbs=array(
 ); 
 ?>
 
+<?php
+Yii::app()->clientScript->registerScript('follow',
+"
+$('#yw0').click(function(event) {
+
+		if($('#yw0').text()=='Follow')
+		{	
+			$('#yw0').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');			
+			
+			$.ajax({
+				url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+getUrlVars()['username'],
+				dataType: 'text',
+				success: function(msg){
+					$('#yw0').removeClass('btn-success');
+					$('#yw0').text('Unfollow');	
+				}
+			});
+		}
+		
+		else if($('#yw0').text()=='Unfollow')
+		{
+			$('#yw0').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			
+			$.ajax({
+				url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+getUrlVars()['username'],
+				success: function(){
+					$('#yw0').addClass('btn-success');
+					$('#yw0').text('Follow');	                    
+				}
+			});
+		}
+			
+});
+
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+");
+
+?>
+
 <div class="profile-header">	
 
 	
 	<div class="profile-header-info">
+        
+        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="Startup-profile-img" alt="asdasd" >
 		
 		<div class="profile-name">
 			<span><?php echo $profile->firstname.' '.$profile->lastname; ?></span>
@@ -41,7 +95,33 @@ $this->breadcrumbs=array(
 	
 	<div class="profile-header-right">
 			
-		<!--depois colocar aqui o FOLLOW-->	
+        <?php if($model->id !== Yii::app()->user->id): ?>
+		<span class="follow-btn">
+            <?php 
+                if(!$model->hasUserFollowing(Yii::app()->user->id))
+                {
+                    $this->widget('bootstrap.widgets.TbButton', array(
+                    'label'=>'Follow',
+                    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                    'size'=>'normal', // null, 'large', 'small' or 'mini'
+                    'url'=>'',//array('follow','name'=>$model->name),
+                    'htmlOptions'=>array('style'=>'width:50px;'),
+                    )); 
+                }
+                else
+                {
+                    $this->widget('bootstrap.widgets.TbButton', array(
+                    'label'=>'Unfollow',
+                    'size'=>'normal', // null, 'large', 'small' or 'mini'
+                    'url'=>'',//array('unfollow','name'=>$model->name),
+                    'htmlOptions'=>array('style'=>'width:50px;'),
+                    )); 
+                }
+            ?>
+            <div class="follow-status">Followers: <div class="follow-count" style="display:inline;"><?php echo count($model->followers); ?></div></div>
+        </span>
+        <?php endif; ?>
+        
         <?php if(UserModule::isAdmin() || $model->id == Yii::app()->user->id): ?>
 			<span class="edit-btn">
 			
@@ -53,7 +133,19 @@ $this->breadcrumbs=array(
 				'htmlOptions'=>array('style'=>'width:50px;'),
 					)); 
 				?>
+                
 			</span>
+        <?php endif; ?>
+        
+        <?php if($model->id !== Yii::app()->user->id): ?>
+        <?php $this->widget('bootstrap.widgets.TbButton', array(
+            'label'=>'Message',
+            'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            'size'=>'normal', // null, 'large', 'small' or 'mini'
+            'url'=>array('/message/compose','id'=>$model->id),
+            'htmlOptions'=>array('style'=>'width:50px;'),
+                )); 
+            ?>
         <?php endif; ?>
         
 	</div>

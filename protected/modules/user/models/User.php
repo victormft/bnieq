@@ -84,8 +84,8 @@ class User extends CActiveRecord
 			'senders' => array(self::HAS_MANY, 'Message', 'sender_id'),
 			'receivers' => array(self::HAS_MANY, 'Message', 'receiver_id'),
 			'startups' => array(self::MANY_MANY, 'Startup', 'user_startup(user_id, startup_id)'),
-			'followers' => array(self::HAS_MANY, 'UserFollow', 'follower_id'),
-			'following' => array(self::HAS_MANY, 'UserFollow', 'followed_id'),
+			'followers' => array(self::HAS_MANY, 'UserFollow', 'followed_id'),    //o numero de followers eh quantas vezes aparece ele como followed_id
+			'following' => array(self::HAS_MANY, 'UserFollow', 'follower_id'),
 			'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'),
 			'sectors' => array(self::MANY_MANY, 'Sector', 'user_sector(user_id, sector_id)'),
 			'skills' => array(self::MANY_MANY, 'Skill', 'user_skill(user_id, skill_id)'),
@@ -325,5 +325,29 @@ class User extends CActiveRecord
         
         return $arr;
     }
+    
+    // class User
+    public function getFullName() {
+        return $this->username;
+    }
+
+    public function getSuggest($q) {
+        $c = new CDbCriteria();
+        $c->addSearchCondition('username', $q, true, 'OR');
+        $c->addSearchCondition('email', $q, true, 'OR');
+        return $this->findAll($c);
+    }
+    
+    public function hasUserFollowing($id)
+	{
+		foreach ($this->followers as $user)
+        {
+            if($user->follower_id==$id)
+            {	
+                return true;
+            }
+        }		
+		return false;
+	}
     
 }

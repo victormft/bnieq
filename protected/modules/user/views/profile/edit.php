@@ -11,6 +11,8 @@ $this->breadcrumbs=array(
 
 	
 	<div class="profile-header-info">
+        
+        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="Startup-profile-img" alt="asdasd" >
 		
 		<div class="profile-name">
 			<?php
@@ -38,6 +40,29 @@ $this->breadcrumbs=array(
             ?>
 		</div>
         
+        
+        <!-- !!!!!!!!!!!!!! image form !!!!!!!!!!!!!!!!-->
+        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+            'id'=>'image-edit-form',
+            'type'=>'horizontal',
+            'clientOptions'=>array(
+                'validateOnSubmit'=>true,
+            ),
+            'htmlOptions' => array(
+                'enctype' => 'multipart/form-data'),
+        )); 
+        ?>
+        <?php echo $form->fileFieldRow($profile, 'pic', array('labelOptions' => array('label' => ''))); ?>
+        <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType'=>'submit',
+                'type'=>'primary',
+                'label'=>'Save',
+                'size'=>'normal',
+                )); 
+        ?>
+
+        <?php $this->endWidget(); ?>
+        
 		
 		<div class="profile-onelinepitch" id="resume">
 			<span style="font-style:italic;">
@@ -52,7 +77,9 @@ $this->breadcrumbs=array(
                             'id' => 'resume3'
                         ),
                         'options'    => array(
-                            'rows'      => 4,
+                            'rows'      => 5,
+                            'tpl'=> '<textarea style="resize: vertical; width: 300px"></textarea>'
+                            
                         )
                      ));
                 ?>

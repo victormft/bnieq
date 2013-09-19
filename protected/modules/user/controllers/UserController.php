@@ -78,16 +78,16 @@ class UserController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 */
-	public function loadModel()
+	//load User from username
+    public function loadModel($username)
 	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=User::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
+		$model=User::model()->find('username=:username',
+										array(
+										  ':username'=>$username,
+										));
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 
 
@@ -106,5 +106,57 @@ class UserController extends Controller
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_model;
+	}
+    
+    public function actionFollow()
+	{
+		if(Yii::app()->request->isAjaxRequest )
+		{
+			$model = $this->loadModel($_GET['username']);            
+			
+			if(!$model->followers)
+			{
+				$model->followers=new UserFollow;                
+                $model->followers->follower_id = Yii::app()->user->id;
+                $model->followers->followed_id = $model->id;                
+				$model->followers->save();
+				return count($model->followers);
+			}			
+			else 
+			{
+				if($model->hasUserFollowing(Yii::app()->user->id))
+				{
+					return count($model->followers);
+				}				
+				$model->followers=new UserFollow;                
+                $model->followers->follower_id = Yii::app()->user->id;
+                $model->followers->followed_id = $model->id;
+				$model->followers->save();
+				return count($model->followers);
+			}		
+		}
+		
+		else
+			throw new CHttpException(404, 'Page not found.');
+	}
+	
+	public function actionUnfollow()
+	{
+		if(Yii::app()->request->isAjaxRequest )
+		{
+			$model = $this->loadModel($_GET['username']);
+			
+			if ($model->hasUserFollowing(Yii::app()->user->id))
+			{
+				$user_follow=UserFollow::model()->find('follower_id=:u_id AND followed_id=:s_id', array(':u_id'=>Yii::app()->user->id, ':s_id'=>$model->id));
+				$user_follow->delete();
+				return count($model->followers);
+			}
+			
+			return count($model->followers);
+		}
+		
+		else
+			throw new CHttpException(404, 'Page not found.');	
 	}
 }

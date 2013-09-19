@@ -29,6 +29,9 @@
 class Profile extends CActiveRecord
 {
     
+    //to upload logo
+	public $pic;
+    
     public $regMode = false;
     
 
@@ -57,6 +60,10 @@ class Profile extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+            //validation for pic
+			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
+			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),            
+            
 			array('firstname, lastname', 'required'),
 			array('firstname, lastname', 'length', 'max'=>50),
 			array('profile_picture, location', 'length', 'max'=>20),
@@ -90,7 +97,7 @@ class Profile extends CActiveRecord
 		$relations = array(
 			'user'=>array(self::HAS_ONE, 'User', 'id'),
 			'city' => array(self::BELONGS_TO, 'Cidade', 'location'),
-			'profilePicture' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
+			'logo' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
 		);
 		return $relations;
 	}
