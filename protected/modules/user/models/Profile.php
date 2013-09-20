@@ -29,6 +29,9 @@
 class Profile extends CActiveRecord
 {
     
+    //to upload logo
+	public $pic;
+    
     public $regMode = false;
     
 
@@ -57,14 +60,24 @@ class Profile extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+            //validation for pic
+			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
+			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),            
+            
 			array('firstname, lastname', 'required'),
 			array('firstname, lastname', 'length', 'max'=>50),
 			array('profile_picture, location', 'length', 'max'=>20),
 			array('gender', 'length', 'max'=>1),
-			array('telephone, skype', 'length', 'max'=>45),
-			array('facebook, linkedin, twitter', 'length', 'max'=>150),
+			array('skype', 'length', 'max'=>45),
+            array('telephone', 'match', 'pattern'=>'/^([+]?[0-9 ]+)$/', 'message'=>'Caracteres válidos: "+" no começo (se necessário) e apenas números'),			
+            array('telephone', 'length', 'min'=>10, 'max'=>30, 'tooShort'=>'Telefone muito pequeno', 'tooLong'=>'Telefone muito grande'),
+            array('facebook, linkedin, twitter', 'length', 'max'=>150),
 			array('birthday, resume, experiences, interests', 'safe'),
 			array('birthday', 'date', 'format'=>'yyyy-mm-dd', 'message'=>"Wrong format"),
+            array('birthday', 'default', 'setOnEmpty' => true, 'value' => null),
+            array('facebook', 'url'),
+            array('linkedin', 'url'),
+            array('twitter', 'url'),
             array('gender', 'in', 'range'=>array('M','F')),
             array('gender', 'default', 'value' => null),
 			// The following rule is used by search().
@@ -84,7 +97,7 @@ class Profile extends CActiveRecord
 		$relations = array(
 			'user'=>array(self::HAS_ONE, 'User', 'id'),
 			'city' => array(self::BELONGS_TO, 'Cidade', 'location'),
-			'profilePicture' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
+			'logo' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
 		);
 		return $relations;
 	}
@@ -96,8 +109,8 @@ class Profile extends CActiveRecord
 	{
 		return array(
 			'user_id' => 'User',
-			'firstname' => 'Firstname',
-			'lastname' => 'Lastname',
+			'firstname' => 'First name',
+			'lastname' => 'Last name',
 			'profile_picture' => 'Profile Picture',
 			'birthday' => 'Birthday',
 			'gender' => 'Gender',

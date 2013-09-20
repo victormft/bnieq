@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
     array('label'=>UserModule::t('Create User'), 'url'=>array('create')),
     array('label'=>UserModule::t('Manage Users'), 'url'=>array('admin')),
-    array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
+    //array('label'=>UserModule::t('List User'), 'url'=>array('/user/user')),
 );
 
 Yii::app()->clientScript->registerScript('search', "

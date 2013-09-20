@@ -48,6 +48,10 @@ class RegistrationController extends Controller
 						
 						if ($model->save()) {
 							$profile->user_id=$model->id;
+                            
+                            //profile pic
+                            $profile->profile_picture = 1;
+                            
 							$profile->save();
 							if (Yii::app()->controller->module->sendActivationMail) {
 								$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));

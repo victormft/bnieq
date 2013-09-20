@@ -6,9 +6,7 @@
 	<meta name="language" content="en" />
 
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/styles.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/font-awesome/css/font-awesome.min.css" />
-
-	
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/font-awesome/css/font-awesome.min.css" />	
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 
@@ -29,9 +27,11 @@
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/login'?> >Login</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/registration'?> >Register</a></li>
             <?php else: ?>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/user/profile/' . Yii::app()->user->id ?> >Profile</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/profile?username=' . Yii::app()->user->name ?> >Profile</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/mailbox' ?> >Messages</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> >Logout</a></li>
             <?php endif?>
+                
         </ul>
     </div>
 </div>
@@ -42,11 +42,14 @@
         <div class="navbar-inner" style="border-radius: 0; margin: 0 auto; display: table;">
             <ul class="nav" style="">
                 <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> >Startups</a></li>
-                <li><a href= <?php echo Yii::app()->homeUrl; ?> >Community</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/user/user' ?> >Community</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl; ?> >Invest</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl; ?> >Get investment</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl; ?> >How it works</a></li>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/site/page?view=about' ?> >About us</a></li>              
+                <li><a href= <?php echo Yii::app()->homeUrl . '/site/page?view=about' ?> >About us</a></li>             
+                <?php if(UserModule::isAdmin()): ?>
+                    <li><a href= <?php echo Yii::app()->homeUrl . '/user/admin' ?> >ADMIN PANEL</a></li> 
+                <?php endif; ?>
             </ul>
         </div>
     </div>

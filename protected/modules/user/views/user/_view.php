@@ -1,6 +1,6 @@
 <div class="view-list">
 
-	<?php echo CHtml::link(CHtml::encode($data->firstname),array('/user/profile','id'=>$data->user_id), array('class'=>'startup-view-name'));?>
+	<?php echo CHtml::link(CHtml::encode($data->firstname),array('/user/profile','username'=>$data->user->username), array('class'=>'startup-view-name'));?>
 	
 
 	
