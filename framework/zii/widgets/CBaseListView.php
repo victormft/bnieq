@@ -178,7 +178,7 @@ abstract class CBaseListView extends CWidget
 	 */
 	public function renderEmptyText()
 	{
-		$emptyText=$this->emptyText===null ? Yii::t('zii','No results found.') : $this->emptyText;
+		$emptyText=$this->emptyText===null ? Yii::t('zii','Nenhum resultado encontrado.') : $this->emptyText;
 		echo CHtml::tag($this->emptyTagName, array('class'=>'empty'), $emptyText);
 	}
 
