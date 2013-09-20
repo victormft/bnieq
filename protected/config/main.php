@@ -95,7 +95,7 @@ return array(
         //rights
         'rights'=>array( 
             'install'=>false,            // Enables the installer. 
-        ),
+        ),   
 				
 	),
 

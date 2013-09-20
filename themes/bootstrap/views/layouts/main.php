@@ -13,21 +13,34 @@
 </head>
 
 <body>   
-
     
+
 <div class="navbar navbar-inverse">
     <div class="navbar-inner" style="border-radius: 0">
+        <a class="brand" style="margin-left: 80px" href=<?php echo Yii::app()->homeUrl; ?>>NEXTBLUE</a>
         <form class="navbar-search pull-left" style="margin-left: 80px">
             <input type="text" class="search-query" placeholder="Search">
         </form>
         <ul class="nav pull-right" style="margin-right: 80px">
-            <li><a href= <?php echo Yii::app()->homeUrl; ?> >Home</a></li>
+            <li><a href= <?php echo Yii::app()->homeUrl; ?> >Home</a></li>            
             <li><a href= <?php echo Yii::app()->homeUrl . '/site/contact'?> >Contact us</a></li>
             <?php if(Yii::app()->user->isGuest):?>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/login'?> >Login</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/registration'?> >Register</a></li>
             <?php else: ?>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/user/profile?username=' . Yii::app()->user->name ?> >Profile</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href= <?php echo Yii::app()->homeUrl . '/user/profile?username=' . Yii::app()->user->name ?> >Profile</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li class="nav-header">NAV HEADER</li>
+                        <li>
+                            <a href=<?php echo Yii::app()->homeUrl . '/user/settings/general' ?>>Settings</a>
+                        </li>
+                    </ul>                    
+                </li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/mailbox' ?> >Messages</a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> >Logout</a></li>
             <?php endif?>
