@@ -79,11 +79,15 @@ class StartupController extends Controller
 					$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
 								
 					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
-
+					
+					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+					$image->resize(400, 300)->quality(75)->sharpen(20);
+					$image->save(); // or $image->save('images/small.jpg');
+					
 					$model_img=new Image;
 					$model_img->name=$newFileName;
 					$model_img->extension=$model->pic->type;
-					$model_img->size=$model->pic->size;	
+					$model_img->size=0;//$model->pic->size;	
 				
 				
 					if($model_img->save()){
@@ -128,6 +132,10 @@ class StartupController extends Controller
 					
 					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
 					
+					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					$image->resize(400, 300)->quality(75)->sharpen(20);
+					$image->save(); // or $image->save('images/small.jpg');
+					
 					$this->refresh();
 				}
 			}
@@ -171,10 +179,15 @@ class StartupController extends Controller
 				$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
 							
 				$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+				
+				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+				$image->resize(400, 300)->quality(75)->sharpen(20);
+				$image->save(); // or $image->save('images/small.jpg');
+				
 				$model_img=new Image;
 				$model_img->name=$newFileName;
 				$model_img->extension=$model->pic->type;
-				$model_img->size=$model->pic->size;	
+				$model_img->size=0;//$model->pic->size;		
 			
 			
 				if($model_img->save()){
@@ -240,7 +253,7 @@ class StartupController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			$this->loadModelId($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
@@ -267,6 +280,18 @@ class StartupController extends Controller
 		
 		if(isset($_GET['sec']))
 			$model->sectors=$_GET['sec'];	
+			
+		if(isset($_GET['g']))
+		{
+			if($_GET['g']=='Selecionadas')
+				$model->selecionada=1;
+			
+			else if($_GET['g']=='Populares')
+				$model->group=$_GET['g'];
+				
+			else if($_GET['g']=='Recentes')
+				$model->group=$_GET['g'];
+		}	
 			
 		//if(isset($_GET['Startup']))
 		//	$model->attributes=$_GET['Startup'];
@@ -325,6 +350,17 @@ class StartupController extends Controller
 		return $model;
 	}
 	
+	public function loadModelId($id)
+	{
+		$model=Startup::model()->find('id=:id',
+										array(
+										  ':id'=>$id,
+										));
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+	
 
 	/**
 	* Performs the AJAX validation.
@@ -369,8 +405,12 @@ class StartupController extends Controller
 			if(!$model->users)
 			{
 				$model->users=User::model()->findbyPk(Yii::app()->user->id);
+				$model->followers_num=$model->followers_num+1;
 				$model->saveWithRelated(array('users'));
-				return count($model->users);
+				echo CJSON::encode(array(
+					'res'=>count($model->users)
+				));
+				exit;
 			}
 			
 			else 
@@ -378,12 +418,19 @@ class StartupController extends Controller
 				
 				if($model->hasUserFollowing(Yii::app()->user->id))
 				{
-					return count($model->users);
+					echo CJSON::encode(array(
+						'res'=>count($model->users)
+					));
+					exit;
 				}
 				
 				$model->users=User::model()->findbyPk(Yii::app()->user->id);
+				$model->followers_num=$model->followers_num+1;
 				$model->saveWithRelated( array('users' => array('append' => true)));
-				return count($model->users);
+				echo CJSON::encode(array(
+					'res'=>count($model->users)
+				));
+				exit;
 			}		
 		}
 		
@@ -401,10 +448,21 @@ class StartupController extends Controller
 			{
 				$startup_follow=StartupFollow::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>Yii::app()->user->id, ':s_id'=>$model->id));
 				$startup_follow->delete();
-				return count($model->users);
+				$model = $this->loadModel($_GET['name']);
+				$model->followers_num=$model->followers_num-1;
+				if($model->save())
+				{
+					echo CJSON::encode(array(
+						'res'=>count($model->users)
+					));
+					exit;
+				}
 			}
 			
-			return count($model->users);
+			echo CJSON::encode(array(
+				'res'=>count($model->users)
+			));
+			exit;
 		}
 		
 		else

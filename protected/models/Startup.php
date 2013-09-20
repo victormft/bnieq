@@ -29,6 +29,8 @@
  * @property string $competitive_advantage
  * @property string $video
  * @property string $create_time
+ * @property string $selecionada
+ * @property string $followers_num
  *
  * The followings are the available model relations:
  * @property File[] $files
@@ -89,7 +91,7 @@ class Startup extends CActiveRecord
 			array('product_description, foundation, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, create_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, video, create_time', 'safe', 'on'=>'search'),
+			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, video, create_time, selecionada, followers_num', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -145,6 +147,8 @@ class Startup extends CActiveRecord
 			'competitive_advantage' => 'Competitive Advantage',
 			'video' => 'Video',
 			'create_time' => 'Create Time',
+			'selecionada' => 'Selecionada',
+			'followers_num' => 'Followers Number',
 		);
 	}
 	
@@ -201,6 +205,16 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.competitive_advantage',$this->competitive_advantage,true);
 		$criteria->compare('t.video',$this->video,true);
 		$criteria->compare('t.t.create_time',$this->create_time,true);
+		$criteria->compare('t.selecionada',$this->selecionada,true);
+		
+		if($this->group)
+		{
+			if($this->group=='Populares')
+				$criteria->order="t.followers_num DESC";
+				
+			else if($this->group=='Recentes')
+				$criteria->order="t.id DESC";
+		}
 		
 		if($this->sectors){
 			$criteria->with = array('sectors');
@@ -268,6 +282,11 @@ class Startup extends CActiveRecord
 			}
 		
 		return false;
+	}
+	
+	public function getFollowNumber()
+	{
+		return count($this->users);
 	}
 		
 	

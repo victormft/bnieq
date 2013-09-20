@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $this->layout='column1';
 
 $this->breadcrumbs=array(
@@ -18,8 +18,15 @@ array('label'=>'Manage Startup','url'=>array('admin')),
 Yii::app()->clientScript->registerScript('search',
 "
 
+$(document).ready(function() {
+    if(getUrlVars()['sec[0]'])
+	{
+		$('#search-sector').css('display', 'block');
+	}
+});
+
 $('#searchform').change(function(event) {
-			var group = (getUrlVars()['group'] == null) ? '' : getUrlVars()['group'];
+			var g = (getUrlVars()['g'] == null) ? '' : getUrlVars()['g'];
 			
 			var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
 			var c_size = ($('#c_size').val()=='') ? '' : '&c_size='+encodeURIComponent($('#c_size').val());
@@ -37,19 +44,31 @@ $('#searchform').change(function(event) {
 			
 			};
 			
-            location.href = 'startup?group='+group+n+c_size+secs;
+            location.href = 'startup?g='+g+n+c_size+secs;
 });
 
 $('.g').click(function(event) {
-			var group = $(this).text();
-			var n = (getUrlVars()['n'] == null) ? '' : getUrlVars()['n'];
-			var c_size = (getUrlVars()['c_size'] == null) ? '' : getUrlVars()['c_size'];
+			var g = $(this).text();
+			var n = (getUrlVars()['n'] == null) ? '' : '&n='+getUrlVars()['n'];
+			var c_size = (getUrlVars()['c_size'] == null) ? '' : '&c_size='+getUrlVars()['c_size'];
 			
-			location.href = 'startup?group='+group+'&n='+n+'&c_size='+c_size+'&sec='+sec;
+			var sec=[]; 
+			$('input[type=checkbox]:checked').each(function(){
+				sec.push($(this).val());
+			});
+	
+			var secs = '';
+			
+			for (var i = 0, len = sec.length; i < len; i++) {
+				secs=secs+'&sec['+i+']='+encodeURIComponent(sec[i]);
+			
+			};
+			
+			location.href = 'startup?g='+g+n+c_size+secs;
 			
 });
 
-$('#yw2').click(function(event) {
+$('#yw3').click(function(event) {
 			
 			location.href = 'startup';
 			
@@ -68,11 +87,23 @@ function getUrlVars()
     return vars;
 }
 
-$('.sec-label').toggle(function(event) {
-		$('#search-sector').css('display', 'block');
-		}, function () {
-			$('#search-sector').css('display', 'none');
+
+$('.sec-label').click(function(event) {
+
+		if(!$('.sec-label').hasClass('clicked'))
+		{
+			$('#search-sector').slideDown('slow');
+			$('.sec-label').addClass('clicked');
+		}
+		
+		else
+		{
+			$('#search-sector').slideUp('slow');
+			$('.sec-label').removeClass('clicked');
+		}
+		
 });
+
 
 
 ");
@@ -137,15 +168,19 @@ function SearchFunc()   {
 
 <h1>Startups</h1>
 
-
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 'dataProvider'=>$dataProvider->search(),
 'itemView'=>'_view',
-'enableHistory' => TRUE,
-'pagerCssClass' => "pagination",
 'id'=>'startupslistview',       // must have id corresponding to js above
-'template'=>'{items} {pager}',
+'sorterHeader'=>'Ordenar por: ',
+ 'sortableAttributes'=>array(
+        'name',
+		'one_line_pitch'
+    ),
+'template'=>'{pager} {items} {pager}',
 )); ?>
+
+
 
 <div class="search-form">
 	<?php 
@@ -155,11 +190,11 @@ function SearchFunc()   {
 	?>
 	
 	<div id="G-Selection">
-		<div class="group-title">Group Selection</div>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Selecionadas") echo 'style="background:#fff; color:#000; font-weight:bold;"'; ?>>Selecionadas</p></a>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['group']) && $_GET['group']=="Todas") echo 'style="background:#fff; color:#000; font-weight:bold;"'; ?>>Todas</p></a>
-		<p>asdsd</p>
-		<p class="last-p">asdsd</p>
+		<div class="group-title">Busca Rápida</div>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Selecionadas") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-star profile-icon"></i>Selecionadas</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Populares") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-group profile-icon"></i>Populares</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Recentes") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-calendar profile-icon"></i>Recentes</p></a>
+		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Todas") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todas</p></a>
 	</div>
 	
 	<div class="form-vertical">
@@ -174,7 +209,7 @@ function SearchFunc()   {
 			
 			<?php	
 			$this->widget('bootstrap.widgets.TbButton',array(
-				'label' => 'Search',
+				'label' => 'Buscar',
 				'size' => 'small'
 			));
 			?>
@@ -184,19 +219,24 @@ function SearchFunc()   {
 		
 		<?php echo CHtml::activeDropDownList($dataProvider,'company_size', array_merge(array(''=>'Selecione...'), $dataProvider->getCompanySizeOptions()), array('name'=>'c_size')) ?>
 		
-		 <?php echo CHtml::label('Setores >', false, array('class'=>'sec-label')); ?>
+		<div>
+		
+		<?php echo CHtml::label('Setores >', false, array('class'=>'sec-label')); ?>
 		
 		<div id="search-sector">
 			<?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) ?>
 		</div>
+		
+		</div>
 	
-	
+		<div>
 		<?php	
 			$this->widget('bootstrap.widgets.TbButton',array(
-				'label' => 'Reset',
+				'label' => 'Limpar',
 				'size' => 'small'
 			));
 			?>
+		</div>
 	
 	</div>
     <?php echo CHtml::endForm(); ?>

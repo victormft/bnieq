@@ -1,3 +1,15 @@
+@font-face
+{
+	font-family: Myriad;
+	src: url(MYRIADPRO-REGULAR.OTF);
+}
+
+html body
+{
+	font-family: Myriad;
+	font-size:15px;
+}
+
 #page 
 {
     padding-top: 0px;
@@ -28,7 +40,18 @@
 	border-bottom: 1px solid #aaa;
 	border-left: 1px solid #aaa;
 	border-right: 1px solid #aaa;
-	background: #fff;
+	
+	
+	background: rgb(255,255,255); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZkZmRmZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNWY1ZjUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(253,253,253,1) 50%, rgba(245,245,245,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(253,253,253,1)), color-stop(100%,rgba(245,245,245,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(253,253,253,1) 50%,rgba(245,245,245,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(253,253,253,1) 50%,rgba(245,245,245,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(253,253,253,1) 50%,rgba(245,245,245,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(253,253,253,1) 50%,rgba(245,245,245,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f5f5f5',GradientType=0 ); /* IE6-8 */
 }
 
 .items .view-list:first-child
@@ -84,8 +107,8 @@
 	float:left;
 	margin-right:10px; 
 	border: 1px solid #aaa; 
-	width:120px; 
-	height:120px;
+	width:190px; 
+	height:150px;
 	border-radius: 5px;
 	/*box-shadow: 0px 0px 2px 2px #ddd;*/
 }
@@ -94,7 +117,6 @@
 {
 	float:left;
 	height:auto;
-	margin-top: 20px;
 	width: 600px;
 }
 
@@ -102,7 +124,6 @@
 {
 	float:right;
 	height:auto;
-	margin-top: 20px;
 	width: 370px;
 }
 
@@ -138,34 +159,43 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 
 .profile-name
 {
-	font-size: 28px;
+	font-size: 34px;
 	color: #0088cc;
 	font-weight: bold;
 	margin-bottom: 5px;
-	margin-top:4px;
+	margin-top:5px;
 }
 
 .profile-header-info
 {
-	width: 500px;
+	width: 450px;
 	float:left;
 }
 
 .profile-onelinepitch
 {
-	font-size: 16px;
-	color: #727272;
-	margin-bottom: 7px;
+	font-size: 20px;
+	color: #333333;
+	margin-bottom: 5px;
+	margin-top: 18px;
 }
 
 .profile-sectors
 {
-	margin-bottom: 7px;
+	margin-bottom: 10px;
+	margin-top: 8px;
+}
+
+.profile-location
+{
+	font-size: 16px;
+	color: #727272;
+	margin-bottom: 5px;
 }
 
 .profile-header-right
 {
-	width:300px;
+	width:200px;
 	height:100%;
 	float:right;
 	/*
@@ -178,22 +208,48 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 
 .profile-header-right .follow-btn
 {
-	float:right;
-}
-
-.profile-header-right .edit-btn
-{
 	position:absolute;
 	bottom: 0;
 	right: 0;
 	padding: 0 30px 30px 0;
 }
 
-.content-wrap .profile-icon
+.profile-header-right .follow-btn .follow-info
 {
-	margin-right: 10px;
-	font-size: 18px;
-	margin-top:2px;
+	text-align:center;
+	float:left;
+	margin-right:20px;
+	height:44px;
+	padding-top:2px;
+	text-shadow: 1px 1px 0px white;
+}
+
+.profile-header-right .follow-btn .follow-info .follow-count
+{
+	font-size:30px;
+	margin-bottom: 10px;
+}
+
+.profile-header-right .follow-btn .follow-info .follow-status
+{
+	line-height: 15px;
+}
+
+
+.profile-header-right .edit-btn
+{
+	float:right;
+	font-weight:bold;
+}
+
+.edit-btn .profile-btn
+{
+	text-shadow: 1px 1px 1px black;
+}
+
+.edit-btn .profile-btn:hover
+{
+	text-shadow: 0px 0px 1px black;
 }
 
 
@@ -204,16 +260,62 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	padding-top:0px;
 }
 
+#startupslistview .items
+{
+	margin-top: 41px;
+}
+
+#startupslistview .pagination
+{
+	float: right;
+	margin: 7px 0 5px 0;
+}
+
+#startupslistview .pagination ul
+{
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}
+
+#startupslistview .pagination li.active a
+{
+	color: #fff;
+	background: #0088cc;
+}
+
+#startupslistview .pagination a
+{
+	margin: 0 2px 0 2px;
+	border: 1px solid;
+	border-color:#ddd #bbb #bbb #ddd;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	padding: 1px 8px;
+	font-size: 12px;
+}
+
+#startupslistview .pagination a:hover
+{
+	border-color:#ddd;
+}
+
+#startupslistview .pagination .disabled a:hover
+{
+	border-color:#ddd #bbb #bbb #ddd;
+}
+
 .search-form
 {
 	float:left;
 	margin-left: 50px;
+	margin-top: 41px;
 	padding: 20px;
 	background: white;
 	border-radius:5px;
 	border: 1px solid #aaa; 
 	
 }
+
 
 #G-Selection
 {
@@ -253,6 +355,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	box-shadow: 0 1px 0 #fff;
 	font-size: 18px;
 	padding: 10px 10px 10px 30px;
+	color:black;
 }
 
 #G-Selection a
@@ -279,6 +382,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	
 }
 
+#G-Selection .profile-icon
+{
+	margin-right: 10px;
+	line-height: normal;
+	vertical-align: baseline;
+	
+}
 
 #G-Selection p:last-child
 {
@@ -287,14 +397,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 #G-Selection p:hover
 {
 	background: #fdfdfd;
-	font-weight: bold;
-	color: #000;
+	font-size: 17px;
+	color: #333;
 }
 
 #searchform #n
 {
 	width: 170px;
 	margin-bottom:0;
+	border-radius: 4px 0px 0px 4px;
+	-webkit-border-radius: 4px 0px 0px 4px;
+	position: relative;
+	z-index: 99;
+}
+
+#searchform #c_size
+{
+	width:240px;
 }
 
 #searchform #search-name
@@ -302,15 +421,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	margin-bottom:10px;
 }
 
-#searchform #yw1
+#searchform #yw2
 {
 /*	margin-top: -10px;
 	margin-left: -3px;
 	*/
 	
-	margin-left: -8px;
+	margin-left: -4px;
 	padding-top: 4px;
 	padding-bottom:4px;
+	border-radius: 0px 3px 3px 0px;
+	-webkit-border-radius: 0px 3px 3px 0px;
 }
 
 #searchform select option:hover
@@ -326,11 +447,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 #search-sector
 {
 	display:none;
-	 -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
 }
 
 .content-wrap
@@ -341,11 +457,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	margin-top: 30px; 
 }
 
+.content-wrap .profile-icon
+{
+	margin-right: 10px;
+	font-size: 20px;
+	margin-top:3px;
+}
+
 .content-wrap .content-head
 {
 	font-weight:bold;
-	font-size: 15px;
-	letter-spacing: -0.1em;
+	font-size: 16px;
+	letter-spacing: -0.06em;/*-0.1em;*/
 	padding: 15px 0 15px 30px;
 	border: 1px solid #ddd;
 	border-radius:5px 5px 0 0;
@@ -366,13 +489,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 
+
 }
 
+.txt
+{
+/*
+  background: -webkit-linear-gradient(#eee, #333);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+ */
+ /*  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));*/
+}
 
 .content-wrap .content-info
 {
 	height:auto;
-	padding: 30px;
+	padding: 25px 30px 25px 30px;
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
@@ -380,6 +513,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 	background: #fff;
 
+	font-size:15px;
 
 }
 
@@ -447,7 +581,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	left: auto;
 	right: -50px;
 }
-
+/*
 .pagination {
 	text-align: center;
 }
@@ -465,7 +599,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .pagination a span {
 	display: none;
 }
-
+*/
 
 .clearfix {
 	float: none;
@@ -502,3 +636,4 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	float:left;
 	margin-left: 10px;
 }
+

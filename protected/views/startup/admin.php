@@ -58,7 +58,7 @@ return false;
 		'company_number',
 		'facebook',
 		'twitter',
-		'blog',
+		'linkedin',
 		'address',
 		'client_segment',
 		'value_proposition',
