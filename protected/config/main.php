@@ -25,6 +25,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.helpers.*',
 		//yii-user
         'application.modules.user.UserModule',
 		'application.modules.user.models.*',
@@ -95,12 +96,17 @@ return array(
         //rights
         'rights'=>array( 
             'install'=>false,            // Enables the installer. 
-        ),
+        ),   
 				
 	),
 
 	// application components
 	'components'=>array(
+		'image'=>array(
+          'class'=>'application.extensions.image.CImageComponent',
+            // GD or ImageMagick
+            'driver'=>'GD',
+        ),	
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
