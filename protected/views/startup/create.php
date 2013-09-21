@@ -1,15 +1,10 @@
-<?php
-$this->breadcrumbs=array(
-	'Startups'=>array('index'),
-	'Create',
-);
-
-$this->menu=array(
-array('label'=>'List Startup','url'=>array('index')),
-array('label'=>'Manage Startup','url'=>array('admin')),
-);
+﻿<?php
+$this->layout='column1';
 ?>
 
-<h1>Create Startup</h1>
+<h1 class="create-title">Criar Startup</h1>
+<div class="create-sub-title">Forneça os dados necessários para criar o perfil da Startup!</div>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<div class="create-wrap">
+	<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+</div>

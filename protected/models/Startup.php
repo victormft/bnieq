@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * This is the model class for table "startup".
@@ -83,7 +83,7 @@ class Startup extends CActiveRecord
 			//validation for pic
 			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
 			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
-			array('name, one_line_pitch', 'required'),
+			array('name, one_line_pitch, product_description, pic', 'required', 'message'=>'Campo não pode ser vazio'),
 			array('name, email, skype', 'length', 'max'=>99),
 			array('logo', 'length', 'max'=>20),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
