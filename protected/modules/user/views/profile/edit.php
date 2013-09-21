@@ -183,7 +183,7 @@ $this->breadcrumbs=array(
                     'label'=>'Profile',
                     'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
-                    'url'=> Yii::app()->homeUrl . '/user/profile?username=' . $model->username,
+                    'url'=> array('/user/profile', 'username'=>$model->username),
                     'htmlOptions'=>array('style'=>'width:50px;'),
                     )); 
                 ?>

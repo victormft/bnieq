@@ -12,9 +12,15 @@ class ProfileController extends Controller
 	/**
 	 * Shows a particular model.
 	 */
-	public function actionProfile($username)
+	public function actionProfile($username=NULL)
 	{
-        $model = $this->loadModel($username);
+        if($username==NULL)
+        {
+            $model=$this->loadUser(Yii::app()->user->id);
+        }
+        else            
+            $model = $this->loadModel($username);
+        
 	    $this->render('profile',array(
             'model'=>$model,
             'profile'=>$model->profile,

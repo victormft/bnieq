@@ -7,6 +7,8 @@ $this->breadcrumbs=array(
 
 <h1><?php echo UserModule::t("Login"); ?></h1>
 
+<?php $this->widget('ext.hoauth.widgets.HOAuth'); ?>
+
 <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
 <div class="success">
