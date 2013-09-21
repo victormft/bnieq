@@ -179,6 +179,7 @@ class HOAuthAction extends CAction
 
 			// If we already have a user logged in, associate the authenticated 
 			// provider with the logged-in user
+            
 			if(!Yii::app()->user->isGuest) 
 			{
 				$oAuth->bindTo(Yii::app()->user->id);

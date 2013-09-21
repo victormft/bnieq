@@ -45,6 +45,7 @@ class RegistrationController extends Controller
 						$model->verifyPassword=UserModule::encrypting($model->verifyPassword);
 						$model->superuser=0;
 						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
+                        $model->setCreateTime(time());                       
 						
 						if ($model->save()) {
 							$profile->user_id=$model->id;

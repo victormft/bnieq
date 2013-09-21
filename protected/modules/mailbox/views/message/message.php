@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs=array(
-	ucfirst($this->module->id)=>array('mailbox/inbox'),
+	ucfirst($this->module->id)=>array('inbox'),
 	'Message',
 );
 
@@ -36,7 +36,7 @@ foreach($conv->messages as $msg):
 	<div class="mailbox-message-header">
 		<div class="message-sender">
 <?php	echo ($msg->sender_id == Yii::app()->user->id)? 'You' : ucfirst($sender);
-	echo ($first_message)? ' said' : ' replied'; ?></div>
+	echo (!$first_message)? ' said' : ' replied'; ?></div>
 		<div class="message-date"><?php echo date("Y-m-d H:i a",$msg->created); ?></div>
 		<br />
 	</div>

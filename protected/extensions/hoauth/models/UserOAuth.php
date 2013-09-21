@@ -195,15 +195,19 @@ class UserOAuth extends CActiveRecord
 	 * @return void
 	 */
 	public function authenticate($provider)
-	{
+	{        
 		if(empty($this->provider))
 		{
 			try
 			{
-				$this->_adapter = $this->hybridauth->authenticate($provider);
+				$this->_adapter = $this->hybridauth->authenticate($provider); 
+                
 				$this->identifier = $this->profile->identifier;
 				$this->provider = $provider;
+                
 				$oAuth = self::model()->findByPk(array('provider' => $this->provider, 'identifier' => $this->identifier));
+                //echo $this->profile->email;exit;
+                //$userX=User::model()->findbyPk();
 				if($oAuth)
 					$this->setAttributes($oAuth->attributes, false);
 				else
@@ -217,8 +221,8 @@ class UserOAuth extends CActiveRecord
 				$error = "";
 				switch( $e->getCode() )
 				{ 
-					case 6 : //$error = "User profile request failed. Most likely the user is not connected to the provider and he should to authenticate again."; 
-					case 7 : //$error = "User not connected to the provider."; 
+					case 6 : $error = "User profile request failed. Most likely the user is not connected to the provider and he should to authenticate again."; 
+					case 7 : $error = "User not connected to the provider."; 
 					$this->logout();
 					return $this->authenticate($provider);
 					break;

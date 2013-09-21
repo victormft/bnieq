@@ -60,11 +60,11 @@ return array(
 			# encrypting method (php hash function)
             'hash' => 'md5', 
             # send activation email
-            'sendActivationMail' => true, 
+            'sendActivationMail' => false, 
             # allow access for non-activated users
             'loginNotActiv' => false, 
             # activate user on registration (only sendActivationMail = false)
-            'activeAfterRegister' => false, 
+            'activeAfterRegister' => true, 
             # automatically login from registration
             'autoLogin' => true, 
             # registration path
@@ -79,12 +79,6 @@ return array(
             'returnLogoutUrl' => array('/user/login'),
         ),
         
-        //private-messagin module
-        'message' => array(
-            'userModel' => 'User',
-            'getNameMethod' => 'getFullName',
-            'getSuggestMethod' => 'getSuggest',
-        ),
         
         //mailbox
         'mailbox'=> array(  
@@ -189,6 +183,6 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'saulodefaria@gmail.com',
 	),
 );

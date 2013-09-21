@@ -32,7 +32,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href= <?php echo Yii::app()->homeUrl . '/user/profile?username=' . Yii::app()->user->name ?> >Profile</a>
+                            <a href= <?php echo Yii::app()->homeUrl . '/user/profile' ?> >Profile</a>
                         </li>
                         <li class="divider"></li>
                         <li class="nav-header">NAV HEADER</li>
