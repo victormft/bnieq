@@ -29,7 +29,7 @@ class StartupController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow'),
+				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow', 'updatelocation', 'updateSectors', 'multPic', 'chonga'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -141,6 +141,56 @@ class StartupController extends Controller
 			}
 		}
 		
+		else if(isset($_FILES['mult_pic']) && count($model->images)<4)
+		{
+		
+			
+			$model=$this->loadModel($name);
+			
+			$img_list=CUploadedFile::getInstancesByName('mult_pic');
+			
+			foreach($img_list as $mult_pic)
+			{
+
+				$model->mult_pic=$mult_pic;
+				
+				if($model->mult_pic !== null && $model->validate())
+				{
+				
+					$fileName=$model->mult_pic;
+					$rnd = rand(0,99999999);  // generate random number between 0-99999999
+					$extension_array = explode('.', $fileName); //extension of the file
+					$extension=end($extension_array);
+					$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
+								
+					$model->mult_pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+					
+					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+					$image->resize(400, 300)->quality(75)->sharpen(20);
+					$image->save(); // or $image->save('images/small.jpg');
+					
+					$model_img=new Image;
+					$model_img->name=$newFileName;
+					$model_img->extension=$model->mult_pic->type;
+					$model_img->size=0;//$model->pic->size;	
+					$model_img->save();	
+
+					$model->images=$model_img;
+					$model->saveWithRelated(array('images' => array('append' => true)));
+					
+					
+				
+				}
+				else
+					$this->refresh();
+			
+			}	
+				$this->render('view_edit',array(
+						'model'=>$this->loadModel($name),
+				));
+					
+		}
+		
 		
 		
 		$this->render('view_edit',array(
@@ -243,6 +293,36 @@ class StartupController extends Controller
 	*/	
 	}
 
+	
+	public function actionUpdateLocation()
+    {
+        $model = $this->loadModelId($_POST['pk']);
+        if($_POST['value']==0) $model->location=NULL;
+        else $model->location = $_POST['value'];
+        $model->save();         
+    }
+	
+	
+	public function actionUpdateSectors()
+    {
+        $model = $this->loadModelId($_POST['pk']);
+        $vals = array();
+        if(isset($_POST['value']))
+        {
+            foreach ($_POST['value'] as $val)
+            {
+                $vals[] = Sector::model()->find('sector_id=:id', array(':id'=>$val));
+            }
+        }
+		
+		if(count($vals)>3)
+			exit;
+			
+        $model->sectors = $vals;
+        $model->saveWithRelated(array('sectors'));            
+    }
+	
+	
 	/**
 	* Deletes a particular model.
 	* If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -468,4 +548,96 @@ class StartupController extends Controller
 		else
 			throw new CHttpException(404, 'Page not found.');	
 	}
+	
+	public function actionMultPic($name)
+	{
+		
+		if(isset($_POST['mult_pic']))
+		{
+		
+			$model=$this->loadModel($name);
+			
+			$img_list=CUploadedFile::getInstancesByName('mult_pic');
+			
+			foreach($img_list as $mult_pic)
+			{
+
+				$model->mult_pic=$mult_pic;
+				
+				if($model->mult_pic !== null && $model->validate())
+				{
+				
+					$fileName=$model->mult_pic;
+					$rnd = rand(0,99999999);  // generate random number between 0-99999999
+					$extension_array = explode('.', $fileName); //extension of the file
+					$extension=end($extension_array);
+					$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
+								
+					$model->mult_pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+					
+					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+					$image->resize(400, 300)->quality(75)->sharpen(20);
+					$image->save(); // or $image->save('images/small.jpg');
+					
+					$model_img=new Image;
+					$model_img->name=$newFileName;
+					$model_img->extension=$model->mult_pic->type;
+					$model_img->size=0;//$model->pic->size;	
+					$model_img->save();	
+
+					$model->images=$model_img;
+					$model->saveWithRelated(array('images'));
+					
+					$this->redirect('edit',array(
+						'model'=>$this->loadModel($name),
+					));
+				
+				}
+				else
+					$this->redirect('edit',array(
+						'model'=>$this->loadModel($name),
+					));
+			
+			}		
+					
+		}
+		else
+			$this->redirect('edit',array(
+						'model'=>$this->loadModel($name),
+			));
+	}
+	
+	public function actionChonga($name)
+	{
+		$model=$this->loadModel($name);
+		
+		$user_startup = new UserStartup;
+		
+		$user_startup->user_id = $_POST['user_chonga'];
+		$user_startup->startup_id = $model->id;
+		$user_startup->position = $_POST['role'];
+		$user_startup->save();
+		
+		$model=$this->loadModel($name);
+		
+	/*	$html_result='';
+		
+		foreach($model->users1 as $start_users)
+		{
+			
+		}		
+	*/
+
+		$html='<div style=\"height:100px; width: 100px; background:#888;\"></div>';
+		
+		
+		echo CJSON::encode(array(
+				'res'=>User::model()->findbyPk($_POST['user_chonga'])->username
+			));
+		exit;
+	}
+	
+	
+	
+	
 }

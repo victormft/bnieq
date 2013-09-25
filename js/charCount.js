@@ -32,23 +32,39 @@
 		
 		function calculate(obj){
 			var count = $(obj).val().length;
-			var available = options.allowed - count;
-			if(available <= options.warning && available >= 0){
+			var available = count;
+			if(available >= options.warning && available <= options.allowed){
+				$(obj).next().next().addClass(options.cssWarning);
+			} else {
+				$(obj).next().next().removeClass(options.cssWarning);
+			}
+			if(available > options.allowed){
+				$(obj).next().next().addClass(options.cssExceeded);
+			} else {
+				$(obj).next().next().removeClass(options.cssExceeded);
+			}
+			$(obj).next().next().html(options.counterText + available + ' / ' + options.allowed);
+		};
+		
+		function calculate_first(obj){
+			var count = $(obj).val().length;
+			var available = count;
+			if(available >= options.warning && available <= options.allowed){
 				$(obj).next().addClass(options.cssWarning);
 			} else {
 				$(obj).next().removeClass(options.cssWarning);
 			}
-			if(available < 0){
+			if(available > options.allowed){
 				$(obj).next().addClass(options.cssExceeded);
 			} else {
 				$(obj).next().removeClass(options.cssExceeded);
 			}
-			$(obj).next().html(options.counterText + available);
+			$(obj).next().html(options.counterText + available + ' / ' + options.allowed);
 		};
 				
 		this.each(function() {  			
 			$(this).after('<p style="font-size:12px;"><'+ options.counterElement +' class="' + options.css + '">'+ options.counterText +'</'+ options.counterElement +'></p>');
-			calculate(this);
+			calculate_first(this);
 			$(this).keyup(function(){calculate(this)});
 			$(this).change(function(){calculate(this)});
 		});

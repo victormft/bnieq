@@ -31,7 +31,7 @@ class CHtml
 	 * @var string the CSS class for highlighting error inputs. Form inputs will be appended
 	 * with this CSS class if they have input errors.
 	 */
-	public static $errorCss='error';
+	public static $errorCss='';
 	/**
 	 * @var string the tag name for the error container tag. Defaults to 'div'.
 	 * @since 1.1.13

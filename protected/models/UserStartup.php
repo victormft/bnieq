@@ -1,23 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "cidade".
+ * This is the model class for table "user_startup".
  *
- * The followings are the available columns in table 'cidade':
- * @property integer $id
- * @property string $nome
- *
- * The followings are the available model relations:
- * @property Profile[] $profiles
+ * The followings are the available columns in table 'user_startup':
+ * @property string $user_id
+ * @property string $startup_id
+ * @property string $position
+ * @property string $title
+ * @property integer $current_position
+ * @property integer $profile
  */
-class Cidade extends CActiveRecord
+class UserStartup extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'cidade';
+		return 'user_startup';
 	}
 
 	/**
@@ -28,10 +29,14 @@ class Cidade extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nome', 'length', 'max'=>120),
+			array('user_id, startup_id, position', 'required'),
+			array('current_position, profile', 'numerical', 'integerOnly'=>true),
+			array('user_id, startup_id', 'length', 'max'=>20),
+			array('position', 'length', 'max'=>45),
+			array('title', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nome', 'safe', 'on'=>'search'),
+			array('user_id, startup_id, position, title, current_position, profile', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -43,8 +48,6 @@ class Cidade extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'profiles' => array(self::HAS_MANY, 'Profile', 'location'),
-			'startups' => array(self::HAS_MANY, 'Startup', 'location'),
 		);
 	}
 
@@ -54,8 +57,12 @@ class Cidade extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'nome' => 'Nome',
+			'user_id' => 'User',
+			'startup_id' => 'Startup',
+			'position' => 'Position',
+			'title' => 'Title',
+			'current_position' => 'Current Position',
+			'profile' => 'Profile',
 		);
 	}
 
@@ -77,8 +84,12 @@ class Cidade extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('nome',$this->nome,true);
+		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('startup_id',$this->startup_id,true);
+		$criteria->compare('position',$this->position,true);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('current_position',$this->current_position);
+		$criteria->compare('profile',$this->profile);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -89,35 +100,10 @@ class Cidade extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Cidade the static model class
+	 * @return UserStartup the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-    
-    public function getCities()
-    {
-        //see if it is in the cache, if so, just return it
-        if( ($cache=Yii::app()->cache)!==null)
-        {
-            $key='cidades.dessa.porra';
-            if(($cities=$cache->get($key))!==false)
-            return $cities;
-        }
-        //The system message was either not found in the cache, or
-        //there is no cache component defined for the application
-        //retrieve the system message from the database
-        $cities = CHtml::listData(Cidade::model()->findAll(), 'id', 'nome');
-        if($cities != null)
-        {
-            //a valid message was found. Store it in cache for future retrievals
-            if(isset($key))
-            $cache->set($key,$cities,1800);
-            return $cities;
-        }
-        else
-            return null;
-        
-    }
 }

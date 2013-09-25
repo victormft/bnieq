@@ -1,4 +1,5 @@
 ﻿<?php
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.carouFredSel-6.2.1.js');
 
 Yii::app()->clientScript->registerScript('follow',
 "
@@ -53,6 +54,15 @@ function getUrlVars()
     return vars;
 }
 
+$('.video-images-items').carouFredSel({
+		items : 1,
+		auto:false,
+		pagination: '#video-images-pagination'
+	});	
+
+
+
+
 ");
 
 ?>
@@ -73,28 +83,33 @@ function getUrlVars()
 		</div>
 		
 		<div class="profile-location">
-			<span style="font-style:italic;"><?php echo $model->location; ?>Sao Paulo, SP</span>
+			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo $model->city->nome; ?>
 		</div>
 		
 		<div class="profile-sectors">
 			<span><?php echo $model->getSectorNames(); ?></span>
 		</div>
 		
-		
-		<?php if($model->facebook): ?>
-			<a href="<?php echo $model->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
-		<?php endif; ?>
-		
-		<?php if($model->twitter): ?>
-			<a href="<?php echo $model->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>" style="margin-right:3px;"/></a>
-		<?php endif; ?>
-		
-		<?php if($model->linkedin): ?>
-			<a href="<?php echo $model->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
-		<?php endif; ?>
-		
-		
-	
+		<div class="profile-links">
+			<div class="profile-link">
+				<?php if($model->facebook): ?>
+					<a href="<?php echo $model->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
+				<?php endif; ?>
+			</div>
+			<div class="profile-link">
+				<?php if($model->twitter): ?>
+					<a href="<?php echo $model->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
+				<?php endif; ?>
+			</div>
+			<div class="profile-link">
+				<?php if($model->linkedin): ?>
+					<a href="<?php echo $model->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
+				<?php endif; ?>
+			</div>
+			<div class="profile-website">
+				<i class="icon-globe profile-icon"></i><?php echo $model->website; ?>
+			</div>
+		</div>
 	</div>
 	
 	<div class="profile-header-right">
@@ -140,6 +155,16 @@ function getUrlVars()
 						'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
 						)); 
 					}
+					
+					echo "<button class='btn-msg-wrap' type='button' data-toggle='modal' data-target='#myModal'>";
+					$this->widget('bootstrap.widgets.TbButton', array(
+						'label'=>'Message',
+						'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+						'size'=>'normal', // null, 'large', 'small' or 'mini'
+						'url'=>'',//array('follow','name'=>$model->name),
+						'htmlOptions'=>array('style'=>'width:70px; padding:12px 5px;'),
+						)); 
+					echo "</button>";
 				?>
 				
 			</span>
@@ -158,9 +183,24 @@ function getUrlVars()
 		<div class="content-head"><span class="txt"><i class="icon-lightbulb profile-icon"></i>O Produto</span></div>
 		
 		<div class="content-info">
-			
 			<?php echo $model->product_description;?> 
 			
+		</div>
+		
+	</div>	
+	
+	<div class="content-wrap">
+
+		<div class="content-head"><i class="icon-picture profile-icon-vid"></i>Video & Imagens</div>
+		
+		<div class="content-info video-images">
+			<div class="video-images-items">
+				<?php $this->widget('ext.Yiitube', array('size' => 'small', 'v' => $model->video)); ?>	
+				<?php foreach($model->images as $img) :?>
+					<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" id="generic-img" alt="asdasd" style="float:left; width: 500px; height:312px;"/>
+				<?php endforeach; ?>
+			</div>
+			<div class="pagination carousel-pag" id="video-images-pagination"></div>
 		</div>
 		
 	</div>	
@@ -263,31 +303,42 @@ function getUrlVars()
 			
 			<?php
 			
-				if($model->company_stage=='Startup')
+				if($model->company_stage=='Conceito')
 				{
 					$this->widget('bootstrap.widgets.TbProgress', array(
-						'percent'=>33, // the progress
+						'percent'=>25, // the progress
 						'striped'=>true,
 						'animated'=>true,
 						'type'=>'danger',
 						'htmlOptions'=>array('style'=>'margin:0;'),
 					));
-					echo '<br /><b>Stage 1:</b> Startup';
+					echo '<br /><b>Stage 1:</b> Conceito';
 				}
 				
-				else if($model->company_stage=='Early Stage')
+				else if($model->company_stage=='Desenvolvimento')
 				{
 					$this->widget('bootstrap.widgets.TbProgress', array(
-						'percent'=>66, // the progress
+						'percent'=>50, // the progress
 						'striped'=>true,
 						'animated'=>true,
 						'type'=>'warning',
 						'htmlOptions'=>array('style'=>'margin:0;'),
 					));
-					echo '<br /><b>Stage 2:</b> Early Stage';
+					echo '<br /><b>Stage 2:</b> Desenvolvimento';
 				}
 				
-				else if($model->company_stage=='Growth Stage')
+				else if($model->company_stage=='Protótipo')
+				{	
+					$this->widget('bootstrap.widgets.TbProgress', array(
+						'percent'=>75, // the progress
+						'striped'=>true,
+						'animated'=>true,
+						'htmlOptions'=>array('style'=>'margin:0;'),
+					));
+					echo '<br /><b>Stage 3:</b> Protótipo';
+				}
+				
+				else if($model->company_stage=='Produto Final')
 				{	
 					$this->widget('bootstrap.widgets.TbProgress', array(
 						'percent'=>100, // the progress
@@ -296,7 +347,7 @@ function getUrlVars()
 						'type'=>'success',
 						'htmlOptions'=>array('style'=>'margin:0;'),
 					));
-					echo '<br /><b>Stage 3:</b> Growth Stage';
+					echo '<br /><b>Stage 4:</b> GProduto Final';
 				}
 			?>
 		

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * This is the model class for table "startup".
@@ -19,6 +19,7 @@
  * @property string $facebook
  * @property string $twitter
  * @property string $linkedin
+ * @property string $website
  * @property string $location
  * @property string $client_segment
  * @property string $value_proposition
@@ -41,7 +42,6 @@
  * @property User[] $users
  * @property Image[] $images
  * @property Sector[] $sectors
- * @property StartupWebsite[] $startupWebsites
  * @property User[] $users1
  */
 class Startup extends CActiveRecord
@@ -50,8 +50,13 @@ class Startup extends CActiveRecord
 	//to upload logo
 	public $pic;	
 	
+	//to upload mult images
+	public $mult_pic;
+	
 	//to groups in listing
 	public $group;
+	
+	public $user_role;
 	
 	//company size
 	const SIZE_1="1-10";
@@ -59,9 +64,10 @@ class Startup extends CActiveRecord
 	const SIZE_3="20+";
 	
 	//company stage
-	const STAGE_1="Startup";
-	const STAGE_2="Early Stage";
-	const STAGE_3="Growth Stage";
+	const STAGE_1="Conceito";
+	const STAGE_2="Desenvolvimento";
+	const STAGE_3="Protótipo";
+	const STAGE_4="Produto Final";
 		
 	/**
 	 * @return string the associated database table name
@@ -81,13 +87,13 @@ class Startup extends CActiveRecord
 		return array(
 		
 			//validation for pic
-			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
-			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
-			array('name, one_line_pitch', 'required'),
+			array('pic, mult_pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
+			array('pic, mult_pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
+			array('name, one_line_pitch, product_description', 'required', 'message'=>'Obrigatório'),
 			array('name, email, skype', 'length', 'max'=>99),
-			array('logo', 'length', 'max'=>20),
+			array('logo, location', 'length', 'max'=>20),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
-			array('facebook, twitter, linkedin, video', 'length', 'max'=>150),
+			array('facebook, twitter, linkedin, website, video', 'length', 'max'=>150),
 			array('product_description, foundation, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, create_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -106,13 +112,12 @@ class Startup extends CActiveRecord
 			'files' => array(self::HAS_MANY, 'File', 'startup_id'),
 			'investments' => array(self::HAS_MANY, 'Investment', 'startup_id'),
 			'pitches' => array(self::HAS_MANY, 'Pitch', 'startup_id'),
-			'location0' => array(self::BELONGS_TO, 'Location', 'location'),
 			'logo0' => array(self::BELONGS_TO, 'Image', 'logo'),
 			'users' => array(self::MANY_MANY, 'User', 'startup_follow(startup_id, user_id)'),
 			'images' => array(self::MANY_MANY, 'Image', 'startup_image(startup_id, image_id)'),
 			'sectors' => array(self::MANY_MANY, 'Sector', 'startup_sector(startup_id, sector_id)'),
-			'startupWebsites' => array(self::HAS_MANY, 'StartupWebsite', 'startup_id'),
 			'users1' => array(self::MANY_MANY, 'User', 'user_startup(startup_id, user_id)'),
+			'city' => array(self::BELONGS_TO, 'Cidade', 'location'),
 		);
 	}
 
@@ -137,6 +142,7 @@ class Startup extends CActiveRecord
 			'facebook' => 'Facebook',
 			'twitter' => 'Twitter',
 			'linkedin' => 'Linkedin',
+			'website' => 'Website',
 			'location' => 'Location',
 			'client_segment' => 'Client Segment',
 			'value_proposition' => 'Value Proposition',
@@ -195,6 +201,7 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.facebook',$this->facebook,true);
 		$criteria->compare('t.twitter',$this->twitter,true);
 		$criteria->compare('t.linkedin',$this->linkedin,true);
+		$criteria->compare('t.website',$this->website,true);
 		$criteria->compare('t.location',$this->location,true);
 		$criteria->compare('t.client_segment',$this->client_segment,true);
 		$criteria->compare('t.value_proposition',$this->value_proposition,true);
@@ -250,9 +257,10 @@ class Startup extends CActiveRecord
 	public function getCompanyStageOptions()
 	{
 		return array(
-			self::STAGE_1=>'Startup',
-			self::STAGE_2=>'Early Stage',
-			self::STAGE_3=>'Growth Stage',
+			self::STAGE_1=>'Conceito',
+			self::STAGE_2=>'Desenvolvimento',
+			self::STAGE_3=>'Protótipo',
+			self::STAGE_4=>'Produto Final',
 		);
 	}
 
@@ -271,6 +279,38 @@ class Startup extends CActiveRecord
         return $string;
     }
 	
+	public function getSectorCommaNames()
+    {
+        $string="";
+        $array = $this->sectors;
+        
+        $lastElement = end($array);
+        foreach ($array as $sector)
+        {
+            $string = $string . $sector->name;
+            if($sector !== $lastElement) $string = $string . ', ';
+        }
+        
+        return $string;
+    }
+	
+	/**
+	 * @return an array with the sector ids
+	 */
+    public function getSectorIds()
+    {        
+        $sectors = $this->sectors;
+        $arr = array();
+        $i=0;
+        foreach ($sectors as $sector)
+        {
+            $arr[$i] = $sector->sector_id;
+            $i++;
+        }
+        
+        return $arr;
+    }
+	
 	public function hasUserFollowing($id)
 	{
 		foreach ($this->users as $user)
@@ -287,6 +327,39 @@ class Startup extends CActiveRecord
 	public function getFollowNumber()
 	{
 		return count($this->users);
+	}
+	
+	public function getAllUsers()
+	{
+		$users=User::model()->findAll();
+		$arr = array();
+		$i=0;
+		
+        foreach ($users as $user)
+        {
+            $arr[$i] = $user->profile->firstname .' '. $user->profile->lastname;
+            $i++;
+        }
+        
+        return $arr;
+		
+	}
+	
+	public function getAutoTest()
+	{
+		$query = User::model()->findAll();
+		$list = array();        
+		foreach($query as $q){
+			$data['value'] = $q['id'];
+			$data['label'] = $q['username'];
+			$data['description'] = "dasdasd";
+			$data['imgage'] = "asdasd";
+
+			$list[] = $data;
+			unset($data);
+		}
+
+		echo json_encode($list);
 	}
 		
 	

@@ -1,15 +1,6 @@
 ﻿<?php
 $this->layout='column1';
 
-$this->breadcrumbs=array(
-	'Startups',
-);
-
-$this->menu=array(
-array('label'=>'Create Startup','url'=>array('create')),
-array('label'=>'Manage Startup','url'=>array('admin')),
-);
-
 
 ?>
 
@@ -68,7 +59,7 @@ $('.g').click(function(event) {
 			
 });
 
-$('#yw3').click(function(event) {
+$('#yw2').click(function(event) {
 			
 			location.href = 'startup';
 			
@@ -177,7 +168,7 @@ function SearchFunc()   {
         'name',
 		'one_line_pitch'
     ),
-'template'=>'{pager} {items} {pager}',
+'template'=>'{items} {pager}',
 )); ?>
 
 
