@@ -32,13 +32,13 @@
 		
 		function calculate(obj){
 			var count = $(obj).val().length;
-			var available = options.allowed - count;
-			if(available <= options.warning && available >= 0){
+			var available = count;
+			if(available >= options.warning && available <= options.allowed){
 				$(obj).next().next().addClass(options.cssWarning);
 			} else {
 				$(obj).next().next().removeClass(options.cssWarning);
 			}
-			if(available < 0){
+			if(available > options.allowed){
 				$(obj).next().next().addClass(options.cssExceeded);
 			} else {
 				$(obj).next().next().removeClass(options.cssExceeded);
@@ -48,13 +48,13 @@
 		
 		function calculate_first(obj){
 			var count = $(obj).val().length;
-			var available = options.allowed - count;
-			if(available <= options.warning && available >= 0){
+			var available = count;
+			if(available >= options.warning && available <= options.allowed){
 				$(obj).next().addClass(options.cssWarning);
 			} else {
 				$(obj).next().removeClass(options.cssWarning);
 			}
-			if(available < 0){
+			if(available > options.allowed){
 				$(obj).next().addClass(options.cssExceeded);
 			} else {
 				$(obj).next().removeClass(options.cssExceeded);

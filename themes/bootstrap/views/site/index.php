@@ -28,7 +28,8 @@ $(document).ready(function() {
 		items : 4,
 		auto : false,
 		prev : '#startup_carousel_prev',
-		next : '#startup_carousel_next'
+		next : '#startup_carousel_next',
+		pagination: '#startup_carousel_pagination'
 	});	
 	
 		
@@ -134,7 +135,7 @@ Site Description
 	<div class="clearfix"></div>
 	<a class="startup_carousel_control prev" id="startup_carousel_prev" href="#"><span>&lsaquo;</span></a>
 	<a class="startup_carousel_control next" id="startup_carousel_next" href="#"><span>&rsaquo;</span></a>
-	<div class="pagination" id="foo5_pag"></div>
+	<div class="pagination carousel-pag" id="startup_carousel_pagination"></div>
 </div>
 
 
