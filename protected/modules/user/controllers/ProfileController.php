@@ -8,7 +8,41 @@ class ProfileController extends Controller
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
-	private $_model;
+	private $_model;    
+    
+    /**
+	 * @return array action filters
+	 */
+	public function filters()
+	{
+		return array(
+            'accessControl', // perform access control for CRUD operations
+		);
+	}
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('profile', 'edit'),
+				'users'=>array('@'),
+			),
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors'),
+                'verbs'=>array('POST'),
+				'users'=>array('@'),
+			),
+            array('deny',  // deny all users
+				'users'=>array('*'),
+			),
+		);
+	}
+    
+    
 	/**
 	 * Shows a particular model.
 	 */
@@ -28,9 +62,12 @@ class ProfileController extends Controller
 	}
     
     public function actionEdit($username)
-	{	
+	{	        
 		$model = $this->loadModel($username);
-        $profile = $model->profile;
+        if (!UserModule::isAdmin() && $model->id != Yii::app()->user->id) 
+		    throw new CHttpException(403, 'You cannot edit this profile.');
+        
+        $profile = $model->profile;  
         
         if(isset($_POST['Profile']['pic']))
 		{			
@@ -109,8 +146,8 @@ class ProfileController extends Controller
 	}
     
     public function actionUpdateLocation()
-    {
-        $model = $this->loadUser($_POST['pk']);
+    {        
+        $model = $this->loadUser($_POST['pk']);        
         $profile = $model->profile;
         if($_POST['value']==0) $profile->location=NULL;
         else $profile->location = $_POST['value'];
@@ -163,40 +200,12 @@ class ProfileController extends Controller
     }
         
     public function actionUpdateEd()
-    {
+    {        
         $es = new TbEditableSaver('Profile');  //'Profile' is name of model to be updated
+        
         $es->update();
     }
-	
-	/**
-	 * Change password
-	 */
-	public function actionChangepassword() {
-		$model = new UserChangePassword;
-		if (Yii::app()->user->id) {
-			
-			// ajax validator
-			if(isset($_POST['ajax']) && $_POST['ajax']==='changepassword-form')
-			{
-				echo UActiveForm::validate($model);
-				Yii::app()->end();
-			}
-			
-			if(isset($_POST['UserChangePassword'])) {
-					$model->attributes=$_POST['UserChangePassword'];
-					if($model->validate()) {
-						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
-						$new_password->password = UserModule::encrypting($model->password);
-						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
-						$new_password->save();
-						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
-						$this->redirect(array("profile"));
-					}
-			}
-			$this->render('changepassword',array('model'=>$model));
-	    }
-	}
-    
+	    
     /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -215,14 +224,18 @@ class ProfileController extends Controller
 	}   
     
     //load User from username
-    public function loadModel($username)
+    public function loadModel($username=null)
 	{
-		$model=User::model()->find('username=:username',
-										array(
-										  ':username'=>$username,
-										));
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+        if($this->_model===null)
+        {
+            if($username!==null || isset($_GET['username']))
+                $this->_model=User::model()->find('username=:username',
+                                            array(
+                                              ':username'=>$username!==null ? $username : $_GET['username'],
+                                            ));
+            if($this->_model===null)
+                throw new CHttpException(404,'The requested page does not exist.');
+        }
+		return $this->_model;
 	}
 }

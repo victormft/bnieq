@@ -37,15 +37,12 @@ class LoginController extends Controller
 	}
     
     public function actions()
-    {
+    {   
       return array(
         'oauth' => array(
           'class'=>'ext.hoauth.HOAuthAction',
         ),
-        'oauthadmin' => array(
-          'class'=>'ext.hoauth.HOAuthAdminAction',
-        ),
       );
     }
-
+    
 }

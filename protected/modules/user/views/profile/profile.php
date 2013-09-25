@@ -137,16 +137,18 @@ function getUrlVars()
 			</span>
         <?php endif; ?>
         
-        <?php if($model->id !== Yii::app()->user->id): ?>
-        <?php $this->widget('bootstrap.widgets.TbButton', array(
-            'label'=>'Message',
-            'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-            'size'=>'normal', // null, 'large', 'small' or 'mini'
-            'url'=>array('/message/compose','id'=>$model->id),
-            'htmlOptions'=>array('style'=>'width:50px;'),
-                )); 
+        <?php if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model)); ?>
+        
+        <?php //if($model->id !== Yii::app()->user->id): ?>
+        <?php //$this->widget('bootstrap.widgets.TbButton', array(
+            //'label'=>'Message',
+            //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            //'size'=>'normal', // null, 'large', 'small' or 'mini'
+            //'url'=>array('/messages/compose','id'=>$model->id),
+            //'htmlOptions'=>array('style'=>'width:50px;'),
+           //     )); 
             ?>
-        <?php endif; ?>
+        <?php //endif; ?>
         
 	</div>
 </div>

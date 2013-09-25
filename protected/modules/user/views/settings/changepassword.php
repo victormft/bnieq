@@ -17,7 +17,7 @@ $this->breadcrumbs=array(
     ),
 )); ?>
 
-<div class="span6">
+<div class="span8">
     <?php if(Yii::app()->user->hasFlash('success')):?>
     <div class="successMessage">
     <?php echo Yii::app()->user->getFlash('success'); ?>

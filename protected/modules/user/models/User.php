@@ -109,8 +109,7 @@ class User extends CActiveRecord
 			'verifyCode'=>UserModule::t("Verification Code"),
 			'activkey' => UserModule::t("activation key"),
 			'createtime' => UserModule::t("Registration date"),
-			'create_at' => UserModule::t("Registration date"),
-			
+			'create_at' => UserModule::t("Registration date"),			
 			'lastvisit_at' => UserModule::t("Last visit"),
 			'superuser' => UserModule::t("Superuser"),
 			'status' => UserModule::t("Status"),            
@@ -328,9 +327,8 @@ class User extends CActiveRecord
     
     // class User
     public function getFullName() {
-        return $this->username;
+        return $this->profile->firstname.' '.$this->profile->lastname;
     }
-
     public function getSuggest($q) {
         $c = new CDbCriteria();
         $c->addSearchCondition('username', $q, true, 'OR');
