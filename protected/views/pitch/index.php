@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Pitch', 'url'=>array('create')),
+	array('label'=>'Create Pitch', 'url'=>array('create', 'startupId'=>1)),
 	array('label'=>'Manage Pitch', 'url'=>array('admin')),
 );
 ?>

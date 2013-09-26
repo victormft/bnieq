@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * This is the model class for table "profile".
  *
@@ -28,8 +29,6 @@
 class Profile extends CActiveRecord
 {
     
-	const MALE = 0;
-	const FEMALE = 1;
     //to upload logo
 	public $pic;
     
@@ -165,13 +164,6 @@ class Profile extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
-	}
-	
-	public function getGenderOptions() {
-		return array (
-		self::MALE => 'Male',
-		self::FEMALE => 'Female',
-		);
 	}
     
 	
