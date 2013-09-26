@@ -63,7 +63,8 @@ class Profile extends CActiveRecord
 		return array(
             //validation for pic
 			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
-			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),            
+			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),  
+            array('profile_picture', 'default', 'value' => 1, 'setOnEmpty' => true, 'on' => 'insert'),
             
 			array('firstname, lastname', 'required'),
 			array('firstname, lastname', 'length', 'max'=>50),

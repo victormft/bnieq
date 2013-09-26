@@ -73,6 +73,7 @@ $this->breadcrumbs=array(
                         'attribute' => 'resume',
                         'url'       => array('updateEd'),  
                         'mode'      => 'inline', 
+                        'emptytext' => '(Mini-resumé)',
                         'htmlOptions'=> array(
                             'id' => 'resume3'
                         ),
@@ -116,10 +117,15 @@ $this->breadcrumbs=array(
                     'value'     => $model->getRoleIds(),
                     'placement' => 'right',
                     'inputclass'=> 'input-large',
+                    'emptytext' => '(Roles)',
                     'select2'   => array(
                         'placeholder'=> 'Select...',
                         'multiple'=>true,
                     ),
+                    'onHidden' => 'js: function(e, reason) {
+                        $("#select2-drop-mask").css("display","none");
+                        $("#select2-drop").css("display","none");
+                     }'
                 )); ?>
             </span>
 		</div>
@@ -228,6 +234,10 @@ $this->breadcrumbs=array(
                         'placeholder'=> 'Select...',
                         'multiple'=>true,
                     ),
+                    'onHidden' => 'js: function(e, reason) {
+                        $("#select2-drop-mask").css("display","none");
+                        $("#select2-drop").css("display","none");
+                     }'
                 )); ?>
 			</p> 
 			
@@ -269,6 +279,10 @@ $this->breadcrumbs=array(
                         'placeholder'=> 'Select...',
                         'multiple'=>true,
                     ),
+                    'onHidden' => 'js: function(e, reason) {
+                        $("#select2-drop-mask").css("display","none");
+                        $("#select2-drop").css("display","none");
+                     }'
                 )); ?> 
 			</p> 
             
@@ -378,7 +392,11 @@ $this->breadcrumbs=array(
                         'allowClear'=> true,   
                         'dropdownAutoWidth'=> true,
                         'minimumInputLength'=> 3,
-                    )
+                    ),
+                    'onHidden' => 'js: function(e, reason) {
+                        $("#select2-drop-mask").css("display","none");
+                        $("#select2-drop").css("display","none");
+                     }'
                 )); ?> 
             </p>
 	

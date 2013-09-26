@@ -1,7 +1,7 @@
 <div class="sectors">
     
     <?php echo '<b>Sectors of interest:</b>'; ?>
-    <?php echo $model->getSectorNames(); ?>
+    <button type="button" data-toggle="modal" data-target="#myModal"><?php echo $model->getSectorNames(); ?></button>
     
     <button type="button" data-toggle="modal" data-target="#myModal">Launch modal</button>
     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

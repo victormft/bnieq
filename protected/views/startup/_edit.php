@@ -1,4 +1,9 @@
-<?php
+﻿<?php
+
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.10.3.custom.js');
+
+
+
 Yii::app()->clientScript->registerScript('loading-img',
 "
 
@@ -9,7 +14,39 @@ Yii::app()->clientScript->registerScript('loading-img',
 	$('#yw2').click(function(event) {
 		window.location.reload(true);	
 	});
+
 	
+	$('#form-chonga').submit(function(event) {
+		$('#yw13').html('Saulo Baitola');
+		
+		event.preventDefault(); 
+		
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/chonga?name='+getUrlVars()['name'],
+				dataType: 'json',
+				type: 'POST',
+				data: $('#form-chonga').serialize(),
+				success: function(data){
+					$('.crazy').append('<div style=\"height:100px; width: 100px; background:#fdfdfd; border: 1px solid #ddd;  margin-bottom:10px;\">'+ data.res +'</div>');
+						
+				}
+			});
+		
+		
+	});
+	
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
 
 ");
 
@@ -89,6 +126,72 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	<div class="content-wrap">
 
+		<div class="content-head"><i class="icon-cogs profile-icon"></i> Video<span style="display:block; font-size:13px; font-style: italic;  color:#aaa;">Link para video do youtube</span></div>
+		
+		<div class="content-info">
+			<div class="chonga">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $model,
+						'attribute' => 'video',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-large',
+					 )); ?>  
+				</p>
+			</div>
+			
+		</div>
+		
+	</div>	
+	
+	<div class="content-wrap">
+
+		<div class="content-head"><i class="icon-cogs profile-icon"></i> Imagens</div>
+		
+		<div class="content-info">
+			
+			<?php $form=$this->beginWidget('CActiveForm', array(
+				'id'=>'mult-image-edit-form',
+				'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+			)); ?>
+			
+			<?php
+				$this->widget('CMultiFileUpload', array(
+					'model'=>$model,
+					'name'=>'mult_pic',
+					'accept' => 'jpeg|jpg|gif|png',
+					'max'=>4-count($model->images),
+					// useful for verifying files
+					//'duplicate' => 'Arquivo duplicado!', // useful, i think
+					'denied' => '', // useful, i think
+				));
+			?>
+			
+			
+			<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'buttonType'=>'submit',
+					'type'=>'primary',
+					'label'=>'Upload',
+					'size'=>'normal',
+					)); 
+			?>
+	
+	
+	<?php $this->endWidget(); ?>
+			
+			<div class="mult-pic-preview"></div>
+			
+			
+			
+			
+		</div>
+		
+	</div>	
+	
+	
+	<div class="content-wrap">
+
 		<div class="content-head">Sector and Location</div>
 		
 		<div class="content-info">
@@ -107,15 +210,32 @@ Yii::app()->clientScript->registerScript('loading-img',
 				<?php $this->renderPartial('_sectors', array('model'=>$model)); ?>
 			</div>
 			
-			<p> <?php echo '<b>Full location: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'location',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
+			
+			
+		<div class="profile-sectors">
+			<span>
+                <?php           
+                $this->widget('editable.Editable', array(
+                    'type'      => 'select2',
+                    'name'      => 'sector',
+                    'pk'        => $model->id,
+                    'url'       => $this->createUrl('updateSectors'), 
+                    'source'    => CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'),
+                    'text'      => $model->getSectorCommaNames(),  
+                    'value'     => $model->getSectorIds(),
+                    'placement' => 'right',
+                    'inputclass'=> 'input-large',
+                    'select2'   => array(
+                        'placeholder'=> 'Select...',
+                        'multiple'=>true,
+						'maximumSelectionSize'=> 3,
+                    ),
+                )); ?>
+            </span>
+		</div>
+			
+			
+			
 			
 			<p> <?php echo '<b>Post Code: </b>'; ?>    
 				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
@@ -127,15 +247,26 @@ Yii::app()->clientScript->registerScript('loading-img',
 				 )); ?>  
 			</p>
 			
-			<p> <?php echo '<b>City: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'city',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
+			<p> <?php echo '<b>Cityaaaa: </b>'; ?>    
+                <?php           
+                $this->widget('editable.EditableField', array(
+                    'type'      => 'select2',
+                    'model'     => $model,
+                    'attribute' => 'location',
+                    'url'       => $this->createUrl('updateLocation'), 
+                    'source'    => Cidade::model()->getCities(),
+                    'placement' => 'right',
+                    'inputclass'=> 'input-large',
+                    'select2'   => array(
+                        'placeholder'=> 'Select...',
+                        'allowClear'=> true,   
+                        'dropdownAutoWidth'=> true,
+                        'minimumInputLength'=> 3,
+                    )
+                )); ?> 
+            </p>
+			
+			
 		</div>
 		
 	</div>	
@@ -237,18 +368,93 @@ Yii::app()->clientScript->registerScript('loading-img',
 
 <div class="profile-column-r">
 
+
+	<div class="content-wrap">
+
+		<div class="content-head">Typeahead Role</div>
+		
+		<div class="content-info">
+
+		
+			<?php $form=$this->beginWidget('CActiveForm', array(
+				'id'=>'form-chonga',
+				'action'=>' ',
+				'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+			)); ?>
+	
+	
+				<input type="text" id="my_ac" size="40" />
+				<input type="hidden" id="my_ac_id" name="user_chonga"/>
+				
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'buttonType'=>'submit',
+					'type'=>'primary',
+					'label'=>'Chonga',
+					'size'=>'normal',
+					)); 
+				?>
+				
+				<?php echo CHtml::activeDropDownList($model,'user_role', array_merge(array(''=>'Selecione...'), CHtml::listData(Role::model()->findAll(), 'role_id', 'name')), array('name'=>'role')) ?>
+		
+			<?php $this->endWidget(); ?>
+
+			<script>
+				$(function() {
+
+    $("#my_ac").autocomplete({
+        source: <?php $model->getAutoTest(); ?>,
+        minLength: 0,
+		delay: 10,
+		select: function( event, ui ) {
+			$( "#my_ac" ).val( ui.item.label );
+			$( "#my_ac_id" ).val( ui.item.value );
+			return false;
+      }
+    }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
+        var inner_html = '<a><div class="list_item_container"><div class="image"><img src="' + item.image + '"></div><div class="label">' + item.label + '</div><div class="description">' + item.description + '</div></div></a>';
+        return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append(inner_html)
+            .appendTo( ul );
+    };
+});
+			</script>
+		
+		</div>	
+	</div>
+
+
+
+
+<div class="content-wrap">
+
+		<div class="content-head">Users</div>
+		
+		<div class="content-info crazy">
+
+		
+
+			
+
+		
+		</div>	
+	</div>
+
+
+	
 	<div class="content-wrap">
 
 		<div class="content-head">Links</div>
 		
 		<div class="content-info">
 			<p> <?php echo '<b>Website: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+				<?php $this->widget('editable.EditableField', array(
 					'type'      => 'text',
 					'model'     => $model,
 					'attribute' => 'website',
 					'url'       => array('update'),  
 					'placement' => 'right',
+					'inputclass'=> 'input-large',
 				 )); ?>  
 			</p>
 			

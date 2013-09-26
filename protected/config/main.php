@@ -32,9 +32,6 @@ return array(
         'application.modules.user.components.*',
         'application.extensions.bootstrap.widgets.*',
         'application.extensions.editable.*', //easy include of editable classes  
-        //rights
-        'application.modules.rights.*', 
-        'application.modules.rights.components.*',
 	),
 
 	'modules'=>array(
@@ -79,18 +76,20 @@ return array(
             'returnLogoutUrl' => array('/user/login'),
         ),
         
+        //private-messaging
+        'message' => array(
+            'userModel' => 'User',
+            'getNameMethod' => 'getFullName',
+            'getSuggestMethod' => 'getSuggest',
+        ),        
         
         //mailbox
         'mailbox'=> array(  
             'userClass' => 'User',
             'userIdColumn' => 'id',
             'usernameColumn' =>  'username',
+            'trashbox' => false,
         ),
-        
-        //rights
-        'rights'=>array( 
-            'install'=>false,            // Enables the installer. 
-        ),   
 				
 	),
 
@@ -106,7 +105,7 @@ return array(
 			'allowAutoLogin'=>true,
 			
 			//yii-user
-			'class' => 'RWebUser',                      //rights: Allows super users access implicitly.
+			'class' => 'WebUser',                      
 			'loginUrl' => array('/user/login'),
 		),
         
@@ -172,10 +171,14 @@ return array(
         'cache'=>array(
 			'class'=>'system.caching.CFileCache',
 		),
-        //rights
-        'authManager'=>array(               // Provides support authorization item sorting
-            'class'=>'RDbAuthManager',
-        )
+        
+        'authManager'=>array(
+            'class'=>'CDbAuthManager',
+            'connectionID'=>'db',
+            'itemTable' =>'tbl_auth_item',
+            'itemChildTable' =>'tbl_auth_item_child',
+            'assignmentTable' =>'tbl_auth_assignment',
+        ),
 		
 	),
 

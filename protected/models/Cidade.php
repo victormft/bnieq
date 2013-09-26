@@ -44,6 +44,7 @@ class Cidade extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'profiles' => array(self::HAS_MANY, 'Profile', 'location'),
+			'startups' => array(self::HAS_MANY, 'Startup', 'location'),
 		);
 	}
 

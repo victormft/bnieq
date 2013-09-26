@@ -14,7 +14,8 @@
 
 <body>   
     
-
+<?php if(!Yii::app()->user->isGuest) $user = User::model()->findbyPk(Yii::app()->user->id); ?>    
+    
 <div class="navbar navbar-inverse">
     <div class="navbar-inner" style="border-radius: 0">
         <a class="brand" style="margin-left: 80px" href=<?php echo Yii::app()->homeUrl; ?>>NEXTBLUE</a>
@@ -29,7 +30,7 @@
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/registration'?> >Register</a></li>
             <?php else: ?>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account <span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account (<?php echo $user->profile->firstname; ?>)<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href= <?php echo Yii::app()->homeUrl . '/user/profile' ?> >Profile</a>
@@ -41,7 +42,8 @@
                         </li>
                     </ul>                    
                 </li>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/mailbox' ?> >Messages</a></li>
+                <li><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> >Messages <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
+                        ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a></li>
                 <li><a href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> >Logout</a></li>
             <?php endif?>
                 
