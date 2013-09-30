@@ -19,7 +19,7 @@ class PitchController extends Controller
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
-			'Startup + create',
+			'startup + create',
 		);
 	}
 
@@ -69,8 +69,8 @@ class PitchController extends Controller
 		$model=new Pitch;
 		$user = User::model()->findByPk(Yii::app()->user->id);
 		$profile = $user->profile;
-		
-
+		$model->startup_id = $this->_startup->id;
+		$startup = $this->_startup;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -78,12 +78,16 @@ class PitchController extends Controller
 		{
 				
 			$model->attributes=$_POST['Pitch'];
-			if($model->save())
+			$profile->attributes=$_POST['Profile'];
+			//$startup->attributes=$_POST['Startup'];
+			
+			//Using save(false) only for test, it will be changed in the future
+			if( ($startup->save(false)) && ($model->save()) && ($profile->save(false)) )
 				$this->redirect(array('view','id'=>$model->id));
 		}
 
 		$this->render('create',array(
-			'model'=>$model, 'profile'=>$profile , 'startup'=>$this->_startup, 
+			'model'=>$model, 'profile'=>$profile , 'startup'=>$startup, 
 		));
 	}
 
@@ -165,10 +169,8 @@ class PitchController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
-	
-	
-	
-	public function teste() { echo 'Alo amizade';}
+
+
 	/**
 	 * Performs the AJAX validation.
 	 * @param Pitch $model the model to be validated

@@ -18,10 +18,11 @@
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
-	
 	<?php 
 	///Maybe this will be moved to another section but I will leave here for a while until I find a better way to struct it.
-		if($profile->firstname == NULL || $profile->lastname==NULL || $profile->birthday == NULL)
+		if($profile->firstname == NULL || $profile->lastname==NULL || $profile->birthday == NULL 
+			|| $profile->telephone == NULL || $profile->gender == NULL)
+
 			echo '<h3>Profile</h3>';
 		if($profile->firstname == NULL) {
 			echo '<div class="row">';
