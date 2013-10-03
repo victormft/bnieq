@@ -165,6 +165,15 @@ class Profile extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    
+    public function getGenderOptions() {
+		return array (
+		self::MALE => 'Male',
+		self::FEMALE => 'Female',
+		);
+	}
+
     
 	
 	
