@@ -29,7 +29,7 @@ class StartupController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow', 'updatelocation', 'updateSectors', 'multPic', 'chonga'),
+				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow', 'updatelocation', 'updateSectors', 'multPic', 'addTeam', 'deleteTeam'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -607,15 +607,15 @@ class StartupController extends Controller
 			));
 	}
 	
-	public function actionChonga($name)
+	public function actionAddTeam($name)
 	{
 		$model=$this->loadModel($name);
 		
 		$user_startup = new UserStartup;
 		
-		$user_startup->user_id = $_POST['user_chonga'];
+		$user_startup->user_id = $_POST['user_startup'];
 		$user_startup->startup_id = $model->id;
-		$user_startup->position = $_POST['role'];
+		$user_startup->position = $_POST['position'];
 		$user_startup->save();
 		
 		$model=$this->loadModel($name);
@@ -628,14 +628,49 @@ class StartupController extends Controller
 		}		
 	*/
 
-		$html='<div style=\"height:100px; width: 100px; background:#888;\"></div>';
+		//$html='<div style="margin:2px;">nh'. $user_startup->position .'</div>';
+		$usr=User::model()->findbyPk($user_startup->user_id);
+
+/*		$html='<div class="lala" style="margin-bottom:10px; overflow:auto; display:none;">
+			<img src="'. Yii::app()->request->baseUrl .'/images/'. $usr->profile->logo->name .'" id="generic-img" alt="asdasd" style="float:left; width: 60px; height:60px;"/>
+			
+			<div><span data-id="'. $usr->id .'">'. $usr->profile->firstname . ' ' . $usr->profile->lastname .'</span></div>
+			<div>'. $usr->profile->resume . '</div>
+			<div>'. $user_startup->position . '<i class="icon-remove-sign"></i></div>
+		</div>';
+*/		
+		$html='
 		
+		<div class="team-item" style="display:none;">
+			<div class="team-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $usr->profile->logo->name .'" id="team-img"/></div>
+			<div class="team-name"><span data-id="'. $usr->id .'">'. $usr->profile->firstname . ' ' . $usr->profile->lastname .'</span></div>
+			<div class="team-position">'. $user_startup->position . '</div>
+			<div class="team-resume">'. $usr->profile->resume . '</div>
+			<div class="team-delete"><i class="icon-remove-sign"></i></div>
+		</div>
+		
+		';
+	
 		
 		echo CJSON::encode(array(
-				'res'=>User::model()->findbyPk($_POST['user_chonga'])->username
+				'res'=>$html
 			));
 		exit;
 	}
+	
+	
+	public function actionDeleteTeam($id, $name)
+	{
+		$model=$this->loadModel($name);
+		$user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$id, ':s_id'=>$model->id));
+		$user_startup->delete();
+			
+		echo CJSON::encode(array(
+				'res'=>'OK'
+			));
+		exit;
+	}
+	
 	
 	
 	
