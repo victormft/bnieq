@@ -27,7 +27,6 @@ $(document).ready(function() {
 	$('#startup_carousel .items').carouFredSel({
 		items : 4,
 		auto : false,
-		circular: false,
 		prev : '#startup_carousel_prev',
 		next : '#startup_carousel_next',
 		pagination: '#startup_carousel_pagination'
@@ -127,7 +126,7 @@ Site Description
 <div style="margin-bottom:20px; position:relative;">
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
-'dataProvider'=>$dataProvider->search(20),
+'dataProvider'=>$dataProvider->search(),
 'itemView'=>'_carousel',
 'id'=>'startup_carousel',
 'template'=>'{items}',

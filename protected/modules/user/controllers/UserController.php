@@ -25,11 +25,16 @@ class UserController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'follow', 'unfollow', 'investors'),
+				'users'=>array('@'),
+			),
+            array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
-	}	
+	}
+    
+    
 
 	/**
 	 * Displays a particular model.
@@ -49,18 +54,22 @@ class UserController extends Controller
 	{
 		$model=new Profile('search');
 		$model->unsetAttributes();  // clear any default values
-
+        
+        $model->special_condition = 't.user_id!='.Yii::app()->user->id;
+        
 		if(isset($_GET['n'])) {
-			$model->name=$_GET['n'];
-			$model->one_line_pitch=$_GET['n'];
+            $model->fullname=$_GET['n'];
+			$model->resume=$_GET['n'];
 		}
-		if(isset($_GET['c_size']))
-			$model->company_size=$_GET['c_size'];	
 		
 		if(isset($_GET['sec']))
-			$model->sectors=$_GET['sec'];	
-			
-		
+			$model->roles=$_GET['sec'];	
+				
+        if(isset($_GET['g']))
+		{
+			if($_GET['g']=='Mais seguidos')
+				$model->group=$_GET['g'];
+		}	
         
 		 $this->render('index',array(
                 'dataProvider'=>$model,
@@ -73,7 +82,7 @@ class UserController extends Controller
 		));
 		*/
 	}
-
+    
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -109,8 +118,11 @@ class UserController extends Controller
 	}
     
     public function actionFollow()
-	{
-		if(Yii::app()->request->isAjaxRequest )
+	{   
+        if($_GET['username'] === Yii::app()->user->id)
+            throw new CHttpException(403, 'You cannot perform this action.');
+        
+		if(Yii::app()->request->isAjaxRequest)
 		{
 			$model = $this->loadModel($_GET['username']);            
 			
@@ -120,19 +132,29 @@ class UserController extends Controller
                 $model->followers->follower_id = Yii::app()->user->id;
                 $model->followers->followed_id = $model->id;                
 				$model->followers->save();
-				return count($model->followers);
+                echo CJSON::encode(array(
+					'res'=>count($model->followers)
+				));
+				exit;
 			}			
 			else 
 			{
 				if($model->hasUserFollowing(Yii::app()->user->id))
 				{
-					return count($model->followers);
+					echo CJSON::encode(array(
+						'res'=>count($model->followers)
+					));
+					exit;
 				}				
 				$model->followers=new UserFollow;                
                 $model->followers->follower_id = Yii::app()->user->id;
                 $model->followers->followed_id = $model->id;
 				$model->followers->save();
-				return count($model->followers);
+                $model = $this->loadModel($_GET['username']);
+				echo CJSON::encode(array(
+					'res'=>count($model->followers)
+				));
+				exit;
 			}		
 		}
 		
@@ -150,10 +172,16 @@ class UserController extends Controller
 			{
 				$user_follow=UserFollow::model()->find('follower_id=:u_id AND followed_id=:s_id', array(':u_id'=>Yii::app()->user->id, ':s_id'=>$model->id));
 				$user_follow->delete();
-				return count($model->followers);
-			}
-			
-			return count($model->followers);
+                $model = $this->loadModel($_GET['username']);
+				echo CJSON::encode(array(
+                    'res'=>count($model->followers)
+                ));
+                exit;
+			}			
+			echo CJSON::encode(array(
+				'res'=>count($model->followers)
+			));
+			exit;
 		}
 		
 		else

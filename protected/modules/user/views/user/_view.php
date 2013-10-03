@@ -1,6 +1,3 @@
-
-<?php if($data->user->id !== Yii::app()->user->id): ?>
-
 <?php
 Yii::app()->clientScript->registerScript('follow-'.$data->user->username,
 "
@@ -41,28 +38,17 @@ $('#follow-".$data->user->username."').click(function(event) {
 
 ?>
 
-
 <div class="view-list">
 
-	<?php echo CHtml::link(CHtml::encode($data->firstname),array('/user/profile','username'=>$data->user->username), array('class'=>'startup-view-name'));?>
-	
+    <?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo->name.'" id="Startup-list-img"/>', array('/user/profile', 'username'=>$data->user->username)); ?>
+    
+    <div class="view-list-text">
+    
+        <?php echo CHtml::link(CHtml::encode($data->user->getFullName()),array('/user/profile','username'=>$data->user->username), array('class'=>'startup-view-name'));?>
 
-	
-	<div class="startup-view-pitch">
-		<?php //echo CHtml::encode($data->one_line_pitch); ?>
-	</div>
-
-	
-	<div class="startup-view-sec">
-		<?php 
-		
-		//echo Startup::model()->findByPk($data->id)->getSectorNames();
-		
-		//echo $data->getSectorNames(); 
-		
-		?>
-	</div>
-
+        <div class="startup-view-pitch" >
+            <?php echo CHtml::encode($data->resume); ?>
+        </div>
 
         <div class="startup-view-sec" >	
             <?php echo $data->user->getRolesForPrint() ?>
@@ -98,7 +84,3 @@ $('#follow-".$data->user->username."').click(function(event) {
     </span>
     
 </div>
-
-<?php endif ?>
-</div>
-

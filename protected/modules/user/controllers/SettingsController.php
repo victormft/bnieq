@@ -15,6 +15,7 @@ class SettingsController extends Controller
 	{
         $this->redirect(array("general"));
 	}
+    
 	public function actionGeneral()
 	{
         $model = User::model()->findbyPk(Yii::app()->user->id);
@@ -64,6 +65,31 @@ class SettingsController extends Controller
 					}
 			}
 			$this->render('changepassword',array('model'=>$model));
+	    }
+	}
+    
+    public function actionSocial()
+	{
+        $model = User::model()->findbyPk(Yii::app()->user->id);
+		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='general-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['User'])) {
+					$model->attributes=$_POST['User'];
+					if($model->validate()) {
+						$model->save();
+                        Yii::app()->user->name = $model->username;
+						Yii::app()->user->setFlash('success',UserModule::t("Changes saved."));
+						$this->redirect(array("general"));
+					}
+			}
+			$this->render('social',array('model'=>$model));
 	    }
 	}
     
