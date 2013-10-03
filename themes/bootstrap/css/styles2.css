@@ -1,0 +1,92 @@
+.profile-header-text
+{
+    padding-left: 202px;
+    width: 450px;
+}
+
+.profile-onelinepitch
+{
+	font-size: 14px; 
+    font-weight:bold;
+	color: #333333;
+	margin-bottom: 9px;
+	margin-top: 18px;
+}
+
+.profile-sectors
+{
+    font-size: 13px;
+	margin-bottom: 10px;
+	margin-top: 8px;
+}
+
+.profile-sectors > a
+{
+    color: black;
+}
+
+.profile-location
+{
+	font-size: 14px;
+	color: #727272;
+	margin-bottom: 5px;
+	font-style:italic;
+}
+
+.profile-location > a
+{
+    color: black;
+}
+
+.view-list 
+{
+	position:relative;
+}
+
+.view-list .follow-btn
+{
+	position:absolute;
+	top: 0;
+	right: 0;
+	padding: 13px 15px 30px 0;
+}
+
+.view-list .follow-count
+{
+	position:absolute;
+	top: 0;
+	right: 0;
+	padding: 15px 82px 30px 0;
+}
+
+.view-list-text
+{
+    float: left;
+    max-width: 380px;
+}
+
+.welcome
+{
+    text-align: center;
+}
+
+.align-center
+{
+    text-align: center;
+}
+
+.gray
+{
+    color: #999999;
+}
+
+.login-method
+{
+    float:left;
+    width: 33%;
+}
+
+.login-form
+{
+    padding: 0 55px 0 55px;
+}
