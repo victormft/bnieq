@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $this->layout='column1';
 
 
@@ -159,16 +159,18 @@ function SearchFunc()   {
 
 <h1>Startups</h1>
 
-<?php $this->widget('bootstrap.widgets.TbListView',array(
+<?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),
 'itemView'=>'_view',
 'id'=>'startupslistview',       // must have id corresponding to js above
+'pagerCssClass'=>'pagination',
+'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
 'sorterHeader'=>'Ordenar por: ',
- 'sortableAttributes'=>array(
+'sortableAttributes'=>array(
         'name',
 		'one_line_pitch'
     ),
-'template'=>'{items} {pager}',
+'template'=>'{sorter} {items} {pager}',
 )); ?>
 
 
