@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.carouFredSel-6.2.1.js');
 
 Yii::app()->clientScript->registerScript('follow',
@@ -70,7 +70,7 @@ $('.video-images-items').carouFredSel({
 
 <div class="profile-header">	
 
-	<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>" id="Startup-profile-img" alt="asdasd" />
+	<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>" id="startup-profile-img" />
 	
 	<div class="profile-header-info">
 		
@@ -82,14 +82,15 @@ $('.video-images-items').carouFredSel({
 			<span style="font-style:italic;"><?php echo $model->one_line_pitch; ?></span>
 		</div>
 		
-		<div class="profile-location">
-			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo $model->city->nome; ?>
-		</div>
-		
 		<div class="profile-sectors">
 			<span><?php echo $model->getSectorNames(); ?></span>
 		</div>
 		
+		<div class="profile-location">
+			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo $model->city->nome; ?>
+		</div>
+		
+		<!--
 		<div class="profile-links">
 			<div class="profile-link">
 				<?php if($model->facebook): ?>
@@ -110,18 +111,20 @@ $('.video-images-items').carouFredSel({
 				<i class="icon-globe profile-icon"></i><?php echo $model->website; ?>
 			</div>
 		</div>
+		-->
 	</div>
+	
 	
 	<div class="profile-header-right">
 		
 			<span class="edit-btn">
 			
 				<?php $this->widget('bootstrap.widgets.TbButton', array(
-				'label'=>'Edit',
+				'label'=>'Editar',
 				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				'size'=>'normal', // null, 'large', 'small' or 'mini'
 				'url'=>array('edit','name'=>$model->name),
-				'htmlOptions'=>array('style'=>'width:50px;', 'class'=>'profile-btn'),
+				'htmlOptions'=>array('style'=>'text-shadow: 1px 1px 1px #555;', /*'class'=>'profile-btn'*/),
 					)); 
 				?>
 			</span>
@@ -139,10 +142,10 @@ $('.video-images-items').carouFredSel({
 					{
 						$this->widget('bootstrap.widgets.TbButton', array(
 						'label'=>'Follow',
-						'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+						'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						'size'=>'normal', // null, 'large', 'small' or 'mini'
 						'url'=>'',//array('follow','name'=>$model->name),
-						'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
+						'htmlOptions'=>array('style'=>'width:50px; padding-top:8px; padding-bottom:8px; font-weight:bold; text-shadow: 1px 1px 1px #555; margin-top:5px;'),
 						)); 
 					}
 					
@@ -155,7 +158,7 @@ $('.video-images-items').carouFredSel({
 						'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
 						)); 
 					}
-					
+					/*
 					echo "<button class='btn-msg-wrap' type='button' data-toggle='modal' data-target='#myModal'>";
 					$this->widget('bootstrap.widgets.TbButton', array(
 						'label'=>'Message',
@@ -165,6 +168,7 @@ $('.video-images-items').carouFredSel({
 						'htmlOptions'=>array('style'=>'width:70px; padding:12px 5px;'),
 						)); 
 					echo "</button>";
+					*/
 				?>
 				
 			</span>
@@ -207,11 +211,11 @@ $('.video-images-items').carouFredSel({
 	
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-cogs profile-icon"></i> Tecnologia Utilizada</div>
+		<div class="content-head"><i class="icon-cogs profile-icon"></i> Tecnologia</div>
 		
 		<div class="content-info">
 			
-			<?php echo $model->product_description;?> 
+			<?php echo $model->tech;?> 
 			
 		</div>
 		
@@ -283,6 +287,34 @@ $('.video-images-items').carouFredSel({
 
 <div class="profile-column-r">
 
+	<div class="content-wrap">
+
+		<div class="content-head rounded social-web">
+			<div class="profile-links">
+				<div class="profile-link">
+					<?php if($model->facebook): ?>
+						<a href="<?php echo $model->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
+					<?php endif; ?>
+				</div>
+				<div class="profile-link">
+					<?php if($model->twitter): ?>
+						<a href="<?php echo $model->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
+					<?php endif; ?>
+				</div>
+				<div class="profile-link">
+					<?php if($model->linkedin): ?>
+						<a href="<?php echo $model->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
+					<?php endif; ?>
+				</div>
+				<div class="profile-website">
+					<i class="icon-globe"></i><a class="web-link" href="<?php echo $model->website; ?>" target="_blank"><?php echo $model->website; ?></a>
+				</div>
+			</div>
+		
+		</div>
+		
+	</div>	
+	
 	<div class="content-wrap">
 
 		<div class="content-head"><i class="icon-link profile-icon"></i> Website</div>
