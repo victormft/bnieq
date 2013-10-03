@@ -22,14 +22,12 @@
  * @property string $website
  * @property string $location
  * @property string $client_segment
- * @property string $tech
  * @property string $value_proposition
  * @property string $market_size
  * @property string $sales_marketing
  * @property string $revenue_generation
  * @property string $competitors
  * @property string $competitive_advantage
- * @property string $history
  * @property string $video
  * @property string $create_time
  * @property string $selecionada
@@ -70,12 +68,6 @@ class Startup extends CActiveRecord
 	const STAGE_2="Desenvolvimento";
 	const STAGE_3="Protótipo";
 	const STAGE_4="Produto Final";
-	
-	//company position (role that user has towards startup)
-	const POS_1="Founder";
-	const POS_2="Member";
-	const POS_3="Investor";
-	const POS_4="Advisor";
 		
 	/**
 	 * @return string the associated database table name
@@ -97,16 +89,15 @@ class Startup extends CActiveRecord
 			//validation for pic
 			array('pic, mult_pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
 			array('pic, mult_pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
-			array('name, one_line_pitch', 'required', 'message'=>'Obrigatório'),
+			array('name, one_line_pitch, product_description', 'required', 'message'=>'Obrigatório'),
 			array('name, email, skype', 'length', 'max'=>99),
-			array('product_description', 'length', 'max'=>1000),
 			array('logo, location', 'length', 'max'=>20),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
 			array('facebook, twitter, linkedin, website, video', 'length', 'max'=>150),
-			array('product_description, foundation, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, create_time', 'safe'),
+			array('product_description, foundation, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, create_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, video, create_time, selecionada, followers_num', 'safe', 'on'=>'search'),
+			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, video, create_time, selecionada, followers_num', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -154,14 +145,12 @@ class Startup extends CActiveRecord
 			'website' => 'Website',
 			'location' => 'Location',
 			'client_segment' => 'Client Segment',
-			'tech' => 'Technology',
 			'value_proposition' => 'Value Proposition',
 			'market_size' => 'Market Size',
 			'sales_marketing' => 'Sales Marketing',
 			'revenue_generation' => 'Revenue Generation',
 			'competitors' => 'Competitors',
 			'competitive_advantage' => 'Competitive Advantage',
-			'history' => 'History',
 			'video' => 'Video',
 			'create_time' => 'Create Time',
 			'selecionada' => 'Selecionada',
@@ -191,7 +180,7 @@ class Startup extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search($pageSize=null)
+	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
@@ -215,14 +204,12 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.website',$this->website,true);
 		$criteria->compare('t.location',$this->location,true);
 		$criteria->compare('t.client_segment',$this->client_segment,true);
-		$criteria->compare('t.tech',$this->tech,true);
 		$criteria->compare('t.value_proposition',$this->value_proposition,true);
 		$criteria->compare('t.market_size',$this->market_size,true);
 		$criteria->compare('t.sales_marketing',$this->sales_marketing,true);
 		$criteria->compare('t.revenue_generation',$this->revenue_generation,true);
 		$criteria->compare('t.competitors',$this->competitors,true);
 		$criteria->compare('t.competitive_advantage',$this->competitive_advantage,true);
-		$criteria->compare('t.history',$this->history,true);
 		$criteria->compare('t.video',$this->video,true);
 		$criteria->compare('t.t.create_time',$this->create_time,true);
 		$criteria->compare('t.selecionada',$this->selecionada,true);
@@ -244,9 +231,6 @@ class Startup extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-			'pagination'=>array(
-				'pageSize'=>$pageSize,
-			),
 		));
 	}
 
@@ -277,16 +261,6 @@ class Startup extends CActiveRecord
 			self::STAGE_2=>'Desenvolvimento',
 			self::STAGE_3=>'Protótipo',
 			self::STAGE_4=>'Produto Final',
-		);
-	}
-	
-	public function getCompanyPositionOptions()
-	{
-		return array(
-			self::POS_1=>'Founder',
-			self::POS_2=>'Member',
-			self::POS_3=>'Investor',
-			self::POS_4=>'Advisor',
 		);
 	}
 
@@ -376,10 +350,10 @@ class Startup extends CActiveRecord
 		$query = User::model()->findAll();
 		$list = array();        
 		foreach($query as $q){
-			$data['value'] = $q->id;
-			$data['description'] = $q->profile->resume;
-			$data['label'] = $q->profile->firstname .' '. $q->profile->lastname;
-			$data['image'] = $q->profile->logo->name;
+			$data['value'] = $q['id'];
+			$data['label'] = $q['username'];
+			$data['description'] = "dasdasd";
+			$data['imgage'] = "asdasd";
 
 			$list[] = $data;
 			unset($data);

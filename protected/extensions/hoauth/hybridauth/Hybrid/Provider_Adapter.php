@@ -107,9 +107,9 @@ class Hybrid_Provider_Adapter
 			Hybrid_Auth::storage()->delete( "hauth_session.{$idpid}.hauth_endpoint"     );
 			Hybrid_Auth::storage()->delete( "hauth_session.{$idpid}.id_provider_params" );
 		}
-        
+
 		// make a fresh start
-		$this->logout();        
+		$this->logout();
 
 		# get hybridauth base url
 		$HYBRID_AUTH_URL_BASE = Hybrid_Auth::$config["base_url"];
@@ -140,7 +140,7 @@ class Hybrid_Provider_Adapter
 		// move on
 		Hybrid_Logger::debug( "Hybrid_Provider_Adapter::login( {$this->id} ), redirect the user to login_start URL." );
 
-		Hybrid_Auth::redirect( $this->params["login_start"] );        
+		Hybrid_Auth::redirect( $this->params["login_start"] );
 	}
 
 	// --------------------------------------------------------------------

@@ -92,7 +92,7 @@ class HUserInfoForm extends CFormModel {
 	{
 		return array(
 			'email'=>HOAuthAction::t('Email'),
-			'username'=>HOAuthAction::t('Nickname'),
+			'username'=>HOAuthAction::t('Username'),
 			'password'=>HOAuthAction::t('Password'),
 			);
 	}

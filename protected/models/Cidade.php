@@ -120,4 +120,25 @@ class Cidade extends CActiveRecord
             return null;
         
     }
+    
+    public function suggestPerson($keyword, $limit=20)
+	{
+		$criteria=array(
+			'condition'=>'nome LIKE :keyword',
+			'order'=>'nome',
+			'limit'=>$limit,
+			'params'=>array(
+				':keyword'=>"$keyword%"
+			)
+		);
+		$models=$this->findAll($criteria);
+		$data=array();
+		foreach($models as $model) {
+	    	$data[] = array(
+	    		'id'=>$model->id,
+	        	'text'=>$model->nome,
+	        );
+		}
+		return $data;
+	}
 }
