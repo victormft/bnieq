@@ -6,33 +6,135 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/j
 
 Yii::app()->clientScript->registerScript('loading-img',
 "
-
-	$('#yw3').click(function(event) {
-		$('#yw3').html('Loading...');	
+	$('.btn-edit').click(function(event){
+		if($('.profile-header-info').hasClass('hid'))
+		{
+			$('.btn-edit').hide();
+			$('.prof').animate({opacity: 0}, 500);
+			$('.prof').hide('fast', function(){ 
+				$('.profile-header-info').removeClass('hid');
+				$('.profile-header-info').show('fast'); 
+				$('.profile-header-info').animate({opacity:1}, 500, function(){
+					$('.btn-edit').show();
+				}); 
+			});
+		}
+		
+		else
+		{
+			$('.btn-edit').hide();
+			$('.profile-header-info').animate({opacity: 0},500, function(){ 
+				$('.profile-header-info').addClass('hid');
+				$('.profile-header-info').hide('fast');
+				$('.prof').show('fast', function(){
+					$('.prof').animate({opacity: 1}, 500, function(){
+						$('.btn-edit').show();
+					});
+				}); 
+				
+			});
+		}
+	
 	});
 	
-	$('#yw2').click(function(event) {
-		window.location.reload(true);	
+	$('.team-ready').on('mouseover','.team-item',function(event){
+		$(this).find('.team-delete').css({'color':'red', 'font-size':'22px'});	
+	});
+	
+	$('.team-ready').on('mouseout','.team-item',function(event){
+		$(this).find('.team-delete').css({'color':'#ccc', 'font-size':'15px'});	
+	});
+	
+	$('.nav li:contains(\"Home\")').addClass('xuxu');
+	
+	$('.editable-img').mouseover(function(event) {
+		$(this).find('.pic-btn').addClass('btn-primary');	
+	});
+	
+	$('.editable-img').mouseout(function(event) {
+		$(this).find('.pic-btn').removeClass('btn-primary');	
+	});
+	
+	$('.team').mouseover(function(event) {
+		$(this).css('color','#333');
+		$('.team-btn').addClass('btn-primary');	
+	});
+	
+	$('.team').mouseout(function(event) {
+		$(this).css('color','#aaa');
+		$('.team-btn').removeClass('btn-primary');	
+	});
+	
+	$('.arrow-container').mouseover(function(event){
+		$(this).css('background-color', '#fefefe');
+	});
+	
+	$('.arrow-container').mouseout(function(event){
+		$(this).css('background-color', '#f6f6f6');
+	});
+	
+	$('.content-head').click(function(event){
+		
+		if(!$(this).hasClass('clicked'))
+		{
+			$(this).removeClass('rounded');
+			$(this).next().slideDown();
+			$(this).addClass('clicked');
+			$(this).find('.arrow').removeClass('arrow-down');
+			$(this).find('.arrow').addClass('arrow-up');
+		}
+		
+		else
+		{
+			$(this).next().slideUp(function(){
+				$(this).prev().addClass('rounded');
+			});
+			$(this).removeClass('clicked');
+			$(this).find('.arrow').removeClass('arrow-up');
+			$(this).find('.arrow').addClass('arrow-down');
+			
+		}
+		
 	});
 
 	
-	$('#form-chonga').submit(function(event) {
-		$('#yw13').html('Saulo Baitola');
+	$('#form-team').submit(function(event) {
 		
 		event.preventDefault(); 
+		$('.team-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 		
 		$.ajax({
-				url: '".Yii::app()->request->baseUrl."/startup/chonga?name='+getUrlVars()['name'],
+				url: '".Yii::app()->request->baseUrl."/startup/addTeam?name='+getUrlVars()['name'],
 				dataType: 'json',
 				type: 'POST',
-				data: $('#form-chonga').serialize(),
+				data: $('#form-team').serialize(),
 				success: function(data){
-					$('.crazy').append('<div style=\"height:100px; width: 100px; background:#fdfdfd; border: 1px solid #ddd;  margin-bottom:10px;\">'+ data.res +'</div>');
-						
+					$('.team-ready').append(data.res);
+					$('.team-item').show('slow');	
+					$('.team-btn').text('Save')
 				}
 			});
 		
 		
+	});
+	
+	
+	$('.team-ready').on('click','.team-delete',function(event){
+		var id = $(this).parent().find('span').attr('data-id');
+		$(this).parent().addClass('deletable');
+		
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name='+getUrlVars()['name'],
+				dataType: 'json',
+				success: function(data){
+					$('.deletable').hide('slow', function(){ $('.deletable').remove(); });
+					
+				},
+				error: function(){
+					$('.deletable').removeClass('deletable');	
+				}
+			});
+	
 	});
 	
 function getUrlVars()
@@ -54,68 +156,87 @@ function getUrlVars()
 
 <div class="profile-header">	
 
-	<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>" id="Startup-profile-img" alt="asdasd" />
+	<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>" id="startup-profile-img" />
 	
-	<div class="profile-name">
-		<?php
-			$this->widget('bootstrap.widgets.TbEditableField', array(
-				'type'      => 'text',
-				'model'     => $model,
-				'attribute' => 'name',
-				'url'       => array('update'),  //url for submit data          
-				'placement' => 'right',
-			 ));
-			 
-		?>
+	<div class="profile-header-info">
 		
-		<span class="teste" style="float:right;">
-			
-			<?php $this->widget('bootstrap.widgets.TbButton', array(
-				'label'=>'Follow',
-				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+		<div class="profile-name">
+			<span><?php echo $model->name; ?></span>
+		</div>
+		
+		<div class="profile-onelinepitch">
+			<span style="font-style:italic;"><?php echo $model->one_line_pitch; ?></span>
+		</div>
+		
+		<div class="profile-sectors">
+			<span><?php echo $model->getSectorNames(); ?></span>
+		</div>
+		
+		<div class="profile-location">
+			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo $model->city->nome; ?>
+		</div>
+		
+	</div>
+	
+	<div class="prof" style="display:none; float:left; opacity:0;">
+	
+		
+		<div class="editable-wrap">
+				<p> <?php echo '<b>Nome: </b>';?>   
+					<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $model,
+						'attribute' => 'name',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-large',
+						'mode'=>'inline'
+					 )); ?>  
+				</p>
+				
+				<p> <?php echo '<b>One Line Pitch: </b>';?>   
+					<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $model,
+						'attribute' => 'one_line_pitch',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-large',
+						'mode'=>'inline'
+					 )); ?>  
+				</p>
+				
+				
+			</div>
+	</div>
+	
+	<?php $this->widget('bootstrap.widgets.TbButton', array(
+				'label'=>'Editar',
+				'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array(''),
+				'htmlOptions'=>array(
+					'class'=>'btn-edit',
+					'style'=>'margin-left:20px;',
+					),
 				)); 
 			?>
+	
+	<span class="teste" style="float:right;">
+			
+			
+			<?php $this->widget('bootstrap.widgets.TbButton', array(
+				'label'=>'Voltar',
+				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+				'size'=>'normal', // null, 'large', 'small' or 'mini'
+				'url'=>array('view','name'=>$model->name),
+				)); 
+			?>
+			
+			
 		
 		</span>
-	</div>
+	
 
-
-
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
-		'label'=>'Voltar',
-		'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-		'size'=>'small', // null, 'large', 'small' or 'mini'
-		'url'=>array('view','name'=>$model->name),
-	)); ?>
-	
-	<!-- !!!!!!!!!!!!!! image form !!!!!!!!!!!!!!!!-->
-	
-	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-		'id'=>'image-edit-form',
-		'type'=>'horizontal',
-		'clientOptions'=>array(
-			'validateOnSubmit'=>true,
-		),
-		'htmlOptions' => array(
-			'enctype' => 'multipart/form-data'),
-	)); 
-	?>
-	
-	
-	<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => ''))); ?>
-	
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-			'label'=>'Save',
-			'size'=>'normal',
-			)); 
-	?>
-	
-	
-	<?php $this->endWidget(); ?>
 
 </div>
 	
@@ -126,18 +247,246 @@ function getUrlVars()
 	
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-cogs profile-icon"></i> Video<span style="display:block; font-size:13px; font-style: italic;  color:#aaa;">Link para video do youtube</span></div>
+		<div class="content-head rounded">
+			<i class="icon-picture profile-icon"></i> Logo
+			<span class="tip">Modifique o Logotipo da Startup (120 x 120px)</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
 		
-		<div class="content-info">
-			<div class="chonga">
+		<div class="content-info edit">
+			<div class="editable-wrap editable-img">
+				<!-- !!!!!!!!!!!!!! image form begin!!!!!!!!!!!!!!!!-->
+	
+				<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+					'id'=>'logo-edit-form',
+					'type'=>'horizontal',
+					'clientOptions'=>array(
+						'validateOnSubmit'=>true,
+					),
+					'htmlOptions' => array(
+						'enctype' => 'multipart/form-data'),
+				)); 
+				?>
+				
+				<div class="pic-wrap">
+					<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => ''))); ?>
+				</div>
+				
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Save',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'class'=>'pic-btn',
+						),
+						)); 
+				?>
+				
+				
+				<?php $this->endWidget(); ?>
+				
+				<!-- !!!!!!!!!!!!!! image form end !!!!!!!!!!!!!!!!-->
+			</div>
+		
+			
+		</div>
+		
+	</div>	
+	
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-lightbulb profile-icon"></i>O Produto
+			<span class="tip">Descreva o produto detalhadamente</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'textarea',
+						'model'     => $model,
+						'attribute' => 'product_description',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline',
+					 )); ?>  
+					 			
+				</p>
+			</div>
+			
+		</div>
+		
+	</div>	
+	
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-youtube-play profile-icon"></i> Video
+			<span class="tip">Link para video do youtube</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			<div class="editable-wrap">
 				<p>	<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'video',
 						'url'       => array('update'),  
 						'placement' => 'right',
-						'inputclass'=> 'input-large',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
 					 )); ?>  
+				</p>
+			</div>
+			
+		</div>
+		
+	</div>	
+	
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-picture profile-icon"></i> Imagens
+			<span class="tip">Insira até 4 imagens do seu produto (500 x 312px)</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			<div class="editable-wrap editable-img">
+				<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'mult-image-edit-form',
+					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+				)); ?>
+				
+				<div class="pic-wrap">
+					<?php
+						$this->widget('CMultiFileUpload', array(
+							'model'=>$model,
+							'name'=>'mult_pic',
+							'accept' => 'jpeg|jpg|gif|png',
+							'max'=>4-count($model->images),
+							// useful for verifying files
+							//'duplicate' => 'Arquivo duplicado!', // useful, i think
+							'denied' => '', // useful, i think
+						));
+					?>
+				</div>
+			
+			
+			
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Upload',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'class'=>'pic-btn',
+						),
+						)); 
+				?>
+			</div>
+	
+	<?php $this->endWidget(); ?>
+			
+			<div class="mult-pic-preview"></div>
+			
+			
+			
+			
+		</div>
+		
+	</div>	
+	
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-link profile-icon"></i> Social & Website
+			<span class="tip">Edite os links para as Redes Sociais e para o Website</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			<div class="editable-wrap">
+				<p> <i class="icon-globe web"></i>    
+					<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $model,
+						'attribute' => 'website',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+				</p>
+				
+				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/>     
+					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+						'type'      => 'text',
+						'model'     => $model,
+						'attribute' => 'facebook',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+				</p>
+				
+				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/>
+					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+						'type'      => 'text',
+						'model'     => $model,
+						'attribute' => 'twitter',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+				</p>
+				
+				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/>   
+					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+						'type'      => 'text',
+						'model'     => $model,
+						'attribute' => 'linkedin',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+				</p>
+			</div>
+		</div>
+		
+	</div>		
+	
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-cogs profile-icon"></i> Tecnologia
+			<span class="tip">Tecnologia utilizada no produto</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'textarea',
+						'model'     => $model,
+						'attribute' => 'tech',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+					 			
 				</p>
 			</div>
 			
@@ -147,43 +496,139 @@ function getUrlVars()
 	
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-cogs profile-icon"></i> Imagens</div>
+		<div class="content-head rounded">
+			<i class="icon-group profile-icon"></i> Público Alvo
+			<span class="tip">Pessoas ou Grupos a quem se destinam o produto</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
 		
-		<div class="content-info">
+		<div class="content-info edit">
 			
-			<?php $form=$this->beginWidget('CActiveForm', array(
-				'id'=>'mult-image-edit-form',
-				'htmlOptions' => array('enctype' => 'multipart/form-data'), 
-			)); ?>
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'textarea',
+						'model'     => $model,
+						'attribute' => 'client_segment',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+					 			
+				</p>
+			</div>
 			
-			<?php
-				$this->widget('CMultiFileUpload', array(
-					'model'=>$model,
-					'name'=>'mult_pic',
-					'accept' => 'jpeg|jpg|gif|png',
-					'max'=>4-count($model->images),
-					// useful for verifying files
-					//'duplicate' => 'Arquivo duplicado!', // useful, i think
-					'denied' => '', // useful, i think
-				));
-			?>
-			
-			
-			<?php $this->widget('bootstrap.widgets.TbButton', array(
-					'buttonType'=>'submit',
-					'type'=>'primary',
-					'label'=>'Upload',
-					'size'=>'normal',
-					)); 
-			?>
+		</div>
+		
+	</div>	
 	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-money profile-icon"></i> Geração de Renda
+			<span class="tip">Como sua Startup gera dinheiro?</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'textarea',
+						'model'     => $model,
+						'attribute' => 'revenue_generation',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+					 			
+				</p>
+			</div>
+			
+		</div>
+		
+	</div>	
 	
-	<?php $this->endWidget(); ?>
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-warning-sign profile-icon"></i> Principais Concorrentes
+			<span class="tip">Outros Players que atuam na mesma área</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
 			
-			<div class="mult-pic-preview"></div>
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'textarea',
+						'model'     => $model,
+						'attribute' => 'competitors',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+					 			
+				</p>
+			</div>
 			
+		</div>
+		
+	</div>	
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-trophy profile-icon"></i> Vantagem Competitiva
+			<span class="tip">Qual o diferencial da sua empresa?</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
 			
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'textarea',
+						'model'     => $model,
+						'attribute' => 'competitive_advantage',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+					 			
+				</p>
+			</div>
 			
+		</div>
+		
+	</div>	
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-book profile-icon"></i> História da Empresa
+			<span class="tip">Breve histórico da Startup</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'textarea',
+						'model'     => $model,
+						'attribute' => 'history',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'inputclass'=> 'input-xlarge',
+						'mode'=>'inline'
+					 )); ?>  
+					 			
+				</p>
+			</div>
 			
 		</div>
 		
@@ -305,6 +750,7 @@ function getUrlVars()
 					'url'       => array('update'),  
 					'source'    => $model->getCompanyStageOptions(), 
 					'placement' => 'right',
+					'mode'=>'inline',
 				 )); ?> 
 			</p>
 			
@@ -371,47 +817,60 @@ function getUrlVars()
 
 	<div class="content-wrap">
 
-		<div class="content-head">Typeahead Role</div>
+		<div class="content-head rounded">
+			<i class="icon-group profile-icon"></i> Editar Equipe
+			<span class="tip">Insira os usuários relacionados com a startup</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
 		
-		<div class="content-info">
-
+		<div class="content-info edit">
+			
+			<div class="editable-wrap team">
 		
-			<?php $form=$this->beginWidget('CActiveForm', array(
-				'id'=>'form-chonga',
-				'action'=>' ',
-				'htmlOptions' => array('enctype' => 'multipart/form-data'), 
-			)); ?>
-	
-	
-				<input type="text" id="my_ac" size="40" />
-				<input type="hidden" id="my_ac_id" name="user_chonga"/>
+				<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'form-team',
+					'action'=>'',
+					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+				)); ?>
+		
+					<?php echo CHtml::label('Nome', false); ?>
+					<input type="text" id="my_ac" size="40" />
+					<input type="hidden" id="my_ac_id" name="user_startup"/>
+					
+					<?php echo CHtml::label('Papel', false); ?>
+					<?php echo CHtml::activeDropDownList($model,'user_role', array_merge(array(''=>'Selecione...'), $model->getCompanyPositionOptions()), array('name'=>'position')) ?>
+			
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Save',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'style'=>'display:block',
+							'class'=>'team-btn',
+							),
+						)); 
+					?>
+			
+				<?php $this->endWidget(); ?>
 				
-				<?php $this->widget('bootstrap.widgets.TbButton', array(
-					'buttonType'=>'submit',
-					'type'=>'primary',
-					'label'=>'Chonga',
-					'size'=>'normal',
-					)); 
-				?>
-				
-				<?php echo CHtml::activeDropDownList($model,'user_role', array_merge(array(''=>'Selecione...'), CHtml::listData(Role::model()->findAll(), 'role_id', 'name')), array('name'=>'role')) ?>
-		
-			<?php $this->endWidget(); ?>
-
+			</div>
+			
 			<script>
 				$(function() {
-
+	
+	var img_path = "<?php echo Yii::app()->request->baseUrl.'/images/'?>";
+	
     $("#my_ac").autocomplete({
         source: <?php $model->getAutoTest(); ?>,
         minLength: 0,
 		delay: 10,
 		select: function( event, ui ) {
-			$( "#my_ac" ).val( ui.item.label );
+			$( "#my_ac" ).val( ui.item.label);
 			$( "#my_ac_id" ).val( ui.item.value );
 			return false;
       }
     }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
-        var inner_html = '<a><div class="list_item_container"><div class="image"><img src="' + item.image + '"></div><div class="label">' + item.label + '</div><div class="description">' + item.description + '</div></div></a>';
+        var inner_html = '<a><div class="list_item_container"><div class="image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div><div class="description">' + item.description + '</div></div></a>';
         return $( "<li></li>" )
             .data( "item.autocomplete", item )
             .append(inner_html)
@@ -428,69 +887,35 @@ function getUrlVars()
 
 <div class="content-wrap">
 
-		<div class="content-head">Users</div>
+		<div class="content-head">
+			<i class="icon-group profile-icon"></i> Equipe
+			<span class="tip">Equipe da Startup (edite na aba acima)</span>
+		</div>
 		
-		<div class="content-info crazy">
+		<div class="content-info team-ready">
 
 		
-
+		<?php foreach($model->users1 as $usr_startup):  ?>
+		
+		<?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$usr_startup->id, ':s_id'=>$model->id)); ?>
+		
+		<div class="team-item">		
+			<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
+			<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
+			<div class="team-position"><?php echo $relational_tbl->position;?></div>
+			<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+			<div class="team-delete"><i class="icon-remove-sign"></i></div>
+		</div>
+		
+		<?php endforeach;?>
 			
-
+		
 		
 		</div>	
 	</div>
 
 
 	
-	<div class="content-wrap">
-
-		<div class="content-head">Links</div>
-		
-		<div class="content-info">
-			<p> <?php echo '<b>Website: </b>'; ?>    
-				<?php $this->widget('editable.EditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'website',
-					'url'       => array('update'),  
-					'placement' => 'right',
-					'inputclass'=> 'input-large',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Facebook: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'facebook',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Twitter: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'twitter',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>linkedin: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'linkedin',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-		
-		</div>
-		
-	</div>	
 
 	<div class="content-wrap">
 

@@ -28,6 +28,7 @@
 
 class Profile extends CActiveRecord
 {
+
     //search do index
     public $fullname;
     public $followers_count;
@@ -37,6 +38,7 @@ class Profile extends CActiveRecord
     
     const MALE = 0;
     const FEMALE = 1;
+
     
     //to upload logo
 	public $pic;
@@ -71,8 +73,7 @@ class Profile extends CActiveRecord
 		return array(
             //validation for pic
 			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
-			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),  
-            array('profile_picture', 'default', 'value' => 1, 'setOnEmpty' => true, 'on' => 'insert'),
+			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),            
             
 			array('firstname, lastname', 'required'),
 			array('firstname, lastname', 'length', 'max'=>50),
@@ -92,7 +93,7 @@ class Profile extends CActiveRecord
             array('gender', 'default', 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, location, facebook, linkedin, twitter, experiences, interests, fullname, followers_count', 'safe', 'on'=>'search'),
+			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, location, facebook, linkedin, twitter, experiences, interests', 'safe', 'on'=>'search'),
 		);
 	}	
 	
@@ -108,8 +109,6 @@ class Profile extends CActiveRecord
 			'user'=>array(self::HAS_ONE, 'User', 'id'),
 			'city' => array(self::BELONGS_TO, 'Cidade', 'location'),
 			'logo' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
-            
-            'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'), //adicionei pro search. Sera q tem jeito melhor?
 		);
 		return $relations;
 	}
@@ -157,8 +156,6 @@ class Profile extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-        //$criteria->select="*,CONCAT(firstname,' ',lastname) AS fullname";
-        $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('firstname',$this->firstname,true);
 		$criteria->compare('lastname',$this->lastname,true);
@@ -167,13 +164,14 @@ class Profile extends CActiveRecord
 		$criteria->compare('gender',$this->gender,true);
 		$criteria->compare('telephone',$this->telephone,true);
 		$criteria->compare('skype',$this->skype,true);
-		$criteria->compare('resume',$this->resume,true, 'OR');
+		$criteria->compare('resume',$this->resume,true);
 		$criteria->compare('location',$this->location,true);
 		$criteria->compare('facebook',$this->facebook,true);
 		$criteria->compare('linkedin',$this->linkedin,true);
 		$criteria->compare('twitter',$this->twitter,true);
 		$criteria->compare('experiences',$this->experiences,true);
 		$criteria->compare('interests',$this->interests,true);
+
         $criteria->compare('(SELECT COUNT(user_follow.follower_id) FROM user_follow WHERE t.user_id=user_follow.followed_id)',$this->followers_count);//making the filters work
         	       
         
@@ -192,18 +190,10 @@ class Profile extends CActiveRecord
 			$criteria->together = true;
 			$criteria->compare('roles.role_id', $this->roles,true);
 		}
-        
+
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,       
-            //'sort'=>array('attributes'=>array('followers_count'=>array(),'*')),
+			'criteria'=>$criteria,
 		));
-	}
-    
-    public function getGenderOptions() {
-		return array (
-		self::MALE => 'Male',
-		self::FEMALE => 'Female',
-		);
 	}
     
 	

@@ -8,7 +8,6 @@ Yii::setPathOfAlias('editable', dirname(__FILE__).'/../extensions/x-editable');
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-    'timeZone' => 'America/Sao_Paulo',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'BNI Equity',
 	'homeUrl'=>'/bnieq',
@@ -27,17 +26,15 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.helpers.*',
-        
 		//yii-user
         'application.modules.user.UserModule',
 		'application.modules.user.models.*',
         'application.modules.user.components.*',
-        //yii-user
-        
         'application.extensions.bootstrap.widgets.*',
         'application.extensions.editable.*', //easy include of editable classes  
-        'ext.quickdlgs.*', //quickdlgs
-        
+        //rights
+        'application.modules.rights.*', 
+        'application.modules.rights.components.*',
 	),
 
 	'modules'=>array(
@@ -82,12 +79,19 @@ return array(
             'returnLogoutUrl' => array('/user/login'),
         ),
         
-        //private-messaging
-        'message' => array(
-            'userModel' => 'User',
-            'getNameMethod' => 'getFullName',
-            'getSuggestMethod' => 'getSuggest',
-        ),   				
+        
+        //mailbox
+        'mailbox'=> array(  
+            'userClass' => 'User',
+            'userIdColumn' => 'id',
+            'usernameColumn' =>  'username',
+        ),
+        
+        //rights
+        'rights'=>array( 
+            'install'=>false,            // Enables the installer. 
+        ),   
+				
 	),
 
 	// application components
@@ -102,7 +106,7 @@ return array(
 			'allowAutoLogin'=>true,
 			
 			//yii-user
-			'class' => 'WebUser',                      
+			'class' => 'RWebUser',                      //rights: Allows super users access implicitly.
 			'loginUrl' => array('/user/login'),
 		),
         
@@ -121,7 +125,8 @@ return array(
 			'urlFormat'=>'path',
 			'showScriptName'=>false,
 			'caseSensitive'=>false,   
-			'rules'=>array(                
+			'rules'=>array(
+				'startup'=>'startup/index',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
@@ -167,14 +172,10 @@ return array(
         'cache'=>array(
 			'class'=>'system.caching.CFileCache',
 		),
-        
-        'authManager'=>array(
-            'class'=>'CDbAuthManager',
-            'connectionID'=>'db',
-            'itemTable' =>'tbl_auth_item',
-            'itemChildTable' =>'tbl_auth_item_child',
-            'assignmentTable' =>'tbl_auth_assignment',
-        ),
+        //rights
+        'authManager'=>array(               // Provides support authorization item sorting
+            'class'=>'RDbAuthManager',
+        )
 		
 	),
 

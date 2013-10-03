@@ -1,6 +1,6 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("General");
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Change Password");
 $this->breadcrumbs=array(
-	UserModule::t("Profile") => array('/user/profile'),
+	UserModule::t("Profile") => array('/user/profile', 'username'=>Yii::app()->user->name),
 	UserModule::t("General"),
 );
 
@@ -13,11 +13,11 @@ $this->breadcrumbs=array(
     'items'=>array(
         array('label'=>'General', 'url'=>'general', 'active'=>true),
         array('label'=>'Password', 'url'=>'password'),
-        array('label'=>'Social Networks', 'url'=>'social'),
+        array('label'=>'Shit', 'url'=>'#'),
     ),
 )); ?>
 
-<div class="span8">
+<div class="span6">
     <?php if(Yii::app()->user->hasFlash('success')):?>
     <div class="successMessage">
     <?php echo Yii::app()->user->getFlash('success'); ?>

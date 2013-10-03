@@ -97,8 +97,4 @@ class UserFollow extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-    
-    public function getNameOfFollowed() {
-        return $this->followed->profile->firstname.' '.$this->followed->profile->lastname;
-    }
 }

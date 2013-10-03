@@ -3,7 +3,7 @@
  * Controller is the customized base controller class.
  * All controller classes for this application should extend from this base class.
  */
-class Controller extends CController
+class Controller extends RController
 {
 	/**
 	 * @var string the default layout for the controller view. Defaults to '//layouts/column1',
@@ -20,30 +20,4 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
-    
-    protected function beforeAction($action)
-    {
-        $_uri = false;
-        if (Yii::app()->urlManager->showScriptName == false){
-            if (strpos(Yii::app()->request->requestUri, '/index.php') !== false){
-                $_uri = str_replace("/index.php", "", Yii::app()->request->requestUri);
-            }
-            if (Yii::app()->controller->action->id == 'index'){
-                if (!$_uri) {
-                    if (strpos(Yii::app()->request->requestUri, "/index") !== false){
-                        $_uri = str_replace("/index", "", Yii::app()->request->requestUri);
-                    }
-                } else {
-                    if (strpos($_uri, "/index") !== false){
-                        $_uri = str_replace("/index", "", $_uri);
-                    }
-                }
-            }
-        }
-
-        if ($_uri !== false){
-            $this->redirect($_uri);
-        }
-        return parent::beforeAction($action);
-    }
 }

@@ -103,7 +103,20 @@ class UserOAuth extends CActiveRecord
 		$config = self::getConfigPath();
 
 		if(!file_exists($config))
-			throw new CException("The config.php file doesn't exists");
+		{
+			$oldConfig = dirname(__FILE__) . '/../hybridauth' . '/config.php';
+
+			if(file_exists($oldConfig))
+			{
+				// TODO: delete this in next versions
+				if (is_writable($yiipath) && is_writable($oldConfig)) // trying to move old config to the new dir
+				rename($oldConfig, $config);
+				else
+					$config = $oldConfig;
+			}
+			else
+				throw new CException("The config.php file doesn't exists");
+		}
 
 		return require($config);
 	}
@@ -182,15 +195,19 @@ class UserOAuth extends CActiveRecord
 	 * @return void
 	 */
 	public function authenticate($provider)
-	{
+	{        
 		if(empty($this->provider))
 		{
 			try
 			{
-				$this->_adapter = $this->hybridauth->authenticate($provider);
+				$this->_adapter = $this->hybridauth->authenticate($provider); 
+                
 				$this->identifier = $this->profile->identifier;
 				$this->provider = $provider;
+                
 				$oAuth = self::model()->findByPk(array('provider' => $this->provider, 'identifier' => $this->identifier));
+                //echo $this->profile->email;exit;
+                //$userX=User::model()->findbyPk();
 				if($oAuth)
 					$this->setAttributes($oAuth->attributes, false);
 				else
@@ -203,15 +220,14 @@ class UserOAuth extends CActiveRecord
 			{
 				$error = "";
 				switch( $e->getCode() )
-				{
-					case 6 : //$error = "User profile request failed. Most likely the user is not connected to the provider and he should to authenticate again."; 
-					case 7 : //$error = "User not connected to the provider."; 
+				{ 
+					case 6 : $error = "User profile request failed. Most likely the user is not connected to the provider and he should to authenticate again."; 
+					case 7 : $error = "User not connected to the provider."; 
 					$this->logout();
 					return $this->authenticate($provider);
 					break;
 				}
-                throw $e;
-            }
+			}
 		}
 
 		return null;
@@ -287,6 +303,14 @@ class UserOAuth extends CActiveRecord
 	 */
 	protected static function createDbTable()
 	{
+		//TODO: remove me in newer versions
+		if(Yii::app()->db->getSchema()->getTable('user_oauth') !== null && !empty(Yii::app()->db->tablePrefix))
+		{
+			// providing table rename, to handle support of prefixed tables in v.1.2.2
+			Yii::app()->db->createCommand('RENAME TABLE `user_oauth` TO `tbl_user_oauth`')->execute();
+			Yii::app()->controller->refresh();
+		}
+
 		$sql = file_get_contents(dirname(__FILE__).'/user_oauth.sql');
 		$sql = strtr($sql, array('{{user_oauth}}' => Yii::app()->db->tablePrefix . 'user_oauth'));
 		Yii::app()->db->createCommand($sql)->execute();

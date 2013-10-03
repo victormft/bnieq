@@ -1,10 +1,6 @@
 <?php
 $this->layout='column1';
 
-$this->breadcrumbs=array(
-	'Startups'=>array('index'),
-	$model->name,
-);
 
 /*
 $this->menu=array(

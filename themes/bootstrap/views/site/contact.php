@@ -28,7 +28,7 @@ If you have business inquiries or other questions, please fill out the following
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'=>'contact-form',
     'type'=>'horizontal',
-	'enableClientValidation'=>false,
+	'enableClientValidation'=>true,
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),

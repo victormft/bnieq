@@ -25,10 +25,6 @@
  *    )); ?>
  * uses a little modified Zocial CSS3 buttons: {@link https://github.com/samcollins/css-social-buttons/}
  */
-
-
-Yii::setPathOfAlias('hoauth', dirname(__FILE__));
-
 class HOAuthAction extends CAction
 {
 	/**
@@ -83,12 +79,7 @@ class HOAuthAction extends CAction
 	 *      when when social network returned email of existing local account. If set to
 	 *      `false` user will be automatically logged in without confirming account with password
 	 */
-	public $alwaysCheckPass = false;
-
-	/**
-	 * @var string $userIdentityClass UserIdentity class that will be used to log user in.
-	 */
-	public $userIdentityClass = 'UserIdentity';
+	public $alwaysCheckPass = true;
 
 	/**
 	 * @var string $usernameAttribute you can specify the username attribute, when user must fill it
@@ -105,8 +96,14 @@ class HOAuthAction extends CAction
 	 */
 	protected $_avaibleAtts = array('identifier', 'profileURL', 'webSiteURL', 'photoURL', 'displayName', 'description', 'firstName', 'lastName', 'gender', 'language', 'age', 'birthDay', 'birthMonth', 'birthYear', 'email', 'emailVerified', 'phone', 'address', 'country', 'region', 'city', 'zip', 'birthDate', 'genderShort');
 
+	/**
+	 * @var ALIAS the alias of extension (you can change this, when you have put this extension in another dir)
+	 */
+	const ALIAS = 'ext.hoauth';
+
 	public function run()
-	{		
+	{
+
 		// openId login
 		if($this->enabled)
 		{
@@ -117,12 +114,12 @@ class HOAuthAction extends CAction
 				$this->useYiiUser = true;
 				// setting up yii-user's user model
 				Yii::import('application.modules.user.models.*');
-				Yii::import('hoauth.DummyUserIdentity');
+				Yii::import(self::ALIAS . '.DummyUserIdentity');
 
 				// preparing attributes array for `yii-user` module
 				if(!is_array($this->attributes))
 					$this->attributes = array();
-                
+
 				$this->attributes = CMap::mergeArray($this->attributes, array(
 					'email' => 'email',
 					'username' => 'displayName',
@@ -151,7 +148,8 @@ class HOAuthAction extends CAction
 
 			if(isset($_GET['provider']))
 			{
-				Yii::import('hoauth.models.*');
+				Yii::import(self::ALIAS . '.models.UserOAuth');
+				Yii::import(self::ALIAS . '.models.HUserInfoForm');
 				$this->oAuth($_GET['provider']);
 			}
 			else
@@ -177,17 +175,14 @@ class HOAuthAction extends CAction
 		try{
 			// trying to authenticate user via social network
 			$oAuth = UserOAuth::model()->authenticate( $provider );
-			$userProfile = $oAuth->profile;           
+			$userProfile = $oAuth->profile;
 
 			// If we already have a user logged in, associate the authenticated 
 			// provider with the logged-in user
+            
 			if(!Yii::app()->user->isGuest) 
 			{
-				$accessCode = 1;
 				$oAuth->bindTo(Yii::app()->user->id);
-                $profile = $this->saveProfile(User::model()->findByPk(Yii::app()->user->id), $userProfile, $provider);
-                if(!$profile->save())
-					throw new Exception("Error, while saving " . get_class($profile) . "	model:\n\n" . var_export($profile->errors, true));
 			}
 			else 
 			{
@@ -216,15 +211,12 @@ class HOAuthAction extends CAction
 					if(!isset($user))
 					{
 						// registering a new user
-						$user = new $this->model($this->scenario); //ainda nao esta definido os campos
+						$user = new $this->model($this->scenario);
 						$newUser = true;
 					}
-                    
+
 					if($this->alwaysCheckPass || $user->isNewRecord)
-						if(method_exists($this->controller, 'hoauthProcessUser'))
-							$user = $this->controller->hoauthAfterLogin($user, $newUser);
-						else
-							$user = $this->processUser($user, $userProfile, $provider); //aqui define os campos
+						$user = $this->processUser($user, $userProfile);
 				}
 
 				// checking if current user is not banned or anything else
@@ -238,40 +230,29 @@ class HOAuthAction extends CAction
 					$accessCode = $this->yiiUserCheckAccess($user);
 
 				if(!$accessCode)
-					throw new Exception("Something wrong. You can not log in.");
-
-				if(!$oAuth->bindTo($user->primaryKey))
-					throw new Exception("Error, while binding user to provider:\n\n" . var_export($oAuth->errors, true));
+					Yii::app()->end();
 
 				// sign user in
 				if($accessCode === 1)
 				{
 					$identity = $this->useYiiUser
 					? new DummyUserIdentity($user->primaryKey, $user->email)
-					: new $this->userIdentityClass($user->email, null);
+					: new UserIdentity($user->email, null);
 
 					if(!Yii::app()->user->login($identity,$this->duration))
 						throw new Exception("Can't sign in, something wrong with UserIdentity class.");
-
-					// user was successfully logged in
-					// firing callback
-					if(method_exists($this->controller, 'hoauthAfterLogin'))
-						$this->controller->hoauthAfterLogin($user, $newUser);
 				}
+
+				if(!$oAuth->bindTo($user->primaryKey))
+					throw new Exception("Error, while binding user to provider:\n\n" . var_export($oAuth->errors, true));
+
+				// user was successfully logged in
+				// firing callback
+				if(method_exists($this->controller, 'hoauthAfterLogin'))
+					$this->controller->hoauthAfterLogin($user, $newUser);
 
 				if($accessCode === 2)
 					Yii::app()->end(); // stopping script to let checkAccess() function render new content
-			}
-
-			if($accessCode === 1)
-			{
-				?>
-				<script>
-					window.opener.location.reload();
-					window.close();
-				</script>
-				<?php
-				Yii::app()->end();
 			}
 		}
 		catch( Exception $e ){
@@ -281,7 +262,7 @@ class HOAuthAction extends CAction
 
 				// Display the received error
 				switch( $e->getCode() ){ 
-					case 0 : $error = "Unspecified error."; throw $e; break;
+					case 0 : $error = "Unspecified error."; break;
 					case 1 : $error = "Hybriauth configuration error."; break;
 					case 2 : $error = "Provider not properly configured."; break;
 					case 3 : $error = "Unknown or disabled provider."; break;
@@ -303,11 +284,9 @@ class HOAuthAction extends CAction
 				Yii::app()->end();
 			}
 		}
-		?>
-		<script>
-			window.close();
-		</script>
-		<?php
+
+		$returnUrl = $this->useYiiUser ? Yii::app()->modules['user']['returnUrl'] : Yii::app()->user->returnUrl;
+		Yii::app()->controller->redirect($returnUrl);
 	}
 	
 	/**
@@ -317,7 +296,7 @@ class HOAuthAction extends CAction
 	 * @param object $userProfile social network's user profile object
 	 * @access protected
 	 */
-	protected function processUser($user, $userProfile, $provider)
+	protected function processUser($user, $userProfile)
 	{
 		if($this->useYiiUser)
 		{
@@ -332,18 +311,18 @@ class HOAuthAction extends CAction
 		}
 
 		if($user->isNewRecord)
-			$this->populateModel($user, $userProfile); //aqui define os campos
+			$this->populateModel($user, $userProfile);
 
 		// trying to fill email and username fields
 		// NOTE: we display `username` field in our form only if it is required by the model
-		if(!$user->isAttributeRequired($this->usernameAttribute))            			
-            $this->usernameAttribute = false;
-        
+		if(!$user->isAttributeRequired($this->usernameAttribute))
+			$this->usernameAttribute = false;
+
 		$form = new HUserInfoForm($user, $this->_emailAttribute, $this->usernameAttribute);
 
 		if(!$form->validateUser())
 		{
-			$this->controller->render('hoauth.views.form', array(
+			$this->controller->render(self::ALIAS.'.views.form', array(
 				'form' => $form,
 				));
 			Yii::app()->end();
@@ -359,14 +338,25 @@ class HOAuthAction extends CAction
 				throw new Exception("Error, while saving {$this->model} model:\n\n" . var_export($user->errors, true));
 
 			// trying to send activation email
-			$this->sendActivationEmail($user);
+			$this->sendActivationMail($user);
 
 			if($this->useYiiUser)
 			{
-                $profile = $this->saveProfile($user, $userProfile, $provider);
-              
+				$profile->user_id = $user->primaryKey;
+        if($profile->hasAttribute('firstname'))
+        {
+          // we have new version of yii-user of about 06.2013
+          $profile->firstname = $userProfile->firstName;
+          $profile->lastname = $userProfile->lastName;
+        }
+        else
+        {
+          $profile->first_name = $userProfile->firstName;
+          $profile->last_name = $userProfile->lastName;
+        }
+
 				if(!$profile->save())
-					throw new Exception("Error, while saving " . get_class($profile) . "	model:\n\n" . var_export($profile->errors, true));
+					throw new Exception("Error, while saving " . get_class($profile) . "	model:\n\n" . var_export($user->errors, true));
 			}
 		}
 
@@ -380,7 +370,7 @@ class HOAuthAction extends CAction
 	 * @access protected
 	 * @return void
 	 */
-	protected function sendActivationEmail($user)
+	protected function sendActivationMail($user)
 	{
 		if($this->useYiiUser)
 		{
@@ -394,9 +384,7 @@ class HOAuthAction extends CAction
 		}
 		else
 		{
-			if(method_exists($user, 'sendActivationEmail'))
-				$user->sendActivationEmail();
-			elseif(method_exists($user, 'sendActivationMail')) // TODO: delete in future
+			if(method_exists($user, 'sendActivationMail'))
 				$user->sendActivationMail();
 		}
 	}
@@ -410,7 +398,6 @@ class HOAuthAction extends CAction
 	 */
 	protected function populateModel($user, $profile)
 	{
-        
 		foreach($this->attributes as $attribute => $pAtt)
 		{
 			if(in_array($pAtt, $this->_avaibleAtts))
@@ -438,13 +425,6 @@ class HOAuthAction extends CAction
 				$user->$attribute = $pAtt;
 			}
 		}
-        
-        $username = $profile->firstName.$profile->lastName;
-        $username = str_replace(" ", "", $username); // Replaces all spaces with hyphens.
-        $username = preg_replace('/[^A-Za-z0-9]/', '', $username);
-        $username  = strtolower($username);
-        $user->username = $username;
-        $user->setCreateTime(time());
 	}
 
 	/**
@@ -473,7 +453,7 @@ class HOAuthAction extends CAction
 
 		if($error && $render)
 		{
-			$this->controller->render('hoauth.views.yiiUserError', array(
+			$this->controller->render(self::ALIAS.'.views.yiiUserError', array(
 				'errorCode' => $error,
 				'user' => $user,
 				));
@@ -496,89 +476,4 @@ class HOAuthAction extends CAction
 	{
 		return Yii::t('HOAuthAction.root', $message,$params,$source,$language);
 	}
-    
-    public function saveProfile($user, $userProfile, $provider)
-    {
-        if(!$user->profile)
-        {
-            $profile = new Profile();        
-            // enabling register mode
-            // old versions of yii
-            $profile->regMode = true;
-        } 
-        else
-            $profile = $user->profile;
-
-        if(!$profile->user_id) $profile->user_id = $user->primaryKey;
-        if(!$profile->firstname) $profile->firstname = $userProfile->firstName;
-        if(!$profile->lastname) $profile->lastname = $userProfile->lastName;
-        
-        if(!$profile->gender)
-        {
-            switch($userProfile->gender)
-            {
-                case 'male':
-                $profile->gender = 'M';
-                break;
-                case 'female':
-                $profile->gender = 'F';
-                break;
-                default:
-                break;
-            }
-        }
-        switch($provider)
-        {
-            case 'Facebook':
-            if(!$profile->facebook) $profile->facebook = $userProfile->profileURL;
-            break;
-            case 'LinkedIn':
-            if(!$profile->linkedin) $profile->linkedin = $userProfile->profileURL;
-            break;
-            case 'Twitter':
-            if(!$profile->twitter) $profile->twitter = $userProfile->profileURL;
-            break;
-            default:
-            break;
-        }
-
-        if(!$profile->profile_picture || $profile->profile_picture==1)
-        {
-            $content = $this->getSslPage($userProfile->photoURL);
-            $filename = Yii::getPathOfAlias('webroot').'/images/'.$provider.$user->primaryKey.'.jpg';        
-            file_put_contents($filename, $content);
-
-            $model_img=new Image;
-            $model_img->name=$provider.$user->primaryKey.'.jpg';
-            $model_img->extension='image/jpeg';
-            //$model_img->size=$profile->pic->size;	
-
-            if($model_img->save()){
-                $profile->profile_picture=$model_img->id;
-            }   
-        }
-
-        if(!$profile->telephone)
-        {
-            $telephone = preg_replace('/^([+]?[0-9 ]+)$/', '', $userProfile->phone);
-            if($telephone != '') $profile->telephone = $telephone;
-        }
-
-        return $profile;
-        
-    }
-    
-    function getSslPage($url) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_REFERER, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
-    }
-            
 }
