@@ -38,8 +38,6 @@ class Profile extends CActiveRecord
     const MALE = 0;
     const FEMALE = 1;
     
-	const MALE = 0;
-	const FEMALE = 1;
     //to upload logo
 	public $pic;
     
@@ -201,13 +199,6 @@ class Profile extends CActiveRecord
 			'criteria'=>$criteria,       
             //'sort'=>array('attributes'=>array('followers_count'=>array(),'*')),
 		));
-	}
-	
-	public function getGenderOptions() {
-		return array (
-		self::MALE => 'Male',
-		self::FEMALE => 'Female',
-		);
 	}
     
     public function getGenderOptions() {
