@@ -18,11 +18,71 @@
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
+	<?php 
+	///Maybe this will be moved to another section but I will leave here for a while until I find a better way to struct it.
+		if($profile->firstname == NULL || $profile->lastname==NULL || $profile->birthday == NULL 
+			|| $profile->telephone == NULL || $profile->gender == NULL)
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'startup_id'); ?>
-		<?php echo $form->dropDownList($model,'startup_id', $model->getStartupOptions());?>
-	</div>
+			echo '<h3>Profile</h3>';
+		if($profile->firstname == NULL) {
+			echo '<div class="row">';
+			echo $form->labelEx($profile, 'firstname');
+			echo $form->textField($profile,'firstname',array('size'=>20,'maxlength'=>50));
+			echo $form->error($profile,'firstname');
+			echo '</div>';
+		}
+		if($profile->lastname == NULL) {
+			echo '<div class="row">';
+			echo $form->labelEx($profile, 'lastname');
+			echo $form->textField($profile,'lastname',array('size'=>20,'maxlength'=>50));
+			echo $form->error($profile,'lastname');
+			echo '</div>';
+		}
+		if($profile->birthday == NULL) {
+			echo '<div class="row">';
+			echo $form->labelEx($profile, 'birthday');
+			echo $form->textField($profile,'birthday',array('size'=>10,'maxlength'=>10));
+			echo $form->error($profile,'birthday');
+			echo '</div>';
+		}
+		if($profile->gender == NULL) {
+			echo '<div class="row">';
+			echo $form->labelEx($profile, 'gender');
+			echo $form->dropDownList($profile,'gender', $profile->getGenderOptions());
+			echo '</div>';
+		}
+		
+		if($profile->telephone == NULL) {
+			echo '<div class="row">';
+			echo $form->labelEx($profile, 'telephone');
+			echo $form->textField($profile,'telephone',array('size'=>15,'maxlength'=>15));
+			echo $form->error($profile,'telephone');
+			echo '</div>';
+		}
+	
+	?>
+	
+	<?php
+	if($startup->company_number == NULL || $startup->location==NULL)
+			echo '<h3>Company</h3>';
+	if($startup->company_number == NULL) {
+			echo '<div class="row">';
+			echo $form->labelEx($startup, 'company_number');
+			echo $form->textField($startup,'company_number',array('size'=>50,'maxlength'=>50));
+			echo $form->error($startup,'company_number');
+			echo '</div>';
+		}
+	
+	if($startup->location == NULL) {
+			echo '<div class="row">';
+			echo $form->labelEx($startup, 'location');
+			echo $form->textField($startup,'location',array('size'=>50,'maxlength'=>50));
+			echo $form->error($startup,'location');
+			echo '</div>';
+		}
+			
+	?>
+	<h3>Pitch</h3>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'investment_required'); ?>
@@ -52,12 +112,6 @@
 		<?php echo $form->labelEx($model,'exit_strategy'); ?>
 		<?php echo $form->textArea($model,'exit_strategy',array('rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'exit_strategy'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'create_time'); ?>
-		<?php echo $form->textField($model,'create_time'); ?>
-		<?php echo $form->error($model,'create_time'); ?>
 	</div>
 
 	<div class="row buttons">
