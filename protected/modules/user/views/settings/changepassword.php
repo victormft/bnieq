@@ -1,6 +1,6 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Change Password");
 $this->breadcrumbs=array(
-	UserModule::t("Profile") => array('/user/profile', 'username'=>Yii::app()->user->name),
+	UserModule::t("Profile") => array('/user/profile'),
 	UserModule::t("Change Password"),
 );
 
@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
     'items'=>array(
         array('label'=>'General', 'url'=>'general'),
         array('label'=>'Password', 'url'=>'password', 'active'=>true),
-        array('label'=>'Shit', 'url'=>'#'),
+        array('label'=>'Social Networks', 'url'=>'social'),
     ),
 )); ?>
 

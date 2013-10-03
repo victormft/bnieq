@@ -28,7 +28,7 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('profile', 'edit'),
+				'actions'=>array('profile', 'edit', 'suggestPerson', 'initPerson'),
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -237,5 +237,24 @@ class ProfileController extends Controller
                 throw new CHttpException(404,'The requested page does not exist.');
         }
 		return $this->_model;
+	}
+    
+    public function actions()
+	{
+		return array(
+		
+			'suggestPerson'=>array(
+				'class'=>'editable.XSelect2SuggestAction',
+				'modelName'=>'Cidade',
+				'methodName'=>'suggestPerson',
+				'limit'=>30
+			),
+            'initPerson'=>array(
+				'class'=>'editable.XSelect2InitAction',
+				'modelName'=>'Cidade',
+				'textField'=>'nome',
+			),
+		
+		);
 	}
 }

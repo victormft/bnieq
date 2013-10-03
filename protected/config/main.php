@@ -8,6 +8,7 @@ Yii::setPathOfAlias('editable', dirname(__FILE__).'/../extensions/x-editable');
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
+    'timeZone' => 'America/Sao_Paulo',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'BNI Equity',
 	'homeUrl'=>'/bnieq',
@@ -26,12 +27,17 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.helpers.*',
+        
 		//yii-user
         'application.modules.user.UserModule',
 		'application.modules.user.models.*',
         'application.modules.user.components.*',
+        //yii-user
+        
         'application.extensions.bootstrap.widgets.*',
         'application.extensions.editable.*', //easy include of editable classes  
+        'ext.quickdlgs.*', //quickdlgs
+        
 	),
 
 	'modules'=>array(
@@ -81,16 +87,7 @@ return array(
             'userModel' => 'User',
             'getNameMethod' => 'getFullName',
             'getSuggestMethod' => 'getSuggest',
-        ),        
-        
-        //mailbox
-        'mailbox'=> array(  
-            'userClass' => 'User',
-            'userIdColumn' => 'id',
-            'usernameColumn' =>  'username',
-            'trashbox' => false,
-        ),
-				
+        ),   				
 	),
 
 	// application components
@@ -124,8 +121,7 @@ return array(
 			'urlFormat'=>'path',
 			'showScriptName'=>false,
 			'caseSensitive'=>false,   
-			'rules'=>array(
-				'startup'=>'startup/index',
+			'rules'=>array(                
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

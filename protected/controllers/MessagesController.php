@@ -30,7 +30,8 @@ class MessagesController extends Controller
 		);
 	}
     
-	public function actionInbox() {
+	public function actionInbox() 
+    {
 		$messagesAdapter = Message::getAdapterForInbox(Yii::app()->user->getId());
 		$pager = new CPagination($messagesAdapter->totalItemCount);
 		$pager->pageSize = 10;
@@ -41,7 +42,8 @@ class MessagesController extends Controller
 		));
 	}
     
-    public function actionCompose() {
+    public function actionCompose() 
+    {
 		$message = new Message();        
 		if (Yii::app()->request->getPost('Message')) {            
             $message->receiver_id = Yii::app()->request->getPost('receiver');
@@ -59,10 +61,15 @@ class MessagesController extends Controller
 		$this->render('compose', array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));
 	}
     
-    public function actionComposeWithId($id) {
+    public function actionComposeWithId($id)
+    {       
 		$message = new Message();        
-		if (Yii::app()->request->getPost('Message')) {            
-            $message->receiver_id = Yii::app()->request->getPost('receiver');
+		if (Yii::app()->request->getPost('Message')) {
+            if(!Yii::app()->getModule('user')->isAdmin())
+                if($id == Yii::app()->user->getId() || !User::model()->findbyPk(Yii::app()->user->getId())->hasUserFollowed($id))
+                    throw new CHttpException(403,'You can only message who you follow.');
+            
+            $message->receiver_id = $id;
 			$receiverName = User::model()->findByPk($message->receiver_id)->username;
 		    $message->attributes = Yii::app()->request->getPost('Message');            
 			$message->sender_id = Yii::app()->user->getId();

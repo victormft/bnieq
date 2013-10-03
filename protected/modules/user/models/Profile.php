@@ -28,6 +28,16 @@
 
 class Profile extends CActiveRecord
 {
+    //search do index
+    public $fullname;
+    public $followers_count;
+    public $special_condition;
+    
+    //to groups in listing
+	public $group;
+    
+    const MALE = 0;
+    const FEMALE = 1;
     
     //to upload logo
 	public $pic;
@@ -83,7 +93,7 @@ class Profile extends CActiveRecord
             array('gender', 'default', 'value' => null),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, location, facebook, linkedin, twitter, experiences, interests', 'safe', 'on'=>'search'),
+			array('user_id, firstname, lastname, profile_picture, birthday, gender, telephone, skype, resume, location, facebook, linkedin, twitter, experiences, interests, fullname, followers_count', 'safe', 'on'=>'search'),
 		);
 	}	
 	
@@ -99,6 +109,8 @@ class Profile extends CActiveRecord
 			'user'=>array(self::HAS_ONE, 'User', 'id'),
 			'city' => array(self::BELONGS_TO, 'Cidade', 'location'),
 			'logo' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
+            
+            'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'), //adicionei pro search. Sera q tem jeito melhor?
 		);
 		return $relations;
 	}
@@ -146,6 +158,8 @@ class Profile extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+        //$criteria->select="*,CONCAT(firstname,' ',lastname) AS fullname";
+        $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('firstname',$this->firstname,true);
 		$criteria->compare('lastname',$this->lastname,true);
@@ -154,17 +168,45 @@ class Profile extends CActiveRecord
 		$criteria->compare('gender',$this->gender,true);
 		$criteria->compare('telephone',$this->telephone,true);
 		$criteria->compare('skype',$this->skype,true);
-		$criteria->compare('resume',$this->resume,true);
+		$criteria->compare('resume',$this->resume,true, 'OR');
 		$criteria->compare('location',$this->location,true);
 		$criteria->compare('facebook',$this->facebook,true);
 		$criteria->compare('linkedin',$this->linkedin,true);
 		$criteria->compare('twitter',$this->twitter,true);
 		$criteria->compare('experiences',$this->experiences,true);
 		$criteria->compare('interests',$this->interests,true);
-
+        $criteria->compare('(SELECT COUNT(user_follow.follower_id) FROM user_follow WHERE t.user_id=user_follow.followed_id)',$this->followers_count);//making the filters work
+        
+        if($this->special_condition)
+			$criteria->condition=$this->special_condition;		       
+        
+        if($this->group)
+		{
+			if($this->group=='Mais seguidos'){
+                $criteria->together=true;
+                $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count"; 
+                $criteria->group='t.user_id';
+                $criteria->order='followers_count DESC';
+            }				
+		}
+        
+        if($this->roles){
+			$criteria->with = array('roles');
+			$criteria->together = true;
+			$criteria->compare('roles.role_id', $this->roles,true);
+		}
+        
 		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+			'criteria'=>$criteria,       
+            //'sort'=>array('attributes'=>array('followers_count'=>array(),'*')),
 		));
+	}
+    
+    public function getGenderOptions() {
+		return array (
+		self::MALE => 'Male',
+		self::FEMALE => 'Female',
+		);
 	}
     
 	

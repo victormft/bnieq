@@ -3,7 +3,7 @@
     array('id' => 'myModal')
 ); ?>
  
-    <div class="modal-header">
+    <div class="modal-header" style="overflow-y: auto;">
         <a class="close" data-dismiss="modal">&times;</a>
     </div>
  
@@ -16,14 +16,19 @@
     </div>
  
 <?php $this->endWidget(); ?>
-<?php $this->widget(
+<?php 
+echo "<button class='btn-msg-wrap' type='button'>";
+$this->widget(
     'bootstrap.widgets.TbButton',
     array(
         'label' => 'Message',
-        'type' => 'primary',
+        'type' => 'warning',
+        'size'=>'normal',
         'htmlOptions' => array(
             'data-toggle' => 'modal',
             'data-target' => '#myModal',
+            'style' => 'width:70px; padding:12px 5px;',
         ),
     )
 );
+echo "</button>";

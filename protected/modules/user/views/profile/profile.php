@@ -3,7 +3,7 @@ $this->layout='//layouts/column1';
 
 $this->breadcrumbs=array(
 	'Users'=>array('/user/user'),
-	$model->id,
+	$model->getFullName(),
 ); 
 ?>
 
@@ -12,33 +12,35 @@ Yii::app()->clientScript->registerScript('follow',
 "
 $('#yw0').click(function(event) {
 
-		if($('#yw0').text()=='Follow')
+		if($('#yw0').text()==='Follow')
 		{	
 			$('#yw0').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');			
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+getUrlVars()['username'],
-				dataType: 'text',
-				success: function(msg){
+				dataType: 'json',
+				success: function(data){
 					$('#yw0').removeClass('btn-success');
 					$('#yw0').text('Unfollow');	
+                    $('.follow-count').html(data.res);
 				}
 			});
 		}
 		
-		else if($('#yw0').text()=='Unfollow')
+		else if($('#yw0').text()==='Unfollow')
 		{
 			$('#yw0').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+getUrlVars()['username'],
-				success: function(){
+                dataType: 'json',
+				success: function(data){
 					$('#yw0').addClass('btn-success');
-					$('#yw0').text('Follow');	                    
+					$('#yw0').text('Follow');
+                    $('.follow-count').html(data.res);
 				}
 			});
-		}
-			
+		}			
 });
 
 
@@ -59,37 +61,57 @@ function getUrlVars()
 
 ?>
 
-<div class="profile-header">	
+<?php if(Yii::app()->user->hasFlash('messageModule')): ?>
+    <?php 
+    $this->widget(
+        'bootstrap.widgets.TbBadge',
+        array(
+            'type' => 'success',
+            // 'success', 'warning', 'important', 'info' or 'inverse'
+            'label' => Yii::app()->user->getFlash('messageModule'),
+        )
+    ); ?>
 
+<?php endif; ?>
+
+<div class="profile-header">	
 	
 	<div class="profile-header-info">
         
-        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="Startup-profile-img" alt="asdasd" >
+        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="Startup-profile-img" alt="#" >
 		
-		<div class="profile-name">
-			<span><?php echo $profile->firstname.' '.$profile->lastname; ?></span>
-		</div>
+        <div class="profile-header-text">
+        
+            <div class="profile-name">
+                <span><?php echo $profile->firstname.' '.$profile->lastname; ?></span>
+            </div>
+
+            <div class="profile-onelinepitch">
+                <span><?php echo $profile->resume; ?></span>
+            </div>
+
+            <div class="profile-location">
+                <i class="icon-map-marker profile-icon"></i><a href="#"><?php if (isset($profile->city)) echo $profile->city->nome; ?></a>
+            </div>
+
+            <div class="profile-sectors">
+                <?php echo $model->getRolesForPrint(); ?>
+                  
+            </div>
+
+            <?php if($profile->facebook): ?>
+                <a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
+            <?php endif; ?>
+
+            <?php if($profile->twitter): ?>
+                <a href="<?php echo $profile->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>" style="margin-right:3px;"/></a>
+            <?php endif; ?>
+
+            <?php if($profile->linkedin): ?>
+                <a href="<?php echo $profile->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
+            <?php endif; ?>
 		
-		<div class="profile-onelinepitch">
-			<span style="font-style:italic;"><?php echo $profile->resume; ?></span>
-		</div>
-		
-		<div class="profile-sectors">
-			<span><?php echo $model->getRoleNames(); ?></span>
-		</div>
-		
-		<?php if($profile->facebook): ?>
-			<a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
-		<?php endif; ?>
-		
-		<?php if($profile->twitter): ?>
-			<a href="<?php echo $profile->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>" style="margin-right:3px;"/></a>
-		<?php endif; ?>
-		
-		<?php if($profile->linkedin): ?>
-			<a href="<?php echo $profile->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
-		<?php endif; ?>
-		
+        </div>
 	
 	</div>
 	
@@ -97,6 +119,10 @@ function getUrlVars()
 			
         <?php if($model->id !== Yii::app()->user->id): ?>
 		<span class="follow-btn">
+            
+            <div class="follow-info">
+                <div class="follow-count"><?php echo count($model->followers); ?></div><div class="follow-status">Followers</div>
+            </div>
             <?php 
                 if(!$model->hasUserFollowing(Yii::app()->user->id))
                 {
@@ -105,7 +131,7 @@ function getUrlVars()
                     'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
                     'url'=>'',//array('follow','name'=>$model->name),
-                    'htmlOptions'=>array('style'=>'width:50px;'),
+                    'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
                     )); 
                 }
                 else
@@ -114,11 +140,12 @@ function getUrlVars()
                     'label'=>'Unfollow',
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
                     'url'=>'',//array('unfollow','name'=>$model->name),
-                    'htmlOptions'=>array('style'=>'width:50px;'),
+                    'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
                     )); 
                 }
+                
+                if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model));
             ?>
-            <div class="follow-status">Followers: <div class="follow-count" style="display:inline;"><?php echo count($model->followers); ?></div></div>
         </span>
         <?php endif; ?>
         
@@ -137,7 +164,7 @@ function getUrlVars()
 			</span>
         <?php endif; ?>
         
-        <?php if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model)); ?>
+        
         
         <?php //if($model->id !== Yii::app()->user->id): ?>
         <?php //$this->widget('bootstrap.widgets.TbButton', array(

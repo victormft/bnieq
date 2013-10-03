@@ -37,14 +37,23 @@
             <div class="input">
                 <?php echo $form->labelEx($model,'receiver_id'); ?>
                 <?php 
-                $users=User::model()->findAll();
+                //can message only when following
+                if(Yii::app()->getModule('user')->isAdmin()){
+                    $users=User::model()->findAll();
+                    $list = CHtml::listData($users, 'id', function($user){return $user->getFullName();});
+                }
+                else {                    
+                    $followings=User::model()->findbyPk(Yii::app()->user->id)->following;
+                    $list = CHtml::listData($followings, 'followed_id', function($following){return $following->getNameOfFollowed();});
+                }
+                
                 $this->widget('bootstrap.widgets.TbSelect2', array(                    
                     'name' => 'receiver',
                     'id' => 'receiver',
                     'value'=>$model->receiver_id,
-                    'data' => CHtml::listData($users, 'id', function($user){return $user->getFullName();}),
+                    'data' => $list,
                     'options' => array(
-                        'width' => '40%',
+                        'width' => '220px',
                     )
                 )); ?>
 

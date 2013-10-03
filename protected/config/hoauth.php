@@ -41,7 +41,7 @@ return
 			),
 
 			"Twitter" => array ( 
-				"enabled" => true,
+				"enabled" => false,
 				"keys"    => array ( "key" => "", "secret" => "" ) 
 			),
 

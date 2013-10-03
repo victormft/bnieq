@@ -3,7 +3,7 @@ $this->layout='//layouts/column1';
 
 $this->breadcrumbs=array(
 	'Users'=>array('/user/user'),
-	$model->id,
+	$model->getFullName(),
 ); 
 ?>
 
@@ -14,170 +14,172 @@ $this->breadcrumbs=array(
         
         <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="Startup-profile-img" alt="asdasd" >
 		
-		<div class="profile-name">
-			<?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'firstname',
-                    'url'       => array('updateEd'),  //url for submit data          
-                    'placement' => 'right',
-                    'htmlOptions'=>  array(
-                        'style' => 'font-size: 28px; font: bold',
-                    )
-                 ));
-                 echo ' ';
-                 $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'lastname',
-                    'url'       => array('updateEd'),             
-                    'placement' => 'right',
-                    'htmlOptions'=>  array(
-                        'style' => 'font-size: 28px; font: bold',
-                    )
-                 ));
-            ?>
-		</div>
+        <div class="profile-header-text">
         
-        
-        <!-- !!!!!!!!!!!!!! image form !!!!!!!!!!!!!!!!-->
-        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-            'id'=>'image-edit-form',
-            'type'=>'horizontal',
-            'clientOptions'=>array(
-                'validateOnSubmit'=>true,
-            ),
-            'htmlOptions' => array(
-                'enctype' => 'multipart/form-data'),
-        )); 
-        ?>
-        <?php echo $form->fileFieldRow($profile, 'pic', array('labelOptions' => array('label' => ''))); ?>
-        <?php $this->widget('bootstrap.widgets.TbButton', array(
-                'buttonType'=>'submit',
-                'type'=>'primary',
-                'label'=>'Save',
-                'size'=>'normal',
-                )); 
-        ?>
-
-        <?php $this->endWidget(); ?>
-        
-		
-		<div class="profile-onelinepitch" id="resume">
-			<span style="font-style:italic;">
+            <div class="profile-name">
                 <?php
                     $this->widget('editable.EditableField', array(
-                        'type'      => 'textarea',
+                        'type'      => 'text',
                         'model'     => $profile,
-                        'attribute' => 'resume',
-                        'url'       => array('updateEd'),  
-                        'mode'      => 'inline', 
-                        'emptytext' => '(Mini-resumé)',
-                        'htmlOptions'=> array(
-                            'id' => 'resume3'
-                        ),
-                        'options'    => array(
-                            'rows'      => 5,
-                            'tpl'=> '<textarea style="resize: vertical; width: 300px"></textarea>'
-                            
+                        'attribute' => 'firstname',
+                        'url'       => array('updateEd'),  //url for submit data          
+                        'placement' => 'right',
+                        'htmlOptions'=>  array(
+                            'style' => 'font-size: 28px; font: bold',
+                        )
+                     ));
+                     echo ' ';
+                     $this->widget('editable.EditableField', array(
+                        'type'      => 'text',
+                        'model'     => $profile,
+                        'attribute' => 'lastname',
+                        'url'       => array('updateEd'),             
+                        'placement' => 'right',
+                        'htmlOptions'=>  array(
+                            'style' => 'font-size: 28px; font: bold',
                         )
                      ));
                 ?>
-            </span>
-		</div>
-        
-        <script type='text/javascript'>	
-            $(function() {
-                $('#resume').tooltip({
-                    trigger: 'manual', 
-                    placement: 'right', 
-                    title: '<h2>Vou colocar um render aqui</h2>',
-                    html: true,
+            </div>
+
+            <div class="profile-onelinepitch" id="resume">
+                <span style="font-style:italic;">
+                    <?php
+                        $this->widget('editable.EditableField', array(
+                            'type'      => 'textarea',
+                            'model'     => $profile,
+                            'attribute' => 'resume',
+                            'url'       => array('updateEd'),  
+                            'mode'      => 'inline', 
+                            'emptytext' => '(Mini-resumé)',
+                            'htmlOptions'=> array(
+                                'id' => 'resume-edit'
+                            ),
+                            'options'    => array(
+                                'rows'      => 5,
+                                'tpl'=> '<textarea style="resize: vertical; width: 300px"></textarea>'
+
+                            )
+                         ));
+                    ?>
+                </span>
+            </div>
+
+            <script type='text/javascript'>	
+                $(function() {
+                    $('#resume').tooltip({
+                        trigger: 'manual', 
+                        placement: 'right', 
+                        title: '<img src=<?php echo Yii::app()->request->baseUrl.'/images/sample-mini-resume.png';?> >',
+                        html: true,
+                    });
+                    $('#resume-edit').on('shown', function(e, editable) {
+                        $('#resume').tooltip('show');
+                        $(".tooltip").css("left","650px");
+                    });	
+                    $('#resume-edit').on('hidden', function(e, editable) {
+                        $('#resume').tooltip('hide');
+                    });	
                 });
-                $('#resume3').on('shown', function(e, editable) {
-                    $('#resume').tooltip('show');
-                });	
-                $('#resume3').on('hidden', function(e, editable) {
-                    $('#resume').tooltip('hide');
-                });	
-            });
-        </script>
-		
-		<div class="profile-sectors">
-			<span>
-                <?php           
-                $this->widget('editable.Editable', array(
-                    'type'      => 'select2',
-                    'name'      => 'role',
-                    'pk'        => $model->id,
-                    'url'       => $this->createUrl('updateRoles'), 
-                    'source'    => CHtml::listData(Role::model()->findAll(), 'role_id', 'name'),
-                    'text'      => $model->getRoleNames(),  
-                    'value'     => $model->getRoleIds(),
-                    'placement' => 'right',
-                    'inputclass'=> 'input-large',
-                    'emptytext' => '(Roles)',
-                    'select2'   => array(
-                        'placeholder'=> 'Select...',
-                        'multiple'=>true,
-                    ),
-                    'onHidden' => 'js: function(e, reason) {
-                        $("#select2-drop-mask").css("display","none");
-                        $("#select2-drop").css("display","none");
-                     }'
-                )); ?>
-            </span>
-		</div>
-		
-        <div class="facebook">
-            <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png>';?>
-                <?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'facebook',
-                    'url'       => array('updateEd'),  //url for submit data          
-                    'placement' => 'right',
-                    'inputclass'=> 'input-large',
-                    'options'=>array(
-                        'defaultValue'=>'https://www.facebook.com/'
-                    )
-                 ));?>
-        </div>
-		
-        <div class="twitter">
-            <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png>';?>
-                <?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'linkedin',
-                    'url'       => array('updateEd'),  //url for submit data          
-                    'placement' => 'right',
-                    'inputclass'=> 'input-large',
-                    'options'=>array(
-                        'defaultValue'=>'http://www.linkedin.com/pub/'
-                    )
-                 ));?>
+            </script>
+
+            <div class="profile-sectors">
+                <span>
+                    <?php           
+                    $this->widget('editable.Editable', array(
+                        'type'      => 'select2',
+                        'name'      => 'role',
+                        'pk'        => $model->id,
+                        'url'       => $this->createUrl('updateRoles'), 
+                        'source'    => CHtml::listData(Role::model()->findAll(), 'role_id', 'name'),
+                        'text'      => $model->getRoleNames(),  
+                        'value'     => $model->getRoleIds(),
+                        'placement' => 'right',
+                        'inputclass'=> 'input-large',
+                        'emptytext' => '(Roles)',
+                        'select2'   => array(
+                            'placeholder'=> 'Select...',
+                            'multiple'=>true,
+                        ),
+                        'onHidden' => 'js: function(e, reason) {
+                            $("#select2-drop-mask").css("display","none");
+                            $("#select2-drop").css("display","none");
+                         }'
+                    )); ?>
+                </span>
+            </div>
+
+            <div class="facebook">
+                <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png>';?>
+                    <?php
+                    $this->widget('editable.EditableField', array(
+                        'type'      => 'text',
+                        'model'     => $profile,
+                        'attribute' => 'facebook',
+                        'url'       => array('updateEd'),  //url for submit data          
+                        'placement' => 'right',
+                        'inputclass'=> 'input-large',
+                        'options'=>array(
+                            'defaultValue'=>'https://www.facebook.com/'
+                        )
+                     ));?>
+            </div>
+
+            <div class="twitter">
+                <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png>';?>
+                    <?php
+                    $this->widget('editable.EditableField', array(
+                        'type'      => 'text',
+                        'model'     => $profile,
+                        'attribute' => 'linkedin',
+                        'url'       => array('updateEd'),  //url for submit data          
+                        'placement' => 'right',
+                        'inputclass'=> 'input-large',
+                        'options'=>array(
+                            'defaultValue'=>'http://www.linkedin.com/pub/'
+                        )
+                     ));?>
+            </div>
+
+            <div class="twitter">
+                <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png>';?>
+                    <?php
+                    $this->widget('editable.EditableField', array(
+                        'type'      => 'text',
+                        'model'     => $profile,
+                        'attribute' => 'twitter',
+                        'url'       => array('updateEd'),  //url for submit data          
+                        'placement' => 'right',
+                        'inputclass'=> 'input-large',
+                        'options'=>array(
+                            'defaultValue'=>'https://twitter.com/'
+                        )
+                     ));?>
+            </div>
+	
+            <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+                'id'=>'image-edit-form',
+                'type'=>'horizontal',
+                'clientOptions'=>array(
+                    'validateOnSubmit'=>true,
+                ),
+                'htmlOptions' => array(
+                    'enctype' => 'multipart/form-data'),
+            )); 
+            ?>
+            <?php echo $form->fileFieldRow($profile, 'pic', array('labelOptions' => array('label' => ''))); ?>
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                    'buttonType'=>'submit',
+                    'type'=>'primary',
+                    'label'=>'Save',
+                    'size'=>'normal',
+                    )); 
+            ?>
+
+            <?php $this->endWidget(); ?>
+            
         </div>
         
-        <div class="twitter">
-            <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png>';?>
-                <?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'twitter',
-                    'url'       => array('updateEd'),  //url for submit data          
-                    'placement' => 'right',
-                    'inputclass'=> 'input-large',
-                    'options'=>array(
-                        'defaultValue'=>'https://twitter.com/'
-                    )
-                 ));?>
-		</div>
-	
 	</div>
 	
 	<div class="profile-header-right">
@@ -376,7 +378,10 @@ $this->breadcrumbs=array(
                     )
                  )); ?> 
             </p>
-
+            
+ 
+            
+            
             <p> <?php echo '<b>City: </b>'; ?>    
                 <?php           
                 $this->widget('editable.EditableField', array(
@@ -391,8 +396,32 @@ $this->breadcrumbs=array(
                         'placeholder'=> 'Select...',
                         'allowClear'=> true,   
                         'dropdownAutoWidth'=> true,
-                        'minimumInputLength'=> 3,
-                    ),
+                        'minimumInputLength'=> 3,  
+                        /*
+                        'ajax' => array(
+                            'url'=>$this->createUrl('suggestPerson'),
+                            'dataType'=>'json',
+                            'data' => "js: function(term,page) {
+                                return {q: term};
+                            }",
+                            'results' => "js: function(data,page){
+                                return {results: data};
+                            }",
+                        ),
+                        'initSelection' => "js:function (element, callback) {
+                            var id=$(element).val();
+                            if (id!=='') {
+                                $.ajax('".$this->createUrl('initPerson')."', {
+                                    dataType: 'json',
+                                    data: {
+                                        id: id
+                                    }
+                                }).done(function(data) {callback(data);});
+                            }
+                        }",
+                         * 
+                         */
+                    ),                         
                     'onHidden' => 'js: function(e, reason) {
                         $("#select2-drop-mask").css("display","none");
                         $("#select2-drop").css("display","none");
