@@ -99,6 +99,6 @@ class UserFollow extends CActiveRecord
 	}
     
     public function getNameOfFollowed() {
-        return $this->followed->profile->firstname.' '.$this->followed->profile->lastname;
+        return $this->followed->getFullName();
     }
 }

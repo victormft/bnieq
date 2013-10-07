@@ -38,13 +38,17 @@
                 <?php echo $form->labelEx($model,'receiver_id'); ?>
                 <?php 
                 //can message only when following
-                if(Yii::app()->getModule('user')->isAdmin()){
+                if(Yii::app()->getModule('user')->isAdmin())
+                {
                     $users=User::model()->findAll();
                     $list = CHtml::listData($users, 'id', function($user){return $user->getFullName();});
                 }
-                else {                    
-                    $followings=User::model()->findbyPk(Yii::app()->user->id)->following;
-                    $list = CHtml::listData($followings, 'followed_id', function($following){return $following->getNameOfFollowed();});
+                else {
+                    if(User::model()->findbyPk(Yii::app()->user->id)->following)
+                    {
+                        $followings=User::model()->findbyPk(Yii::app()->user->id)->following;
+                        $list = CHtml::listData($followings, 'followed_id', function($following){return $following->getNameOfFollowed();});
+                    }
                 }
                 
                 $this->widget('bootstrap.widgets.TbSelect2', array(                    

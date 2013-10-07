@@ -309,6 +309,22 @@ class User extends CActiveRecord
     }
     
     /**
+	 * @return a string with skills and dots in the middle
+	 */
+    public function getSectorsForPrint()
+    {
+        $string="";
+        $sectors=$this->sectors;
+        $lastElement = end($sectors);
+        foreach($sectors as $sector) {
+            $string = $string.'<a href="#">'.$sector->name.'</a>' ;
+            if ($sector!==$lastElement) $string = $string.' · ';
+        } 
+        
+        return $string;
+    }
+    
+    /**
 	 * @return a string with the role names 
 	 */
     public function getSkillNames()
@@ -341,6 +357,22 @@ class User extends CActiveRecord
         }
         
         return $arr;
+    }
+    
+    /**
+	 * @return a string with skills and dots in the middle
+	 */
+    public function getSkillsForPrint()
+    {
+        $string="";
+        $skills=$this->skills;
+        $lastElement = end($skills);
+        foreach($skills as $skill) {
+            $string = $string.'<a href="#">'.$skill->name.'</a>' ;
+            if ($skill!==$lastElement) $string = $string.' · ';
+        } 
+        
+        return $string;
     }
     
     // class User
@@ -377,5 +409,11 @@ class User extends CActiveRecord
         }		
 		return false;
 	}
+    
+    //see if the user who is making the request is the one logged in
+    public function isReallyYou()
+    {
+        return Yii::app()->user->id === $this->id;        
+    }    
     
 }
