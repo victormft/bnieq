@@ -145,6 +145,13 @@ class ProfileController extends Controller
 		));
 	}
     
+    public function actionUpload()
+    {
+        $file = CUploadedFile::getInstanceByName('file');
+        $file->saveAs(Yii::getPathOfAlias('webroot').'images/'.$file->getName());
+        echo Yii::app()->baseUrl.'/images/'.$file->getName();
+    }
+    
     public function actionUpdateLocation()
     {        
         $model = $this->loadUser($_POST['pk']);        

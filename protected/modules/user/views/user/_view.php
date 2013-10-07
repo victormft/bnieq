@@ -1,3 +1,5 @@
+<?php if($data->user->id !== Yii::app()->user->id): ?>
+
 <?php
 Yii::app()->clientScript->registerScript('follow-'.$data->user->username,
 "
@@ -84,3 +86,5 @@ $('#follow-".$data->user->username."').click(function(event) {
     </span>
     
 </div>
+
+<?php endif ?>

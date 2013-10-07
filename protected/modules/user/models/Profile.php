@@ -31,7 +31,6 @@ class Profile extends CActiveRecord
     //search do index
     public $fullname;
     public $followers_count;
-    public $special_condition;
     
     //to groups in listing
 	public $group;
@@ -176,9 +175,6 @@ class Profile extends CActiveRecord
 		$criteria->compare('experiences',$this->experiences,true);
 		$criteria->compare('interests',$this->interests,true);
         $criteria->compare('(SELECT COUNT(user_follow.follower_id) FROM user_follow WHERE t.user_id=user_follow.followed_id)',$this->followers_count);//making the filters work
-        
-        if($this->special_condition)
-			$criteria->condition=$this->special_condition;		       
         
         if($this->group)
 		{

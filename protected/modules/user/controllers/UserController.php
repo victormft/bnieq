@@ -54,9 +54,7 @@ class UserController extends Controller
 	{
 		$model=new Profile('search');
 		$model->unsetAttributes();  // clear any default values
-        
-        $model->special_condition = 't.user_id!='.Yii::app()->user->id;
-        
+                
 		if(isset($_GET['n'])) {
             $model->fullname=$_GET['n'];
 			$model->resume=$_GET['n'];

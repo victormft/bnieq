@@ -57,6 +57,38 @@ function getUrlVars()
     return vars;
 }
 
+$('.arrow-container').mouseover(function(event){
+		$(this).css('background-color', '#fefefe');
+	});
+	
+	$('.arrow-container').mouseout(function(event){
+		$(this).css('background-color', '#f6f6f6');
+	});
+	
+	$('.content-head').click(function(event){
+		
+		if(!$(this).hasClass('clicked'))
+		{
+			$(this).removeClass('rounded');
+			$(this).next().slideDown();
+			$(this).addClass('clicked');
+			$(this).find('.arrow').removeClass('arrow-down');
+			$(this).find('.arrow').addClass('arrow-up');
+		}
+		
+		else
+		{
+			$(this).next().slideUp(function(){
+				$(this).prev().addClass('rounded');
+			});
+			$(this).removeClass('clicked');
+			$(this).find('.arrow').removeClass('arrow-up');
+			$(this).find('.arrow').addClass('arrow-down');
+			
+		}
+		
+	});
+
 ");
 
 ?>
@@ -75,44 +107,39 @@ function getUrlVars()
 <?php endif; ?>
 
 <div class="profile-header">	
+    
+    <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="user-profile-img">
 	
-	<div class="profile-header-info">
-        
-        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="Startup-profile-img" alt="#" >
-		
-        <div class="profile-header-text">
-        
-            <div class="profile-name">
-                <span><?php echo $profile->firstname.' '.$profile->lastname; ?></span>
-            </div>
+	<div class="user-profile-header-info">     
 
-            <div class="profile-onelinepitch">
-                <span><?php echo $profile->resume; ?></span>
-            </div>
-
-            <div class="profile-location">
-                <i class="icon-map-marker profile-icon"></i><a href="#"><?php if (isset($profile->city)) echo $profile->city->nome; ?></a>
-            </div>
-
-            <div class="profile-sectors">
-                <?php echo $model->getRolesForPrint(); ?>
-                  
-            </div>
-
-            <?php if($profile->facebook): ?>
-                <a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
-            <?php endif; ?>
-
-            <?php if($profile->twitter): ?>
-                <a href="<?php echo $profile->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>" style="margin-right:3px;"/></a>
-            <?php endif; ?>
-
-            <?php if($profile->linkedin): ?>
-                <a href="<?php echo $profile->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
-            <?php endif; ?>
-		
+        <div class="profile-name">
+            <span><?php echo $profile->firstname.' '.$profile->lastname; ?></span>
         </div>
-	
+
+        <div class="user-profile-onelinepitch">
+            <span><?php echo $profile->resume; ?></span>
+        </div>
+
+        <div class="user-profile-location">
+            <i class="icon-map-marker profile-icon"></i><a href="#"><?php if (isset($profile->city)) echo $profile->city->nome; ?></a>
+        </div>
+
+        <div class="user-profile-sectors">
+            <?php echo $model->getRolesForPrint(); ?>
+        </div>
+
+        <?php if($profile->facebook): ?>
+            <a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
+        <?php endif; ?>
+
+        <?php if($profile->twitter): ?>
+            <a href="<?php echo $profile->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>" style="margin-right:3px;"/></a>
+        <?php endif; ?>
+
+        <?php if($profile->linkedin): ?>
+            <a href="<?php echo $profile->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
+        <?php endif; ?>
+			
 	</div>
 	
 	<div class="profile-header-right">
@@ -153,7 +180,7 @@ function getUrlVars()
 			<span class="edit-btn">
 			
 				<?php $this->widget('bootstrap.widgets.TbButton', array(
-				'label'=>'Edit',
+				'label'=>'Editar',
 				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				'size'=>'normal', // null, 'large', 'small' or 'mini'
 				'url'=>array('edit','username'=>$model->username),
@@ -185,39 +212,63 @@ function getUrlVars()
 	
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-book profile-icon"></i> What I do</div>
+		<div class="content-head clicked">
+            <i class="icon-road profile-icon"></i>O que eu faço
+        </div>
 		
 		<div class="content-info">
-			
-			<p> <?php echo '<b>Working experiences: </b>'; ?>    
-				
-				<?php echo $profile->experiences; ?>  
-			</p> 
             
-            <p> <?php echo '<b>Skills: </b>'; ?>    
-				
-				<?php echo $model->getSkillNames(); ?>  
-			</p> 
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo '<b>Experiências: </b>'; ?>
+                    <span class="tip">O que você já fez de mais interessante?</span>                    
+                </div>
+                <div class="editable-wrap-profile">		                    
+                    <?php echo $profile->experiences; ?>  				
+                </div>				 
+            </div>
+            
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo '<b>Skills: </b>'; ?>
+                    <span class="tip">O que você faz de melhor?</span>                    
+                </div>
+                <div class="editable-wrap-profile">		                    
+                    <?php echo $model->getSkillsForPrint(); ?>  				
+                </div>				 
+            </div>
 			
 		</div>
 		
-	</div>	
-	
+	</div>		
 	
 	<div class="content-wrap">
 
-		<div class="content-head">What I am looking for</div>
+		<div class="content-head clicked">
+            <i class="icon-search profile-icon"></i> O que eu procuro
+        </div>
 		
 		<div class="content-info">
-			<p> <?php echo '<b>Interests: </b>'; ?>    
-				
-				<?php echo $profile->interests; ?>  
-			</p> 
             
-            <p> <?php echo '<b>Sectors of interest: </b>'; ?>    
-				
-				<?php echo $model->getSectorNames(); ?>  
-			</p> 
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo '<b>Interesses: </b>'; ?>
+                    <span class="tip">O que te interessa?</span>                    
+                </div>
+                <div class="editable-wrap-profile">		                    
+                    <?php echo $profile->interests; ?>  				
+                </div>				 
+            </div>
+            
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo '<b>Setores de interesse: </b>'; ?> 
+                    <span class="tip">Quais desses setores te interessam?</span>                    
+                </div>
+                <div class="editable-wrap-profile">		                    
+                    <?php echo $model->getSectorsForPrint(); ?>  				
+                </div>				 
+            </div>
             
 		</div>
 		
@@ -226,57 +277,109 @@ function getUrlVars()
     
 <div class="profile-column-r">
 
+<?php if($model->isReallyYou()): ?> 
+    
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-road profile-icon"></i>Contacts</div>
+		<div class="content-head clicked">
+            <i class="icon-circle-arrow-up profile-icon"></i>Startups & Pitches
+        </div>
 		
 		<div class="content-info">
-			
-			<p> <?php echo '<b>Email: </b>'; ?>    
-				
-				<?php echo $model->email; ?>  
-			</p> 
             
-            <p> <?php echo '<b>Telephone: </b>'; ?>    
-				
-				<?php echo $profile->telephone; ?>  
-			</p> 
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo 'COMMING SOON...'; ?>                   
+                </div>			 
+            </div>
             
-            <p> <?php echo '<b>Skype: </b>'; ?>    
-				
-				<?php echo $profile->skype; ?>  
-			</p>
+		</div>
+    </div>  
+    
+<?php endif; ?>     
+    
+    <div class="content-wrap">
+        
+        <div class="content-head clicked">
+            <i class="icon-circle-arrow-up profile-icon"></i>Referências & Follows
+        </div>
 		
+		<div class="content-info">
+            
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo 'COMMING SOON...'; ?>                   
+                </div>			 
+            </div>
+            
+		</div>
+    </div>
+		
+    
+<?php if($model->isReallyYou()): ?>    
+    
+    <div class="content-wrap">   
+        
+        <div class="content-head clicked">
+            <i class="icon-book profile-icon"></i>Contatos
+        </div>
+        
+		<div class="content-info">
+            
+            <div class="content-info-unit"> 
+                <div class="clabel-r">			
+                    <?php echo '<b>Telefone: </b>'; ?>                   
+                </div>
+                <div class="editable-wrap-r">			
+                    <?php echo $profile->telephone; ?>  				
+                </div>
+            </div>
+            
+            <div class="content-info-unit"> 
+                <div class="clabel-r">			
+                    <?php echo '<b>Skype: </b>'; ?>                    
+                </div>
+                <div class="editable-wrap-r">			
+                    <?php echo $profile->skype; ?>				
+                </div>
+            </div>        
 		</div>
 		
 	</div>	
 
-	<div class="content-wrap">
-
-		<div class="content-head">Personal</div>
-		
+    <div class="content-wrap">   
+        
+        <div class="content-head clicked">
+            <i class="icon-smile profile-icon"></i>Pessoal
+        </div>
+        
 		<div class="content-info">
-            <p> <?php echo '<b>Gender: </b>'; ?>    
-                <?php 
-                    echo $profile->gender;
-                ?>  
-            </p>
-
-            <p> <?php echo '<b>Birthday: </b>'; ?>    
-                <?php 
-                    echo $profile->birthday;
-                ?>  
-            </p>
-
-            <p> <?php echo '<b>City: </b>'; ?>    
-                <?php 
-                    echo (isset($profile->location)) ? $profile->city->nome : '';
-                ?>  
-            </p>
-	
+            
+            <div class="content-info-unit"> 
+                <div class="clabel-r">			
+                    <?php echo '<b>Sexo: </b>'; ?>                   
+                </div>
+                <div class="editable-wrap-r">			
+                    <?php 
+                    if($profile->gender === 'M') echo 'Male';
+                    elseif($profile->gender === 'F') echo 'Female';
+                    else echo 'not selected...';
+                    ?>                        
+                </div>
+            </div>
+            
+            <div class="content-info-unit"> 
+                <div class="clabel-r">			
+                    <?php echo '<b>Data de nascimento: </b>'; ?>                    
+                </div>
+                <div class="editable-wrap-r">			
+                    <?php echo date('d-F-Y', strtotime($profile->birthday)); ?>				
+                </div>
+            </div>        
 		</div>
 		
-	</div>	
+	</div>
 </div>
 
+<?php endif; ?>
 
