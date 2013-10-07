@@ -10,7 +10,7 @@ Yii::setPathOfAlias('editable', dirname(__FILE__).'/../extensions/x-editable');
 return array(
     'timeZone' => 'America/Sao_Paulo',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'BNI Equity',
+	'name'=>'NextBlue',
 	'homeUrl'=>'/bnieq',
 	'theme'=>'bootstrap',
 	

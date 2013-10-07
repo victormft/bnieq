@@ -436,7 +436,7 @@ $('.arrow-container').mouseover(function(event){
                 </div>
             </div>
             
-            <div class="note">
+            <div class="profile-note">
                 OBS: Essas informações servirão para nós entrarmos em contato se necessário.
             </div>            
 		</div>
@@ -498,7 +498,7 @@ $('.arrow-container').mouseover(function(event){
                 </div>
             </div>
             
-            <div class="note">
+            <div class="profile-note">
                 OBS: Essas informações são necessárias para você investir ou pedir investimento.
             </div>
 		</div>

@@ -34,7 +34,7 @@
 		<ul class="nav pull-right secondary">
 			<?php if(Yii::app()->user->isGuest):?>
                 <li><a style="display:inline-block; padding-right:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-lock" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Login</a></li>
-                <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/registration'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Register</a></li>
+                <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Register</a></li>
             <?php else: ?>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
@@ -46,7 +46,6 @@
                         ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>
 						</li>
                         <li class="divider"></li>
-                        <li class="nav-header">NAV HEADER</li>
                         <li>
                             <a href=<?php echo Yii::app()->homeUrl . '/user/settings/general' ?>>Settings</a>
                         </li>
