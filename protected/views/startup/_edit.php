@@ -7,34 +7,26 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/j
 Yii::app()->clientScript->registerScript('loading-img',
 "
 	$('.btn-edit').click(function(event){
-		if($('.profile-header-info').hasClass('hid'))
+		if(!$('.profile-header-info').hasClass('hid'))
 		{
 			$('.btn-edit').hide();
-			$('.prof').animate({opacity: 0}, 500);
-			$('.prof').hide('fast', function(){ 
-				$('.profile-header-info').removeClass('hid');
-				$('.profile-header-info').show('fast'); 
-				$('.profile-header-info').animate({opacity:1}, 500, function(){
-					$('.btn-edit').show();
-				}); 
-			});
+				$('.profile-header-info').animate({opacity: 0},250, function(){ 
+					$('.profile-header-info').addClass('hid');
+					$('.profile-header-info').hide('fast');
+					$('.prof').show('fast', function(){
+						$('.prof').animate({opacity: 1}, 250, function(){
+							$('.btn-edit').text('Salvar');
+							$('.btn-edit').show();
+						});
+					}); 
+					
+				});
 		}
-		
 		else
 		{
-			$('.btn-edit').hide();
-			$('.profile-header-info').animate({opacity: 0},500, function(){ 
-				$('.profile-header-info').addClass('hid');
-				$('.profile-header-info').hide('fast');
-				$('.prof').show('fast', function(){
-					$('.prof').animate({opacity: 1}, 500, function(){
-						$('.btn-edit').show();
-					});
-				}); 
-				
-			});
+			$('.btn-edit').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			location.href = 'edit?name='+encodeURIComponent($('.profile-header').find('.macaco').children().text());
 		}
-	
 	});
 	
 	$('.team-ready').on('mouseover','.team-item',function(event){
@@ -183,6 +175,7 @@ function getUrlVars()
 		
 		<div class="editable-wrap">
 				<p> <?php echo '<b>Nome: </b>';?>   
+					<span class="macaco">
 					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
@@ -192,6 +185,7 @@ function getUrlVars()
 						'inputclass'=> 'input-large',
 						'mode'=>'inline'
 					 )); ?>  
+					 </span>
 				</p>
 				
 				<p> <?php echo '<b>One Line Pitch: </b>';?>   
@@ -204,6 +198,47 @@ function getUrlVars()
 						'inputclass'=> 'input-large',
 						'mode'=>'inline'
 					 )); ?>  
+				</p>
+				
+				<p>	<?php echo '<b>Setor de Atuação: </b>'; ?>
+					<?php           
+					$this->widget('editable.Editable', array(
+						'type'      => 'select2',
+						'name'      => 'sector',
+						'pk'        => $model->id,
+						'url'       => $this->createUrl('updateSectors'), 
+						'source'    => CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'),
+						'text'      => $model->getSectorCommaNames(),  
+						'value'     => $model->getSectorIds(),
+						'placement' => 'right',
+						'inputclass'=> 'input-large',
+						'select2'   => array(
+							'placeholder'=> 'Select...',
+							'multiple'=>true,
+							'maximumSelectionSize'=> 3,
+						),
+						'mode'=>'inline',
+					)); ?>
+				</p>
+				
+				<p> <?php echo '<b>Cidade: </b>'; ?>    
+					<?php           
+					$this->widget('editable.EditableField', array(
+						'type'      => 'select2',
+						'model'     => $model,
+						'attribute' => 'location',
+						'url'       => $this->createUrl('updateLocation'), 
+						'source'    => Cidade::model()->getCities(),
+						'placement' => 'right',
+						'inputclass'=> 'input-large',
+						'select2'   => array(
+							'placeholder'=> 'Select...',
+							'allowClear'=> true,   
+							'dropdownAutoWidth'=> true,
+							'minimumInputLength'=> 3,
+						),
+						'mode'=>'inline'
+					)); ?> 
 				</p>
 				
 				
@@ -406,8 +441,8 @@ function getUrlVars()
 	<div class="content-wrap">
 
 		<div class="content-head rounded">
-			<i class="icon-link profile-icon"></i> Social & Website
-			<span class="tip">Edite os links para as Redes Sociais e para o Website</span>
+			<i class="icon-link profile-icon"></i> Website & Social
+			<span class="tip">Edite os links para o Website da empresa e para as Redes Sociais</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
 		
@@ -497,7 +532,7 @@ function getUrlVars()
 	<div class="content-wrap">
 
 		<div class="content-head rounded">
-			<i class="icon-group profile-icon"></i> Público Alvo
+			<i class="icon-screenshot profile-icon"></i> Público Alvo
 			<span class="tip">Pessoas ou Grupos a quem se destinam o produto</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
@@ -634,196 +669,111 @@ function getUrlVars()
 		
 	</div>	
 	
-	
-	<div class="content-wrap">
-
-		<div class="content-head">Sector and Location</div>
-		
-		<div class="content-info">
-			<p> <?php echo '<b>Sector: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'select',
-					'model'     => $model,
-					'attribute' => 'sector',
-					'url'       => array('update'),
-					'source'    => CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), 			
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<div class="sectors_wrap">
-				<?php $this->renderPartial('_sectors', array('model'=>$model)); ?>
-			</div>
-			
-			
-			
-		<div class="profile-sectors">
-			<span>
-                <?php           
-                $this->widget('editable.Editable', array(
-                    'type'      => 'select2',
-                    'name'      => 'sector',
-                    'pk'        => $model->id,
-                    'url'       => $this->createUrl('updateSectors'), 
-                    'source'    => CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'),
-                    'text'      => $model->getSectorCommaNames(),  
-                    'value'     => $model->getSectorIds(),
-                    'placement' => 'right',
-                    'inputclass'=> 'input-large',
-                    'select2'   => array(
-                        'placeholder'=> 'Select...',
-                        'multiple'=>true,
-						'maximumSelectionSize'=> 3,
-                    ),
-                )); ?>
-            </span>
-		</div>
-			
-			
-			
-			
-			<p> <?php echo '<b>Post Code: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'post_code',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Cityaaaa: </b>'; ?>    
-                <?php           
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'select2',
-                    'model'     => $model,
-                    'attribute' => 'location',
-                    'url'       => $this->createUrl('updateLocation'), 
-                    'source'    => Cidade::model()->getCities(),
-                    'placement' => 'right',
-                    'inputclass'=> 'input-large',
-                    'select2'   => array(
-                        'placeholder'=> 'Select...',
-                        'allowClear'=> true,   
-                        'dropdownAutoWidth'=> true,
-                        'minimumInputLength'=> 3,
-                    )
-                )); ?> 
-            </p>
-			
-			
-		</div>
-		
-	</div>	
-
-	<div class="content-wrap">
-
-		<div class="content-head">Company</div>
-		
-		<div class="content-info">
-			 <p> <?php echo '<b>One Line Pitch: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'one_line_pitch',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Company Size: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'select',
-					'model'     => $model,
-					'attribute' => 'company_size',
-					'url'       => array('update'),  
-					'source'    => $model->getCompanySizeOptions(), 
-					'placement' => 'right',
-				 )); ?> 
-			</p>
-			
-			<p> <?php echo '<b>Company Stage: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'select',
-					'model'     => $model,
-					'attribute' => 'company_stage',
-					'url'       => array('update'),  
-					'source'    => $model->getCompanyStageOptions(), 
-					'placement' => 'right',
-					'mode'=>'inline',
-				 )); ?> 
-			</p>
-			
-			 <p> <?php echo '<b>Foundation: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'date',
-					'model'     => $model,
-					'attribute' => 'foundation',
-					'url'       => array('update'),  
-					'placement' => 'right',
-					'format'      => 'yyyy-mm-dd', //format in which date is expected from model and submitted to server
-					'viewformat'  => 'dd/mm/yyyy', //format in which date is displayed
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Email: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'email',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Telephone: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'telephone',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Skype: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'skype',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-			
-			<p> <?php echo '<b>Company Number: </b>'; ?>    
-				<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-					'type'      => 'text',
-					'model'     => $model,
-					'attribute' => 'company_number',
-					'url'       => array('update'),  
-					'placement' => 'right',
-				 )); ?>  
-			</p>
-		 
-		</div>
-		
-	</div>	
+	<!--
+	<div class="sectors_wrap">
+		<?php //$this->renderPartial('_sectors', array('model'=>$model)); ?>
+	</div>
+	-->
 
 </div>
 
 <div class="profile-column-r">
-
-
+	
+	
 	<div class="content-wrap">
 
 		<div class="content-head rounded">
-			<i class="icon-group profile-icon"></i> Editar Equipe
+			<i class="icon-signal profile-icon"></i> Estágio
+			<span class="tip">Indique o Estágio de Desenvolvimento do Produto</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+			
+		<div class="content-info edit">
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'select',
+						'model'     => $model,
+						'attribute' => 'company_stage',
+						'url'       => array('update'),  
+						'source'    => $model->getCompanyStageOptions(), 
+						'placement' => 'right',
+						'mode'=>'inline',
+					 )); ?>  
+									
+				</p>
+			</div>
+				
+		</div>
+		
+	</div>	
+	
+	<!--
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-building profile-icon"></i>Tamanho
+			<span class="tip">Número de membros da Startup</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+			
+		<div class="content-info edit">
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'select',
+						'model'     => $model,
+						'attribute' => 'company_size',
+						'url'       => array('update'),  
+						'source'    => $model->getCompanySizeOptions(), 
+						'placement' => 'right',
+						'mode'=>'inline',
+					 )); ?>  
+									
+				</p>
+			</div>
+				
+		</div>
+		
+	</div>	
+	-->
+	
+	<div class="content-wrap">
+
+		<div class="content-head rounded">
+			<i class="icon-calendar profile-icon"></i> Data
+			<span class="tip">Indique a data de início das atividades</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+			
+		<div class="content-info edit">
+			<div class="editable-wrap">
+				<p>	<?php $this->widget('editable.EditableField', array(
+						'type'      => 'date',
+						'model'     => $model,
+						'attribute' => 'foundation',
+						'url'       => array('update'),  
+						'placement' => 'right',
+						'format'      => 'yyyy-mm-dd', //format in which date is expected from model and submitted to server
+						'viewformat'  => 'dd/mm/yyyy', //format in which date is displayed
+						'mode'=>'inline',
+					 )); ?>  
+									
+				</p>
+			</div>
+				
+		</div>
+		
+	</div>	
+	
+	
+	<div class="content-wrap">
+
+		<div class="content-head" style="border-radius: 5px 5px 0 0;">
+			<i class="icon-group profile-icon"></i> Equipe
 			<span class="tip">Insira os usuários relacionados com a startup</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
 		
-		<div class="content-info edit">
+		<div class="content-info edit" style="border-radius: 0;">
 			
 			<div class="editable-wrap team">
 		
@@ -885,13 +835,13 @@ function getUrlVars()
 
 
 
-<div class="content-wrap">
-
-		<div class="content-head">
+<div class="content-wrap" style="margin-top:0px;">
+		<!--
+		<div class="content-head" style="border-radius: 0; border-top: none;">
 			<i class="icon-group profile-icon"></i> Equipe
 			<span class="tip">Equipe da Startup (edite na aba acima)</span>
 		</div>
-		
+		-->
 		<div class="content-info team-ready">
 
 		
@@ -912,97 +862,6 @@ function getUrlVars()
 		
 		
 		</div>	
-	</div>
-
-
-	
-
-	<div class="content-wrap">
-
-		<div class="content-head">Private Profile!!!!!!!!!!! - Business Model</div>
-		
-		<div class="content-info">
-		<p> <?php echo '<b>Client Segment: </b>'; ?>    
-        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'text',
-            'model'     => $model,
-            'attribute' => 'client_segment',
-            'url'       => array('update'),  
-            'placement' => 'right',
-         )); ?>  
-    </p>
-	
-	<p> <?php echo '<b>Value Proposition: </b>'; ?>    
-        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'text',
-            'model'     => $model,
-            'attribute' => 'value_proposition',
-            'url'       => array('update'),  
-            'placement' => 'right',
-         )); ?>  
-    </p>
-	
-	<p> <?php echo '<b>Market Size: </b>'; ?>    
-        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'text',
-            'model'     => $model,
-            'attribute' => 'market_size',
-            'url'       => array('update'),  
-            'placement' => 'right',
-         )); ?>  
-    </p>
-	
-	<p> <?php echo '<b>Sales/Marketing Proposition: </b>'; ?>    
-        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'text',
-            'model'     => $model,
-            'attribute' => 'sales_marketing',
-            'url'       => array('update'),  
-            'placement' => 'right',
-         )); ?>  
-    </p>
-	
-	<p> <?php echo '<b>Revenue Generation: </b>'; ?>    
-        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'text',
-            'model'     => $model,
-            'attribute' => 'revenue_generation',
-            'url'       => array('update'),  
-            'placement' => 'right',
-         )); ?>  
-    </p>
-	
-	<p> <?php echo '<b>Competitors: </b>'; ?>    
-        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'text',
-            'model'     => $model,
-            'attribute' => 'competitors',
-            'url'       => array('update'),  
-            'placement' => 'right',
-         )); ?>  
-    </p>
-	
-	<p> <?php echo '<b>Competitive Advantage: </b>'; ?>    
-        <?php $this->widget('bootstrap.widgets.TbEditableField', array(
-            'type'      => 'text',
-            'model'     => $model,
-            'attribute' => 'competitive_advantage',
-            'url'       => array('update'),  
-            'placement' => 'right',
-         )); ?>  
-    </p>
-		</div>
-		
-	</div>	
-	
-	<div class="content-wrap">
-
-		<div class="content-head">Header</div>
-		
-		<div class="content-info">
-		Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum 
-		</div>
-		
 	</div>	
 
 </div>

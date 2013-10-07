@@ -61,9 +61,9 @@ class Startup extends CActiveRecord
 	public $user_role;
 	
 	//company size
-	const SIZE_1="1-10";
-	const SIZE_2="11-20";
-	const SIZE_3="20+";
+	const SIZE_1="1-5";
+	const SIZE_2="6-10";
+	const SIZE_3="10+";
 	
 	//company stage
 	const STAGE_1="Conceito";
@@ -137,7 +137,7 @@ class Startup extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'name' => 'Nome',
 			'logo' => 'Logo',
 			'one_line_pitch' => 'One Line Pitch',
 			'product_description' => 'Product Description',
@@ -165,7 +165,7 @@ class Startup extends CActiveRecord
 			'video' => 'Video',
 			'create_time' => 'Create Time',
 			'selecionada' => 'Selecionada',
-			'followers_num' => 'Followers Number',
+			'followers_num' => 'Followers',
 		);
 	}
 	
@@ -191,12 +191,18 @@ class Startup extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search($pageSize=null)
+	public function search($pageSize=null, $group=null)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
+		if($group==1)
+		{
+			$this->selecionada=1;
+		}
+		
+		
 		$criteria->compare('t.id',$this->id,true);
 		$criteria->compare('t.name',$this->name,true);
 		$criteria->compare('t.logo',$this->logo,true);
@@ -232,7 +238,7 @@ class Startup extends CActiveRecord
 			if($this->group=='Populares')
 				$criteria->order="t.followers_num DESC";
 				
-			else if($this->group=='Recentes')
+			else if($this->group=='Novidades')
 				$criteria->order="t.id DESC";
 		}
 		
@@ -264,9 +270,9 @@ class Startup extends CActiveRecord
 	public function getCompanySizeOptions()
 	{
 		return array(
-			self::SIZE_1=>'1-10',
-			self::SIZE_2=>'11-20',
-			self::SIZE_3=>'20+',
+			self::SIZE_1=>'1-5',
+			self::SIZE_2=>'6-10',
+			self::SIZE_3=>'10+',
 		);
 	}	
 	

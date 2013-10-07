@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /* @var $this SiteController */
 
 $this->pageTitle=Yii::app()->name;
@@ -7,6 +7,16 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/j
 
 Yii::app()->clientScript->registerScript('script',
 "
+
+$('.carousel-home-item').mouseover(function(event){
+	$(this).find('.item-info').hide();
+	$(this).find('.item-sec').show();
+});
+
+$('.carousel-home-item').mouseout(function(event){
+	$(this).find('.item-sec').hide();
+	$(this).find('.item-info').show();
+});
 
 $(document).ready(function() {
 
@@ -24,13 +34,31 @@ $(document).ready(function() {
 		}					
 	});	
 	
-	$('#startup_carousel .items').carouFredSel({
+	$('#startup_carousel_all .items').carouFredSel({
 		items : 4,
 		auto : false,
 		circular: false,
-		prev : '#startup_carousel_prev',
-		next : '#startup_carousel_next',
-		pagination: '#startup_carousel_pagination'
+		prev : '#startup_carousel_all_prev',
+		next : '#startup_carousel_all_next',
+		pagination: '#startup_carousel_all_pagination'
+	});	
+	
+	$('#startup_carousel_sel .items').carouFredSel({
+		items : 4,
+		auto : false,
+		circular: false,
+		prev : '#startup_carousel_sel_prev',
+		next : '#startup_carousel_sel_next',
+		pagination: '#startup_carousel_sel_pagination'
+	});	
+	
+	$('.startup_carousel_main').carouFredSel({
+		items : 1,
+		auto : false,
+		circular: true,
+		prev : '#startup_carousel_main_prev',
+		next : '#startup_carousel_main_next',
+		pagination: '#startup_carousel_main_pagination'
 	});	
 	
 		
@@ -41,7 +69,7 @@ $(document).ready(function() {
 
 
 ?>
-
+<!--
 <div id="yw0" class="carousel slide">
 	<div class="carousel-inner">
 		<div class="item active">
@@ -57,6 +85,23 @@ $(document).ready(function() {
 	
 	<a class="carousel-control left" href="#yw0" data-slide="prev">&lsaquo;</a>
 	<a class="carousel-control right" href="#yw0" data-slide="next">&rsaquo;</a>
+</div>
+-->
+
+<div style="margin-bottom:20px; margin-top:-20px; position:relative;">
+	
+	<div class="startup_carousel_main">
+		
+			<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>Paulista.jpg" alt="">
+			<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>edicios-sp-gray.jpg" alt="">
+			<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>edicios-sp.jpg" alt="">
+		
+	</div>
+	
+	<div class="clearfix"></div>
+	<a class="startup_carousel_control prev" id="startup_carousel_main_prev" href="#"><span>&lsaquo;</span></a>
+	<a class="startup_carousel_control next" id="startup_carousel_main_next" href="#"><span>&rsaquo;</span></a>
+	<div class="pagination carousel-pag" id="startup_carousel_main_pagination"></div>
 </div>
 
 
@@ -115,31 +160,58 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 ?>
 
-<hr>
+<hr style="border-top: 1px solid #ddd;">
 
-Site Description
+<div class="home-description" style="text-align:center; text-shadow: 2px 2px white; margin:0 auto; width:800px;">
+<h1 style="margin-bottom:5px; color:#444; font-weight:normal;">A primeira plataforma de Equity Crowdfunding do Brasil</h1>
+<span style="font-size:22px; color:#727272; line-height:30px;">NextBlue proporciona o contato direto de investidores com Startups de todo o Brasil em uma plataforma de Equity Crowdfunding. Faça parte dessa novidade: uma rede social do investimento!</span>
 
-<hr>
+</div>
+
+<hr style="border-top: 1px solid #ddd;">
 
 
-<!-- !!!!!!!!! Carousel !!!!!!!!!! -->
+<!-- !!!!!!!!!!!!!!!! Carousel !!!!!!!!!!!!!!!!!! -->
 
+<h1 style="font-weight:normal; text-shadow: 2px 2px white;">Todas</h1>
 <div style="margin-bottom:20px; position:relative;">
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 'dataProvider'=>$dataProvider->search(20),
 'itemView'=>'_carousel',
-'id'=>'startup_carousel',
+'id'=>'startup_carousel_all',
 'template'=>'{items}',
 )); 
 ?>
 	<div class="clearfix"></div>
-	<a class="startup_carousel_control prev" id="startup_carousel_prev" href="#"><span>&lsaquo;</span></a>
-	<a class="startup_carousel_control next" id="startup_carousel_next" href="#"><span>&rsaquo;</span></a>
-	<div class="pagination carousel-pag" id="startup_carousel_pagination"></div>
+	<a class="startup_carousel_control prev" id="startup_carousel_all_prev" href="#"><span>&lsaquo;</span></a>
+	<a class="startup_carousel_control next" id="startup_carousel_all_next" href="#"><span>&rsaquo;</span></a>
+	<div class="pagination carousel-pag" id="startup_carousel_all_pagination"></div>
+</div>
+
+<hr style="border-top: 1px solid #ddd;">
+
+<h1 style="font-weight:normal; text-shadow: 2px 2px white;">Selecionadas</h1>
+<div style="margin-bottom:20px; position:relative;">
+
+<?php $this->widget('bootstrap.widgets.TbListView',array(
+'dataProvider'=>$dataProvider->search(20, 1),
+'itemView'=>'_carousel',
+'id'=>'startup_carousel_sel',
+'template'=>'{items}',
+)); 
+?>
+	<div class="clearfix"></div>
+	<a class="startup_carousel_control prev" id="startup_carousel_sel_prev" href="#"><span>&lsaquo;</span></a>
+	<a class="startup_carousel_control next" id="startup_carousel_sel_next" href="#"><span>&rsaquo;</span></a>
+	<div class="pagination carousel-pag" id="startup_carousel_sel_pagination"></div>
 </div>
 
 
+<!-- !!!!!!!!!!!!!!!!!! End Carousel !!!!!!!!!!!!!!!!!!!! -->
+
+
+<!--
 
 <?php $this->beginWidget('bootstrap.widgets.TbHeroUnit',array(
     'heading'=>'Welcome to '.CHtml::encode(Yii::app()->name),
@@ -160,3 +232,4 @@ Site Description
     the <a href="http://www.yiiframework.com/doc/">documentation</a>.
     Feel free to ask in the <a href="http://www.yiiframework.com/forum/">forum</a>,
     should you have any questions.</p>
+-->

@@ -16,7 +16,9 @@ $('#yw1').click(function(event) {
 				url: '".Yii::app()->request->baseUrl."/startup/follow?name='+getUrlVars()['name'],
 				dataType: 'json',
 				success: function(data){
-					$('#yw1').removeClass('btn-success');
+					$('#yw1').removeClass('btn-info');
+					$('#yw1').removeClass('btn-follow');
+					$('#yw1').addClass('btn-unfollow');
 					$('#yw1').text('Unfollow');	
 					$('.follow-count').html(data.res);
 				}
@@ -31,7 +33,9 @@ $('#yw1').click(function(event) {
 				url: '".Yii::app()->request->baseUrl."/startup/unfollow?name='+getUrlVars()['name'],
 				dataType: 'json',
 				success: function(data){
-					$('#yw1').addClass('btn-success');
+					$('#yw1').addClass('btn-info');
+					$('#yw1').removeClass('btn-unfollow');
+					$('#yw1').addClass('btn-follow');
 					$('#yw1').text('Follow');
 					$('.follow-count').html(data.res);					
 				}
@@ -145,7 +149,7 @@ $('.video-images-items').carouFredSel({
 						'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						'size'=>'normal', // null, 'large', 'small' or 'mini'
 						'url'=>'',//array('follow','name'=>$model->name),
-						'htmlOptions'=>array('style'=>'width:50px; padding-top:8px; padding-bottom:8px; font-weight:bold; text-shadow: 1px 1px 1px #555; margin-top:5px;'),
+						'htmlOptions'=>array('class'=>'btn-follow'),
 						)); 
 					}
 					
@@ -155,7 +159,7 @@ $('.video-images-items').carouFredSel({
 						'label'=>'Unfollow',
 						'size'=>'normal', // null, 'large', 'small' or 'mini'
 						'url'=>'',//array('unfollow','name'=>$model->name),
-						'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
+						'htmlOptions'=>array('class'=>'btn-unfollow'),
 						)); 
 					}
 					/*
@@ -184,22 +188,27 @@ $('.video-images-items').carouFredSel({
 	
 	<div class="content-wrap">
 
-		<div class="content-head"><span class="txt"><i class="icon-lightbulb profile-icon"></i>O Produto</span></div>
+		<div class="content-head">
+			<span class="txt"><i class="icon-lightbulb profile-icon"></i>O Produto</span>
+			<span class="tip">Entenda qual a solução proposta pela nossa Empresa</span>
+		</div>
 		
 		<div class="content-info">
-			<?php echo $model->product_description;?> 
-			
+			<?php echo $model->product_description;?> 		
 		</div>
 		
 	</div>	
 	
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-picture profile-icon-vid"></i>Video & Imagens</div>
+		<div class="content-head">
+			<i class="icon-picture profile-icon-vid"></i>Video & Imagens
+			<span class="tip">Video e Fotos sobre a Empresa e nosso Produto</span>
+		</div>
 		
 		<div class="content-info video-images">
 			<div class="video-images-items">
-				<?php $this->widget('ext.Yiitube', array('size' => 'small', 'v' => $model->video)); ?>	
+				<?php if($model->video){$this->widget('ext.Yiitube', array('size' => 'small', 'v' => $model->video));} ?>	
 				<?php foreach($model->images as $img) :?>
 					<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" id="generic-img" alt="asdasd" style="float:left; width: 500px; height:312px;"/>
 				<?php endforeach; ?>
@@ -209,9 +218,13 @@ $('.video-images-items').carouFredSel({
 		
 	</div>	
 	
+	<?php if($model->tech):?>
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-cogs profile-icon"></i> Tecnologia</div>
+		<div class="content-head">
+			<i class="icon-cogs profile-icon"></i> Tecnologia
+			<span class="tip">Tecnologia que utilizamos em nosso Produto</span>
+		</div>
 		
 		<div class="content-info">
 			
@@ -220,10 +233,15 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
 	
+	<?php if($model->client_segment):?>
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-group profile-icon"></i> Público Alvo </div>
+		<div class="content-head">
+			<i class="icon-screenshot profile-icon"></i> Público Alvo
+			<span class="tip">ddad as d sd a d</span>
+		</div>
 		
 		<div class="content-info">
 			
@@ -232,10 +250,15 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
 	
+	<?php if($model->revenue_generation):?>
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-money profile-icon"></i> Geração de Renda</div>
+		<div class="content-head">
+			<i class="icon-money profile-icon"></i> Geração de Renda
+			<span class="tip">ddad as d sd a d</span>
+		</div>
 		
 		<div class="content-info">
 			
@@ -244,10 +267,15 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
 	
+	<?php if($model->competitors):?>
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-warning-sign profile-icon"></i> Principais Concorrentes</div>
+		<div class="content-head">
+			<i class="icon-warning-sign profile-icon"></i> Principais Concorrentes
+			<span class="tip">ddad as d sd a d</span>
+		</div>
 		
 		<div class="content-info">
 			
@@ -256,10 +284,15 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
 	
+	<?php if($model->competitive_advantage):?>
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-trophy profile-icon"></i> Vantagem Competitiva</div>
+		<div class="content-head">
+			<i class="icon-trophy profile-icon"></i> Vantagem Competitiva
+			<span class="tip">ddad as d sd a d</span>
+		</div>
 		
 		<div class="content-info">
 			
@@ -268,25 +301,32 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
 	
+	<?php if($model->history):?>
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-book profile-icon"></i> História da Empresa</div>
+		<div class="content-head">
+			<i class="icon-book profile-icon"></i> História da Empresa
+			<span class="tip">ddad as d sd a d</span>
+		</div>
 		
 		<div class="content-info">
 			
-			<?php echo $model->product_description;?> 
+			<?php echo $model->history;?> 
 			
 		</div>
 		
-	</div>	
+	</div>
+	<?php endif;?>
 	
 	
 
 </div>
 
 <div class="profile-column-r">
-
+	
+	<?php if($model->facebook || $model->twitter || $model->linkedin || $model->website):?>
 	<div class="content-wrap">
 
 		<div class="content-head rounded social-web">
@@ -314,27 +354,18 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
 	
-	<div class="content-wrap">
+	<?php if($model->company_stage):?>
+	<div class="content-wrap" style="position:relative;">
 
-		<div class="content-head"><i class="icon-link profile-icon"></i> Website</div>
-		
-		<div class="content-info">
-			
-			<?php echo 'website'; ?>
-		
-		</div>
-		
-	</div>	
-	
-	<div class="content-wrap">
-
-		<div class="content-head"><i class="icon-road profile-icon"></i> Company Stage</div>
-		
-		<div class="content-info" style="text-align:center;">
-			
-			<?php
-			
+		<div class="content-head">
+			<i class="icon-signal profile-icon"></i> Estágio
+			<span class="tip">Nível de evolução do nosso Produto</span>
+			<!--
+			<div style="width:150px; background-color:#bbb; border-radius: 5px; position:absolute; top:10px; right:30px; padding:10px;">
+				<?php
+			/*
 				if($model->company_stage=='Conceito')
 				{
 					$this->widget('bootstrap.widgets.TbProgress', array(
@@ -344,7 +375,7 @@ $('.video-images-items').carouFredSel({
 						'type'=>'danger',
 						'htmlOptions'=>array('style'=>'margin:0;'),
 					));
-					echo '<br /><b>Stage 1:</b> Conceito';
+					
 				}
 				
 				else if($model->company_stage=='Desenvolvimento')
@@ -356,7 +387,7 @@ $('.video-images-items').carouFredSel({
 						'type'=>'warning',
 						'htmlOptions'=>array('style'=>'margin:0;'),
 					));
-					echo '<br /><b>Stage 2:</b> Desenvolvimento';
+					
 				}
 				
 				else if($model->company_stage=='Protótipo')
@@ -367,7 +398,7 @@ $('.video-images-items').carouFredSel({
 						'animated'=>true,
 						'htmlOptions'=>array('style'=>'margin:0;'),
 					));
-					echo '<br /><b>Stage 3:</b> Protótipo';
+					
 				}
 				
 				else if($model->company_stage=='Produto Final')
@@ -379,17 +410,111 @@ $('.video-images-items').carouFredSel({
 						'type'=>'success',
 						'htmlOptions'=>array('style'=>'margin:0;'),
 					));
-					echo '<br /><b>Stage 4:</b> GProduto Final';
+					
+				}
+				*/
+				?>
+				
+			</div>
+			-->
+		</div>
+		
+		<div class="content-info" style="text-align:center;">
+		
+			<?php
+			
+				if($model->company_stage=='Conceito')
+				{
+					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true data-original-title='<b>Estágio 1:</b> Conceito'>";
+					$this->widget('bootstrap.widgets.TbProgress', array(
+						'percent'=>25, // the progress
+						'striped'=>true,
+						'animated'=>true,
+						'type'=>'danger',
+						'htmlOptions'=>array('style'=>'margin:0;'),
+					));
+					echo "</div>";
+					//echo '<br /><b>Stage 1:</b> Conceito';
+				}
+				
+				else if($model->company_stage=='Desenvolvimento')
+				{
+					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true data-original-title='<b>Estágio 2:</b> Desenvolvimento'>";
+					$this->widget('bootstrap.widgets.TbProgress', array(
+						'percent'=>50, // the progress
+						'striped'=>true,
+						'animated'=>true,
+						'type'=>'warning',
+						'htmlOptions'=>array('style'=>'margin:0;'),
+					));
+					echo "</div>";
+					//echo '<br /><b>Stage 2:</b> Desenvolvimento';
+				}
+				
+				else if($model->company_stage=='Protótipo')
+				{	
+					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true title='<b>Estágio 3:</b> Protótipo'>";
+					$this->widget('bootstrap.widgets.TbProgress', array(
+						'percent'=>75, // the progress
+						'striped'=>true,
+						'animated'=>true,
+						'htmlOptions'=>array('style'=>'margin:0;'),
+					));
+					echo "</div>";
+					//echo '<br /><b>Stage 3:</b> Protótipo';
+				}
+				
+				else if($model->company_stage=='Produto Final')
+				{	
+					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true data-original-title='<b>Estágio 4:</b> Produto Final'>";
+					$this->widget('bootstrap.widgets.TbProgress', array(
+						'percent'=>100, // the progress
+						'striped'=>true,
+						'animated'=>true,
+						'type'=>'success',
+						'htmlOptions'=>array('style'=>'margin:0;'),
+					));
+					echo "</div>";
+					//echo '<br /><b>Stage 4:</b> GProduto Final';
 				}
 			?>
+			
 		
 		</div>
 		
 	</div>	
+	<?php endif;?>
 
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-link profile-icon"></i> Fundadores</div>
+		<div class="content-head"><i class="icon-group profile-icon"></i> Fundadores</div>
+		
+		<div class="content-info team-ready">
+			
+			
+			<?php foreach($model->users1 as $usr_startup):  ?>
+			<?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$usr_startup->id, ':s_id'=>$model->id)); ?>
+			<?php if($relational_tbl->position=='Founder'):?>
+			<div class="team-item">		
+				<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
+				<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
+				<div class="team-position"><?php echo $relational_tbl->position;?></div>
+				<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+			</div>
+			<?php endif;  ?>
+			<?php endforeach;  ?>
+			
+				
+			
+			
+		
+		</div>
+		
+	</div>	
+	
+	<div class="content-wrap">
+
+		<div class="content-head"><i class="icon-group profile-icon"></i> Time</div>
 		
 		<div class="content-info">
 			
@@ -401,23 +526,11 @@ $('.video-images-items').carouFredSel({
 	
 	<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-link profile-icon"></i> Time</div>
+		<div class="content-head"><i class="icon-group profile-icon"></i> Conselheiros</div>
 		
 		<div class="content-info">
 			
-			<?php echo 'website'; ?>
-		
-		</div>
-		
-	</div>	
-	
-	<div class="content-wrap">
-
-		<div class="content-head"><i class="icon-link profile-icon"></i> Conselheiros</div>
-		
-		<div class="content-info">
 			
-			<?php echo 'website'; ?>
 		
 		</div>
 		

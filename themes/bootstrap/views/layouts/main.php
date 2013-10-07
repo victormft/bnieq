@@ -1,4 +1,4 @@
-<?php /* @var $this Controller */ ?>
+﻿<?php /* @var $this Controller */ ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -17,25 +17,34 @@
     
 <?php if(!Yii::app()->user->isGuest) $user = User::model()->findbyPk(Yii::app()->user->id); ?>    
     
-<div class="navbar navbar-inverse">
-    <div class="navbar-inner" style="border-radius: 0">
-        <a class="brand" style="margin-left: 80px" href=<?php echo Yii::app()->homeUrl; ?>>NEXTBLUE</a>
-        <form class="navbar-search pull-left" style="margin-left: 80px">
-            <input type="text" class="search-query" placeholder="Search">
+<div class="navbar" id="main-nav">
+    <div class="nav-inner" style="border-radius: 0">
+        <a class="brand" href=<?php echo Yii::app()->homeUrl; ?>>NEXTBLUE</a>
+        <form class="navbar-search pull-left">
+            <input type="text" class="search-query" placeholder="Buscar...">
         </form>
-        <ul class="nav pull-right" style="margin-right: 80px">
-            <li><a href= <?php echo Yii::app()->homeUrl; ?> >Home</a></li>            
-            <li><a href= <?php echo Yii::app()->homeUrl . '/site/contact'?> >Contact us</a></li>
-            <?php if(Yii::app()->user->isGuest):?>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/user/login'?> >Login</a></li>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/user/registration'?> >Register</a></li>
+        <ul class="nav primary">
+            <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-suitcase" style="display:block; margin:5px auto;"></i>Startups</a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl . '/user/user' ?> ><i class="icon-group" style="display:block; margin:5px auto;"></i>Usuários</a></li>       
+            <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Como Funciona</a></li>   
+			<li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Sobre Nós</a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i>Nosso Blog </a></li>
+        </ul>
+		
+		<ul class="nav pull-right secondary">
+			<?php if(Yii::app()->user->isGuest):?>
+                <li><a style="display:inline-block; padding-right:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-lock" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Login</a></li>
+                <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/registration'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Register</a></li>
             <?php else: ?>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Account (<?php echo $user->profile->firstname; ?>)<span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href= <?php echo Yii::app()->homeUrl . '/user/profile' ?> >Profile</a>
                         </li>
+						<li><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> >Messages <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
+                        ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>
+						</li>
                         <li class="divider"></li>
                         <li class="nav-header">NAV HEADER</li>
                         <li>
@@ -43,17 +52,14 @@
                         </li>
                     </ul>                    
                 </li>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> >Messages <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
-                        ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a></li>
-                <li><a href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> >Logout</a></li>
+                <li><a style="display:inline-block;" href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> ><i class="icon-power-off" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Logout</a></li>
             <?php endif?>
-                
-        </ul>
+		</ul>
     </div>
 </div>
     
 <div class="container" id="page">    
-        
+    <!--    
     <div class="navbar">
         <div class="navbar-inner" style="border-radius: 0; margin: 0 auto; display: table;">
             <ul class="nav" style="">
@@ -69,6 +75,7 @@
             </ul>
         </div>
     </div>
+	-->
 
 	<?php if(isset($this->breadcrumbs)):?>
 		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(

@@ -29,7 +29,7 @@ class StartupController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow', 'updatelocation', 'updateSectors', 'multPic', 'addTeam', 'deleteTeam'),
+				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow', 'updateName', 'updatelocation', 'updateSectors', 'multPic', 'addTeam', 'deleteTeam'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -293,6 +293,15 @@ class StartupController extends Controller
 	*/	
 	}
 
+	public function actionUpdateName()
+    {
+		$model = $this->loadModelId($_POST['pk']);
+		$model->name = $_POST['value'];
+		if($model->validate())$model->save(); 
+		
+		
+		
+	}
 	
 	public function actionUpdateLocation()
     {
@@ -352,8 +361,8 @@ class StartupController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		
 		if(isset($_GET['n'])) {
-			$model->name=$_GET['n'];
-			$model->one_line_pitch=$_GET['n'];
+			$model->name=strip_tags($_GET['n']);
+			$model->one_line_pitch=strip_tags($_GET['n']);
 		}
 		if(isset($_GET['c_size']))
 			$model->company_size=$_GET['c_size'];	
@@ -369,7 +378,7 @@ class StartupController extends Controller
 			else if($_GET['g']=='Populares')
 				$model->group=$_GET['g'];
 				
-			else if($_GET['g']=='Recentes')
+			else if($_GET['g']=='Novidades')
 				$model->group=$_GET['g'];
 		}	
 			
