@@ -1778,7 +1778,7 @@ the specific language governing permissions and limitations under the Apache Lic
                 "   <span class='select2-chosen'>&nbsp;</span><abbr class='select2-search-choice-close'></abbr>",
                 "   <span class='select2-arrow'><b></b></span>",
                 "</a>",
-                "<input class='select2-focusser select2-offscreen' type='text'/>",
+                "<input class='select2-focusser select2-offscreen' type='hidden'/>",
                 "<div class='select2-drop select2-display-none'>",
                 "   <div class='select2-search'>",
                 "       <input type='text' autocomplete='off' autocorrect='off' autocapitalize='off' spellcheck='false' class='select2-input'/>",

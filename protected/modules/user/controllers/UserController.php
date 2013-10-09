@@ -24,8 +24,12 @@ class UserController extends Controller
 	public function accessRules()
 	{
 		return array(
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index'),
+				'users'=>array('*'),
+			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'follow', 'unfollow', 'investors'),
+				'actions'=>array('view', 'follow', 'unfollow'),
 				'users'=>array('@'),
 			),
             array('deny',  // deny all users
@@ -52,6 +56,14 @@ class UserController extends Controller
 	 */
 	public function actionIndex()
 	{
+        if(Yii::app()->user->isGuest){
+            $user = Yii::app()->getComponent('user');
+            $user->setFlash(
+                'error',
+                '<strong>Ops!</strong> Você precisa estar conectado apra acessar essa área.'
+            );
+            $this->redirect(Yii::app()->controller->module->loginUrl);
+        }
 		$model=new Profile('search');
 		$model->unsetAttributes();  // clear any default values
                 

@@ -1,10 +1,6 @@
 <?php
 $this->layout='//layouts/column1';
 
-$this->breadcrumbs=array(
-	'Users'=>array('/user/user'),
-	$model->getFullName(),
-); 
 ?>
 
 <?php
@@ -373,7 +369,7 @@ $('.arrow-container').mouseover(function(event){
                     <?php echo '<b>Data de nascimento: </b>'; ?>                    
                 </div>
                 <div class="editable-wrap-r">			
-                    <?php echo date('d-F-Y', strtotime($profile->birthday)); ?>				
+                    <?php echo (isset($profile->birthday)) ? date('d-F-Y', strtotime($profile->birthday)) : 'not selected...'; ?>				
                 </div>
             </div>        
 		</div>

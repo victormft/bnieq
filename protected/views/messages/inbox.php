@@ -1,23 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.MessageModule::t("Messages:inbox"); ?>
-<?php
-	$this->breadcrumbs=array(
-		MessageModule::t("Messages"),
-		MessageModule::t("Inbox"),
-	);
-?>
+
 
 <div class="row">
-    <?php $this->widget('bootstrap.widgets.TbMenu', array(
-        'type'=>'pills', // '', 'tabs', 'pills' (or 'list')
-        'stacked'=>true, // whether this is a stacked menu
-        'htmlOptions'=>array('style'=>'width:20%; float:left; margin-right:20px'),
-        'items'=>array(
-            array('label'=>'Inbox', 'url'=>'inbox', 'active'=>true),
-            array('label'=>'Sent', 'url'=>'sent'),
-            array('label'=>'Compose', 'url'=>'compose'),
-        ),
-    )); ?>
-	<?php $this->renderPartial('_navigation') ?>
+    <?php $this->renderPartial('_navigation', array('active'=>'inbox')); ?>
     
 	<div class="span8">
 		<h2><?php echo MessageModule::t('Inbox'); ?></h2>

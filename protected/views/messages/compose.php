@@ -1,24 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.MessageModule::t("Compose Message"); ?>
-<?php
-	$this->breadcrumbs=array(
-		MessageModule::t("Messages"),
-		MessageModule::t("Compose"),
-	);
-?>
+
 
 <div class="row">
-    <?php $this->widget('bootstrap.widgets.TbMenu', array(
-        'type'=>'pills', // '', 'tabs', 'pills' (or 'list')
-        'stacked'=>true, // whether this is a stacked menu
-        'htmlOptions'=>array('style'=>'width:20%; float:left; margin-right:20px'),
-        'items'=>array(
-            array('label'=>'Inbox', 'url'=>'inbox'),
-            array('label'=>'Sent', 'url'=>'sent'),
-            array('label'=>'Compose', 'url'=>'compose', 'active'=>true),
-        ),
-    )); ?>
-    
-    <?php $this->renderPartial('_navigation'); ?>
+    <?php $this->renderPartial('_navigation', array('active'=>'compose')); ?>
     
 	<div class="span8">
 		<h2><?php echo MessageModule::t('Compose New Message'); ?></h2>

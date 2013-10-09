@@ -1,11 +1,6 @@
 <?php
 $this->layout='//layouts/column1';
 
-$this->breadcrumbs=array(
-	'Users'=>array('/user/user'),
-	$model->getFullName(),
-); 
-
 Yii::app()->clientScript->registerScript('loading-img',
 "
 $('.arrow-container').mouseover(function(event){
@@ -47,9 +42,14 @@ $('.arrow-container').mouseover(function(event){
     
     <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="user-profile-img" alt=" " >    
     
-	<div class="user-profile-header-info">        
-        <p> <?php echo '<b>Nome: </b>';?>  
-            <?php
+	<div class="user-profile-header-info" style="width: 600px">    
+        
+        <div class="content-info-unit">         
+            <div class="header-label">			
+                <?php echo '<b>Nome: </b>'; ?>                 
+            </div>
+            <div class="header-content">			
+                <?php
                 $this->widget('editable.EditableField', array(
                     'type'      => 'text',
                     'model'     => $profile,
@@ -65,12 +65,16 @@ $('.arrow-container').mouseover(function(event){
                     'url'       => array('updateEd'), 
                     'inputclass'=> 'input-small',
                  ));
-            ?>
-        </p>
-
-        <?php echo '<b>Mini-currículo: </b>';?>
-        <p id="resume">            
-            <?php
+                ?>  				
+            </div>				 
+        </div>   
+        
+        <div class="content-info-unit">
+            <div class="header-label">			
+                <?php echo '<b>Mini-currículo: </b>';?>                 
+            </div>
+            <div class="header-content" id="resume">			
+                <?php
                 $this->widget('editable.EditableField', array(
                     'type'      => 'textarea',
                     'model'     => $profile,
@@ -82,13 +86,13 @@ $('.arrow-container').mouseover(function(event){
                         'id' => 'resume-edit'
                     ),
                     'options'    => array(
-                        'rows'      => 5,
+                        'rows'      => 7,
                         'tpl'=> '<textarea style="resize: vertical; width: 330px"></textarea>'
-
                     )
                  ));
-            ?>
-        </p>
+                ?>  				
+            </div>
+        </div>
 
         <script type='text/javascript'>	
             $(function() {
@@ -100,7 +104,8 @@ $('.arrow-container').mouseover(function(event){
                 });
                 $('#resume-edit').on('shown', function(e, editable) {
                     $('#resume').tooltip('show');
-                    $(".tooltip").css("left","650px");
+                    $(".tooltip").css("left","770px","top","100px");
+                    $(".tooltip").css("top","70px");
                 });	
                 $('#resume-edit').on('hidden', function(e, editable) {
                     $('#resume').tooltip('hide');
@@ -108,124 +113,86 @@ $('.arrow-container').mouseover(function(event){
             });
         </script>
         
-        <p> <?php echo '<b>Cidade: </b>';?>
-            <?php           
-            $this->widget('editable.EditableField', array(
-                'type'      => 'select2',
-                'model'     => $profile,
-                'attribute' => 'location',
-                'url'       => $this->createUrl('updateLocation'), 
-                'source'    => Cidade::model()->getCities(),
-                'placement' => 'right',
-                'inputclass'=> 'input-large',
-                'select2'   => array(
-                    'placeholder'=> 'Select...',
-                    'allowClear'=> true,   
-                    'dropdownAutoWidth'=> true,
-                    'minimumInputLength'=> 3,  
-                    /*
-                    'ajax' => array(
-                        'url'=>$this->createUrl('suggestPerson'),
-                        'dataType'=>'json',
-                        'data' => "js: function(term,page) {
-                            return {q: term};
-                        }",
-                        'results' => "js: function(data,page){
-                            return {results: data};
-                        }",
-                    ),
-                    'initSelection' => "js:function (element, callback) {
-                        var id=$(element).val();
-                        if (id!=='') {
-                            $.ajax('".$this->createUrl('initPerson')."', {
-                                dataType: 'json',
-                                data: {
-                                    id: id
-                                }
-                            }).done(function(data) {callback(data);});
-                        }
-                    }",                      
-                     */
-                ),                         
-                'onHidden' => 'js: function(e, reason) {
-                    $("#select2-drop-mask").css("display","none");
-                    $("#select2-drop").css("display","none");
-                 }'
-            )); ?> 
-        </p>
-
-        <p> 
-            <?php echo '<b>Papéis: </b>';?>
-            <?php           
-            $this->widget('editable.Editable', array(
-                'type'      => 'select2',
-                'name'      => 'role',
-                'pk'        => $model->id,
-                'url'       => $this->createUrl('updateRoles'), 
-                'source'    => CHtml::listData(Role::model()->findAll(), 'role_id', 'name'),
-                'text'      => $model->getRoleNames(),  
-                'value'     => $model->getRoleIds(),
-                'placement' => 'right',
-                'inputclass'=> 'input-xlarge',
-                'select2'   => array(
-                    'placeholder'=> 'Select...',
-                    'multiple'=>true,
-                ),
-                'onHidden' => 'js: function(e, reason) {
-                    $("#select2-drop-mask").css("display","none");
-                    $("#select2-drop").css("display","none");
-                 }'
-            )); ?>
-        </p>
-
-        <div class="facebook">
-            <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png>';?>
-                <?php
+        <div class="content-info-unit">
+            <div class="header-label">			
+                <?php echo '<b>Cidade: </b>';?>                 
+            </div>
+            <div class="header-content">			
+                <?php           
                 $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
+                    'type'      => 'select2',
                     'model'     => $profile,
-                    'attribute' => 'facebook',
-                    'url'       => array('updateEd'),  //url for submit data          
+                    'attribute' => 'location',
+                    'url'       => $this->createUrl('updateLocation'), 
+                    'source'    => Cidade::model()->getCities(),
                     'placement' => 'right',
-                    'inputclass'=> 'editable-social',
-                    'options'=>array(
-                        'defaultValue'=>'https://www.facebook.com/'
-                    )
-                 ));?>
-        </div>
-
-        <div class="twitter">
-            <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png>';?>
-                <?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'linkedin',
-                    'url'       => array('updateEd'),  //url for submit data          
-                    'placement' => 'right',
-                    'inputclass'=> 'editable-social',
-                    'options'=>array(
-                        'defaultValue'=>'http://www.linkedin.com/pub/'
-                    )
-                 ));?>
-        </div>
-
-        <div class="twitter" style="margin-bottom: 10px;">
-            <img src=<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png>';?>
-                <?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'twitter',
-                    'url'       => array('updateEd'),  //url for submit data          
-                    'placement' => 'right',
-                    'inputclass'=> 'editable-social',
-                    'options'=>array(
-                        'defaultValue'=>'https://twitter.com/'
-                    )
-                 ));?>
+                    'inputclass'=> 'input-large',
+                    'htmlOptions'=>array('type'=>'hidden'),
+                    'select2'   => array(
+                        'placeholder'=> 'Select...',
+                        'allowClear'=> true,   
+                        'dropdownAutoWidth'=> true,
+                        'minimumInputLength'=> 3,  
+                        /*
+                        'ajax' => array(
+                            'url'=>$this->createUrl('suggestPerson'),
+                            'dataType'=>'json',
+                            'data' => "js: function(term,page) {
+                                return {q: term};
+                            }",
+                            'results' => "js: function(data,page){
+                                return {results: data};
+                            }",
+                        ),
+                        'initSelection' => "js:function (element, callback) {
+                            var id=$(element).val();
+                            if (id!=='') {
+                                $.ajax('".$this->createUrl('initPerson')."', {
+                                    dataType: 'json',
+                                    data: {
+                                        id: id
+                                    }
+                                }).done(function(data) {callback(data);});
+                            }
+                        }",                      
+                         */
+                    ),                         
+                    'onHidden' => 'js: function(e, reason) {
+                        $("#select2-drop-mask").css("display","none");
+                        $("#select2-drop").css("display","none");
+                     }',
+                )); ?>  				
+            </div>
         </div>
         
+        <div class="content-info-unit">
+            <div class="header-label">			
+                <?php echo '<b>Papéis: </b>';?>                 
+            </div>
+            <div class="header-content">			
+                <?php           
+                $this->widget('editable.Editable', array(
+                    'type'      => 'select2',
+                    'name'      => 'role',
+                    'pk'        => $model->id,
+                    'url'       => $this->createUrl('updateRoles'), 
+                    'source'    => CHtml::listData(Role::model()->findAll(), 'role_id', 'name'),
+                    'text'      => $model->getRoleNames(),  
+                    'value'     => $model->getRoleIds(),
+                    'placement' => 'right',
+                    'inputclass'=> 'input-xlarge',
+                    'select2'   => array(
+                        'placeholder'=> 'Select...',
+                        'multiple'=>true,
+                    ),
+                    'onHidden' => 'js: function(e, reason) {
+                        $("#select2-drop-mask").css("display","none");
+                        $("#select2-drop").css("display","none");
+                     }'
+                )); ?>  				
+            </div>
+        </div>
+                
         <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
             'id'=>'user-image-edit-form',
             'type'=>'inline',
@@ -237,7 +204,9 @@ $('.arrow-container').mouseover(function(event){
             ),                    
         )); 
         ?>
-        <?php echo '<b>Foto: </b>';?>
+        <div class="header-label">
+            <?php echo '<b>Foto: </b>';?>
+        </div>
         <?php echo $form->fileFieldRow($profile, 'pic', array('labelOptions' => array('label' => ''))); ?>
         <?php $this->widget('bootstrap.widgets.TbButton', array(
                 'buttonType'=>'submit',
@@ -251,7 +220,7 @@ $('.arrow-container').mouseover(function(event){
 
 	</div>
 	
-	<div class="profile-header-right">			
+	<div class="profile-edit-header-right">			
         <span class="edit-btn">			
             <?php $this->widget('bootstrap.widgets.TbButton', array(
                 'label'=>'Voltar',
@@ -380,13 +349,68 @@ $('.arrow-container').mouseover(function(event){
             </div>
         
         </div> 		
-	</div>	
+	</div>
+    
+    <div class="content-wrap">
+        <div class="content-head rounded">
+			<i class="icon-link profile-icon"></i> Website & Social
+			<span class="tip">Edite os links para o seu site e redes sociais</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit">
+			<div class="editable-wrap">
+								
+				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/>     
+					<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $profile,
+						'attribute' => 'facebook',
+						'url'       => array('updateEd'),
+						'inputclass'=> 'editable-social',
+                        'options'=>array(
+                            'defaultValue'=>'https://www.facebook.com/'
+                        )
+					 )); ?>  
+				</p>
+				
+				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/>
+					<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $profile,
+						'attribute' => 'twitter',
+						'url'       => array('updateEd'), 
+						'inputclass'=> 'editable-social',
+                        'options'=>array(
+                            'defaultValue'=>'https://www.twitter.com/'
+                        )
+					 )); ?>  
+				</p>
+				
+				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/>   
+					<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $profile,
+						'attribute' => 'linkedin',
+						'url'       => array('updateEd'), 
+						'inputclass'=> 'editable-social',
+                        'options'=>array(
+                            'defaultValue'=>'http://www.linkedin.com/pub/'
+                        )
+					 )); ?>  
+				</p>
+			</div>
+		</div>
+    </div>
+    
 </div>
     
 <div class="profile-column-r">
 
-	<div class="content-wrap">
-
+    
+    
+	<div class="content-wrap">       
+        
 		<div class="content-head rounded">
             <i class="icon-book profile-icon"></i>Contatos
             <span class="tip">Esses dados serão ocultos ao público.</span>  
@@ -468,7 +492,7 @@ $('.arrow-container').mouseover(function(event){
                             'F' => 'Female',
                         ), 
                         'mode'      => 'popup',
-                        'placement' => 'top',
+                        'placement' => 'right',
                         'options'   => array(
                             'prepend'   => '',
                         )    
@@ -487,7 +511,7 @@ $('.arrow-container').mouseover(function(event){
                         'attribute' => 'birthday',
                         'url'       => array('updateEd'),  
                         'mode'      => 'popup',
-                        'placement' => 'top',
+                        'placement' => 'left',
                         'format'      => 'YYYY-MM-DD', //format in which date is expected from model and submitted to server
                         'viewformat'  => 'DD/MM/YYYY', //format in which date is displayed
                         'template'    => 'D / MMM / YYYY',

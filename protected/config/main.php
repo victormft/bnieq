@@ -38,6 +38,10 @@ return array(
         'application.extensions.editable.*', //easy include of editable classes  
         'ext.quickdlgs.*', //quickdlgs
         
+        //rights
+        'application.modules.rights.*', 
+        'application.modules.rights.components.*',
+        
 	),
 
 	'modules'=>array(
@@ -87,7 +91,14 @@ return array(
             'userModel' => 'User',
             'getNameMethod' => 'getFullName',
             'getSuggestMethod' => 'getSuggest',
-        ),   				
+        ), 
+
+        
+        'rights'=>array( 
+            'install'=>false, // Enables the installer. 
+            'layout'=>'bootstrap',
+        ),
+           
 	),
 
 	// application components
@@ -102,7 +113,7 @@ return array(
 			'allowAutoLogin'=>true,
 			
 			//yii-user
-			'class' => 'WebUser',                      
+			'class' => 'RWebUser',                      
 			'loginUrl' => array('/user/login'),
 		),
         
@@ -169,7 +180,7 @@ return array(
 		),
         
         'authManager'=>array(
-            'class'=>'CDbAuthManager',
+            'class'=>'RDbAuthManager',
             'connectionID'=>'db',
             'itemTable' =>'tbl_auth_item',
             'itemChildTable' =>'tbl_auth_item_child',

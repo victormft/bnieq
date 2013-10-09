@@ -1,9 +1,23 @@
 <?php
 $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
-$this->breadcrumbs=array(
-	UserModule::t("Login"),
-);
+
 ?>
+
+<div class="spacing-1"></div>
+
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+    'block' => true,
+    'fade' => true,
+    'closeText' => '&times;', // false equals no close link
+    'events' => array(),
+    'htmlOptions' => array(),
+    'userComponentId' => 'user',
+    'alerts' => array( // configurations per alert type
+        // success, info, warning, error or danger
+        
+        'error' => array('block' => false, 'closeText' => '&times;')
+    ),
+));?>
 
 <div class="welcome">
     <h1><?php echo UserModule::t("Welcome to NextBlue!"); ?></h1> 

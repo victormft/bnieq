@@ -1,36 +1,11 @@
 <?php $this->pageTitle=Yii::app()->name . ' - ' . MessageModule::t("Compose Message"); ?>
 <?php $isIncomeMessage = $viewedMessage->receiver_id == Yii::app()->user->getId() ?>
 
-<?php
-	$this->breadcrumbs = array(
-		MessageModule::t("Messages"),
-		($isIncomeMessage ? MessageModule::t("Inbox") : MessageModule::t("Sent")) => ($isIncomeMessage ? 'inbox' : 'sent'),
-		CHtml::encode($viewedMessage->subject),
-	);
-?>
 
 <div class="row">
-<?php $this->widget('bootstrap.widgets.TbMenu', array(
-        'type'=>'pills', // '', 'tabs', 'pills' (or 'list')
-        'stacked'=>true, // whether this is a stacked menu
-        'htmlOptions'=>array('style'=>'width:20%; float:left; margin-right:20px'),
-        'items'=>array(
-            array('label'=>'Inbox', 'url'=>'inbox'),
-            array('label'=>'Sent', 'url'=>'sent'),
-            array('label'=>'Compose', 'url'=>'compose'),
-        ),
-    )); ?>
-    
-    <?php $this->renderPartial('_navigation') ?>
+    <?php $this->renderPartial('_navigation', array('active'=>'')) ?>
     
 	<div class="span8">
-		<?php $form = $this->beginWidget('CActiveForm', array(
-			'id'=>'message-delete-form',
-			'enableAjaxValidation'=>false,
-			'action' => $this->createUrl('messages/delete/', array('id' => $viewedMessage->id))
-		)); ?>
-		<button class="btn danger"><?php echo MessageModule::t("Delete") ?></button>
-		<?php $this->endWidget(); ?>
 
 		<table class="bordered-table zebra-striped">
 			<tr>
@@ -54,6 +29,14 @@
 				</td>
 			</tr>
 		</table>
+        
+        <?php $form = $this->beginWidget('CActiveForm', array(
+			'id'=>'message-view-delete-form',
+			'enableAjaxValidation'=>false,
+			'action' => $this->createUrl('messages/delete/', array('id' => $viewedMessage->id))
+		)); ?>
+		<button class="btn danger"><?php echo MessageModule::t("Delete") ?></button>
+		<?php $this->endWidget(); ?>
 
 		<h2><?php echo MessageModule::t('Reply') ?></h2>
 

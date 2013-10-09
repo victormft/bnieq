@@ -88,12 +88,15 @@ $('.sec-label').click(function(event) {
 ");
 ?>
 
+<div class="spacing-1"></div>
+
 <h1>Users</h1>
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 'dataProvider'=>$dataProvider->search(),
 'itemView'=>'_view',
-'id'=>'startupslistview',       // must have id corresponding to js above
+'id'=>'userslistview',       // must have id corresponding to js above
+'htmlOptions' => array('style'=>'asas'),
 'sorterHeader'=>'Ordenar por: ',
  'sortableAttributes'=>array(
         'firstname',
@@ -103,14 +106,15 @@ $('.sec-label').click(function(event) {
 'template'=>'{items} {pager}',
 )); ?>
 
-<div class="search-form">
+<div class="user-search-form">
 	
 	<div id="G-Selection">
 		<div class="group-title">Busca Rápida</div>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Investidores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-star profile-icon"></i>Investidores</p></a>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Empreendedores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-group profile-icon"></i>Empreendedores</p></a>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Mais seguidos") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-calendar profile-icon"></i>Mais seguidos</p></a>
-		<a class="g" href="user"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Todas") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todos</p></a>
+        <a class="g" href="<?php echo Yii::app()->baseUrl.'/user/user' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=='') echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todos</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Investidores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-money profile-icon"></i>Investidores</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Empreendedores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-briefcase profile-icon"></i>Empreendedores</p></a>
+		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Mais seguidos") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-thumbs-up-alt profile-icon"></i>Mais seguidos</p></a>
+		
 	</div>
 	
 	<div class="form-vertical">

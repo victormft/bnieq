@@ -48,11 +48,11 @@ $('#follow-".$data->user->username."').click(function(event) {
     
         <?php echo CHtml::link(CHtml::encode($data->user->getFullName()),array('/user/profile','username'=>$data->user->username), array('class'=>'startup-view-name'));?>
 
-        <div class="startup-view-pitch" >
+        <div class="profile-view-pitch" >
             <?php echo CHtml::encode($data->resume); ?>
         </div>
 
-        <div class="startup-view-sec" >	
+        <div class="profile-view-role">	
             <?php echo $data->user->getRolesForPrint() ?>
         </div>
     </div>

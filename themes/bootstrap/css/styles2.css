@@ -125,13 +125,36 @@
     padding: 0;
 }
 
+.header-label
+{
+    float: left;
+    width: 130px; 
+    padding-right: 10px;
+}
+
+.header-content
+{
+    float: left;
+    overflow: auto;
+    width: 460px;
+}
+
+.profile-edit-header-right 
+{
+    width: auto;
+    height: 100%;
+    float: right;
+}
+
+
 .editable-social
 {
-    width: 320px;
+    width: 350px;
 }
 
 .content-info-unit
 {
+    width: 100%;
     margin-bottom: 15px;
     overflow: auto;
 }
@@ -146,6 +169,7 @@
     float: left;
     width: 180px; 
     padding-right: 10px;
+    overflow: hidden;
 }
 
 .content-info .clabel-r
@@ -153,6 +177,7 @@
     float: left;
     width: 130px; 
     padding-right: 10px;
+    overflow: hidden;
 }
 
 
@@ -275,4 +300,121 @@
     left: 10px;
     top: 11px;
     left: -6px;
+}
+
+#userslistview
+{
+	float:left;
+	width: 600px;
+	padding-top:0px;
+}
+
+#userslistview .items
+{
+	margin-top: 10px;
+	-webkit-box-shadow: -0px 3px 15px -7px black;
+	box-shadow: -0px 3px 15px -7px black;
+}
+
+#userslistview .pagination
+{
+	margin: 7px 0 5px 0;
+	text-align:center;
+	overflow:auto;
+}
+
+#userslistview .pagination ul
+{
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	display:inline-block;
+}
+
+#userslistview .pagination li.active a
+{
+	color: #fff;
+	background: #0088cc;
+}
+
+#userslistview .pagination a
+{
+	margin: 0 2px 0 2px;
+	border: 1px solid;
+	border-color:#ddd #bbb #bbb #ddd;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	padding: 1px 8px;
+	font-size: 12px;
+}
+
+#userslistview .pagination a:hover
+{
+	border-color:#ddd;
+}
+
+#userslistview .pagination .disabled a:hover
+{
+	border-color:#ddd #bbb #bbb #ddd;
+}
+
+.user-search-form
+{
+	float:left;
+	margin-left: 50px;
+	margin-top: 10px;
+	padding: 20px;
+	background: white;
+	border-radius:5px;
+	border: 1px solid #ccc; 
+	-webkit-box-shadow: -0px 3px 15px -7px black;
+	box-shadow: -0px 3px 15px -7px black;	
+}
+
+#messages-menu
+{
+    width: 20%;
+    float: left;
+    margin-right: 20px;
+    margin-top: 15px;
+}
+
+#settings-menu
+{
+    width: 20%;
+    float: left;
+    margin-right: 20px;
+    margin-top: 15px;
+}
+
+.spacing-1
+{
+    height: 10px;
+}
+
+.spacing-2
+{
+    height: 20px;
+}
+
+.bordered-table
+{
+    margin-top: 20px;
+}
+
+#message-view-delete-form
+{
+    float: right;
+    width: auto;
+}
+
+.profile-view-pitch
+{	
+	font-size:13.5px;
+}
+
+.profile-view-role a
+{
+    font-size:12px;
+    color: #848484;
+	/*text-shadow: 1px 1px 0px #333;*/
 }

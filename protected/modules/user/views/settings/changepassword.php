@@ -1,21 +1,8 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Change Password");
-$this->breadcrumbs=array(
-	UserModule::t("Profile") => array('/user/profile'),
-	UserModule::t("Change Password"),
-);
 
 ?>
 
-<?php $this->widget('bootstrap.widgets.TbMenu', array(
-    'type'=>'pills', // '', 'tabs', 'pills' (or 'list')
-    'stacked'=>true, // whether this is a stacked menu
-    'htmlOptions'=>array('style'=>'width:20%; float:left; margin-right:20px'),
-    'items'=>array(
-        array('label'=>'General', 'url'=>'general'),
-        array('label'=>'Password', 'url'=>'password', 'active'=>true),
-        array('label'=>'Social Networks', 'url'=>'social'),
-    ),
-)); ?>
+<?php $this->renderPartial('_navigation', array('active'=>'pass')); ?>
 
 <div class="span8">
     <?php if(Yii::app()->user->hasFlash('success')):?>

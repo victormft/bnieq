@@ -1,25 +1,9 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.MessageModule::t("Messages:sent"); ?>
-<?php
-	$this->breadcrumbs=array(
-		MessageModule::t("Messages"),
-		MessageModule::t("Sent"),
-	);
-?>
+
 
 
 <div class="row">
-<?php $this->widget('bootstrap.widgets.TbMenu', array(
-        'type'=>'pills', // '', 'tabs', 'pills' (or 'list')
-        'stacked'=>true, // whether this is a stacked menu
-        'htmlOptions'=>array('style'=>'width:20%; float:left; margin-right:20px'),
-        'items'=>array(
-            array('label'=>'Inbox', 'url'=>'inbox'),
-            array('label'=>'Sent', 'url'=>'sent', 'active'=>true),
-            array('label'=>'Compose', 'url'=>'compose'),
-        ),
-    )); ?>
-    
-	<?php $this->renderPartial('_navigation') ?>
+    <?php $this->renderPartial('_navigation', array('active'=>'sent')); ?>
     
 	<div class="span8">
 	<h2><?php echo MessageModule::t('Sent'); ?></h2>
