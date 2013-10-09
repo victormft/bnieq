@@ -16,18 +16,21 @@ Yii::app()->clientScript->registerScript('loading-img',
 					$('.prof').show('fast', function(){
 						$('.prof').animate({opacity: 1}, 250, function(){
 							$('.btn-edit').text('Salvar');
+							$('.btn-edit').addClass('btn-save');
 							$('.btn-edit').show();
 						});
 					}); 
 					
 				});
 		}
-		else
+		
+		else if($('.btn-edit').hasClass('btn-save'))
 		{
 			$('.btn-edit').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			location.href = 'edit?name='+encodeURIComponent($('.profile-header').find('.macaco').children().text());
 		}
 	});
+	
 	
 	$('.team-ready').on('mouseover','.team-item',function(event){
 		$(this).find('.team-delete').css({'color':'red', 'font-size':'22px'});	
