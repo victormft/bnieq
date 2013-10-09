@@ -26,9 +26,9 @@
         <ul class="nav primary">
             <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-suitcase" style="display:block; margin:5px auto;"></i>Startups</a></li>
 			<li><a href= <?php echo Yii::app()->homeUrl . '/user/user' ?> ><i class="icon-group" style="display:block; margin:5px auto;"></i>Usuários</a></li>       
-            <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Como Funciona</a></li>   
-			<li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Sobre Nós</a></li>
-			<li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i>Nosso Blog </a></li>
+            <li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Como Funciona</a></li>   
+			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Sobre Nós</a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i>Nosso Blog </a></li>
         </ul>
 		
 		<ul class="nav pull-right secondary">
@@ -86,14 +86,114 @@
 
 	<div class="clear"></div>
 
+	
+	<!--
 	<div id="footer">
 		Copyright &copy; <?php echo date('Y'); ?> by BNI Tech.<br/>
 		All Rights Reserved.<br/>
-	</div><!-- footer -->
-
+	</div>--><!-- footer -->
+	
 </div><!-- page -->
 
-
-
+<div id="new-footer">
+	<div class="footer-content">
+		<div class="col">
+			<span class="col-head">Startups</span>
+			<ul>
+				<li>
+					<a>Art</a>
+				</li>
+				<li>
+					<a>Creative Economy</a>
+				</li>
+				<li>
+					<a>Education</a>
+				</li>
+				<li>
+					<a>Entertainment</a>
+				</li>
+				<li>
+					<a>Environment</a>
+				</li>
+				<li>
+					<a>Financial</a>
+				</li>
+				<li>
+					<a>Internet Business</a>
+				</li>
+				<li>
+					<a>Technology</a>
+				</li>		 
+			</ul>
+		</div>
+		<div class="col fol">
+			<span class="col-head">Usuários</span>
+			<ul>
+				<li>
+					<a>Populares</a>
+				</li>
+				<li>
+					<a>Recentes</a>
+				</li>
+				<li>
+					<a>Investidores</a>
+				</li>
+				<li>
+					<a>Empreendedores</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col fol">
+			<span class="col-head">Sobre</span>
+			<ul>
+				<li>
+					<a>Sobre Nós</a>
+				</li>
+				<li>
+					<a>Como Funciona</a>
+				</li>
+				<li>
+					<a>Ajuda</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col fol">
+			<span class="col-head">Navegue</span>
+			<ul>
+				<li>
+					<a>Startups</a>
+				</li>
+				<li>
+					<a>Usuários</a>
+				</li>
+				<li>
+					<a>Pitches</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="footer-social">
+		<ul>
+			<li class="facebook">
+				<a>face</a>
+			</li>
+			<li class="linkedin">
+				<a></a>
+			</li>
+			<li class="twitter">
+				<a></a>
+			</li>
+			<li class="google-plus">
+				<a></a>
+			</li>
+		</ul>
+		<div class="terms">
+			<a>Terms of Service</a> |
+			<a>License</a> |
+			<a>Contact Us</a>
+			<div>Copyright © 2013 NextBlue</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>

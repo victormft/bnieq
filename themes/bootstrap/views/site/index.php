@@ -54,7 +54,9 @@ $(document).ready(function() {
 	
 	$('.startup_carousel_main').carouFredSel({
 		items : 1,
-		auto : false,
+		scroll: {
+			duration  : 600
+		},
 		circular: true,
 		prev : '#startup_carousel_main_prev',
 		next : '#startup_carousel_main_next',
@@ -168,12 +170,14 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 </div>
 
-<hr style="border-top: 1px solid #ddd;">
+<hr style="border-top: 1px solid #ddd; margin-bottom:50px;">
 
 
 <!-- !!!!!!!!!!!!!!!! Carousel !!!!!!!!!!!!!!!!!! -->
-
-<h1 style="font-weight:normal; text-shadow: 2px 2px white;">Todas</h1>
+<div style="padding-bottom: 50px;">
+<div style="position:absolute; height:532px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
+<div class="arrow-all"></div>
+<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin-top:0px;">Todas</h1>
 <div style="margin-bottom:20px; position:relative;">
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
@@ -188,11 +192,14 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 	<a class="startup_carousel_control next" id="startup_carousel_all_next" href="#"><span>&rsaquo;</span></a>
 	<div class="pagination carousel-pag" id="startup_carousel_all_pagination"></div>
 </div>
+</div>
 
-<hr style="border-top: 1px solid #ddd;">
-
-<h1 style="font-weight:normal; text-shadow: 2px 2px white;">Selecionadas</h1>
+<div style="padding-bottom: 50px;">
+<div style="position:absolute; height:532px; width:100%; left:0; right:0; z-index:-1; background:#eaeaea;"></div>
+<div class="arrow-sel"></div>
+<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin-top:0px;">Selecionadas</h1>
 <div style="margin-bottom:20px; position:relative;">
+
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 'dataProvider'=>$dataProvider->search(20, 1),
@@ -206,7 +213,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 	<a class="startup_carousel_control next" id="startup_carousel_sel_next" href="#"><span>&rsaquo;</span></a>
 	<div class="pagination carousel-pag" id="startup_carousel_sel_pagination"></div>
 </div>
-
+</div>
 
 <!-- !!!!!!!!!!!!!!!!!! End Carousel !!!!!!!!!!!!!!!!!!!! -->
 

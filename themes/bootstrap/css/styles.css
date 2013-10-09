@@ -8,6 +8,7 @@ html body
 {
 	font-family: Myriad;
 	font-size:15px;
+	background:#f4f4f4;
 }
 
 input
@@ -1353,4 +1354,144 @@ body input[type="file"]{
 {
 	line-height:20px;
 	width:150px;
+}
+
+#new-footer
+{	
+	width:100%;
+	padding:20px 0;
+	background: url(img/bg_footer.png);
+}
+
+.footer-content
+{
+	width:1000px;
+	margin:30px auto;
+	overflow:auto;
+	border-bottom: 1px solid #333;
+	box-shadow: inset 0px -1px 0px #000;
+	padding-bottom:20px;
+}
+.col
+{
+	min-height:230px;
+	float:left;
+	width: 229px;
+	padding-left:20px;
+}
+
+.col.fol
+{
+	border-left: 1px solid #333;
+	box-shadow: inset 1px 0px 0px #000;
+}
+
+.col .col-head
+{
+	font-size:17px;
+	color:#dfdfdf;
+}
+
+.col ul
+{
+	list-style:none;
+	margin:10px 0;
+}
+
+.col li
+{
+	margin-bottom:5px;
+}
+.col ul li a
+{
+	color:#aaa;
+	text-shadow: 2px 2px black;
+}
+
+.footer-social
+{
+	margin: 0 auto;
+	width:300px;
+	overflow:auto;
+	text-align:center;
+}
+
+.footer-social ul
+{
+	margin: 0 auto;
+	overflow:auto;
+	width:150px;
+}
+
+.footer-social li
+{
+	list-style:none;
+}
+
+.footer-social li a
+{
+	height: 0;
+	width:32px;
+	padding-top:32px;
+	margin-right:7px;
+	float:left;
+	overflow:hidden;
+}
+
+.footer-social li.facebook a
+{
+	background: url(img/Facebook.png) no-repeat;
+}
+
+.footer-social li.twitter a
+{
+	background: url(img/Twitter.png) no-repeat;
+}
+
+.footer-social li.linkedin a
+{
+	background: url(img/LinkedIn.png) no-repeat;
+}
+
+.footer-social li.google-plus a
+{
+	background: url(img/Google+.png) no-repeat;
+	margin-right:0px;
+}
+
+.footer-social .terms
+{
+	color:#dfdfdf;
+	font-size:13px;
+}
+
+.footer-social .terms a
+{
+	color:#0088cc;
+}
+
+.arrow-sel
+{
+	width: 0; 
+	height: 0; 
+	margin:0 auto;
+	border-left: 30px solid transparent;
+	border-right: 30px solid transparent;
+	position:absolute;
+	left:0;
+	right:0;
+	border-top: 30px solid #fff;
+}
+
+.arrow-all
+{
+	width: 0; 
+	height: 0; 
+	margin:0 auto;
+	border-left: 30px solid transparent;
+	border-right: 30px solid transparent;
+	position:absolute;
+	left:0;
+	right:0;
+	border-top: 30px solid #f4f4f4;
 }
