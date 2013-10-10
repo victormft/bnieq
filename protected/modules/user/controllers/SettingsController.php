@@ -8,6 +8,7 @@ class SettingsController extends Controller
 	 * @var CActiveRecord the currently loaded data model instance.
 	 */
 	private $_model;
+        
 	/**
 	 * Shows a particular model.
 	 */
@@ -39,6 +40,7 @@ class SettingsController extends Controller
 			}
 			$this->render('general',array('model'=>$model));
 	    }
+        else $this->redirect(Yii::app()->controller->module->loginUrl);
 	}
     
     public function actionPassword()
@@ -66,6 +68,7 @@ class SettingsController extends Controller
 			}
 			$this->render('changepassword',array('model'=>$model));
 	    }
+        else $this->redirect(Yii::app()->controller->module->loginUrl);
 	}
     
     public function actionSocial()
@@ -91,6 +94,7 @@ class SettingsController extends Controller
 			}
 			$this->render('social',array('model'=>$model));
 	    }
+        else $this->redirect(Yii::app()->controller->module->loginUrl);
 	}
     
     

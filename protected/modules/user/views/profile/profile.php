@@ -140,7 +140,7 @@ $('.arrow-container').mouseover(function(event){
 	
 	<div class="profile-header-right">
 			
-        <?php if($model->id !== Yii::app()->user->id): ?>
+        <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
 		<span class="follow-btn">
             
             <div class="follow-info">
@@ -172,7 +172,7 @@ $('.arrow-container').mouseover(function(event){
         </span>
         <?php endif; ?>
         
-        <?php if(UserModule::isAdmin() || $model->id == Yii::app()->user->id): ?>
+        <?php if(Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id))): ?>
 			<span class="edit-btn">
 			
 				<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -375,7 +375,8 @@ $('.arrow-container').mouseover(function(event){
 		</div>
 		
 	</div>
-</div>
+
 
 <?php endif; ?>
 
+</div>

@@ -415,5 +415,5 @@ class User extends CActiveRecord
     {
         return Yii::app()->user->id === $this->id;        
     }    
-    
+        
 }

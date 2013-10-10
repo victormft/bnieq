@@ -393,6 +393,29 @@ class Startup extends CActiveRecord
 
 		echo json_encode($list);
 	}
+    
+    public function allowCurrentUser($position)
+    {
+        $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId AND position=:position";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":startupId", $this->id, PDO::PARAM_INT);
+        $command->bindValue(":userId", Yii::app()->user->getId(), PDO::PARAM_INT);
+        $command->bindValue(":position", $position, PDO::PARAM_STR);
+        return $command->execute()==1;
+    }
+    
+    public function isUserEditor($userid)
+    {
+        foreach ($this->userStartups as $userstartup)
+        {
+            if($userstartup->user_id==$userid)
+            {	
+                if($userstartup->position == 'Founder' || $userstartup->position == 'Member')
+                    return true;
+            }
+        }		
+		return false;
+    }
 		
 	
 }

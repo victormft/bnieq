@@ -28,7 +28,7 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('profile', 'edit', 'suggestPerson', 'initPerson'),
+				'actions'=>array('profile', 'edit'),
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -64,8 +64,8 @@ class ProfileController extends Controller
     public function actionEdit($username)
 	{	        
 		$model = $this->loadModel($username);
-        if (!UserModule::isAdmin() && $model->id != Yii::app()->user->id) 
-		    throw new CHttpException(403, 'You cannot edit this profile.');
+        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id)))
+            throw new CHttpException(403, 'You cannot edit this profile.');		    
         
         $profile = $model->profile;  
         
@@ -106,22 +106,6 @@ class ProfileController extends Controller
 				}
 				else
 				{
-					/*
-					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$model->logo0->name);
-					
-					$img=Image::model()->findByPk($model->logo);
-					$ext_arr = explode('.', $img->name);
-					$ext = end($ext_arr);
-					$new_name=md5($img->name).'.'.$ext;
-					
-					$img->name=$new_name;
-					
-					$img->save();
-					
-					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
-					
-					$this->refresh();
-					*/
 					unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
 					
 					$img=Image::model()->findByPk($profile->profile_picture);
@@ -144,17 +128,13 @@ class ProfileController extends Controller
             'profile'=>$profile,
 		));
 	}
-    
-    public function actionUpload()
-    {
-        $file = CUploadedFile::getInstanceByName('file');
-        $file->saveAs(Yii::getPathOfAlias('webroot').'images/'.$file->getName());
-        echo Yii::app()->baseUrl.'/images/'.$file->getName();
-    }
-    
+        
     public function actionUpdateLocation()
     {        
-        $model = $this->loadUser($_POST['pk']);        
+        $model = $this->loadUser($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$_POST['pk'])))
+            throw new CHttpException(403, 'You cannot edit this profile.');
+        
         $profile = $model->profile;
         if($_POST['value']==0) $profile->location=NULL;
         else $profile->location = $_POST['value'];
@@ -164,6 +144,9 @@ class ProfileController extends Controller
     public function actionUpdateRoles()
     {        
         $model = $this->loadUser($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$_POST['pk'])))
+            throw new CHttpException(403, 'You cannot edit this profile.');
+        
         $vals = array();
         if(isset($_POST['value']))
         {
@@ -179,6 +162,9 @@ class ProfileController extends Controller
     public function actionUpdateSkills()
     {
         $model = $this->loadUser($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$_POST['pk'])))
+            throw new CHttpException(403, 'You cannot edit this profile.');
+        
         $vals = array();
         if(isset($_POST['value']))
         {
@@ -194,6 +180,9 @@ class ProfileController extends Controller
     public function actionUpdateSectors()
     {
         $model = $this->loadUser($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$_POST['pk'])))
+            throw new CHttpException(403, 'You cannot edit this profile.');
+        
         $vals = array();
         if(isset($_POST['value']))
         {
@@ -207,9 +196,11 @@ class ProfileController extends Controller
     }
         
     public function actionUpdateEd()
-    {        
-        $es = new TbEditableSaver('Profile');  //'Profile' is name of model to be updated
+    {
+        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$_POST['pk'])))
+            throw new CHttpException(403, 'You cannot edit this profile.');
         
+        $es = new TbEditableSaver('Profile');  //'Profile' is name of model to be updated        
         $es->update();
     }
 	    
@@ -246,22 +237,4 @@ class ProfileController extends Controller
 		return $this->_model;
 	}
     
-    public function actions()
-	{
-		return array(
-		
-			'suggestPerson'=>array(
-				'class'=>'editable.XSelect2SuggestAction',
-				'modelName'=>'Cidade',
-				'methodName'=>'suggestPerson',
-				'limit'=>30
-			),
-            'initPerson'=>array(
-				'class'=>'editable.XSelect2InitAction',
-				'modelName'=>'Cidade',
-				'textField'=>'nome',
-			),
-		
-		);
-	}
 }

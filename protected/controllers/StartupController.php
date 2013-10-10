@@ -16,7 +16,7 @@ class StartupController extends Controller
 	public function filters()
 	{
 		return array(
-		'accessControl', // perform access control for CRUD operations
+            'accessControl', // perform access control for CRUD operations
 		);
 	}
 
@@ -29,12 +29,17 @@ class StartupController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'viewName', 'editsectors', 'edit', 'follow', 'unfollow', 'updateName', 'updatelocation', 'updateSectors', 'multPic', 'addTeam', 'deleteTeam'),
+				'actions'=>array('index','view', 'viewName', 'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create', 'edit', 'follow', 'unfollow',),
 				'users'=>array('@'),
+			),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions'=>array('update', 'updatelocation', 'updateSectors'),
+				'users'=>array('@'),
+                'verbs'=>array('POST'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete'),
@@ -59,8 +64,10 @@ class StartupController extends Controller
 	
 	public function actionEdit($name)
 	{
-	
-		$model=$this->loadModel($name);
+        $model=$this->loadModel($name);
+        
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar essa startup!');
 		
 		if(isset($_POST['Startup']['pic']))
 		{
@@ -250,11 +257,21 @@ class StartupController extends Controller
 			
 			else
 				$model->logo=1;
-			
-			if($model->save()){
-				
-				$this->redirect(array('view','name'=>$model->name));
-				
+			            
+			if($model->save())
+            {
+                //who create is founder
+                $user_startup = new UserStartup;
+                $user_startup->user_id = Yii::app()->user->id;
+                $user_startup->startup_id = $model->id;
+                $user_startup->position = "Founder";
+                
+                if($user_startup->save())
+                {		
+                    $auth = Yii::app()->authManager;
+                    $auth->assign("StartupOwner",Yii::app()->user->id);
+                    $this->redirect(array('view','name'=>$model->name));
+                }				
 			}
 		}
 
@@ -270,6 +287,10 @@ class StartupController extends Controller
 	*/
 	public function actionUpdate(/*$name*/)
 	{
+        $model=$this->loadModelId($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar esse projeto!');
+        
 		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
         $es->update();
 	
