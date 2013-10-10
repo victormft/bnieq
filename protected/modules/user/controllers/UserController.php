@@ -60,8 +60,8 @@ class UserController extends Controller
 			$model->resume=$_GET['n'];
 		}
 		
-		if(isset($_GET['sec']))
-			$model->roles=$_GET['sec'];	
+		if(isset($_GET['rol']))
+			$model->roles=$_GET['rol'];	
 				
         if(isset($_GET['g']))
 		{

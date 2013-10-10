@@ -194,7 +194,7 @@ class Profile extends CActiveRecord
         
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,       
-            //'sort'=>array('attributes'=>array('followers_count'=>array(),'*')),
+            'sort'=>array('attributes'=>array('followers_count'=>array(),'*')),
 		));
 	}
     

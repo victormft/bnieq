@@ -418,3 +418,15 @@
     color: #848484;
 	/*text-shadow: 1px 1px 0px #333;*/
 }
+
+#rol input[type="checkbox"]
+{
+	margin: -2px 0 0;
+}
+
+#search-role
+{
+	display:none;
+    height: 200px;
+    overflow-y: scroll;
+}

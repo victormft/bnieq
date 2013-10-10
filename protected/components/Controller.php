@@ -21,6 +21,7 @@ class Controller extends RController
 	 */
 	public $breadcrumbs=array();
     
+    /*
     protected function beforeAction($action)
     {
         $_uri = false;
@@ -45,5 +46,5 @@ class Controller extends RController
             $this->redirect($_uri);
         }
         return parent::beforeAction($action);
-    }
+    }*/
 }

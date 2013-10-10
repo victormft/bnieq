@@ -4,9 +4,9 @@ Yii::app()->clientScript->registerScript('search',
 "
 
 $(document).ready(function() {
-    if(getUrlVars()['sec[0]'])
+    if(getUrlVars()['rol[0]'])
 	{
-		$('#search-sector').css('display', 'block');
+		$('#search-role').css('display', 'block');
 	}
 });
 
@@ -15,38 +15,38 @@ $('#searchform').change(function(event) {
 
     var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
 
-    var sec=[]; 
+    var rol=[]; 
     $('input[type=checkbox]:checked').each(function(){
-        sec.push($(this).val());
+        rol.push($(this).val());
     });
 
-    var secs = '';
+    var rols = '';
 
-    for (var i = 0, len = sec.length; i < len; i++) {
-        secs=secs+'&sec['+i+']='+encodeURIComponent(sec[i]);
+    for (var i = 0, len = rol.length; i < len; i++) {
+        rols=rols+'&rol['+i+']='+encodeURIComponent(rol[i]);
 
     };
 
-    location.href = 'user?g='+g+n+secs;
+    location.href = 'user?g='+g+n+rols;
 });
 
 $('.g').click(function(event) {
     var g = $(this).text();
     var n = (getUrlVars()['n'] == null) ? '' : '&n='+getUrlVars()['n'];
 
-    var sec=[]; 
+    var rol=[]; 
     $('input[type=checkbox]:checked').each(function(){
-        sec.push($(this).val());
+        rol.push($(this).val());
     });
 
-    var secs = '';
+    var rols = '';
 
-    for (var i = 0, len = sec.length; i < len; i++) {
-        secs=secs+'&sec['+i+']='+encodeURIComponent(sec[i]);
+    for (var i = 0, len = rol.length; i < len; i++) {
+        rols=rols+'&rol['+i+']='+encodeURIComponent(rol[i]);
 
     };
 
-    location.href = 'user?g='+g+n+secs;
+    location.href = 'user?g='+g+n+rols;
 			
 });
 
@@ -70,18 +70,18 @@ function getUrlVars()
 }
 
 
-$('.sec-label').click(function(event) {
+$('.rol-label').click(function(event) {
 
-    if(!$('.sec-label').hasClass('clicked'))
+    if(!$('.rol-label').hasClass('clicked'))
     {
-        $('#search-sector').slideDown('slow');
-        $('.sec-label').addClass('clicked');
+        $('#search-role').slideDown('slow');
+        $('.rol-label').addClass('clicked');
     }
 
     else
     {
-        $('#search-sector').slideUp('slow');
-        $('.sec-label').removeClass('clicked');
+        $('#search-role').slideUp('slow');
+        $('.rol-label').removeClass('clicked');
     }
 		
 });
@@ -92,18 +92,19 @@ $('.sec-label').click(function(event) {
 
 <h1>Users</h1>
 
-<?php $this->widget('bootstrap.widgets.TbListView',array(
+<?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),
 'itemView'=>'_view',
 'id'=>'userslistview',       // must have id corresponding to js above
-'htmlOptions' => array('style'=>'asas'),
+'pagerCssClass'=>'pagination',
+'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
 'sorterHeader'=>'Ordenar por: ',
- 'sortableAttributes'=>array(
+'sortableAttributes'=>array(
         'firstname',
 		'resume',
-        'fullname'
+        'followers_count',
     ),
-'template'=>'{items} {pager}',
+'template'=>'{sorter} {items} {pager}',
 )); ?>
 
 <div class="user-search-form">
@@ -134,22 +135,26 @@ $('.sec-label').click(function(event) {
                 ?>
                 
             </div>
-
-            <?php //echo CHtml::activeLabel($dataProvider,'company_size'); ?>
-
-            <?php //echo CHtml::activeDropDownList($dataProvider,'company_size', array_merge(array(''=>'Selecione...'), $dataProvider->getCompanySizeOptions()), array('name'=>'c_size')) ?>
-
+            
             <div>
+            <?php echo CHtml::label('Roles >', false, array('class'=>'rol-label')); ?>
 
-            <?php echo CHtml::label('Roles >', false, array('class'=>'sec-label')); ?>
-
-            <div id="search-sector">
-                <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) 
+            <div id="search-role">
+                <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
                 ?>
             </div>
+            </div>
+            
+            <div>
+            <?php echo CHtml::label('Skills >', false, array('class'=>'rol-label')); ?>
 
+            <div id="search-skill">
+                <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
+                ?>
+            </div>
             </div>
 
+            <div class="spacing-1"></div>
             <div>
             <?php	
                 $this->widget('bootstrap.widgets.TbButton',array(
