@@ -80,6 +80,30 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/c
 	</div>
 	</div>
 </div>	
+
+<div class="group-wrap" style="border-bottom:1px dashed #aaa; padding-bottom:30px; overflow:auto; margin-bottom:40px;">
+	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Digite no mínimo 3 caracteres. Use ~ quando necessário.</div></div>
+	<div style="float:left;">
+	<?php echo $form->select2Row($model,'location',
+			array(		
+				'labelOptions' => array('label' => 'Cidade', 'class'=>'custom-label'),
+				'data'=>array_merge(array(' '=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
+				'options'=>array(
+					'placeholder'=>'Digite o nome da cidade...',
+					'allowClear'=> true,   
+					'dropdownAutoWidth'=> true,
+					'minimumInputLength'=> 3,
+					'width'=>'270px',
+				),
+				
+			)
+	); ?>
+	<?php echo $form->error($model,'location', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>
+	<div class="tip" style="margin-left:180px; margin-top:5px; color:#646464; width:300px; font-style:italic;">
+	A cidade onde a Startup está sediada no momento.
+	</div>
+	</div>
+</div>
 	<!--
 	<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => 'Logo'), 'class'=>'span4')); ?>
 	<?php echo $form->error($model,'pic', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>
@@ -103,7 +127,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/c
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
-			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+			'label'=>$model->isNewRecord ? 'Salvar' : 'Salvar',
 		)); ?>
 </div>
 
