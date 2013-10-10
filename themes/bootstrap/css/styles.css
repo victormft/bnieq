@@ -697,7 +697,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 .team-ready .team-item .team-position
 {
-	color: #dfa000;
+	color: #f28d0b;
 	line-height:10px;
 	font-weight:bold;
 	font-size:14px;
@@ -969,7 +969,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	border: 1px solid #ccc;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-	padding: 10px 120px;
+	padding: 10px 70px;
+}
+
+.create-wrap .group-wrap .control-group
+{
+	margin-bottom:0px;
 }
 
 .create-wrap span.required
@@ -1361,6 +1366,7 @@ body input[type="file"]{
 	width:100%;
 	padding:20px 0;
 	background: url(img/bg_footer.png);
+	margin-top:30px;
 }
 
 .footer-content
@@ -1494,4 +1500,12 @@ body input[type="file"]{
 	left:0;
 	right:0;
 	border-top: 30px solid #f4f4f4;
+}
+
+.custom-label
+{
+	color: #0088cc;
+	font-size: 18px;
+	font-style: italic;
+	
 }

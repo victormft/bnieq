@@ -166,7 +166,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 <div class="home-description" style="text-align:center; text-shadow: 2px 2px white; margin:0 auto; width:800px;">
 <h1 style="margin-bottom:5px; color:#444; font-weight:normal;">A primeira plataforma de Equity Crowdfunding do Brasil</h1>
-<span style="font-size:22px; color:#727272; line-height:30px;">NextBlue proporciona o contato direto de investidores com Startups de todo o Brasil em uma plataforma de Equity Crowdfunding. Faça parte dessa novidade: uma rede social do investimento!</span>
+<span style="font-size:22px; color:#727272; line-height:30px; font-style:italic;">NextBlue proporciona o contato direto de investidores com Startups de todo o Brasil em uma plataforma de Equity Crowdfunding. Faça parte dessa novidade: uma rede social do investimento!</span>
 
 </div>
 
@@ -175,9 +175,10 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 <!-- !!!!!!!!!!!!!!!! Carousel !!!!!!!!!!!!!!!!!! -->
 <div style="padding-bottom: 50px;">
-<div style="position:absolute; height:532px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
+<div style="position:absolute; height:544px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
 <div class="arrow-all"></div>
-<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin-top:0px;">Todas</h1>
+<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Todas</h1>
+<span style="font-size:18px; color:#727272; font-style:italic;">Startups cadastradas na plataforma</span>
 <div style="margin-bottom:20px; position:relative;">
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
@@ -195,9 +196,10 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 </div>
 
 <div style="padding-bottom: 50px;">
-<div style="position:absolute; height:532px; width:100%; left:0; right:0; z-index:-1; background:#eaeaea;"></div>
+<div style="position:absolute; height:574px; width:100%; left:0; right:0; z-index:-1; background:#eaeaea;"></div>
 <div class="arrow-sel"></div>
-<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin-top:0px;">Selecionadas</h1>
+<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Selecionadas</h1>
+<span style="font-size:18px; color:#727272; font-style:italic;">As preferidas da equipe do NextBlue</span>
 <div style="margin-bottom:20px; position:relative;">
 
 
