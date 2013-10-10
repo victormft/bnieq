@@ -121,8 +121,8 @@ $('.video-images-items').carouFredSel({
 	
 	<div class="profile-header-right">
 		
-			<span class="edit-btn">
-			
+            <?php if(Yii::app()->user->checkAccess('editStartup', array('startup'=>$model))): ?>
+			<span class="edit-btn">			
 				<?php $this->widget('bootstrap.widgets.TbButton', array(
 				'label'=>'Editar',
 				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
@@ -132,6 +132,7 @@ $('.video-images-items').carouFredSel({
 					)); 
 				?>
 			</span>
+            <?php endif; ?>
 			
 			<span class="follow-btn">
 			

@@ -96,7 +96,6 @@ return array(
         
         'rights'=>array( 
             'install'=>false, // Enables the installer. 
-            'layout'=>'bootstrap',
         ),
            
 	),
@@ -185,6 +184,7 @@ return array(
             'itemTable' =>'tbl_auth_item',
             'itemChildTable' =>'tbl_auth_item_child',
             'assignmentTable' =>'tbl_auth_assignment',
+            'defaultRoles'=> array('Authenticated'),
         ),
 		
 	),
