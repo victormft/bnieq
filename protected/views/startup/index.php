@@ -1,7 +1,5 @@
 <?php
 $this->layout='column1';
-
-
 ?>
 
 
@@ -20,7 +18,7 @@ $('#searchform').change(function(event) {
 			var g = (getUrlVars()['g'] == null) ? '' : getUrlVars()['g'];
 			
 			var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
-			var c_size = ($('#c_size').val()=='') ? '' : '&c_size='+encodeURIComponent($('#c_size').val());
+			var c_stage = ($('#c_stage').val()=='') ? '' : '&c_stage='+encodeURIComponent($('#c_stage').val());
 			
 			
 			var sec=[]; 
@@ -35,13 +33,13 @@ $('#searchform').change(function(event) {
 			
 			};
 			
-            location.href = 'startup?g='+g+n+c_size+secs;
+            location.href = 'startup?g='+g+n+c_stage+secs;
 });
 
 $('.g').click(function(event) {
 			var g = $(this).text();
 			var n = (getUrlVars()['n'] == null) ? '' : '&n='+getUrlVars()['n'];
-			var c_size = (getUrlVars()['c_size'] == null) ? '' : '&c_size='+getUrlVars()['c_size'];
+			var c_stage = (getUrlVars()['c_stage'] == null) ? '' : '&c_stage='+getUrlVars()['c_stage'];
 			
 			var sec=[]; 
 			$('input[type=checkbox]:checked').each(function(){
@@ -55,7 +53,7 @@ $('.g').click(function(event) {
 			
 			};
 			
-			location.href = 'startup?g='+g+n+c_size+secs;
+			location.href = 'startup?g='+g+n+c_stage+secs;
 			
 });
 
@@ -82,14 +80,17 @@ function getUrlVars()
 $('.sec-label').click(function(event) {
 
 		if(!$('.sec-label').hasClass('clicked'))
-		{
+		{	
+			$('.sec-arrow').removeClass('arrow-down').addClass('arrow-up');
 			$('#search-sector').slideDown('slow');
 			$('.sec-label').addClass('clicked');
 		}
 		
 		else
 		{
-			$('#search-sector').slideUp('slow');
+			$('#search-sector').slideUp('slow', function(){
+				$('.sec-arrow').removeClass('arrow-up').addClass('arrow-down');
+			});
 			$('.sec-label').removeClass('clicked');
 		}
 		
@@ -157,7 +158,8 @@ function SearchFunc()   {
 
 ?>
 
-<h1>Startups</h1>
+<h1 class="create-title" style="margin-top:25px;">Startups</h1>
+<div class="create-sub-title" style="font-style:italic; margin-bottom:40px;">Confira as empresas cadastradas no NextBlue!</div>
 
 <?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),
@@ -165,7 +167,7 @@ function SearchFunc()   {
 'id'=>'startupslistview',       // must have id corresponding to js above
 'pagerCssClass'=>'pagination',
 'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
-'sorterHeader'=>'Ordenar por: ',
+'sorterHeader'=>'',
 'sortableAttributes'=>array(
         'name',
 		'followers_num'
@@ -194,39 +196,67 @@ function SearchFunc()   {
     <?php echo CHtml::beginForm('startup', 'get', array('id'=>'searchform')); ?>
 
 
-    <div class="row">
-        <?php echo CHtml::label('Nome', false); ?>
-        
-		<div id="search-name">
-			<?php echo CHtml::activeTextField($dataProvider,'name', array('name'=>'n')) ?>
+    <div class="column">
+	
+		<div style="margin-bottom:20px;">
+			<?php echo CHtml::label('Nome', false); ?>
 			
-			<?php	
-			$this->widget('bootstrap.widgets.TbButton',array(
-				'label' => 'Buscar',
-				'size' => 'small'
-			));
+			<div id="search-name">
+				<?php echo CHtml::activeTextField($dataProvider,'name', array('name'=>'n')) ?>
+				
+				<?php	
+				$this->widget('bootstrap.widgets.TbButton',array(
+					'label' => 'Buscar',
+					'size' => 'small'
+				));
+				?>
+			</div>
+		</div>
+		
+		<div style="margin-bottom:20px;">
+			<?php echo CHtml::label('Estágio de Desenvolvimento', false); ?>
+			
+			<?php echo CHtml::activeDropDownList($dataProvider,'company_stage', array_merge(array(''=>'Selecione...'), $dataProvider->getCompanyStageOptions()), array('name'=>'c_stage', 'style'=>'margin-bottom:0;')) ?>
+		</div>
+		
+		<div style="margin-bottom:20px; position:relative;">
+		
+			<?php echo CHtml::label('Setores', false, array('class'=>'sec-label')); ?><div class="sec-arrow arrow-down" style="position: absolute; top: 0; margin-left: 50px; margin-top: 8px;"></div>
+			
+			<div id="search-sector">
+				<?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) ?>
+			</div>
+		
+		</div>
+		
+		<div style="margin-bottom:20px;">
+			<?php echo CHtml::label('Cidade', false); ?>
+
+			<?php
+				$this->widget(
+					'bootstrap.widgets.TbSelect2',
+					array(
+						'name' => 'city',
+						'model'=>$dataProvider,
+						'data' =>array_merge(array(' '=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
+						'options'=>array(
+							'placeholder'=>'Digite o nome da cidade...',
+							'allowClear'=> true,   
+							'dropdownAutoWidth'=> true,
+							'minimumInputLength'=> 3,
+							'width'=>'240px',
+						),
+					)
+				);
 			?>
 		</div>
 		
-		<?php echo CHtml::activeLabel($dataProvider,'company_size'); ?>
-		
-		<?php echo CHtml::activeDropDownList($dataProvider,'company_size', array_merge(array(''=>'Selecione...'), $dataProvider->getCompanySizeOptions()), array('name'=>'c_size')) ?>
-		
-		<div>
-		
-		<?php echo CHtml::label('Setores >', false, array('class'=>'sec-label')); ?>
-		
-		<div id="search-sector">
-			<?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) ?>
-		</div>
-		
-		</div>
 	
-		<div>
+		<div style="text-align:center;">
 		<?php	
 			$this->widget('bootstrap.widgets.TbButton',array(
 				'label' => 'Limpar',
-				'size' => 'small'
+				'size' => 'normal'
 			));
 			?>
 		</div>

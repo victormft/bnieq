@@ -385,8 +385,8 @@ class StartupController extends Controller
 			$model->name=strip_tags($_GET['n']);
 			$model->one_line_pitch=strip_tags($_GET['n']);
 		}
-		if(isset($_GET['c_size']))
-			$model->company_size=$_GET['c_size'];	
+		if(isset($_GET['c_stage']))
+			$model->company_stage=$_GET['c_stage'];	
 		
 		if(isset($_GET['sec']))
 			$model->sectors=$_GET['sec'];	
