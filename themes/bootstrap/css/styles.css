@@ -307,7 +307,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 #startupslistview
 {
 	float:left;
-	width: 600px;
+	width: 670px;
 	padding-top:0px;
 }
 
@@ -402,8 +402,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 
 .search-form
 {
-	float:left;
-	margin-left: 50px;
+	float:right;
+	/*margin-left: 50px;*/
 	/*margin-top: 61px;*/
 	padding: 20px;
 	background: white;

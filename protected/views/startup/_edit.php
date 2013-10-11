@@ -240,7 +240,11 @@ function getUrlVars()
 							'dropdownAutoWidth'=> true,
 							'minimumInputLength'=> 3,
 						),
-						'mode'=>'inline'
+						'mode'=>'inline',
+						'onHidden' => 'js: function(e, reason) {
+							$("#select2-drop-mask").css("display","none");
+							$("#select2-drop").css("display","none");
+						}',
 					)); ?> 
 				</p>
 				
