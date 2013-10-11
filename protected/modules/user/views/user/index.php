@@ -88,9 +88,9 @@ $('.rol-label').click(function(event) {
 ");
 ?>
 
-<div class="spacing-1"></div>
 
-<h1>Users</h1>
+<h1 class="create-title" style="margin-top:25px;">Usuários</h1>
+<div class="create-sub-title" style="font-style:italic; margin-bottom:40px;">Empreendedores e Investidores do NextBlue</div>
 
 <?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),
@@ -98,10 +98,8 @@ $('.rol-label').click(function(event) {
 'id'=>'userslistview',       // must have id corresponding to js above
 'pagerCssClass'=>'pagination',
 'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
-'sorterHeader'=>'Ordenar por: ',
+'sorterHeader'=>'',
 'sortableAttributes'=>array(
-        'firstname',
-		'resume',
         'followers_count',
     ),
 'template'=>'{sorter} {items} {pager}',
@@ -113,8 +111,7 @@ $('.rol-label').click(function(event) {
 		<div class="group-title">Busca Rápida</div>
         <a class="g" href="<?php echo Yii::app()->baseUrl.'/user/user' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=='') echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todos</p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Investidores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-money profile-icon"></i>Investidores</p></a>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Empreendedores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-briefcase profile-icon"></i>Empreendedores</p></a>
-		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Mais seguidos") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-thumbs-up-alt profile-icon"></i>Mais seguidos</p></a>
+		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Empreendedores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-briefcase profile-icon"></i>Empreendedores</p></a>
 		
 	</div>
 	
@@ -124,7 +121,7 @@ $('.rol-label').click(function(event) {
         <div class="row">
             <?php echo CHtml::label('Nome', false); ?>
 
-            <div id="search-name">
+            <div id="search-name" style="margin-bottom:20px;">
                 <?php echo CHtml::activeTextField($dataProvider,'fullname', array('name'=>'n')) ?>
 
                 <?php	
@@ -136,30 +133,21 @@ $('.rol-label').click(function(event) {
                 
             </div>
             
-            <div>
-            <?php echo CHtml::label('Roles >', false, array('class'=>'rol-label')); ?>
+            <div style="margin-bottom:20px; position:relative;">
+            <?php echo CHtml::label('Roles', false, array('class'=>'rol-label')); ?><div class="sec-arrow arrow-down" style="position: absolute; top: 0; margin-left: 40px; margin-top: 8px;"></div>
 
             <div id="search-role">
                 <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
                 ?>
             </div>
             </div>
-            
-            <div>
-            <?php echo CHtml::label('Skills >', false, array('class'=>'rol-label')); ?>
-
-            <div id="search-skill">
-                <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
-                ?>
-            </div>
-            </div>
 
             <div class="spacing-1"></div>
-            <div>
+            <div style="text-align:center;">
             <?php	
                 $this->widget('bootstrap.widgets.TbButton',array(
                     'label' => 'Limpar',
-                    'size' => 'small'
+                    'size' => 'normal'
                 ));
                 ?>
             </div>

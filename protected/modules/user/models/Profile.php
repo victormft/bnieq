@@ -176,16 +176,8 @@ class Profile extends CActiveRecord
 		$criteria->compare('interests',$this->interests,true);
         $criteria->compare('(SELECT COUNT(user_follow.follower_id) FROM user_follow WHERE t.user_id=user_follow.followed_id)',$this->followers_count);//making the filters work
         
-        if($this->group)
-		{
-			if($this->group=='Mais seguidos'){
-                $criteria->together=true;
-                $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count"; 
-                $criteria->group='t.user_id';
-                $criteria->order='followers_count DESC';
-            }				
-		}
-        
+        $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count"; 
+                
         if($this->roles){
 			$criteria->with = array('roles');
 			$criteria->together = true;
@@ -194,7 +186,16 @@ class Profile extends CActiveRecord
         
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,       
-            'sort'=>array('attributes'=>array('followers_count'=>array(),'*')),
+            'sort'=>array(
+                'attributes'=>array(
+                    'followers_count'=>array(                        
+                        'asc' => 'followers_count',
+                        'desc' => 'followers_count DESC', 
+                        'label' => 'Seguidores',
+                    ),
+                    '*',
+                )
+            ),
 		));
 	}
     
