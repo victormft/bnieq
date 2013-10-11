@@ -243,7 +243,7 @@ class User extends CActiveRecord
         $roles=$this->roles;
         $lastElement = end($roles);
         foreach($roles as $role) {
-            $string = $string.'<a href="'. Yii::app()->baseUrl.'/user/user?g=&sec[0]='.$role->role_id .'">'.$role->name.'</a>' ;
+            $string = $string.'<a href="'. Yii::app()->baseUrl.'/user/user?g=&rol[0]='.$role->role_id .'">'.$role->name.'</a>' ;
             if ($role!==$lastElement) $string = $string.' · ';
         } 
         

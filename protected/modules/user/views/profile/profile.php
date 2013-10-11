@@ -283,9 +283,16 @@ $('.arrow-container').mouseover(function(event){
 		
 		<div class="content-info">
             
-            <div class="content-info-unit">         
-                <div class="clabel">			
-                    <?php echo 'COMMING SOON...'; ?>                   
+            <div class="content-info-unit" style="text-align: center;">        
+                <?php $this->widget('bootstrap.widgets.TbButton', array(
+                        'label'=>'Create Startup',
+                        'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                        'size'=>'large', // null, 'large', 'small' or 'mini'
+                        'url'=>$this->createUrl('/startup/create'),//array('unfollow','name'=>$model->name),
+                    )); ?>
+                <div class="clabel">
+                    
+                    <?php //echo 'COMMING SOON...'; ?>                   
                 </div>			 
             </div>
             
