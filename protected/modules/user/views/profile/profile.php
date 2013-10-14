@@ -184,6 +184,16 @@ $('.arrow-container').mouseover(function(event){
 					)); 
 				?>
                 
+                <?php 
+                if(Yii::app()->getModule('user')->isAdmin()){
+                    $this->widget('bootstrap.widgets.TbButton', array(
+                        'label'=>'ADMIN',
+                        'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                        'size'=>'large', // null, 'large', 'small' or 'mini'
+                        'url'=>$this->createUrl('/user/admin'),//array('unfollow','name'=>$model->name),
+                    )); 
+                } ?>
+                
 			</span>
         <?php endif; ?>
         

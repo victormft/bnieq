@@ -7,6 +7,23 @@
 	<div class="span8">
 		<h2><?php echo MessageModule::t('Compose New Message'); ?></h2>
 
+        <?php 
+        //can message only when following
+        if(Yii::app()->getModule('user')->isAdmin())
+        {
+            $users=User::model()->findAll();
+            $list = CHtml::listData($users, 'id', function($user){return $user->getFullName();});
+        }
+        else {
+            if(User::model()->findbyPk(Yii::app()->user->id)->following)
+            {
+                $followings=User::model()->findbyPk(Yii::app()->user->id)->following;
+                $list = CHtml::listData($followings, 'followed_id', function($following){return $following->getNameOfFollowed();});
+            }
+        } 
+        ?>
+        
+        <?php if(isset($list)): ?> 
         <div class="form">
             <?php $form = $this->beginWidget('CActiveForm', array(
                 'id'=>'message-form',
@@ -20,21 +37,8 @@
 
             <div class="input">
                 <?php echo $form->labelEx($model,'receiver_id'); ?>
-                <?php 
-                //can message only when following
-                if(Yii::app()->getModule('user')->isAdmin())
-                {
-                    $users=User::model()->findAll();
-                    $list = CHtml::listData($users, 'id', function($user){return $user->getFullName();});
-                }
-                else {
-                    if(User::model()->findbyPk(Yii::app()->user->id)->following)
-                    {
-                        $followings=User::model()->findbyPk(Yii::app()->user->id)->following;
-                        $list = CHtml::listData($followings, 'followed_id', function($following){return $following->getNameOfFollowed();});
-                    }
-                }
-                
+                                    
+                <?php
                 $this->widget('bootstrap.widgets.TbSelect2', array(                    
                     'name' => 'receiver',
                     'id' => 'receiver',
@@ -69,6 +73,11 @@
             <?php $this->endWidget(); ?>
 
         </div>
+        <?php endif ?>
+        
+        <?php if(!isset($list)) echo 'Você só pode mandar mensagem pra quem você segue!'; ?>
 	</div>
+    
+    
 </div>
 

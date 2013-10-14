@@ -94,7 +94,7 @@ $('.rol-label').click(function(event) {
 
 <?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),
-'itemView'=>'_view',
+'itemView'=>'/user/_view',
 'id'=>'userslistview',       // must have id corresponding to js above
 'pagerCssClass'=>'pagination',
 'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
@@ -109,7 +109,7 @@ $('.rol-label').click(function(event) {
 	
 	<div id="G-Selection">
 		<div class="group-title">Busca Rápida</div>
-        <a class="g" href="<?php echo Yii::app()->baseUrl.'/user/user' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=='') echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todos</p></a>
+        <a class="g" href="<?php echo Yii::app()->baseUrl.'/user' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=='') echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todos</p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Investidores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-money profile-icon"></i>Investidores</p></a>
 		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Empreendedores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-briefcase profile-icon"></i>Empreendedores</p></a>
 		

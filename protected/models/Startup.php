@@ -101,6 +101,7 @@ class Startup extends CActiveRecord
 			array('name, email, skype', 'length', 'max'=>99),
 			array('product_description', 'length', 'max'=>1000),
 			array('logo, location', 'length', 'max'=>20),
+            array('selecionada', 'in', 'range'=>array(0,1)),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
 			array('facebook, twitter, linkedin, website, video', 'length', 'max'=>150),
 			array('product_description, foundation, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, create_time', 'safe'),
@@ -416,6 +417,23 @@ class Startup extends CActiveRecord
         }		
 		return false;
     }
+    
+    public static function itemAlias($type,$code=NULL) {
+		$_items = array(
+			'StartupSelecionada' => array(
+				'0' => UserModule::t('No'),
+				'1' => UserModule::t('Yes'),				
+			),
+			'AdminStatus' => array(
+				'0' => UserModule::t('No'),
+				'1' => UserModule::t('Yes'),
+			),
+		);
+		if (isset($code))
+			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
+		else
+			return isset($_items[$type]) ? $_items[$type] : false;
+	}
 		
 	
 }

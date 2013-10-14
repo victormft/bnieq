@@ -1,21 +1,21 @@
 <?php
-$this->breadcrumbs=array(
-	UserModule::t('Users')=>array('/user'),
-	UserModule::t('Manage'),
-);
 
 $this->menu=array(
     array('label'=>UserModule::t('Create User'), 'url'=>array('create')),
-    array('label'=>UserModule::t('Manage Users'), 'url'=>array('admin')),
     //array('label'=>UserModule::t('List User'), 'url'=>array('/user/user')),
+    array(
+        'label' => 'Startup',
+        'itemOptions' => array('class' => 'nav-header')
+    ),
+    array('label'=>UserModule::t('Manage Stup'), 'url'=>array('startups')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
-    $('.search-form').toggle();
+    $('.search-form-admin').toggle();
     return false;
 });	
-$('.search-form form').submit(function(){
+$('.search-form-admin form').submit(function(){
     $.fn.yiiGridView.update('user-grid', {
         data: $(this).serialize()
     });
@@ -29,14 +29,15 @@ $('.search-form form').submit(function(){
 <p><?php echo UserModule::t("You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b> or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done."); ?></p>
 
 <?php echo CHtml::link(UserModule::t('Advanced Search'),'#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
+<div class="search-form-admin" style="display:none">
 <?php $this->renderPartial('_search',array(
     'model'=>$model,
 )); ?>
 </div><!-- search-form -->
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $this->widget('bootstrap.widgets.TbGridView', array(
 	'id'=>'user-grid',
+    'type' => 'striped bordered condensed',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
@@ -44,6 +45,7 @@ $('.search-form form').submit(function(){
 			'name' => 'id',
 			'type'=>'raw',
 			'value' => 'CHtml::link(CHtml::encode($data->id),array("admin/update","id"=>$data->id))',
+            'htmlOptions'=>array('style'=>'width: 50px'),
 		),
 		array(
 			'name' => 'username',
@@ -69,6 +71,7 @@ $('.search-form form').submit(function(){
 		),
 		array(
 			'class'=>'CButtonColumn',
+            'htmlOptions'=>array('style'=>'width: 55px'),
 		),
 	),
 )); ?>

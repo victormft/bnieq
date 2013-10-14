@@ -37,7 +37,7 @@ return
 
 			"Facebook" => array ( 
 				"enabled" => true,
-				"keys"    => array ( "id" => "435433439906829", "secret" => "5eb872763a6cb20629ddb63a53942cbf" ),
+				"keys"    => array ( "id" => "208937835944842", "secret" => "1c56ca4d1b27e87786dbd9965ada48df" ),
 			),
 
 			"Twitter" => array ( 

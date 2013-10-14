@@ -44,6 +44,7 @@ class UserController extends Controller
 	 */
 	public function actionIndex()
 	{
+        /*
         if(Yii::app()->user->isGuest){
             $user = Yii::app()->getComponent('user');
             $user->setFlash(
@@ -72,6 +73,8 @@ class UserController extends Controller
 		$this->render('index',array(
             'dataProvider'=>$model,
         ));
+         * 
+         */
 	}
     
     public function actionFollow()

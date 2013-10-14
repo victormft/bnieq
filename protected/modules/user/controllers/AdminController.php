@@ -6,6 +6,7 @@ class AdminController extends Controller
 	public $layout='//layouts/column2';
 	
 	private $_model;
+    private $_modelS;
 
 	/**
 	 * @return array action filters
@@ -25,7 +26,7 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view'),
+				'actions'=>array('admin','delete','create','update','view','startups', 'updatestartup', 'viewstartup', 'deletestartup'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -153,6 +154,70 @@ class AdminController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
+    
+    
+	public function actionStartups()
+	{
+		$model=new Startup('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Startup']))
+            $model->attributes=$_GET['Startup'];
+
+        $this->render('index_startup',array(
+            'model'=>$model,
+        ));
+		/*$dataProvider=new CActiveDataProvider('User', array(
+			'pagination'=>array(
+				'pageSize'=>Yii::app()->controller->module->user_page_size,
+			),
+		));
+
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));//*/
+	}
+    
+	public function actionUpdateStartup()
+	{
+		$model=$this->loadStartup();
+		$this->performAjaxValidation($model);
+		if(isset($_POST['Startup']))
+		{
+			$model->attributes=$_POST['Startup'];
+			
+			if($model->validate()) {
+				$model->save();
+				$this->redirect(array('startups'));
+			} 
+		}
+
+		$this->render('update_startup',array(
+			'model'=>$model,
+		));
+	}
+    
+    public function actionViewStartup()
+	{
+		$model = $this->loadStartup();
+		$this->render('view_startup',array(
+			'model'=>$model,
+		));
+	}
+    
+    public function actionDeleteStartup()
+	{
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+			$model = $this->loadStartup();
+			$model->delete();
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_POST['ajax']))
+				$this->redirect(array('/user/admin/startups'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	}
 	
 	/**
      * Performs the AJAX validation.
@@ -182,6 +247,18 @@ class AdminController extends Controller
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_model;
+	}
+    
+    public function loadStartup()
+	{
+		if($this->_modelS===null)
+		{
+			if(isset($_GET['id']))
+				$this->_modelS=Startup::model()->findbyPk($_GET['id']);
+			if($this->_modelS===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+		}
+		return $this->_modelS;
 	}
 	
 }

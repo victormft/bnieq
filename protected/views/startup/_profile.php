@@ -5,38 +5,38 @@ Yii::app()->clientScript->registerScript('follow',
 "
 
 
-$('#yw1').click(function(event) {
+$('#follow').click(function(event) {
 
 
-		if($('#yw1').text()=='Follow')
+		if($('#follow').text()=='Follow')
 		{	
-			$('#yw1').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			$('#follow').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/follow?name='+getUrlVars()['name'],
 				dataType: 'json',
 				success: function(data){
-					$('#yw1').removeClass('btn-info');
-					$('#yw1').removeClass('btn-follow');
-					$('#yw1').addClass('btn-unfollow');
-					$('#yw1').text('Unfollow');	
+					$('#follow').removeClass('btn-info');
+					$('#follow').removeClass('btn-follow');
+					$('#follow').addClass('btn-unfollow');
+					$('#follow').text('Unfollow');	
 					$('.follow-count').html(data.res);
 				}
 			});
 		}
 		
-		else if($('#yw1').text()=='Unfollow')
+		else if($('#follow').text()=='Unfollow')
 		{
-			$('#yw1').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			$('#follow').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/unfollow?name='+getUrlVars()['name'],
 				dataType: 'json',
 				success: function(data){
-					$('#yw1').addClass('btn-info');
-					$('#yw1').removeClass('btn-unfollow');
-					$('#yw1').addClass('btn-follow');
-					$('#yw1').text('Follow');
+					$('#follow').addClass('btn-info');
+					$('#follow').removeClass('btn-unfollow');
+					$('#follow').addClass('btn-follow');
+					$('#follow').text('Follow');
 					$('.follow-count').html(data.res);					
 				}
 			});
@@ -147,6 +147,7 @@ $('.video-images-items').carouFredSel({
 					{
 						$this->widget('bootstrap.widgets.TbButton', array(
 						'label'=>'Follow',
+                        'id'=>'follow',
 						'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 						'size'=>'normal', // null, 'large', 'small' or 'mini'
 						'url'=>'',//array('follow','name'=>$model->name),

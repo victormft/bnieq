@@ -473,3 +473,20 @@
 	overflow: auto;
 	border: 1px solid #ccc;
 }
+
+#sidebar-right-wrap
+{
+    position: fixed;
+    right: 25px;
+    top: 100px;
+    width: 90px;
+    padding: 20px 20px 10px 20px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: -0px 3px 15px -7px black;
+    box-shadow: -0px 3px 15px -7px black;
+}
+
+
+
