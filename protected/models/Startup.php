@@ -312,6 +312,19 @@ class Startup extends CActiveRecord
         return $string;
     }
 	
+	public function getSectorForPrint()
+    {
+        $string="";
+        $sectors=$this->sectors;
+        $lastElement = end($sectors);
+        foreach($sectors as $sector) {
+            $string = $string.'<a href="'. Yii::app()->baseUrl.'/startup?g=&sec[0]='.$sector->sector_id .'">'.$sector->name.'</a>' ;
+            if ($sector!==$lastElement) $string = $string.' · ';
+        } 
+        
+        return $string;
+    }
+	
 	public function getSectorCommaNames()
     {
         $string="";

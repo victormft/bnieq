@@ -11,6 +11,8 @@ $(document).ready(function() {
     if(getUrlVars()['sec[0]'])
 	{
 		$('#search-sector').css('display', 'block');
+		$('.sec-arrow').removeClass('arrow-down').addClass('arrow-up');
+		$('.sec-label').addClass('clicked');
 	}
 });
 
@@ -186,10 +188,10 @@ function SearchFunc()   {
 	
 	<div id="G-Selection">
 		<div class="group-title">Busca Rápida</div>
+		<a class="g" href="<?php echo Yii::app()->baseUrl.'/startup' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=="") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todas</p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Selecionadas") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-star profile-icon"></i>Selecionadas</p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Populares") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-group profile-icon"></i>Populares</p></a>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Novidades") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-calendar profile-icon"></i>Novidades</p></a>
-		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Todas") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todas</p></a>
+		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Novidades") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-calendar profile-icon"></i>Novidades</p></a>
 	</div>
 	
 	<div class="form-vertical">

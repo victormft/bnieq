@@ -107,6 +107,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	
 }
 
+.items .view-list .startup-view-sect a
+{
+	font-size: 12px;
+	color: #848484;
+}
+
 #Startup-list-img
 {
 	float:left; 

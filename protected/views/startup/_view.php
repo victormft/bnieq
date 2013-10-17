@@ -1,29 +1,26 @@
 <div class="view-list">
 
-		
-	
-
 	<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img"/>', array('view', 'name'=>$data->name)); ?>
 	
-
-	<?php echo CHtml::link(CHtml::encode($data->name),array('view','name'=>$data->name), array('class'=>'startup-view-name'));?>
-	
-
-	<!--<b><?php /*echo CHtml::encode($data->getAttributeLabel('one_line_pitch')); */?>:</b>-->
-	
-	<div class="startup-view-pitch">
-		<?php echo CHtml::encode($data->one_line_pitch); ?>
-	</div>
-
-	
-	<div class="startup-view-sec">
-		<?php 
+	<div class="view-list-text">
 		
-		echo Startup::model()->findByPk($data->id)->getSectorNames();
+		<?php echo CHtml::link(CHtml::encode($data->name),array('view','name'=>$data->name), array('class'=>'startup-view-name'));?>
 		
-		//echo $data->getSectorNames(); 
-		
-		?>
+		<div class="startup-view-pitch">
+			<?php echo CHtml::encode($data->one_line_pitch); ?>
+		</div>
+
+		<div class="startup-view-sect">
+		<!--<div class="startup-view-sec">-->
+			<?php 
+			
+			echo Startup::model()->findByPk($data->id)->getSectorForPrint();
+			
+			//echo $data->getSectorNames(); 
+			
+			?>
+		</div>
+	
 	</div>
 	
 	Followers: <?php echo count($data->users); ?>
