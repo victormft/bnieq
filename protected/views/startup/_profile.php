@@ -159,6 +159,7 @@ $('.video-images-items').carouFredSel({
 					{
 						$this->widget('bootstrap.widgets.TbButton', array(
 						'label'=>'Unfollow',
+						'id'=>'follow',
 						'size'=>'normal', // null, 'large', 'small' or 'mini'
 						'url'=>'',//array('unfollow','name'=>$model->name),
 						'htmlOptions'=>array('class'=>'btn-unfollow'),

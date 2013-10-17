@@ -95,8 +95,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 
 .items .view-list .startup-view-pitch
 {
-	font-weight:bold;
-	font-size:13px;
+	/*font-weight:bold;*/
+	font-size:14px;
 }
 
 .items .view-list .startup-view-sec

@@ -16,6 +16,48 @@ $(document).ready(function() {
 	}
 });
 
+$('.follow-press').click(function(event) {
+
+		var startup_name = encodeURIComponent($(this).parent().prev().attr('data-name'));
+		var elem = $(this);
+		
+		if(elem.text()=='Follow')
+		{	
+			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			
+			$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/follow?name='+startup_name,
+				dataType: 'json',
+				success: function(data){
+					elem.removeClass('btn-success');
+					elem.removeClass('btn-follow');
+					elem.addClass('btn-unfollow');
+					elem.text('Unfollow');	
+					elem.parent().prev().html(data.res);
+				}
+			});
+		}
+		
+		else if(elem.text()=='Unfollow')
+		{
+			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			
+			$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/unfollow?name='+startup_name,
+				dataType: 'json',
+				success: function(data){
+					elem.addClass('btn-success');
+					elem.removeClass('btn-unfollow');
+					elem.addClass('btn-follow');
+					elem.text('Follow');
+					elem.parent().prev().html(data.res);					
+				}
+			});
+		}
+			
+});
+
+
 $('#searchform').change(function(event) {
 			var g = (getUrlVars()['g'] == null) ? '' : getUrlVars()['g'];
 			

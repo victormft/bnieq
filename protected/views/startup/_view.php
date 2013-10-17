@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="startup-view-sect">
-		<!--<div class="startup-view-sec">-->
+		<!--<div class="startup-view-sec">!!!!soh pra fechar-></div>-->
 			<?php 
 			
 			echo Startup::model()->findByPk($data->id)->getSectorForPrint();
@@ -23,7 +23,34 @@
 	
 	</div>
 	
-	Followers: <?php echo count($data->users); ?>
+	<div class="follow-count" data-name="<?php echo $data->name; ?>"><?php echo count($data->users); ?></div>   
+    
+    <span class="follow-btn">    
+        <?php 
+        if(!$data->hasUserFollowing(Yii::app()->user->id))
+        {
+            $this->widget('bootstrap.widgets.TbButton', array(
+            'label'=>'Follow',
+            'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            'size'=>'mini', // null, 'large', 'small' or 'mini'
+            'url'=>'',//array('follow','name'=>$model->name),
+            'htmlOptions'=>array('class'=>'btn-follow follow-press'),
+            )); 
+        }
+        else
+        {
+            $this->widget('bootstrap.widgets.TbButton', array(
+            'label'=>'Unfollow',
+            'size'=>'mini', // null, 'large', 'small' or 'mini'
+            'url'=>'',//array('unfollow','name'=>$model->name),
+            'htmlOptions'=>array('class'=>'btn-unfollow follow-press'),
+            )); 
+        }
+        ?>        
+    </span>
+	
+	
+	<!--Followers: <?php //echo count($data->users); ?>-->
 	
 	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('foundation')); ?>:</b>
