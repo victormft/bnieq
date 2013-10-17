@@ -305,7 +305,7 @@
 #userslistview
 {
 	float:left;
-	width: 600px;
+	width: 670px;
 	padding-top:0px;
 }
 
@@ -399,9 +399,7 @@
 
 .user-search-form
 {
-	float:left;
-	margin-left: 50px;
-	margin-top: 10px;
+	float:right;
 	padding: 20px;
 	background: white;
 	border-radius:5px;
