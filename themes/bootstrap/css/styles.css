@@ -807,7 +807,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 .carousel-home-item .top-item
 {
-	overflow:auto;
+	overflow:hidden;
+	position:relative;
 }
 
 .carousel-home-item .item-name
@@ -1357,6 +1358,7 @@ body input[type="file"]{
 .navbar .nav-inner .brand
 {
 	padding:20px;
+	margin-right: 10px;
 	
 }
 
@@ -1377,6 +1379,12 @@ body input[type="file"]{
 	text-shadow: 1px 1px white;
 	padding-top:7px;	
 	border-right:1px solid #ccc;
+	color: #999;
+}
+
+.navbar .nav-inner .nav.primary li a:hover
+{
+	color:#000;
 }
 
 .navbar .nav-inner .nav.secondary
@@ -1410,7 +1418,7 @@ body input[type="file"]{
 .navbar .navbar-search
 {
 	margin-top:15px;
-	margin-left:0px;
+	margin-left:15px;
 }
 
 .navbar .navbar-search .search-query

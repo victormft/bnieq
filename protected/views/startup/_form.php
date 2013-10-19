@@ -87,7 +87,7 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/c
 	<?php echo $form->select2Row($model,'location',
 			array(		
 				'labelOptions' => array('label' => 'Cidade', 'class'=>'custom-label'),
-				'data'=>array_merge(array(' '=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
+				'data'=>array_merge(array('0'=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
 				'options'=>array(
 					'placeholder'=>'Digite o nome da cidade...',
 					'allowClear'=> true,   

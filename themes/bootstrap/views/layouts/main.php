@@ -14,27 +14,78 @@
 </head>
 
 <body>   
-    
+
+<?php 
+
+Yii::app()->clientScript->registerScript('main',
+"
+
+$('.search').click(function(event){
+	
+	$(this).animate({opacity: 0},250, function(){ 
+		$(this).hide('fast');
+	});
+	
+	$('.secondary').animate({opacity: 0}, 250, function(){ 
+		$(this).hide('fast');
+		$('.navbar-search').show('fast', function(){
+			$(this).animate({opacity: 1}, 250);
+		});
+	});
+					
+					
+					
+});
+
+$('.remove-search').click(function(event){
+	
+	$('.navbar-search').animate({opacity: 0},250, function(){ 
+		$(this).hide('fast');
+		
+		$('.search').show('fast', function(){ 
+			$(this).animate({opacity: 1}, 250);
+		});
+		
+		$('.secondary').show('fast', function(){ 
+			$(this).animate({opacity: 1}, 250);
+		});
+	
+	});
+						
+});
+
+
+");
+
+?>
+	
 <?php if(!Yii::app()->user->isGuest) $user = User::model()->findbyPk(Yii::app()->user->id); ?>    
     
 <div class="navbar" id="main-nav">
     <div class="nav-inner" style="border-radius: 0">
-        <a class="brand" href=<?php echo Yii::app()->homeUrl; ?>>NEXTBLUE</a>
-        <form class="navbar-search pull-left">
-            <input type="text" class="search-query" placeholder="Buscar...">
-        </form>
+        
+		<a class="brand" href=<?php echo Yii::app()->homeUrl; ?>>NEXTBLUE</a>
+     
         <ul class="nav primary">
             <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-suitcase" style="display:block; margin:5px auto;"></i>Startups</a></li>
 			<li><a href= <?php echo Yii::app()->homeUrl . '/user' ?> ><i class="icon-group" style="display:block; margin:5px auto;"></i>Usuários</a></li>       
-            <li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Como Funciona</a></li>   
+            <li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Entenda</a></li>   
 			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Sobre Nós</a></li>
 			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i>Nosso Blog </a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-money" style="display:block; margin:5px auto; font-size:15px;"></i>Investir</a></li>
+			<li class="search"><a style="border:none; padding:20px 25px;"><i class="icon-search" style="font-size:24px;"></i></a></li>
         </ul>
+		
+		
+		<form class="navbar-search pull-left" style="display:none; opacity:0;">
+            <input type="text" class="search-query" placeholder="Buscar...">
+			<i class="icon-remove-sign remove-search" style="margin-top: 5px;"></i>
+        </form>
 		
 		<ul class="nav pull-right secondary">
 			<?php if(Yii::app()->user->isGuest):?>
                 <li><a style="display:inline-block; padding-right:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-lock" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Login</a></li>
-                <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Register</a></li>
+                <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Registrar</a></li>
             <?php else: ?>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
