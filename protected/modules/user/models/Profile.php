@@ -110,6 +110,8 @@ class Profile extends CActiveRecord
 			'logo' => array(self::BELONGS_TO, 'Image', 'profile_picture'),
             
             'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'), //adicionei pro search. Sera q tem jeito melhor?
+            'skills' => array(self::MANY_MANY, 'Skill', 'user_skill(user_id, skill_id)'),
+            'sectors' => array(self::MANY_MANY, 'Sector', 'user_sector(user_id, sector_id)'),
 		);
 		return $relations;
 	}
@@ -182,6 +184,18 @@ class Profile extends CActiveRecord
 			$criteria->with = array('roles');
 			$criteria->together = true;
 			$criteria->compare('roles.role_id', $this->roles,true);
+		}
+        
+        if($this->skills){
+			$criteria->with = array('skills');
+			$criteria->together = true;
+			$criteria->compare('skills.skill_id', $this->skills,true);
+		}
+        
+        if($this->sectors){
+			$criteria->with = array('sectors');
+			$criteria->together = true;
+			$criteria->compare('sectors.sector_id', $this->sectors,true);
 		}
         
 		return new CActiveDataProvider($this, array(

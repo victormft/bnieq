@@ -462,7 +462,37 @@
 	margin: -2px 0 0;
 }
 
+#ski input[type="checkbox"]
+{
+	margin: -2px 0 0;
+}
+
+#sec input[type="checkbox"]
+{
+	margin: -2px 0 0;
+}
+
 #search-role
+{
+	display:none;
+	background: #f4f4f4;
+	padding: 5px 10px;
+	height: 150px;
+	overflow: auto;
+	border: 1px solid #ccc;
+}
+
+#search-skill
+{
+	display:none;
+	background: #f4f4f4;
+	padding: 5px 10px;
+	height: 150px;
+	overflow: auto;
+	border: 1px solid #ccc;
+}
+
+#search-sector
 {
 	display:none;
 	background: #f4f4f4;

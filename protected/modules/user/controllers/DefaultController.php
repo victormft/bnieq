@@ -26,6 +26,12 @@ class DefaultController extends Controller
 		
 		if(isset($_GET['rol']))
 			$model->roles=$_GET['rol'];	
+        
+        if(isset($_GET['ski']))
+			$model->skills=$_GET['ski'];
+        
+        if(isset($_GET['sec']))
+			$model->sectors=$_GET['sec'];
 				
         if(isset($_GET['g']))
 		{
