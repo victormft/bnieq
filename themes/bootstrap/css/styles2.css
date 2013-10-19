@@ -486,5 +486,35 @@
     box-shadow: -0px 3px 15px -7px black;
 }
 
+.cards-wrap
+{
+    text-align: center;
+}
+
+#startup-card-img
+{
+	border: 1px solid #aaa; 
+	width:80px; 
+	height:80px;
+	border-radius: 5px;    
+}
+
+.startup-card
+{
+    vertical-align: top;
+    display: inline-block;
+    width: 125px;
+    text-align: center;
+    margin-left: 5px;
+    margin-bottom: 20px;
+}
+
+
+.startup-card .startup-pic
+{
+    vertical-align: middle;
+    margin: 0 auto 10px;
+    
+}
 
 

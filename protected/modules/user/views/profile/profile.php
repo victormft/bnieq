@@ -6,33 +6,33 @@ $this->layout='//layouts/column1';
 <?php
 Yii::app()->clientScript->registerScript('follow',
 "
-$('#yw0').click(function(event) {
+$('#followBtn').click(function(event) {
 
-		if($('#yw0').text()==='Follow')
+		if($('#followBtn').text()==='Follow')
 		{	
-			$('#yw0').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');			
+			$('#followBtn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');			
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+getUrlVars()['username'],
 				dataType: 'json',
 				success: function(data){
-					$('#yw0').removeClass('btn-success');
-					$('#yw0').text('Unfollow');	
+					$('#followBtn').removeClass('btn-success');
+					$('#followBtn').text('Unfollow');	
                     $('.follow-count').html(data.res);
 				}
 			});
 		}
 		
-		else if($('#yw0').text()==='Unfollow')
+		else if($('#followBtn').text()==='Unfollow')
 		{
-			$('#yw0').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			$('#followBtn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+getUrlVars()['username'],
                 dataType: 'json',
 				success: function(data){
-					$('#yw0').addClass('btn-success');
-					$('#yw0').text('Follow');
+					$('#followBtn').addClass('btn-success');
+					$('#followBtn').text('Follow');
                     $('.follow-count').html(data.res);
 				}
 			});
@@ -151,6 +151,7 @@ $('.arrow-container').mouseover(function(event){
                 {
                     $this->widget('bootstrap.widgets.TbButton', array(
                     'label'=>'Follow',
+                    'id'=>'followBtn', 
                     'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
                     'url'=>'',//array('follow','name'=>$model->name),
@@ -161,6 +162,7 @@ $('.arrow-container').mouseover(function(event){
                 {
                     $this->widget('bootstrap.widgets.TbButton', array(
                     'label'=>'Unfollow',
+                    'id'=>'followBtn', 
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
                     'url'=>'',//array('unfollow','name'=>$model->name),
                     'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
@@ -216,10 +218,36 @@ $('.arrow-container').mouseover(function(event){
 
 <div class="profile-column-l">
 	
+    <div class="content-wrap">
+
+		<div class="content-head clicked">
+            <i class="icon-briefcase profile-icon"></i> Porfolio
+        </div>
+		
+		<div class="content-info">
+            
+            <div class="cards-wrap">
+                <?php foreach($model->startups as $startup):  ?>
+                <?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$model->id, ':s_id'=>$startup->id)); ?>
+                <?php //if($relational_tbl->position=='Founder'):?>
+                <div class="startup-card">
+                    <div class="startup-pic" style="overflow: auto;"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'" id="startup-card-img"/>', array('/startup/view', 'name'=>$startup->name)); ?> </div>
+                    <div class="startup-name"><?php echo CHtml::link($startup->name, array('/startup/view', 'name'=>$startup->name)); ?></div>
+                    <div class="user-position"><?php echo $relational_tbl->position;?></div>
+                </div>
+                <?php //endif;  ?>
+                <?php endforeach;  ?>
+            </div>
+            
+			
+		</div>
+		
+	</div>	
+    
 	<div class="content-wrap">
 
 		<div class="content-head clicked">
-            <i class="icon-road profile-icon"></i>O que eu faço
+            <i class="icon-road profile-icon"></i> O que eu faço
         </div>
 		
 		<div class="content-info">
@@ -288,7 +316,7 @@ $('.arrow-container').mouseover(function(event){
 	<div class="content-wrap">
 
 		<div class="content-head clicked">
-            <i class="icon-circle-arrow-up profile-icon"></i>Startups & Pitches
+            <i class="icon-circle-arrow-up profile-icon"></i> Startups & Pitches
         </div>
 		
 		<div class="content-info">
@@ -314,7 +342,7 @@ $('.arrow-container').mouseover(function(event){
     <div class="content-wrap">
         
         <div class="content-head clicked">
-            <i class="icon-circle-arrow-up profile-icon"></i>Referências & Follows
+            <i class="icon-circle-arrow-up profile-icon"></i> Referências & Follows
         </div>
 		
 		<div class="content-info">
@@ -334,7 +362,7 @@ $('.arrow-container').mouseover(function(event){
     <div class="content-wrap">   
         
         <div class="content-head clicked">
-            <i class="icon-book profile-icon"></i>Contatos
+            <i class="icon-book profile-icon"></i> Contatos
         </div>
         
 		<div class="content-info">
@@ -363,7 +391,7 @@ $('.arrow-container').mouseover(function(event){
     <div class="content-wrap">   
         
         <div class="content-head clicked">
-            <i class="icon-smile profile-icon"></i>Pessoal
+            <i class="icon-smile profile-icon"></i> Pessoal
         </div>
         
 		<div class="content-info">

@@ -74,13 +74,16 @@ $('.rol-label').click(function(event) {
 
     if(!$('.rol-label').hasClass('clicked'))
     {
+        $('.rol-arrow').removeClass('arrow-down').addClass('arrow-up');
         $('#search-role').slideDown('slow');
         $('.rol-label').addClass('clicked');
     }
 
     else
     {
-        $('#search-role').slideUp('slow');
+        $('#search-role').slideUp('slow', function(){
+            $('.rol-arrow').removeClass('arrow-up').addClass('arrow-down');
+        });
         $('.rol-label').removeClass('clicked');
     }
 		
@@ -134,12 +137,12 @@ $('.rol-label').click(function(event) {
             </div>
             
             <div style="margin-bottom:20px; position:relative;">
-            <?php echo CHtml::label('Roles', false, array('class'=>'rol-label')); ?><div class="sec-arrow arrow-down" style="position: absolute; top: 0; margin-left: 40px; margin-top: 8px;"></div>
+                <?php echo CHtml::label('Roles', false, array('class'=>'rol-label')); ?><div class="rol-arrow arrow-down" style="position: absolute; top: 0; margin-left: 40px; margin-top: 8px;"></div>
 
-            <div id="search-role">
-                <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
-                ?>
-            </div>
+                <div id="search-role">
+                    <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
+                    ?>
+                </div>
             </div>
 
             <div class="spacing-1"></div>
