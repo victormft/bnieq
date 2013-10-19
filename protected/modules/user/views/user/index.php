@@ -1,3 +1,4 @@
+<?php $this->pageTitle=Yii::app()->name . ' - Users'; ?>
 
 <?php
 Yii::app()->clientScript->registerScript('search',
@@ -8,6 +9,14 @@ $(document).ready(function() {
 	{
 		$('#search-role').css('display', 'block');
 	}
+    if(getUrlVars()['ski[0]'])
+	{
+		$('#search-skill').css('display', 'block');
+	}
+    if(getUrlVars()['sec[0]'])
+	{
+		$('#search-sector').css('display', 'block');
+	}
 });
 
 $('#searchform').change(function(event) {
@@ -16,7 +25,7 @@ $('#searchform').change(function(event) {
     var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
 
     var rol=[]; 
-    $('input[type=checkbox]:checked').each(function(){
+    $('input:checkbox[name=\'rol[]\']:checked').each(function(){
         rol.push($(this).val());
     });
 
@@ -26,8 +35,32 @@ $('#searchform').change(function(event) {
         rols=rols+'&rol['+i+']='+encodeURIComponent(rol[i]);
 
     };
+    
+    var ski=[]; 
+    $('input:checkbox[name=\'ski[]\']:checked').each(function(){
+        ski.push($(this).val());
+    });
 
-    location.href = 'user?g='+g+n+rols;
+    var skis = '';
+
+    for (var i = 0, len = ski.length; i < len; i++) {
+        skis=skis+'&ski['+i+']='+encodeURIComponent(ski[i]);
+
+    };
+    
+    var sec=[]; 
+    $('input:checkbox[name=\'sec[]\']:checked').each(function(){
+        sec.push($(this).val());
+    });
+
+    var secs = '';
+
+    for (var i = 0, len = sec.length; i < len; i++) {
+        secs=secs+'&sec['+i+']='+encodeURIComponent(sec[i]);
+
+    };
+
+    location.href = 'user?g='+g+n+rols+skis+secs;
 });
 
 $('.g').click(function(event) {
@@ -35,7 +68,7 @@ $('.g').click(function(event) {
     var n = (getUrlVars()['n'] == null) ? '' : '&n='+getUrlVars()['n'];
 
     var rol=[]; 
-    $('input[type=checkbox]:checked').each(function(){
+    $('input:checkbox[name=\'rol[]\']:checked').each(function(){
         rol.push($(this).val());
     });
 
@@ -45,12 +78,36 @@ $('.g').click(function(event) {
         rols=rols+'&rol['+i+']='+encodeURIComponent(rol[i]);
 
     };
+    
+    var ski=[]; 
+    $('input:checkbox[name=\'ski[]\']:checked').each(function(){
+        ski.push($(this).val());
+    });
 
-    location.href = 'user?g='+g+n+rols;
+    var skis = '';
+
+    for (var i = 0, len = ski.length; i < len; i++) {
+        skis=skis+'&ski['+i+']='+encodeURIComponent(ski[i]);
+
+    };
+
+    var sec=[]; 
+    $('input:checkbox[name=\'sec[]\']:checked').each(function(){
+        sec.push($(this).val());
+    });
+
+    var secs = '';
+
+    for (var i = 0, len = sec.length; i < len; i++) {
+        secs=secs+'&sec['+i+']='+encodeURIComponent(sec[i]);
+
+    };
+
+    location.href = 'user?g='+g+n+rols+skis+secs;
 			
 });
 
-$('#yw2').click(function(event) {
+$('#clean').click(function(event) {
 			
     location.href = 'user';
 			
@@ -87,6 +144,85 @@ $('.rol-label').click(function(event) {
         $('.rol-label').removeClass('clicked');
     }
 		
+});
+
+$('.ski-label').click(function(event) {
+
+    if(!$('.ski-label').hasClass('clicked'))
+    {
+        $('.ski-arrow').removeClass('arrow-down').addClass('arrow-up');
+        $('#search-skill').slideDown('slow');
+        $('.ski-label').addClass('clicked');
+    }
+
+    else
+    {
+        $('#search-skill').slideUp('slow', function(){
+            $('.ski-arrow').removeClass('arrow-up').addClass('arrow-down');
+        });
+        $('.ski-label').removeClass('clicked');
+    }
+		
+});
+
+$('.sec-label').click(function(event) {
+
+    if(!$('.sec-label').hasClass('clicked'))
+    {
+        $('.sec-arrow').removeClass('arrow-down').addClass('arrow-up');
+        $('#search-sector').slideDown('slow');
+        $('.sec-label').addClass('clicked');
+    }
+
+    else
+    {
+        $('#search-sector').slideUp('slow', function(){
+            $('.sec-arrow').removeClass('arrow-up').addClass('arrow-down');
+        });
+        $('.sec-label').removeClass('clicked');
+    }
+		
+});
+
+$('.follow-press').click(function(event) {
+
+		var user_name = encodeURIComponent($(this).parent().prev().attr('data-name'));
+		var elem = $(this);
+		
+		if(elem.text()=='Follow')
+		{	
+			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			
+			$.ajax({
+				url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+user_name,
+				dataType: 'json',
+				success: function(data){
+					elem.removeClass('btn-success');
+					elem.removeClass('btn-follow');
+					elem.addClass('btn-unfollow');
+					elem.text('Unfollow');	
+					elem.parent().prev().html(data.res);
+				}
+			});
+		}
+		
+		else if(elem.text()=='Unfollow')
+		{
+			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+			
+			$.ajax({
+				url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+user_name,
+				dataType: 'json',
+				success: function(data){
+					elem.addClass('btn-success');
+					elem.removeClass('btn-unfollow');
+					elem.addClass('btn-follow');
+					elem.text('Follow');
+					elem.parent().prev().html(data.res);					
+				}
+			});
+		}
+			
 });
 ");
 ?>
@@ -137,10 +273,28 @@ $('.rol-label').click(function(event) {
             </div>
             
             <div style="margin-bottom:20px; position:relative;">
-                <?php echo CHtml::label('Roles', false, array('class'=>'rol-label')); ?><div class="rol-arrow arrow-down" style="position: absolute; top: 0; margin-left: 40px; margin-top: 8px;"></div>
+                <label class="rol-label">Roles <div class="rol-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
 
                 <div id="search-role">
                     <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
+                    ?>
+                </div>
+            </div>
+            
+            <div style="margin-bottom:20px; position:relative;">
+                <label class="ski-label">Skills <div class="ski-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
+
+                <div id="search-skill">
+                    <?php echo CHtml::activeCheckBoxList($dataProvider,'skills', CHtml::listData(Skill::model()->findAll(), 'skill_id', 'name'), array('name'=>'ski', 'labelOptions'=>array('style'=>'display:inline'))) 
+                    ?>
+                </div>
+            </div>
+            
+            <div style="margin-bottom:20px; position:relative;">
+                <label class="sec-label">Sectors of interest <div class="sec-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
+
+                <div id="search-sector">
+                    <?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) 
                     ?>
                 </div>
             </div>
@@ -149,6 +303,7 @@ $('.rol-label').click(function(event) {
             <div style="text-align:center;">
             <?php	
                 $this->widget('bootstrap.widgets.TbButton',array(
+                    'id'=>'clean',
                     'label' => 'Limpar',
                     'size' => 'normal'
                 ));
