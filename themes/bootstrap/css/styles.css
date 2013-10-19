@@ -807,7 +807,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 .carousel-home-item .top-item
 {
-	overflow:auto;
+	overflow:hidden;
+	position:relative;
 }
 
 .carousel-home-item .item-name
