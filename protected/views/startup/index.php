@@ -101,7 +101,7 @@ $('.g').click(function(event) {
 			
 });
 
-$('#yw2').click(function(event) {
+$('#clean').click(function(event) {
 			
 			location.href = 'startup';
 			
@@ -251,7 +251,8 @@ function SearchFunc()   {
 				<?php	
 				$this->widget('bootstrap.widgets.TbButton',array(
 					'label' => 'Buscar',
-					'size' => 'small'
+					'size' => 'small',
+					'id' => 'search-btn'
 				));
 				?>
 			</div>
@@ -300,7 +301,8 @@ function SearchFunc()   {
 		<?php	
 			$this->widget('bootstrap.widgets.TbButton',array(
 				'label' => 'Limpar',
-				'size' => 'normal'
+				'size' => 'normal',
+				'id' => 'clean'
 			));
 			?>
 		</div>
