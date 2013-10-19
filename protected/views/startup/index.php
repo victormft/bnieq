@@ -282,7 +282,7 @@ function SearchFunc()   {
 					array(
 						'name' => 'city',
 						'model'=>$dataProvider,
-						'data' =>array_merge(array(' '=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
+						'data' =>array_merge(array('0'=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
 						'options'=>array(
 							'placeholder'=>'Digite o nome da cidade...',
 							'allowClear'=> true,   
