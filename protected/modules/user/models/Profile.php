@@ -159,7 +159,6 @@ class Profile extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-        //$criteria->select="*,CONCAT(firstname,' ',lastname) AS fullname";
         $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('firstname',$this->firstname,true);
@@ -178,8 +177,10 @@ class Profile extends CActiveRecord
 		$criteria->compare('interests',$this->interests,true);
         $criteria->compare('(SELECT COUNT(user_follow.follower_id) FROM user_follow WHERE t.user_id=user_follow.followed_id)',$this->followers_count);//making the filters work
         
-        $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count"; 
-                
+        $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";                
+      
+
+        
         if($this->roles){
 			$criteria->with = array('roles');
 			$criteria->together = true;
@@ -187,13 +188,13 @@ class Profile extends CActiveRecord
 		}
         
         if($this->skills){
-			$criteria->with = array('skills');
+			$criteria->with = isset($criteria->with) ? array_merge($criteria->with, array('skills')) : array('skills');
 			$criteria->together = true;
 			$criteria->compare('skills.skill_id', $this->skills,true);
 		}
         
         if($this->sectors){
-			$criteria->with = array('sectors');
+			$criteria->with = isset($criteria->with) ? array_merge($criteria->with, array('sectors')) : array('sectors');
 			$criteria->together = true;
 			$criteria->compare('sectors.sector_id', $this->sectors,true);
 		}
@@ -206,6 +207,12 @@ class Profile extends CActiveRecord
                         'asc' => 'followers_count',
                         'desc' => 'followers_count DESC', 
                         'label' => 'Seguidores',
+                        'default'=>'desc',
+                    ),
+                    'fullname'=>array(                        
+                        'asc' => 'CONCAT(firstname," ",lastname)',
+                        'desc' => 'CONCAT(firstname," ",lastname) DESC', 
+                        'label' => 'Nome',
                     ),
                     '*',
                 )

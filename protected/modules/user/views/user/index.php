@@ -239,8 +239,9 @@ $('.follow-press').click(function(event) {
 'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
-        'followers_count',
-    ),
+    'fullname',
+    'followers_count',
+),
 'template'=>'{sorter} {items} {pager}',
 )); ?>
 
