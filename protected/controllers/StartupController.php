@@ -199,10 +199,10 @@ class StartupController extends Controller
 		}
 		
 		
-		
-		$this->render('view_edit',array(
-		'model'=>$model,
-		));
+		else
+			$this->render('view_edit',array(
+				'model'=>$model,
+			));
 	}
 	
 
