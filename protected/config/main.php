@@ -13,6 +13,8 @@ return array(
 	'name'=>'NextBlue',
 	'homeUrl'=>'/bnieq',
 	'theme'=>'bootstrap',
+    //'behaviors' => array('ApplicationConfigBehavior'), //for language setting in session
+    'language'=>'pt',
 	
 	// preloading 'log' component
 	'preload'=>array(		

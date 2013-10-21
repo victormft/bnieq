@@ -42,7 +42,7 @@ class LoginController extends Controller
                             $profile->user_id=$model->id;
 
                             //profile pic
-                            $profile->profile_picture = 1;
+                            $profile->profile_picture = 2;
 
                             $profile->save();
                             if (Yii::app()->controller->module->sendActivationMail) {

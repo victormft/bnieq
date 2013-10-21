@@ -135,7 +135,10 @@ $('.arrow-container').mouseover(function(event){
         <?php if($profile->linkedin): ?>
             <a href="<?php echo $profile->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
         <?php endif; ?>
-			
+		
+        <?php if($profile->website): ?>            
+            <a href="<?php echo $profile->website; ?>" target="_blank" style="margin-left: 0.1px;"><div class="user-website"><i class="icon-globe"></i></div></a>
+        <?php endif; ?>    
 	</div>
 	
 	<div class="profile-header-right">

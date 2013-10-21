@@ -38,6 +38,7 @@ class RegistrationForm extends User {
 		return array(
 			'username'=>UserModule::t("Username"),
 			'password'=>UserModule::t("Password"),
+            'verifyPassword'=>UserModule::t("Verify Password"),
 		);
 	}
 	

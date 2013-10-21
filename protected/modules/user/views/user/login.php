@@ -21,17 +21,17 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 
 <div class="welcome">
     <h1><?php echo UserModule::t("Welcome to NextBlue!"); ?></h1> 
-    <h4 style="font-weight: normal;">Login or create an account to continue.</h4>
+    <h4 style="font-weight: normal;"><?php echo UserModule::t("Login or create an account to continue."); ?></h4>
     
 </div>
 
 <div class="login-method align-center">
-    <h3 class="align-center gray">Login via Social networks</h3>
+    <h3 class="align-center gray">Login com redes sociais</h3>
     <?php $this->widget('ext.hoauth.widgets.HOAuth'); ?>
 </div>
 
 <div class="login-method">
-    <h3 class="align-center gray">Login with Email</h3>
+    <h3 class="align-center gray">Login com Email</h3>
     
     <?php if(Yii::app()->user->hasFlash('loginMessage')): ?>
 
@@ -76,7 +76,7 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 </div>
 
 <div class="login-method">
-    <h3 class="align-center gray">Create an account</h3>
+    <h3 class="align-center gray">Crie uma conta</h3>
     
     <div class="login-form">
         
@@ -89,9 +89,9 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
         )); ?>
         
         <div class="controls form-inline" style="margin-bottom: 10px">
-            <label>First &amp; Last names <span class="required">*</span> </label>
-            <input style="width: 94px;" name="Profile[firstname]" id="Profile_firstname" type="text" maxlength="50" placeholder="First">
-            <input style="width: 94px;" name="Profile[lastname]" id="Profile_lastname" type="text" maxlength="50" placeholder="Last">
+            <label>Nome e sobrenome <span class="required">*</span> </label>
+            <input style="width: 94px;" name="Profile[firstname]" id="Profile_firstname" type="text" maxlength="50" placeholder="Nome">
+            <input style="width: 94px;" name="Profile[lastname]" id="Profile_lastname" type="text" maxlength="50" placeholder="Sobrenome">
             <?php echo $form->error($profile,'firstname', array('style'=>'margin-bottom: 0')); ?>
             <?php echo $form->error($profile,'lastname'); ?>
         </div>
@@ -108,7 +108,7 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
         <?php
         $this->widget(
             'bootstrap.widgets.TbButton',
-            array('buttonType' => 'submit', 'label' => 'Register')
+            array('buttonType' => 'submit', 'label' => 'Cadastrar')
         ); ?>
         
         

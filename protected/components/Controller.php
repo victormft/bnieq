@@ -21,6 +21,21 @@ class Controller extends RController
 	 */
 	public $breadcrumbs=array();
     
+    public function init()
+    {
+        parent::init();
+        $app = Yii::app();
+        if (isset($_POST['lang']))
+        {
+            $app->language = $_POST['lang'];
+            $app->session['lang'] = $app->language;
+        }
+        else if (isset($app->session['lang']))
+        {
+            $app->language = $app->session['lang'];
+        }
+    }
+    
     /*
     protected function beforeAction($action)
     {

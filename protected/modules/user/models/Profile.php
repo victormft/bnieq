@@ -72,7 +72,7 @@ class Profile extends CActiveRecord
             //validation for pic
 			array('pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
 			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),  
-            array('profile_picture', 'default', 'value' => 1, 'setOnEmpty' => true, 'on' => 'insert'),
+            array('profile_picture', 'default', 'value' => 2, 'setOnEmpty' => true, 'on' => 'insert'),
             
 			array('firstname, lastname', 'required'),
 			array('firstname, lastname', 'length', 'max'=>50),
@@ -85,9 +85,7 @@ class Profile extends CActiveRecord
 			array('birthday, resume, experiences, interests', 'safe'),
 			array('birthday', 'date', 'format'=>'yyyy-mm-dd', 'message'=>"Wrong format"),
             array('birthday', 'default', 'setOnEmpty' => true, 'value' => null),
-            array('facebook', 'url'),
-            array('linkedin', 'url'),
-            array('twitter', 'url'),
+            array('facebook, linkedin, twitter, website', 'url'),
             array('gender', 'in', 'range'=>array('M','F')),
             array('gender', 'default', 'value' => null),
 			// The following rule is used by search().
@@ -123,8 +121,8 @@ class Profile extends CActiveRecord
 	{
 		return array(
 			'user_id' => 'User',
-			'firstname' => 'First name',
-			'lastname' => 'Last name',
+			'firstname' => UserModule::t('First Name'),
+			'lastname' => UserModule::t('Last Name'),
 			'profile_picture' => 'Profile Picture',
 			'birthday' => 'Birthday',
 			'gender' => 'Gender',
@@ -159,7 +157,6 @@ class Profile extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-        //$criteria->select="*,CONCAT(firstname,' ',lastname) AS fullname";
         $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('firstname',$this->firstname,true);
@@ -178,8 +175,10 @@ class Profile extends CActiveRecord
 		$criteria->compare('interests',$this->interests,true);
         $criteria->compare('(SELECT COUNT(user_follow.follower_id) FROM user_follow WHERE t.user_id=user_follow.followed_id)',$this->followers_count);//making the filters work
         
-        $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count"; 
-                
+        $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";                
+      
+
+        
         if($this->roles){
 			$criteria->with = array('roles');
 			$criteria->together = true;
@@ -187,13 +186,13 @@ class Profile extends CActiveRecord
 		}
         
         if($this->skills){
-			$criteria->with = array('skills');
+			$criteria->with = isset($criteria->with) ? array_merge($criteria->with, array('skills')) : array('skills');
 			$criteria->together = true;
 			$criteria->compare('skills.skill_id', $this->skills,true);
 		}
         
         if($this->sectors){
-			$criteria->with = array('sectors');
+			$criteria->with = isset($criteria->with) ? array_merge($criteria->with, array('sectors')) : array('sectors');
 			$criteria->together = true;
 			$criteria->compare('sectors.sector_id', $this->sectors,true);
 		}
@@ -206,6 +205,12 @@ class Profile extends CActiveRecord
                         'asc' => 'followers_count',
                         'desc' => 'followers_count DESC', 
                         'label' => 'Seguidores',
+                        'default'=>'desc',
+                    ),
+                    'fullname'=>array(                        
+                        'asc' => 'CONCAT(firstname," ",lastname)',
+                        'desc' => 'CONCAT(firstname," ",lastname) DESC', 
+                        'label' => 'Nome',
                     ),
                     '*',
                 )
