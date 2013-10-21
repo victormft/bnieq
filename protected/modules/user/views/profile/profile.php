@@ -242,6 +242,43 @@ $('.arrow-container').mouseover(function(event){
                 <?php endforeach;  ?>
             </div>
             
+            <?php if($model->isUserInRole('Founder')): ?>
+            <div class="clabel-r">			
+                <?php echo '<b>Fundador: </b>'; ?>                    
+            </div>
+            <div class="profile-content">			
+                <?php echo $model->echoWithComma($model->getStartupsByRole('Founder'));?>				
+            </div>
+            <?php endif; ?>
+            
+            <?php if($model->isUserInRole('Member')): ?>
+            <div class="clabel-r">			
+                <?php echo '<b>Membro: </b>'; ?>                    
+            </div>
+            <div class="profile-content">			
+                <?php echo $model->echoWithComma($model->getStartupsByRole('Member'));?>				
+            </div>
+            <?php endif; ?>
+            
+            <?php if($model->isUserInRole('Advisor')): ?>
+            <div class="clabel-r">			
+                <?php echo '<b>Conselheiro: </b>'; ?>                    
+            </div>
+            <div class="profile-content">			
+                <?php echo $model->echoWithComma($model->getStartupsByRole('Advisor'));?>				
+            </div>
+            <?php endif; ?>
+            
+            <?php if($model->isUserInRole('Investor')): ?>
+            <div class="clabel-r">			
+                <?php echo '<b>Investidor: </b>'; ?>                    
+            </div>
+            <div class="profile-content">			
+                <?php echo $model->echoWithComma($model->getStartupsByRole('Investor'));?>				
+            </div>
+            <?php endif; ?>
+            
+            
 			
 		</div>
 		

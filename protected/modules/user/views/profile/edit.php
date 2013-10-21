@@ -89,7 +89,6 @@ $('.arrow-container').mouseover(function(event){
                     'attribute' => 'resume',
                     'url'       => array('updateEd'),  
                     'mode'      => 'inline', 
-                    'emptytext' => '(Mini-resumé)',
                     'htmlOptions'=> array(
                         'id' => 'resume-edit'
                     ),
@@ -245,6 +244,35 @@ $('.arrow-container').mouseover(function(event){
 
 <div class="profile-column-l">
 	
+    <div class="content-wrap">
+
+		<div class="content-head rounded">
+            <i class="icon-briefcase profile-icon"></i> Portfolio
+            <span class="tip">Suas empresas</span>  
+            <div class="arrow-container"><div class="arrow arrow-down"></div></div>
+        </div>
+		
+		<div class="content-info edit">
+            
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo '<b>Experiências: </b>'; ?>
+                    <span class="tip">O que você já fez de mais interessante?</span>                    
+                </div>
+                <div class="editable-wrap">			
+                    <?php $this->widget('editable.EditableField', array(
+                        'type'      => 'textarea',
+                        'model'     => $profile,
+                        'attribute' => 'experiences',
+                        'url'       => array('updateEd'),  
+                     )); ?>  				
+                </div>				 
+            </div>   
+            			
+		</div>
+		
+	</div>	
+    
 	<div class="content-wrap">
 
 		<div class="content-head rounded">

@@ -543,8 +543,13 @@
 .startup-card .startup-pic
 {
     vertical-align: middle;
-    margin: 0 auto 10px;
-    
+    margin: 0 auto 5px;    
+}
+
+.startup-card .startup-name a
+{
+    font-weight: bold;
+    color: #000000;
 }
 
 div.language{
@@ -600,6 +605,12 @@ div.language ul li a img:hover{
     position: absolute; 
     bottom: -0.3px;
     font-size: 22px;    
+}
+
+.profile-content
+{
+    display: inline-block; 
+    width: 380px;
 }
 
 

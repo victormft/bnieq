@@ -414,6 +414,43 @@ class User extends CActiveRecord
     public function isReallyYou()
     {
         return Yii::app()->user->id === $this->id;        
-    }    
+    } 
+    
+    public function getStartupsByRole($role)
+    {
+        $array=array();
+        $i=0;
+        foreach ($this->startups as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id)){
+                $array[$i] = $startup;
+                $i++;                
+            }
+        }
+        
+        return $array;
+    }
+    
+    public function echoWithComma($array)
+    {
+        $string="";
+        $lastElement = end($array);
+        foreach($array as $a) {
+            $string = $string.CHtml::link($a->name, array('/startup/view', 'name'=>$a->name)); ;
+            if ($a!==$lastElement) $string = $string.', ';
+        } 
+        
+        return $string;
+    }
+    
+    public function isUserInRole($role)
+    {
+        foreach ($this->startups as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id))
+                return true;           
+        }
+        return false;
+    }
         
 }
