@@ -85,9 +85,7 @@ class Profile extends CActiveRecord
 			array('birthday, resume, experiences, interests', 'safe'),
 			array('birthday', 'date', 'format'=>'yyyy-mm-dd', 'message'=>"Wrong format"),
             array('birthday', 'default', 'setOnEmpty' => true, 'value' => null),
-            array('facebook', 'url'),
-            array('linkedin', 'url'),
-            array('twitter', 'url'),
+            array('facebook, linkedin, twitter, website', 'url'),
             array('gender', 'in', 'range'=>array('M','F')),
             array('gender', 'default', 'value' => null),
 			// The following rule is used by search().
@@ -123,8 +121,8 @@ class Profile extends CActiveRecord
 	{
 		return array(
 			'user_id' => 'User',
-			'firstname' => 'First name',
-			'lastname' => 'Last name',
+			'firstname' => UserModule::t('First Name'),
+			'lastname' => UserModule::t('Last Name'),
 			'profile_picture' => 'Profile Picture',
 			'birthday' => 'Birthday',
 			'gender' => 'Gender',

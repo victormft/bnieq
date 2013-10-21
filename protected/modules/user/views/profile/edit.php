@@ -57,7 +57,15 @@ $('.arrow-container').mouseover(function(event){
                     'url'       => array('updateEd'),  //url for submit data 
                     'inputclass'=> 'input-small',
                  ));
-                 echo ' ';
+                ?>
+            </div>
+        </div>
+        <div class="content-info-unit">
+            <div class="header-label">			
+                <?php echo '<b>Sobrenome: </b>'; ?>                 
+            </div>
+            <div class="header-content">			
+                <?php            
                  $this->widget('editable.EditableField', array(
                     'type'      => 'text',
                     'model'     => $profile,
@@ -396,6 +404,19 @@ $('.arrow-container').mouseover(function(event){
 						'inputclass'=> 'editable-social',
                         'options'=>array(
                             'defaultValue'=>'http://www.linkedin.com/pub/'
+                        )
+					 )); ?>  
+				</p>
+                
+                <p> <i class="icon-globe web"></i>       
+					<?php $this->widget('editable.EditableField', array(
+						'type'      => 'text',
+						'model'     => $profile,
+						'attribute' => 'website',
+						'url'       => array('updateEd'),
+						'inputclass'=> 'editable-social',
+                        'options'=>array(
+                            'defaultValue'=>'http://www.'
                         )
 					 )); ?>  
 				</p>

@@ -9,6 +9,7 @@ return array(
     'Logout' => 'Logout',
     'username' => "Login",
     'username or email' => "Login ou Email",
+    'Username or Email' => "Login ou Email",
     'password' => 'Senha',
     'Remember me next time' => 'Lembrar de mim, mais tarde.',
     'Username is incorrect.' => "Login incorreto.",
@@ -126,4 +127,9 @@ return array(
     'Display order of fields.' => 'Mostrar ordenação dos campos',
 	'Not visited' => 'Não visitou',
 
+    'Welcome to NextBlue!' => 'Bem vindo ao NextBlue!',
+    'Login or create an account to continue.' => 'Login ou crie uma conta para continuar.',
+    'Verify Password' => 'Confirmar Password',
+    'Sign in with' => 'Login com',
+    'Connect with' => 'Conectar com',
 );

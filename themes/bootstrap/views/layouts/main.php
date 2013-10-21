@@ -108,6 +108,8 @@ $('.remove-search').click(function(event){
     </div>
 </div>
     
+    <?php $this->widget('application.components.LangBox'); ?>
+    
 <div class="container" id="page">    
     <!--    
     <div class="navbar">
