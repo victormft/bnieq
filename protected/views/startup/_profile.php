@@ -73,9 +73,9 @@ $('.video-images-items').carouFredSel({
 
 
 <div class="profile-header">	
-
-	<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>" id="startup-profile-img" />
-	
+	<div id="startup-profile-img">
+		<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
+	</div>
 	<div class="profile-header-info">
 		
 		<div class="profile-name">

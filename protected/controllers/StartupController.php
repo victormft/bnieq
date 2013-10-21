@@ -238,7 +238,25 @@ class StartupController extends Controller
 				$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
 				
 				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
-				$image->resize(400, 300)->quality(75)->sharpen(20);
+				
+				//!!!!!!!!!! building image ratio !!!!!!!!!!!!!
+				/*
+				$ratio = 1;
+				
+				if($image->width !== 0)
+				{
+					$ratio = $image->height/$image->width;
+				}
+				$new_height=round(120*$ratio);
+				*/
+				//!!!!!!!!!! finishing the ratio !!!!!!!!!!!!!!
+				if($image->width>=$image->height)
+				{
+					$image->resize(120, 120, ImageExt::WIDTH)->quality(75)->sharpen(20);
+				}
+				else
+					$image->resize(120, 120, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+				
 				$image->save(); // or $image->save('images/small.jpg');
 				
 				$model_img=new Image;

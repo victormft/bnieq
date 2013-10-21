@@ -127,12 +127,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 #startup-profile-img
 {
 	float:left;
-	margin-right:10px; 
-	border: 1px solid #aaa; 
+	margin-right:20px; 
+	border: 5px solid #eee; 
+	background:#eee;
 	width:120px; 
 	height:120px;
 	border-radius: 5px;
+	line-height:115px;
+	text-align:center;
 	/*box-shadow: 0px 0px 2px 2px #ddd;*/
+}
+
+#startup-profile-img img
+{
+	max-width:120px;
+	max-height:120px;
 }
 
 .profile-column-l
