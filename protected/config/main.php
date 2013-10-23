@@ -8,6 +8,7 @@ Yii::setPathOfAlias('editable', dirname(__FILE__).'/../extensions/x-editable');
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
+
     'timeZone' => 'America/Sao_Paulo',
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'NextBlue',
@@ -105,8 +106,10 @@ return array(
            
 	),
 
+
 	// application components
 	'components'=>array(
+			
 		'image'=>array(
           'class'=>'application.extensions.image.CImageComponent',
             // GD or ImageMagick
@@ -177,7 +180,7 @@ return array(
 		//yii-booster
 		'bootstrap'=>array(
             'class'=>'ext.bootstrap.components.Bootstrap',
-			'responsiveCss' => true,
+			//'responsiveCss' => true,
         ),
         
         'cache'=>array(
