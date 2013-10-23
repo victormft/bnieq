@@ -132,4 +132,8 @@ return array(
     'Verify Password' => 'Confirmar Password',
     'Sign in with' => 'Login com',
     'Connect with' => 'Conectar com',
+    'Founder' => 'Fundador',
+    'Investor' => 'Investidor',
+    'Advisor' => 'Conselheiro',
+    'Member' => 'Membro',
 );

@@ -74,8 +74,10 @@ class Profile extends CActiveRecord
 			array('pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),  
             array('profile_picture', 'default', 'value' => 2, 'setOnEmpty' => true, 'on' => 'insert'),
             
-			array('firstname, lastname', 'required'),
+			array('firstname, lastname', 'required', 'message' => UserModule::t("Required")),
 			array('firstname, lastname', 'length', 'max'=>50),
+            array('resume', 'length', 'max'=>150),
+            array('experiences, interests', 'length', 'max'=>300),
 			array('profile_picture, location', 'length', 'max'=>20),
 			array('gender', 'length', 'max'=>1),
 			array('skype', 'length', 'max'=>45),
