@@ -98,10 +98,7 @@ $('.arrow-container').mouseover(function(event){
                     )
                  ));
                 ?>  
-                <div id="count-resume" style="display: none;"><?php echo 150-strlen($profile->resume); ?>/150</div>
-                <script>
-                    
-                </script>
+                <div id="count-resume" style="display: none;"></div>
             </div>
         </div>
 
@@ -228,7 +225,7 @@ $('.arrow-container').mouseover(function(event){
                 'label'=>'Voltar',
                 'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                 'size'=>'normal', // null, 'large', 'small' or 'mini'
-                'url'=> array('/user/profile', 'username'=>$model->username),
+                'url'=> array('/'.$model->username),
                 'htmlOptions'=>array('style'=>'width:50px;'),
                 )); 
             ?>
@@ -255,12 +252,12 @@ $('.arrow-container').mouseover(function(event){
                     <span class="tip">O que você já fez de mais interessante?</span>                    
                 </div>
                 <div class="editable-wrap">			
-                    <?php $this->widget('editable.EditableField', array(
+                    <?php /*$this->widget('editable.EditableField', array(
                         'type'      => 'textarea',
                         'model'     => $profile,
                         'attribute' => 'experiences',
                         'url'       => array('updateEd'),  
-                     )); ?>  				
+                     )); */?>  				
                 </div>				 
             </div>   
             			
@@ -300,7 +297,7 @@ $('.arrow-container').mouseover(function(event){
                             $("#count-experiences").css("display","none");
                         }'
                      )); ?>  
-                    <div id="count-experiences" style="display: none;"><?php echo 300-strlen($profile->experiences); ?>/300</div>
+                    <div id="count-experiences" style="display: none;"></div>
                 </div>				 
             </div>   
             
@@ -369,7 +366,7 @@ $('.arrow-container').mouseover(function(event){
                             $("#count-interests").css("display","none");
                         }'
                      )); ?> 
-                    <div id="count-interests" style="display: none;"><?php echo 300-strlen($profile->interests); ?>/300</div>
+                    <div id="count-interests" style="display: none;"></div>
                 </div>
             </div>
             
