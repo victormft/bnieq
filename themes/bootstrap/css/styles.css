@@ -23,6 +23,33 @@ button.btn:focus
  outline:none;
 }
 
+h1
+{
+	font-family: Myriad;
+	font-size: 30px;
+}
+
+.container
+{
+	width:1000px;
+}
+
+.span12
+{
+	width:1000px;
+	margin-left:0px;
+}
+
+.row
+{
+	margin-left:0px;
+}
+
+[class^="icon-"]
+{
+	background-image:none;
+}
+
 #page 
 {
     padding-top: 0px;
@@ -1583,4 +1610,9 @@ body input[type="file"]{
 	font-size: 18px;
 	font-style: italic;
 	
+}
+
+.select2-container .select2-choice .select2-search-choice-close
+{
+	display:block;
 }

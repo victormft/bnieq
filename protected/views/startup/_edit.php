@@ -179,7 +179,7 @@ function getUrlVars()
 		<div class="editable-wrap">
 				<p> <?php echo '<b>Nome: </b>';?>   
 					<span class="macaco">
-					<?php $this->widget('editable.EditableField', array(
+					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'name',
@@ -192,7 +192,7 @@ function getUrlVars()
 				</p>
 				
 				<p> <?php echo '<b>One Line Pitch: </b>';?>   
-					<?php $this->widget('editable.EditableField', array(
+					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'one_line_pitch',
@@ -205,16 +205,20 @@ function getUrlVars()
 				
 				<p>	<?php echo '<b>Setor de Atuação: </b>'; ?>
 					<?php           
-					$this->widget('editable.Editable', array(
+					$this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'select2',
-						'name'      => 'sector',
-						'pk'        => $model->id,
+						'model'     => $model,
+						'attribute' => 'sec',
 						'url'       => $this->createUrl('updateSectors'), 
 						'source'    => CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'),
 						'text'      => $model->getSectorCommaNames(),  
-						'value'     => $model->getSectorIds(),
+						'value'     => $model->getSectorCommaIds(),
 						'placement' => 'right',
 						'inputclass'=> 'input-large',
+						'emptytext' => 'Vazio',
+						'options' => array(
+							'value'=>$model->getSectorIds(),
+						),
 						'select2'   => array(
 							'placeholder'=> 'Select...',
 							'multiple'=>true,
@@ -226,7 +230,7 @@ function getUrlVars()
 				
 				<p> <?php echo '<b>Cidade: </b>'; ?>    
 					<?php           
-					$this->widget('editable.EditableField', array(
+					$this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'select2',
 						'model'     => $model,
 						'attribute' => 'location',
@@ -346,7 +350,7 @@ function getUrlVars()
 		
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'textarea',
 						'model'     => $model,
 						'attribute' => 'product_description',
@@ -374,7 +378,7 @@ function getUrlVars()
 		
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'video',
@@ -456,7 +460,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			<div class="editable-wrap">
 				<p> <i class="icon-globe web"></i>    
-					<?php $this->widget('editable.EditableField', array(
+					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'website',
@@ -519,7 +523,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'textarea',
 						'model'     => $model,
 						'attribute' => 'tech',
@@ -547,7 +551,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'textarea',
 						'model'     => $model,
 						'attribute' => 'client_segment',
@@ -575,7 +579,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'textarea',
 						'model'     => $model,
 						'attribute' => 'revenue_generation',
@@ -603,7 +607,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'textarea',
 						'model'     => $model,
 						'attribute' => 'competitors',
@@ -631,7 +635,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'textarea',
 						'model'     => $model,
 						'attribute' => 'competitive_advantage',
@@ -659,7 +663,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'textarea',
 						'model'     => $model,
 						'attribute' => 'history',
@@ -697,7 +701,7 @@ function getUrlVars()
 			
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'select',
 						'model'     => $model,
 						'attribute' => 'company_stage',
@@ -725,7 +729,7 @@ function getUrlVars()
 			
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'select',
 						'model'     => $model,
 						'attribute' => 'company_size',
@@ -753,7 +757,7 @@ function getUrlVars()
 			
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('editable.EditableField', array(
+				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'date',
 						'model'     => $model,
 						'attribute' => 'foundation',

@@ -65,7 +65,7 @@ class StartupController extends Controller
 	public function actionEdit($name)
 	{
         $model=$this->loadModel($name);
-        
+       
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
             throw new CHttpException(403,'Você não pode editar essa startup!');
 		
@@ -200,9 +200,11 @@ class StartupController extends Controller
 		
 		
 		else
+		{
 			$this->render('view_edit',array(
 				'model'=>$model,
 			));
+		}
 	}
 	
 

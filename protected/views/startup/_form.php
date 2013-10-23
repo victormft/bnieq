@@ -3,7 +3,16 @@
 Yii::app()->clientScript->registerCoreScript('jquery'); 
 Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/charCount.js');
 
+Yii::app()->clientScript->registerScript('create-script',
+"
 
+	
+	$('.select2-input').focus(function(event){
+		alert('ha');
+		$('.select2-drop').css({'display':'none'});
+	});
+
+");
 ?>
 
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
@@ -89,7 +98,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/c
 				'labelOptions' => array('label' => 'Cidade', 'class'=>'custom-label'),
 				'data'=>array_merge(array('0'=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
 				'options'=>array(
-					'placeholder'=>'Digite o nome da cidade...',
 					'allowClear'=> true,   
 					'dropdownAutoWidth'=> true,
 					'minimumInputLength'=> 3,

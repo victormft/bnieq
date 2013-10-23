@@ -285,7 +285,6 @@ function SearchFunc()   {
 						'model'=>$dataProvider,
 						'data' =>array_merge(array('0'=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
 						'options'=>array(
-							'placeholder'=>'Digite o nome da cidade...',
 							'allowClear'=> true,   
 							'dropdownAutoWidth'=> true,
 							'minimumInputLength'=> 3,

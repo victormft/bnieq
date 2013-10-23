@@ -60,6 +60,8 @@ class Startup extends CActiveRecord
 	
 	public $user_role;
 	
+	public $sec;
+	
 	//company size
 	const SIZE_1="1-5";
 	const SIZE_2="6-10";
@@ -104,7 +106,7 @@ class Startup extends CActiveRecord
             array('selecionada', 'in', 'range'=>array(0,1)),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
 			array('facebook, twitter, linkedin, website, video', 'length', 'max'=>150),
-			array('product_description, foundation, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, create_time', 'safe'),
+			array('product_description, foundation, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, create_time, sec', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, video, create_time, selecionada, followers_num', 'safe', 'on'=>'search'),
@@ -335,6 +337,21 @@ class Startup extends CActiveRecord
         {
             $string = $string . $sector->name;
             if($sector !== $lastElement) $string = $string . ', ';
+        }
+        
+        return $string;
+    }
+	
+	public function getSectorCommaIds()
+    {
+        $string="";
+        $array = $this->sectors;
+        
+        $lastElement = end($array);
+        foreach ($array as $sector)
+        {
+            $string = $string . $sector->sector_id;
+            if($sector !== $lastElement) $string = $string . ',';
         }
         
         return $string;
