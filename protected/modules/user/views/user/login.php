@@ -88,12 +88,12 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
             ),
         )); ?>
         
-        <div class="controls form-inline" style="margin-bottom: 10px">
+        <div class="controls form-inline">
             <label>Nome e sobrenome <span class="required">*</span> </label>
-            <input style="width: 94px;" name="Profile[firstname]" id="Profile_firstname" type="text" maxlength="50" placeholder="Nome">
-            <input style="width: 94px;" name="Profile[lastname]" id="Profile_lastname" type="text" maxlength="50" placeholder="Sobrenome">
-            <?php echo $form->error($profile,'firstname', array('style'=>'margin-bottom: 0')); ?>
-            <?php echo $form->error($profile,'lastname'); ?>
+            <input style="width: 94px; margin-bottom: 10px;" name="Profile[firstname]" id="Profile_firstname" type="text" maxlength="50" placeholder="Nome">
+            <input style="width: 94px; margin-bottom: 10px;" name="Profile[lastname]" id="Profile_lastname" type="text" maxlength="50" placeholder="Sobrenome">
+            <?php if($form->error($profile,'firstname') || $form->error($profile,'lastname')) echo '<span class="help-block error">'.UserModule::t('Required').'</span>' //echo $form->error($profile,'firstname', array('style'=>'display: inline')) . ' | ' . $form->error($profile,'lastname', array('style'=>'display: inline')); ?>
+            
         </div>
         
         <?php echo $form->textFieldRow($model,'username'); ?>

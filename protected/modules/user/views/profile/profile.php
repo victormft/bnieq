@@ -236,7 +236,7 @@ $('.arrow-container').mouseover(function(event){
                 <div class="startup-card">
                     <div class="startup-pic" style="overflow: auto;"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'" id="startup-card-img"/>', array('/startup/view', 'name'=>$startup->name)); ?> </div>
                     <div class="startup-name"><?php echo CHtml::link($startup->name, array('/startup/view', 'name'=>$startup->name)); ?></div>
-                    <div class="user-position"><?php echo $relational_tbl->position;?></div>
+                    <div class="user-position"><?php echo UserModule::t($relational_tbl->position);?></div>
                 </div>
                 <?php //endif;  ?>
                 <?php endforeach;  ?>
@@ -244,7 +244,7 @@ $('.arrow-container').mouseover(function(event){
             
             <?php if($model->isUserInRole('Founder')): ?>
             <div class="clabel-r">			
-                <?php echo '<b>Fundador: </b>'; ?>                    
+                <?php echo '<b>'.UserModule::t("Founder").':</b>'; ?>                    
             </div>
             <div class="profile-content">			
                 <?php echo $model->echoWithComma($model->getStartupsByRole('Founder'));?>				
@@ -253,7 +253,7 @@ $('.arrow-container').mouseover(function(event){
             
             <?php if($model->isUserInRole('Member')): ?>
             <div class="clabel-r">			
-                <?php echo '<b>Membro: </b>'; ?>                    
+                <?php echo '<b>'.UserModule::t("Member").':</b>'; ?>                    
             </div>
             <div class="profile-content">			
                 <?php echo $model->echoWithComma($model->getStartupsByRole('Member'));?>				
@@ -262,7 +262,7 @@ $('.arrow-container').mouseover(function(event){
             
             <?php if($model->isUserInRole('Advisor')): ?>
             <div class="clabel-r">			
-                <?php echo '<b>Conselheiro: </b>'; ?>                    
+                <?php echo '<b>'.UserModule::t("Advisor").':</b>'; ?>                    
             </div>
             <div class="profile-content">			
                 <?php echo $model->echoWithComma($model->getStartupsByRole('Advisor'));?>				
@@ -271,7 +271,7 @@ $('.arrow-container').mouseover(function(event){
             
             <?php if($model->isUserInRole('Investor')): ?>
             <div class="clabel-r">			
-                <?php echo '<b>Investidor: </b>'; ?>                    
+                <?php echo '<b>'.UserModule::t("Investor").':</b>'; ?>                    
             </div>
             <div class="profile-content">			
                 <?php echo $model->echoWithComma($model->getStartupsByRole('Investor'));?>				

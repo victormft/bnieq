@@ -13,7 +13,11 @@ return array(
 	'name'=>'NextBlue',
 	'homeUrl'=>'/bnieq',
 	'theme'=>'bootstrap',
-    //'behaviors' => array('ApplicationConfigBehavior'), //for language setting in session
+    'behaviors' => array(
+        'onbeginRequest' => array(
+            'class' => 'application.components.UsernameURLBehaviour',
+        ),
+    ),
     'language'=>'pt',
 	
 	// preloading 'log' component
@@ -136,6 +140,7 @@ return array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+                //'<username:[a-zA-Z0-9_-]+>'=>'user/profile',
 			),
 		),
 		

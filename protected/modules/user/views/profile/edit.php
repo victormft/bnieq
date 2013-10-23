@@ -81,7 +81,7 @@ $('.arrow-container').mouseover(function(event){
             <div class="header-label">			
                 <?php echo '<b>Mini-currículo: </b>';?>                 
             </div>
-            <div class="header-content" id="resume">			
+            <div class="header-content" id="resume-wrap">			
                 <?php
                 $this->widget('editable.EditableField', array(
                     'type'      => 'textarea',
@@ -93,29 +93,47 @@ $('.arrow-container').mouseover(function(event){
                         'id' => 'resume-edit'
                     ),
                     'options'    => array(
-                        'rows'      => 7,
-                        'tpl'=> '<textarea style="resize: vertical; width: 330px"></textarea>'
+                        'rows'      => 6,
+                        'tpl'=> '<textarea id="resume" onkeyup="countChar(this)" style="resize: none; width: 330px" maxlength="150"></textarea>'
                     )
                  ));
-                ?>  				
+                ?>  
+                <div id="count-resume" style="display: none;"><?php echo 150-strlen($profile->resume); ?>/150</div>
+                <script>
+                    
+                </script>
             </div>
         </div>
 
         <script type='text/javascript'>	
+            function countChar(val) {
+                var id = 'count-'+val.id;
+                var len = val.value.length;
+                if (len > val.maxLength) {
+                    val.value = val.value.substring(0, val.maxLength);
+                } else {
+                    $('#'+id).text(val.maxLength - len + '/' + val.maxLength);
+                }
+            };
+                  
             $(function() {
-                $('#resume').tooltip({
+                $('#resume-wrap').tooltip({
                     trigger: 'manual', 
                     placement: 'right', 
                     title: '<img src=<?php echo Yii::app()->request->baseUrl.'/images/sample-mini-resume.png';?> >',
                     html: true,
                 });
                 $('#resume-edit').on('shown', function(e, editable) {
-                    $('#resume').tooltip('show');
+                    $('#resume-wrap').tooltip('show');
                     $(".tooltip").css("left","770px","top","100px");
                     $(".tooltip").css("top","70px");
+                    
+                    $("#count-resume").css("display","block");
                 });	
                 $('#resume-edit').on('hidden', function(e, editable) {
-                    $('#resume').tooltip('hide');
+                    $('#resume-wrap').tooltip('hide');
+                    
+                    $("#count-resume").css("display","none");
                 });	
             });
         </script>
@@ -140,29 +158,6 @@ $('.arrow-container').mouseover(function(event){
                         'allowClear'=> true,   
                         'dropdownAutoWidth'=> true,
                         'minimumInputLength'=> 3,  
-                        /*
-                        'ajax' => array(
-                            'url'=>$this->createUrl('suggestPerson'),
-                            'dataType'=>'json',
-                            'data' => "js: function(term,page) {
-                                return {q: term};
-                            }",
-                            'results' => "js: function(data,page){
-                                return {results: data};
-                            }",
-                        ),
-                        'initSelection' => "js:function (element, callback) {
-                            var id=$(element).val();
-                            if (id!=='') {
-                                $.ajax('".$this->createUrl('initPerson')."', {
-                                    dataType: 'json',
-                                    data: {
-                                        id: id
-                                    }
-                                }).done(function(data) {callback(data);});
-                            }
-                        }",                      
-                         */
                     ),                         
                     'onHidden' => 'js: function(e, reason) {
                         $("#select2-drop-mask").css("display","none");
@@ -293,8 +288,19 @@ $('.arrow-container').mouseover(function(event){
                         'type'      => 'textarea',
                         'model'     => $profile,
                         'attribute' => 'experiences',
-                        'url'       => array('updateEd'),  
-                     )); ?>  				
+                        'url'       => array('updateEd'),
+                        'options'    => array(
+                            'rows'      => 6,
+                            'tpl'=> '<textarea id="experiences" onkeyup="countChar(this)" maxlength="300"></textarea>'
+                        ),
+                        'onShown' => 'js: function(e, reason) {
+                            $("#count-experiences").css("display","block");
+                        }',
+                        'onHidden' => 'js: function(e, reason) {
+                            $("#count-experiences").css("display","none");
+                        }'
+                     )); ?>  
+                    <div id="count-experiences" style="display: none;"><?php echo 300-strlen($profile->experiences); ?>/300</div>
                 </div>				 
             </div>   
             
@@ -352,7 +358,18 @@ $('.arrow-container').mouseover(function(event){
                         'model'     => $profile,
                         'attribute' => 'interests',
                         'url'       => array('updateEd'),  
-                     )); ?> 				
+                        'options'    => array(
+                            'rows'      => 6,
+                            'tpl'=> '<textarea id="interests" onkeyup="countChar(this)" maxlength="300"></textarea>'
+                        ),
+                        'onShown' => 'js: function(e, reason) {
+                            $("#count-interests").css("display","block");
+                        }',
+                        'onHidden' => 'js: function(e, reason) {
+                            $("#count-interests").css("display","none");
+                        }'
+                     )); ?> 
+                    <div id="count-interests" style="display: none;"><?php echo 300-strlen($profile->interests); ?>/300</div>
                 </div>
             </div>
             
