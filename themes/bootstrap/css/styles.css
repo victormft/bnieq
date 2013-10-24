@@ -113,6 +113,27 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	border-radius: 0 0 5px 5px;
 }
 
+.items .view-list .startup-view-img
+{
+	float:left;
+	margin-right:10px; 
+	/*border: 5px solid #eee; */
+	background:#fff;
+	width:80px; 
+	height:80px;
+	border-radius: 5px;
+	overflow:hidden;
+	line-height:75px;
+	text-align:center;
+	box-shadow: 0px 0px 4px 1px #ddd;
+}
+
+.items .view-list .startup-view-img img
+{
+	max-width:80px; 
+	max-height:80px;	
+}
+	
 .items .view-list .startup-view-name
 {
 	text-decoration:none;
@@ -174,14 +195,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 {
 	float:left;
 	margin-right:20px; 
-	border: 5px solid #eee; 
-	background:#eee;
+	/*border: 5px solid #eee; */
+	background:#fafafa;
 	width:120px; 
 	height:120px;
+	padding:7px;
 	border-radius: 5px;
 	line-height:115px;
 	text-align:center;
-	/*box-shadow: 0px 0px 2px 2px #ddd;*/
+	box-shadow: inset 0px 0px 4px 1px #ddd;
 }
 
 #startup-profile-img img
@@ -864,6 +886,33 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	overflow:hidden;
 	position:relative;
+	padding:3px;
+}
+
+.carousel-home-item .bottom-item
+{
+	padding:3px;
+}
+
+.carousel-home-item .top-item .startup-view-img
+{
+	float:left;
+	margin-right:10px; 
+	/*border: 5px solid #eee; */
+	background:#fff;
+	width:80px; 
+	height:80px;
+	border-radius: 5px;
+	overflow:hidden;
+	line-height:75px;
+	text-align:center;
+	box-shadow: 0px 0px 4px 1px #ddd;
+}
+
+.carousel-home-item .top-item .startup-view-img img
+{
+	max-width:80px; 
+	max-height:80px;	
 }
 
 .carousel-home-item .item-name
@@ -921,14 +970,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 .carousel-home-item .item-location
 {
-	font-size: 15px;
+	font-size: 13px;
 	color: #727272;
 	font-style:italic;
 	line-height: 0px;
+	margin-top:15px;
 	margin-bottom:0px;
-	position:absolute;
+/*	position:absolute;
 	bottom:10px;
 	left:10px;
+*/
+}
+
+.carousel-home-item .item-location .icon-map-marker
+{
+	color: #777;
+	margin-top: 2px;
+	margin-right:-2px;
 }
 
 .startup_carousel_control
