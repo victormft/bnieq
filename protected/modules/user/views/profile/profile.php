@@ -13,7 +13,7 @@ $('#followBtn').click(function(event) {
 			$('#followBtn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');			
 			
 			$.ajax({
-				url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+getUrlVars()['username'],
+				url: '".Yii::app()->request->baseUrl."/user/user/follow?username=".$model->username."',
 				dataType: 'json',
 				success: function(data){
 					$('#followBtn').removeClass('btn-success');
@@ -28,7 +28,7 @@ $('#followBtn').click(function(event) {
 			$('#followBtn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
 			$.ajax({
-				url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+getUrlVars()['username'],
+				url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username=".$model->username."',
                 dataType: 'json',
 				success: function(data){
 					$('#followBtn').addClass('btn-success');
