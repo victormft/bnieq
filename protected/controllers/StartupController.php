@@ -224,10 +224,15 @@ class StartupController extends Controller
 		if(isset($_POST['Startup']))
 		{
 			$model->attributes=$_POST['Startup'];
+			$model->name = preg_replace('/[\/%><=#\$]/', '', $model->name);
 			
 			// !!!!!!!!!!!! formatting startup name !!!!!!!!!!!!!!!!!!
+			$startupname = $_POST['Startup']['name'];
+			$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
+			$startupname = preg_replace('/[\"\']/', '', $startupname);
+			$startupname = preg_replace('/\s+/', '-', strtolower($startupname));
 			
-			$startupname = preg_replace('/\s+/', '-', strtolower($_POST['Startup']['name']));
+			
 			$model->startupname = $startupname; 
 			
 			// !!!!!!!!!!!! end formatting startupname !!!!!!!!!!!!!!!
@@ -298,7 +303,7 @@ class StartupController extends Controller
                 {		
                     $auth = Yii::app()->authManager;
                     $auth->assign("StartupOwner",Yii::app()->user->id);
-                    $this->redirect(array('view','name'=>$model->name));
+                    $this->redirect(array('view','name'=>$model->startupname));
                 }				
 			}
 		}
@@ -479,7 +484,7 @@ class StartupController extends Controller
 	*/
 	public function loadModel($name)
 	{
-		$model=Startup::model()->find('name=:name',
+		$model=Startup::model()->find('startupname=:name',
 										array(
 										  ':name'=>$name,
 										));

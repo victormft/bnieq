@@ -1,10 +1,10 @@
 <div class="view-list">
 
-	<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img"/>', array('view', 'name'=>$data->name)); ?>
+	<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img"/>', array('view', 'name'=>$data->startupname)); ?>
 	
 	<div class="view-list-text">
 		
-		<?php echo CHtml::link(CHtml::encode($data->name),array('view','name'=>$data->name), array('class'=>'startup-view-name'));?>
+		<?php echo CHtml::link(CHtml::encode($data->name),array('view','name'=>$data->startupname), array('class'=>'startup-view-name'));?>
 		
 		<div class="startup-view-pitch">
 			<?php echo CHtml::encode($data->one_line_pitch); ?>
@@ -27,7 +27,7 @@
 	
 	</div>
 	
-	<div class="follow-count" data-name="<?php echo $data->name; ?>"><?php echo count($data->users); ?></div>   
+	<div class="follow-count" data-name="<?php echo $data->startupname; ?>"><?php echo count($data->users); ?></div>   
     
     <span class="follow-btn">    
         <?php 

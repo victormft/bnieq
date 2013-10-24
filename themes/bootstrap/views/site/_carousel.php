@@ -2,10 +2,10 @@
 	
 	<div class="top-item">
 		
-		<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img"/>', array('startup/view', 'name'=>$data->name)); ?>
+		<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img"/>', array('startup/view', 'name'=>$data->startupname)); ?>
 		
 		<div class="item-name">
-			<?php echo CHtml::link(CHtml::encode($data->name),array('startup/view','name'=>$data->name));?>
+			<?php echo CHtml::link(CHtml::encode($data->name),array('startup/view','name'=>$data->startupname));?>
 		</div>
 		
 	</div>
