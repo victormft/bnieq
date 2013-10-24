@@ -79,7 +79,7 @@ $('.video-images-items').carouFredSel({
 	<div class="profile-header-info">
 		
 		<div class="profile-name">
-			<span><?php echo $model->name; ?> <?php //echo $model->startupname; ?></span>
+			<span><?php echo $model->name; ?></span>
 		</div>
 		
 		<div class="profile-onelinepitch">
@@ -127,7 +127,7 @@ $('.video-images-items').carouFredSel({
 				'label'=>'Editar',
 				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array('edit','name'=>$model->name),
+				'url'=>array('edit','name'=>$model->startupname),
 				'htmlOptions'=>array('style'=>'text-shadow: 1px 1px 1px #555;', /*'class'=>'profile-btn'*/),
 					)); 
 				?>

@@ -274,7 +274,7 @@ function getUrlVars()
 				'label'=>'Voltar',
 				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array('view','name'=>$model->name),
+				'url'=>array('view','name'=>$model->startupname),
 				)); 
 			?>
 			
