@@ -92,7 +92,7 @@ $('.remove-search').click(function(event){
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href= <?php echo Yii::app()->homeUrl . '/user/profile' ?> >Profile</a>
+                            <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getName() ?> >Profile</a>
                         </li>
 						<li><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> >Messages <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
                         ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>

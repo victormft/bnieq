@@ -43,6 +43,9 @@ class Profile extends CActiveRecord
     
     public $regMode = false;
     
+    public $roles; //required for booster x-editable
+    public $skills; //required for booster x-editable
+    public $sectors; //required for booster x-editable
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -84,7 +87,7 @@ class Profile extends CActiveRecord
             array('telephone', 'match', 'pattern'=>'/^([+]?[0-9 ]+)$/', 'message'=>'Caracteres válidos: "+" no começo (se necessário) e apenas números'),			
             array('telephone', 'length', 'min'=>10, 'max'=>30, 'tooShort'=>'Telefone muito pequeno', 'tooLong'=>'Telefone muito grande'),
             array('facebook, linkedin, twitter', 'length', 'max'=>150),
-			array('birthday, resume, experiences, interests', 'safe'),
+			array('birthday, resume, experiences, interests, roles, skills, sectors', 'safe'),
 			array('birthday', 'date', 'format'=>'yyyy-mm-dd', 'message'=>"Wrong format"),
             array('birthday', 'default', 'setOnEmpty' => true, 'value' => null),
             array('facebook, linkedin, twitter, website', 'url'),

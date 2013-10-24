@@ -47,7 +47,7 @@ class TbEditableField extends CWidget
 	 * @var string mode of input: `inline` | `popup`. If not set - default X-editable value is used: `popup`.
 	 * @see x-editable
 	 */
-	public $mode = 'popup';
+	public $mode = 'inline';
 
 	/**
 	 * @var string placement of popup. Can be `left`, `top`, `right`, `bottom`.

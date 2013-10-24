@@ -2,11 +2,11 @@
 
 <div class="view-list">
 
-    <?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo->name.'" id="Startup-list-img"/>', array('/user/profile', 'username'=>$data->user->username)); ?>
+    <?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo->name.'" id="Startup-list-img"/>', array('/' . $data->user->username)); ?>
     
     <div class="view-list-text">
     
-        <?php echo CHtml::link(CHtml::encode($data->user->getFullName()),array('/user/profile','username'=>$data->user->username), array('class'=>'startup-view-name'));?>
+        <?php echo CHtml::link(CHtml::encode($data->user->getFullName()),array('/' . $data->user->username), array('class'=>'startup-view-name'));?>
 
         <div class="profile-view-pitch" >
             <?php echo CHtml::encode($data->resume); ?>
