@@ -214,7 +214,7 @@ class StartupController extends Controller
 	*/
 	public function actionCreate()
 	{
-		$model=new Startup;
+		$model=new Startup('create');
 		// Image Instance
 		
 
@@ -224,6 +224,14 @@ class StartupController extends Controller
 		if(isset($_POST['Startup']))
 		{
 			$model->attributes=$_POST['Startup'];
+			
+			// !!!!!!!!!!!! formatting startup name !!!!!!!!!!!!!!!!!!
+			
+			$startupname = preg_replace('/\s+/', '-', strtolower($_POST['Startup']['name']));
+			$model->startupname = $startupname; 
+			
+			// !!!!!!!!!!!! end formatting startupname !!!!!!!!!!!!!!!
+			
 			
 			//treating the image
 			$model->pic=CUploadedFile::getInstance($model,'pic');

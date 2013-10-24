@@ -79,7 +79,7 @@ $('.video-images-items').carouFredSel({
 	<div class="profile-header-info">
 		
 		<div class="profile-name">
-			<span><?php echo $model->name; ?></span>
+			<span><?php echo $model->name; ?> <?php //echo $model->startupname; ?></span>
 		</div>
 		
 		<div class="profile-onelinepitch">

@@ -140,6 +140,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	color: #848484;
 }
 
+.items .view-list .startup-view-location
+{
+	font-style:italic;
+	font-size: 13px;
+	color: #333;
+}
+
+.items .view-list .startup-view-location .icon-map-marker
+{
+	color: #777;
+	margin-top:2px;
+	margin-right: -2px;
+}
+
+.items .view-list .startup-view-location a
+{
+	color:#333;
+}
+
 #Startup-list-img
 {
 	float:left; 
