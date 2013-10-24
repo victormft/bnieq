@@ -20,6 +20,10 @@
 			
 			?>
 		</div>
+		
+		<div class="startup-view-location">
+			<i class="icon-map-marker"></i><?php if (isset($data->city)): ?><a href="<?php echo Yii::app()->baseUrl.'/startup?g=&c='.$data->city->id; ?>"><?php echo $data->city->nome; ?></a> <?php endif; ?>		
+		</div>
 	
 	</div>
 	
