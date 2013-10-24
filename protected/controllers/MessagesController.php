@@ -33,12 +33,18 @@ class MessagesController extends Controller
 	public function actionInbox() 
     {
 		$messagesAdapter = Message::getAdapterForInbox(Yii::app()->user->getId());
-		$pager = new CPagination($messagesAdapter->totalItemCount);
-		$pager->pageSize = 10;
-		$messagesAdapter->setPagination($pager);
+		//$pager = new CPagination($messagesAdapter->totalItemCount);
+		//$pager->pageSize = 10;
+		//$messagesAdapter->setPagination($pager);
 
+        $model=new Message('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Message']))
+            $model->attributes=$_GET['Message'];
+        
 		$this->render('inbox', array(
-			'messagesAdapter' => $messagesAdapter
+			'messagesAdapter' => $messagesAdapter,
+            'model' => $model,
 		));
 	}
     

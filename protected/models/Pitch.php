@@ -37,7 +37,7 @@ class Pitch extends CActiveRecord
 			array('startup_id, investment_required, equity, video, pitch_text, exit_strategy', 'required'),
 			array('equity', 'numerical'),
 			array('startup_id', 'length', 'max'=>20),
-			array('investment_required', 'length', 'max'=>10),
+			array('investment_required, funded', 'length', 'max'=>10),
 			array('video','url', 'defaultScheme' => 'http'),
 			array('video','length', 'max'=>150),
 			array('create_time', 'safe'),
@@ -68,6 +68,7 @@ class Pitch extends CActiveRecord
 			'id' => 'ID',
 			'startup_id' => 'Startup',
 			'investment_required' => 'Investment Required',
+			'funded' => 'Funded',
 			'equity' => 'Equity',
 			'video' => 'Video',
 			'pitch_text' => 'Pitch Text',
@@ -97,6 +98,7 @@ class Pitch extends CActiveRecord
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('startup_id',$this->startup_id,true);
 		$criteria->compare('investment_required',$this->investment_required,true);
+		$criteria->compare('funded',$this->funded,true);
 		$criteria->compare('equity',$this->equity);
 		$criteria->compare('video',$this->video,true);
 		$criteria->compare('pitch_text',$this->pitch_text,true);
