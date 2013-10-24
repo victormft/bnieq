@@ -613,4 +613,10 @@ div.language ul li a img:hover{
     width: 380px;
 }
 
+.messages-wrap .span8
+{
+    margin-left: 0;
+    width: 780px;
+}
+
 
