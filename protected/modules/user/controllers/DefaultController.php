@@ -27,17 +27,21 @@ class DefaultController extends Controller
 		if(isset($_GET['rol']))
 			$model->roles=$_GET['rol'];	
         
+        
         if(isset($_GET['ski']))
 			$model->skills=$_GET['ski'];
         
         if(isset($_GET['sec']))
 			$model->sectors=$_GET['sec'];
-				
+		/*		
         if(isset($_GET['g']))
-		{
-			if($_GET['g']=='Mais seguidos')
-				$model->group=$_GET['g'];
+		{   
+            $model->group=$_GET['g'];
+			if($_GET['g']=='Empreendedores')
+                $model->roles = isset($model->roles) ? array_merge($model->roles, array(5)) : array(5);
 		}	
+         * 
+         */
         
 		$this->render('/user/index',array(
             'dataProvider'=>$model,

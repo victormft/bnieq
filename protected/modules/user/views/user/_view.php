@@ -1,4 +1,4 @@
-<?php if($data->user->id !== Yii::app()->user->id): ?>
+<?php //if($data->user->id !== Yii::app()->user->id): ?>
 
 <div class="view-list">
 
@@ -45,4 +45,4 @@
     
 </div>
 
-<?php endif ?>
+<?php //endif ?>

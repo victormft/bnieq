@@ -162,6 +162,11 @@ class Profile extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+        $criteria->addCondition('t.user_id <> :userId');
+        $criteria->params = array(
+			'userId' => Yii::app()->user->getId(),
+		);
+        
         $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('firstname',$this->firstname,true);
@@ -182,7 +187,19 @@ class Profile extends CActiveRecord
         
         $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";                
       
-
+        /*
+        if($this->group){
+            if($this->group=='Empreendedores'){
+                $criteria->with = array('roles');
+                $criteria->together = true;
+                $criteria->addCondition('roles.role_id = :roleId');
+                $criteria->params = array(
+                    'roleId' => 5,
+                );                
+            }
+        }
+         * 
+         */
         
         if($this->roles){
 			$criteria->with = array('roles');
