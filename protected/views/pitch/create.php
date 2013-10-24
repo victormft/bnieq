@@ -1,4 +1,9 @@
 <?php
+$this->layout='column1';
+?>
+
+
+<?php
 /* @var $this PitchController */
 /* @var $model Pitch */
 
@@ -13,6 +18,11 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Pitch</h1>
+<!-- modificar depois, foi só um teste utilizando algumas classes do css da startup -->
+<h1 class="create-title">Criar Pitch</h1>
+<div class="create-sub-title" style="font-style:italic;">Forneça os dados para a criação do Pitch!</div>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+
+<div class="create-wrap">
+<?php $this->renderPartial('_form', array('model'=>$model, 'profile'=>$profile, 'startup'=>$startup)); ?>
+</div>

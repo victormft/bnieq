@@ -2,6 +2,9 @@
 
 class PitchController extends Controller
 {
+
+
+	private $_startup;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -11,11 +14,13 @@ class PitchController extends Controller
 	/**
 	 * @return array action filters
 	 */
+	
 	public function filters()
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
+			'startup + create',
 		);
 	}
 
@@ -63,20 +68,42 @@ class PitchController extends Controller
 	public function actionCreate()
 	{
 		$model=new Pitch;
-
+		$user = User::model()->findByPk(Yii::app()->user->id);
+		$profile = $user->profile;
+		$model->startup_id = $this->_startup->id;
+		$startup = $this->_startup;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Pitch']))
 		{
-				
+			$valid = true;
+			
+			if(isset($_POST['Profile'])) {
+				$profile->attributes=$_POST['Profile'];
+				$valid = $profile->validate();
+			}
+			if(isset($_POST['Startup'])) {
+				$startup->attributes = $_POST['Startup'];
+				$valid = ($startup->validate() && $valid);
+			}
+			
+			
 			$model->attributes=$_POST['Pitch'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$valid = ($model->validate() && $valid);
+			
+			if($valid) {
+			$startup->save(false);
+			$model->save(false);
+			$profile->save(false);
+			
+			
+			$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'model'=>$model, 'profile'=>$profile , 'startup'=>$startup, 
 		));
 	}
 
@@ -159,6 +186,7 @@ class PitchController extends Controller
 		return $model;
 	}
 
+
 	/**
 	 * Performs the AJAX validation.
 	 * @param Pitch $model the model to be validated
@@ -170,5 +198,33 @@ class PitchController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	
+	//need to put some secure to filter, loading the startup only if it's user is the same of current logged user
+	public function filterStartup($filterchain) {
+		if(isset($_GET['startupId'])) {
+			$this->_startup = Startup::model()->findByPk($_GET['startupId']);
+			if($this->_startup === null)
+				throw new CHttpException(404,'A página requisitada não existe');
+			
+			if($this->_startup->pitches != NULL)
+				throw new CHttpException(403, 'Somente um pitch por vez.');
+			//verifies if startupId matchs with one of the startups that belongs to user
+			$authorization = false;
+			$user = User::model()->findByPk(Yii::app()->user->id);
+			
+			foreach($user->startups as $startup) {
+			
+			if($startup->id == $_GET['startupId'])
+				$authorization = true;	
+			}
+			
+			if(!$authorization)
+				throw new CHttpException(403,' Operação não permitida' . $user->id);
+		}	
+			else
+			throw new CHttpException(403, 'Preciso do StartupId');
+		$filterchain->run();
+			
 	}
 }
