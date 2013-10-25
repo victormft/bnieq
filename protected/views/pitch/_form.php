@@ -42,8 +42,10 @@
 			echo '</div>';
 		}
 		if($profile->birthday == NULL) {
-			echo '<div class="group-wrap" style=" padding-bottom:10px; overflow:auto; margin-bottom:0px;">';
+			echo '<div class="group-wrap" style=" padding-bottom:10px; overflow:auto; margin-bottom:20px;">';
 			echo '<div style="float:left;">';
+
+			
 			echo $form->textFieldRow($profile,'birthday',array('labelOptions' => array('label' => 'Data de nascimento', 'class'=>'custom-label'), 'class'=>'span2','maxlength'=>10));
 			echo $form->error($profile,'birthday', array('errorCssClass'=>'', 'successCssClass'=>'' ));
 			echo '</div> </div>';
@@ -52,8 +54,7 @@
 			//echo '<div class="row">';
 			echo '<div class="group-wrap" style="border-bottom:1px #aaa; padding-bottom:30px; overflow:auto; margin-bottom:20px;">';
 			echo '<div style="float:left;">';
-			echo $form->labelEx($profile, 'gender');
-			echo $form->dropDownList($profile,'gender', $profile->getGenderOptions());
+			echo $form->dropDownListRow($profile,'gender', $profile->getGenderOptions(), array('labelOptions' => array('label' => 'Sexo', 'class'=>'custom-label'), 'class'=>'span2',));
 			echo '</div> </div>';
 			
 		}
