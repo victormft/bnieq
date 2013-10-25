@@ -8,8 +8,6 @@
         <div class="span8">
             <h2><?php echo MessageModule::t('Inbox'); ?></h2>
 
-            <?php if ($messagesAdapter->data): ?>
-
                 <?php $this->widget('bootstrap.widgets.TbGridView', array(
                     'id'=>'message-grid',
                     'type' => 'striped bordered condensed',
@@ -32,16 +30,13 @@
                             'value' => 'date("d/m/Y h:i", strtotime($data->created_at))',
                         ),
                         array(
-                            'htmlOptions' => array('nowrap'=>'nowrap'),
+                            'htmlOptions' => array('style'=>'text-align: center;'),
                             'class'=>'bootstrap.widgets.TbButtonColumn',
+                            'template' => '{view}{delete}',
                             'viewButtonUrl'=>'Yii::app()->createUrl("/messages/view", array("message_id"=>$data->id))',
-                            //'updateButtonUrl'=>'Yii::app()->createUrl("/user/admin/updatestartup", array("id"=>$data->id))',
-                            //'deleteButtonUrl'=>'Yii::app()->createUrl("/user/admin/deletestartup", array("id"=>$data->id))',
                         )
                     ),
                 )); ?>
-            
-            <?php endif; ?>
         </div>
     </div>
 </div>

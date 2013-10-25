@@ -25,6 +25,7 @@ class Message extends CActiveRecord
     
     //para o search
     public $sender_name;
+    public $receiver_name;
 
 	public function __construct($scenario = 'insert') {
 		$this->userModel = 'User';
@@ -68,6 +69,7 @@ class Message extends CActiveRecord
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, sender_id, receiver_id, subject, body, is_read, deleted_by, created_at, sender_name', 'safe', 'on'=>'search'),
+            array('id, sender_id, receiver_id, subject, body, is_read, deleted_by, created_at, receiver_name', 'safe', 'on'=>'searchForSent'),
 		);
 	}
 
@@ -153,7 +155,52 @@ class Message extends CActiveRecord
                     'sender_name'=>array(                        
                         'asc' => 'sender_name',
                         'desc' => 'sender_name DESC', 
-                        'label' => 'Nome',
+                        'label' => 'Enviado por',
+                    ),
+                    '*',
+                ),
+                'defaultOrder'=>array(
+                    'created_at'=>true,
+                ),
+            ),
+		));
+	}
+    
+    public function searchForSent()
+	{        
+		// Warning: Please modify the following code to remove attributes that
+		// should not be searched.
+
+		$criteria=new CDbCriteria;
+
+        $criteria->addCondition('t.sender_id = :senderId');
+		$criteria->addCondition('t.deleted_by <> :deleted_by_sender OR t.deleted_by IS NULL');
+        $criteria->params = array(
+			'senderId' => Yii::app()->user->getId(),
+			'deleted_by_sender' => Message::DELETED_BY_SENDER,
+		);
+        //$criteria->order = 't.created_at DESC';
+        
+        $criteria->select="t.*,(SELECT CONCAT(profile.firstname,' ',profile.lastname ) FROM profile WHERE t.receiver_id=profile.user_id) AS receiver_name";                
+
+        $criteria->compare('(SELECT CONCAT(profile.firstname," ",profile.lastname ) FROM profile WHERE t.receiver_id=profile.user_id)',$this->receiver_name,true);
+		$criteria->compare('id',$this->id);
+		$criteria->compare('sender_id',$this->sender_id);
+		$criteria->compare('receiver_id',$this->receiver_id);
+		$criteria->compare('subject',$this->subject,true);
+		$criteria->compare('body',$this->body,true);
+		$criteria->compare('is_read',$this->is_read,true);
+		$criteria->compare('deleted_by',$this->deleted_by,true);
+		$criteria->compare('created_at',$this->created_at,true);
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+            'sort'=>array(
+                'attributes'=>array(
+                    'receiver_name'=>array(                        
+                        'asc' => 'receiver_name',
+                        'desc' => 'receiver_name DESC', 
+                        'label' => 'Para',
                     ),
                     '*',
                 ),
@@ -176,7 +223,7 @@ class Message extends CActiveRecord
 		}
 	}
 
-	public static function getAdapterForInbox($userId) {
+	public static function getAdapterForInbox($userId) { //NOT USED
 		$c = new CDbCriteria();
 		$c->addCondition('t.receiver_id = :receiverId');
 		$c->addCondition('t.deleted_by <> :deleted_by_receiver OR t.deleted_by IS NULL');

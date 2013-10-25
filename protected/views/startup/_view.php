@@ -1,6 +1,8 @@
 <div class="view-list">
-
-	<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" id="Startup-list-img"/>', array('view', 'name'=>$data->startupname)); ?>
+	
+	<div class="startup-view-img">
+		<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" />', array('view', 'name'=>$data->startupname)); //id="Startup-list-img"?>	
+	</div>
 	
 	<div class="view-list-text">
 		
