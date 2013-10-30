@@ -68,12 +68,12 @@ Yii::app()->clientScript->registerScript('create-script',
 	</script>
 -->	
 <div class="group-wrap" style="border-bottom:1px dashed #aaa; padding-bottom:30px; overflow:auto; margin-bottom:40px;">
-	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Serão aceitos somente arquivos do tipo jpg, jpeg ou png.</div></div>
+	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Imagens do tipo jpg, jpeg ou png. Procure usar imagens quadradas!! (Exemplo: 200x200px). </div></div>
 	<div style="float:left;">
 	<?php echo $form->fileFieldRow($model,'pic',array('labelOptions' => array('label' => 'Logotipo', 'class'=>'custom-label'), 'class'=>'span4')); ?>
 	<?php echo $form->error($model,'pic', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>
 	<div class="tip" style="margin-left:180px; margin-top:5px; color:#646464; width:300px; font-style:italic;">
-	O Logo da sua Startup. A imagem será redimencionada para o tamanho 80x80px.
+	O Logo da sua Startup. A imagem será redimensionada para o tamanho 120x120px.
 	</div>
 	</div>
 </div>
@@ -91,7 +91,7 @@ Yii::app()->clientScript->registerScript('create-script',
 </div>	
 
 <div class="group-wrap" style="border-bottom:1px dashed #aaa; padding-bottom:30px; overflow:auto; margin-bottom:40px;">
-	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Digite no mínimo 3 caracteres. Use ~ quando necessário.</div></div>
+	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Digite no mínimo 3 caracteres para selecionar a cidade.</div></div>
 	<div style="float:left;">
 	<?php echo $form->select2Row($model,'location',
 			array(		
