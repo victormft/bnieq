@@ -29,11 +29,11 @@ class StartupController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'viewName', 'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam'),
+				'actions'=>array('index','view', 'viewName'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit', 'follow', 'unfollow',),
+				'actions'=>array('create', 'edit', 'follow', 'unfollow'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -674,12 +674,20 @@ class StartupController extends Controller
 	{
 		$model=$this->loadModel($name);
 		
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar essa startup!');
+		
 		$user_startup = new UserStartup;
 		
 		$user_startup->user_id = $_POST['user_startup'];
 		$user_startup->startup_id = $model->id;
-		$user_startup->position = $_POST['position'];
-		$user_startup->save();
+		$user_startup->position = $_POST['position'];    
+        if($user_startup->save())
+        {		
+            $auth = Yii::app()->authManager;
+            $auth->assign("StartupMember",$user_startup->user_id);
+        }				
+			
 		
 		$model=$this->loadModel($name);
 		

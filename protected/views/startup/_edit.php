@@ -1,7 +1,5 @@
 <?php
 
-Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery-ui-1.10.3.custom.js');
-
 
 
 Yii::app()->clientScript->registerScript('loading-img',
