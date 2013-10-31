@@ -3,32 +3,7 @@
 
 
 Yii::app()->clientScript->registerScript('loading-img',
-"
-	$('.btn-edit').click(function(event){
-		if(!$('.profile-header-info').hasClass('hid'))
-		{
-			$('.btn-edit').hide();
-				$('.profile-header-info').animate({opacity: 0},250, function(){ 
-					$('.profile-header-info').addClass('hid');
-					$('.profile-header-info').hide('fast');
-					$('.prof').show('fast', function(){
-						$('.prof').animate({opacity: 1}, 250, function(){
-							$('.btn-edit').text('Salvar');
-							$('.btn-edit').addClass('btn-save');
-							$('.btn-edit').show();
-						});
-					}); 
-					
-				});
-		}
-		
-		else if($('.btn-edit').hasClass('btn-save'))
-		{
-			$('.btn-edit').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
-			location.href = 'edit?name='+encodeURIComponent($('.profile-header').find('.macaco').children().text());
-		}
-	});
-	
+"	
 	
 	$('.team-ready').on('mouseover','.team-item',function(event){
 		$(this).find('.team-delete').css({'color':'red', 'font-size':'22px'});	
@@ -40,11 +15,11 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	$('.nav li:contains(\"Home\")').addClass('xuxu');
 	
-	$('.editable-img').mouseover(function(event) {
+	$('.profile-editable-content').mouseover(function(event) {
 		$(this).find('.pic-btn').addClass('btn-primary');	
 	});
 	
-	$('.editable-img').mouseout(function(event) {
+	$('.profile-editable-content').mouseout(function(event) {
 		$(this).find('.pic-btn').removeClass('btn-primary');	
 	});
 	
@@ -153,31 +128,14 @@ function getUrlVars()
 		<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
 	</div>
 	
-	<div class="profile-header-info">
-		
-		<div class="profile-name">
-			<span><?php echo $model->name; ?></span>
-		</div>
-		
-		<div class="profile-onelinepitch">
-			<span style="font-style:italic;"><?php echo $model->one_line_pitch; ?></span>
-		</div>
-		
-		<div class="profile-sectors">
-			<span><?php echo $model->getSectorNames(); ?></span>
-		</div>
-		
-		<div class="profile-location">
-			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo $model->city->nome; ?>
-		</div>
-		
-	</div>
-	
-	<div class="prof" style="display:none; float:left; opacity:0;">
+	<div class="profile-edit-header">
 	
 		
-		<div class="editable-wrap">
-				<p> <?php echo '<b>Nome: </b>';?>   
+		<div class="editable-wrap profile-editable-content">
+			<div class="content-info-unit">
+				<div class="header-label">
+					<b>Nome:</b> 
+				</div>
 					<span class="macaco">
 					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'text',
@@ -189,9 +147,12 @@ function getUrlVars()
 						'mode'=>'inline'
 					 )); ?>  
 					 </span>
-				</p>
-				
-				<p> <?php echo '<b>One Line Pitch: </b>';?>   
+			</div>
+			
+			<div class="content-info-unit">			
+				<div class="header-label">
+					<b>Pitch de uma linha:</b> 
+				</div>
 					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
@@ -201,9 +162,12 @@ function getUrlVars()
 						'inputclass'=> 'input-large',
 						'mode'=>'inline'
 					 )); ?>  
-				</p>
-				
-				<p>	<?php echo '<b>Setor de Atuação: </b>'; ?>
+			</div>
+			
+			<div class="content-info-unit">			
+				<div class="header-label">
+					<b>Setor(es):</b> 
+				</div>
 					<?php           
 					$this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'select2',
@@ -225,10 +189,17 @@ function getUrlVars()
 							'maximumSelectionSize'=> 3,
 						),
 						'mode'=>'inline',
+						'onHidden' => 'js: function(e, reason) {
+							$("#select2-drop-mask").css("display","none");
+							$("#select2-drop").css("display","none");
+						}',
 					)); ?>
-				</p>
+			</div>
 				
-				<p> <?php echo '<b>Cidade: </b>'; ?>    
+			<div class="content-info-unit">			
+				<div class="header-label">
+					<b>Cidade:</b> 
+				</div>
 					<?php           
 					$this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'select2',
@@ -250,22 +221,53 @@ function getUrlVars()
 							$("#select2-drop").css("display","none");
 						}',
 					)); ?> 
-				</p>
+			</div>
+				
+			<div class="content-info-unit">			
+				<div class="header-label">
+					<b>Logo:</b> 
+				</div>
+				
+				<div class="header-content">
+					<!-- !!!!!!!!!!!!!! image form begin!!!!!!!!!!!!!!!!-->
+		
+					<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+						'id'=>'logo-edit-form',
+						'type'=>'horizontal',
+						'clientOptions'=>array(
+							'validateOnSubmit'=>true,
+						),
+						'htmlOptions' => array(
+							'enctype' => 'multipart/form-data'),
+					)); 
+					?>
+					
+					<div class="pic-wrap">
+						<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => ''))); ?>
+					</div>
+					
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+							'buttonType'=>'submit',
+							'id'=>'pic-btn',
+							'label'=>'Save',
+							'size'=>'normal',
+							'htmlOptions'=>array(
+								'class'=>'pic-btn',
+							),
+							)); 
+					?>
+					
+					
+					<?php $this->endWidget(); ?>
+					
+					<!-- !!!!!!!!!!!!!! image form end !!!!!!!!!!!!!!!!-->
+				</div>
+					
+			</div>
 				
 				
 			</div>
 	</div>
-	
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
-				'label'=>'Editar',
-				'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'htmlOptions'=>array(
-					'class'=>'btn-edit',
-					'style'=>'margin-left:20px;',
-					),
-				)); 
-			?>
 	
 	<span class="teste" style="float:right;">
 			
@@ -290,55 +292,6 @@ function getUrlVars()
 
 
 <div class="profile-column-l">
-	
-	<div class="content-wrap">
-
-		<div class="content-head rounded">
-			<i class="icon-picture profile-icon"></i> Logo
-			<span class="tip">Modifique o Logotipo da Startup (120 x 120px)</span>
-			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
-		</div>
-		
-		<div class="content-info edit">
-			<div class="editable-wrap editable-img">
-				<!-- !!!!!!!!!!!!!! image form begin!!!!!!!!!!!!!!!!-->
-	
-				<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-					'id'=>'logo-edit-form',
-					'type'=>'horizontal',
-					'clientOptions'=>array(
-						'validateOnSubmit'=>true,
-					),
-					'htmlOptions' => array(
-						'enctype' => 'multipart/form-data'),
-				)); 
-				?>
-				
-				<div class="pic-wrap">
-					<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => ''))); ?>
-				</div>
-				
-				<?php $this->widget('bootstrap.widgets.TbButton', array(
-						'buttonType'=>'submit',
-						'label'=>'Save',
-						'size'=>'normal',
-						'htmlOptions'=>array(
-							'class'=>'pic-btn',
-						),
-						)); 
-				?>
-				
-				
-				<?php $this->endWidget(); ?>
-				
-				<!-- !!!!!!!!!!!!!! image form end !!!!!!!!!!!!!!!!-->
-			</div>
-		
-			
-		</div>
-		
-	</div>	
-	
 	
 	<div class="content-wrap">
 
