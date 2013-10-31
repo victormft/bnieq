@@ -488,44 +488,51 @@ $('.video-images-items').carouFredSel({
 	</div>	
 	<?php endif;?>
 
-	<div class="content-wrap">
-
-		<div class="content-head"><i class="icon-group profile-icon"></i> Fundadores</div>
-		
-		<div class="content-info team-ready">
-			
-			
-			<?php foreach($model->users1 as $usr_startup):  ?>
-			<?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$usr_startup->id, ':s_id'=>$model->id)); ?>
-			<?php if($relational_tbl->position=='Founder'):?>
-			<div class="team-item">		
-				<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
-				<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
-				<div class="team-position"><?php echo $relational_tbl->position;?></div>
-				<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
-			</div>
-			<?php endif;  ?>
-			<?php endforeach;  ?>
-			
-				
-			
-			
-		
-		</div>
-		
-	</div>	
 	
-	<div class="content-wrap">
+	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos', array(':s_id'=>$model->id, ':pos'=>'Founder'))):?>
+		<div class="content-wrap">
 
-		<div class="content-head"><i class="icon-group profile-icon"></i> Time</div>
-		
-		<div class="content-info">
+			<div class="content-head"><i class="icon-group profile-icon"></i> Fundadores</div>
 			
-			<?php echo 'website'; ?>
-		
-		</div>
-		
-	</div>	
+			<div class="content-info team-ready">
+				
+				
+				<?php foreach($relational_tbl as $rel):?>
+				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
+				<div class="team-item">		
+					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
+					<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
+					<div class="team-position"><?php echo $rel->position;?></div>
+					<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+				</div>
+				<?php endforeach;?>
+																		
+			</div>
+			
+		</div>	
+	<?php endif;  ?>
+	
+	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos', array(':s_id'=>$model->id, ':pos'=>'Member'))):?>
+		<div class="content-wrap">
+
+			<div class="content-head"><i class="icon-group profile-icon"></i> Time</div>
+			
+			<div class="content-info team-ready">
+				
+				<?php foreach($relational_tbl as $rel):?>
+				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
+				<div class="team-item">		
+					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
+					<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
+					<div class="team-position"><?php echo $rel->position;?></div>
+					<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+				</div>
+				<?php endforeach;?>
+			
+			</div>
+			
+		</div>	
+	<?php endif;  ?>
 	
 	<div class="content-wrap">
 
@@ -533,7 +540,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			
+			COMING SOON!!
 		
 		</div>
 		

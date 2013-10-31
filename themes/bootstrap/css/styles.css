@@ -259,6 +259,42 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 
 }
 
+.profile-edit-header
+{
+	float:left;
+	width:600px;
+}
+
+.profile-edit-header .content-info-unit
+{
+	overflow:visible;
+	height: 30px;
+}
+
+.profile-edit-header .header-label
+{
+	width: 140px;
+}
+
+
+.profile-edit-header .header-content
+{
+	width:auto;
+	overflow:visible;
+}
+
+.profile-edit-header .header-content #logo-edit-form
+{
+	margin-top:-3px;
+}
+
+.profile-edit-header .header-content #pic-btn
+{
+	float:none;
+	margin-top:0px;
+	margin-left:5px;
+}
+
 .profile-name
 {
 	font-size: 30px;
@@ -1261,8 +1297,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 .editable-wrap .pic-wrap
 {
 	float:left;
-	padding:3px 5px;
 	/*
+	padding:3px 5px;
+	
 	background-color: #fff;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
