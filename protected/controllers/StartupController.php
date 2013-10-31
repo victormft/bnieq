@@ -712,7 +712,7 @@ class StartupController extends Controller
 */		
 		$html='
 		
-		<div class="team-item" style="display:none;">
+		<div class="team-item" style="display:none; opacity:0;">
 			<div class="team-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $usr->profile->logo->name .'" id="team-img"/></div>
 			<div class="team-name"><span data-id="'. $usr->id .'">'. $usr->profile->firstname . ' ' . $usr->profile->lastname .'</span></div>
 			<div class="team-position">'. $user_startup->position . '</div>
