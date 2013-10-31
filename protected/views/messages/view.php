@@ -5,71 +5,73 @@
 <div class="row">
     <?php $this->renderPartial('_navigation', array('active'=>'')) ?>
     
-	<div class="span8">
+    <div class="messages-wrap">
+        <div class="span8">
 
-		<table class="bordered-table zebra-striped">
-			<tr>
-				<th>
-					<?php if ($isIncomeMessage): ?>
-						From: <?php echo $viewedMessage->getSenderName() ?>
-					<?php else: ?>
-						To: <?php echo $viewedMessage->getReceiverName() ?>
-					<?php endif; ?>
-				</th>
-				<th>
-					<?php echo CHtml::encode($viewedMessage->subject) ?>
-				</th>
-				<th>
-					<?php echo date('d-m-Y H:i:s', strtotime($viewedMessage->created_at)) ?>
-				</th>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<?php echo CHtml::encode($viewedMessage->body) ?>
-				</td>
-			</tr>
-		</table>
-        
-        <?php $form = $this->beginWidget('CActiveForm', array(
-			'id'=>'message-view-delete-form',
-			'enableAjaxValidation'=>false,
-			'action' => $this->createUrl('messages/delete/', array('id' => $viewedMessage->id))
-		)); ?>
-		<button class="btn danger"><?php echo MessageModule::t("Delete") ?></button>
-		<?php $this->endWidget(); ?>
+            <table class="bordered-table zebra-striped">
+                <tr>
+                    <th>
+                        <?php if ($isIncomeMessage): ?>
+                            From: <?php echo $viewedMessage->getSenderName() ?>
+                        <?php else: ?>
+                            To: <?php echo $viewedMessage->getReceiverName() ?>
+                        <?php endif; ?>
+                    </th>
+                    <th>
+                        <?php echo CHtml::encode($viewedMessage->subject) ?>
+                    </th>
+                    <th>
+                        <?php echo date('d-m-Y H:i:s', strtotime($viewedMessage->created_at)) ?>
+                    </th>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <?php echo CHtml::encode($viewedMessage->body) ?>
+                    </td>
+                </tr>
+            </table>
 
-		<h2><?php echo MessageModule::t('Reply') ?></h2>
+            <?php $form = $this->beginWidget('CActiveForm', array(
+                'id'=>'message-view-delete-form',
+                'enableAjaxValidation'=>false,
+                'action' => $this->createUrl('messages/delete/', array('id' => $viewedMessage->id))
+            )); ?>
+            <button class="btn danger"><?php echo MessageModule::t("Delete") ?></button>
+            <?php $this->endWidget(); ?>
 
-		<div class="form">
-			<?php $form = $this->beginWidget('CActiveForm', array(
-				'id'=>'message-form',
-				'enableAjaxValidation'=>false,
-			)); ?>
+            <h2><?php echo MessageModule::t('Reply') ?></h2>
 
-			<?php echo $form->errorSummary($message, null, null, array('class' => 'alert-message block-message error')); ?>
+            <div class="form">
+                <?php $form = $this->beginWidget('CActiveForm', array(
+                    'id'=>'message-form',
+                    'enableAjaxValidation'=>false,
+                )); ?>
 
-			<div class="input">
-				<?php echo $form->hiddenField($message,'receiver_id'); ?>
-				<?php echo $form->error($message,'receiver_id'); ?>
-			</div>
-			<?php echo $form->labelEx($message,'subject'); ?>
-			<div class="input">
+                <?php echo $form->errorSummary($message, null, null, array('class' => 'alert-message block-message error')); ?>
 
-				<?php echo $form->textField($message,'subject'); ?>
-				<?php echo $form->error($message,'subject'); ?>
-			</div>
+                <div class="input">
+                    <?php echo $form->hiddenField($message,'receiver_id'); ?>
+                    <?php echo $form->error($message,'receiver_id'); ?>
+                </div>
+                <?php echo $form->labelEx($message,'subject'); ?>
+                <div class="input">
 
-			<?php echo $form->labelEx($message,'body'); ?>
-			<div class="input">
-				<?php echo $form->textArea($message,'body'); ?>
-				<?php echo $form->error($message,'body'); ?>
-			</div>
+                    <?php echo $form->textField($message,'subject'); ?>
+                    <?php echo $form->error($message,'subject'); ?>
+                </div>
 
-			<div class="buttons">
-				<button class="btn primary"><?php echo MessageModule::t("Reply") ?></button>
-			</div>
+                <?php echo $form->labelEx($message,'body'); ?>
+                <div class="input">
+                    <?php echo $form->textArea($message,'body'); ?>
+                    <?php echo $form->error($message,'body'); ?>
+                </div>
 
-			<?php $this->endWidget(); ?>
-		</div>
-	</div>
+                <div class="buttons">
+                    <button class="btn primary"><?php echo MessageModule::t("Reply") ?></button>
+                </div>
+
+                <?php $this->endWidget(); ?>
+            </div>
+        </div>
+    </div>
 </div>

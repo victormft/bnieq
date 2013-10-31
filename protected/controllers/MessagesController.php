@@ -86,7 +86,9 @@ class MessagesController extends Controller
 				if ($receiver) {
 					$receiverName = call_user_func(array($receiver, 'getFullName'));
 					$message->receiver_id = $receiver->id;
-                    $this->renderPartial('_compose', array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));                    
+                    
+                    EQuickDlgs::renderPartial('_compose',array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));
+                    //$this->renderPartial('_compose', array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));                    
 				}
 			}
 		}		
@@ -182,6 +184,8 @@ class MessagesController extends Controller
 			$viewedMessage->markAsRead();
 		}
 
+        //EQuickDlgs::renderPartial('view',array('viewedMessage' => $viewedMessage, 'message' => $message));
+        
 		$this->render('view', array('viewedMessage' => $viewedMessage, 'message' => $message));
 	}
 }

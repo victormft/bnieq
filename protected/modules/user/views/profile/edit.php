@@ -246,20 +246,66 @@ $('.arrow-container').mouseover(function(event){
 		
 		<div class="content-info edit">
             
-            <div class="content-info-unit">         
-                <div class="clabel">			
-                    <?php echo '<b>Experiências: </b>'; ?>
-                    <span class="tip">O que você já fez de mais interessante?</span>                    
-                </div>
-                <div class="editable-wrap">			
-                    <?php /*$this->widget('editable.EditableField', array(
-                        'type'      => 'textarea',
-                        'model'     => $profile,
-                        'attribute' => 'experiences',
-                        'url'       => array('updateEd'),  
-                     )); */?>  				
-                </div>				 
-            </div>   
+            <?php 
+            $criteria=new CDbCriteria;
+            $criteria->addCondition('t.user_id = :userId');
+            $criteria->params = array(
+                'userId' => $model->id,
+            );        
+            $criteria->select="t.*,(SELECT startup.name FROM startup WHERE t.startup_id=startup.id) AS startup_name";                
+
+            $startupProvider = new CActiveDataProvider('UserStartup', array('criteria' => $criteria,));            
+            ?>
+            
+            <?php $this->widget('bootstrap.widgets.TbExtendedGridView', array(
+                'id'=>'portfolio-grid',
+                'type'=>'striped bordered',
+                'enableSorting' => false,
+                //'sortableRows'=>true,
+                //'sortableAttribute' => 'order',
+                //'sortableAjaxSave' => true,
+                //'sortableAction' => 'user/profile/sortable',
+                //'afterSortableUpdate' => 'js:function(id, position){ console.log("id: "+id+", position:"+position);}',
+                'dataProvider' => $startupProvider,
+                'template' => "{items}",
+                'columns' => array(
+                    array(
+                        'class'=>'bootstrap.widgets.TbImageColumn',
+                        'imagePathExpression'=>'Yii::app()->request->baseUrl."/images/".$data->startup->logo0->name',
+                        'usePlaceKitten'=>FALSE,
+                        'htmlOptions'=>array('style'=>'width: 30px; height: 30px;')
+                    ),
+                    array(
+                        'header' => 'Startup',
+                        'type'=>'raw',
+                        'value'=>'CHtml::link($data->startup->name, array("/startup/view", "name"=>$data->startup->startupname))',                        
+                    ),
+                    array(
+                        'name'=>'position',
+                        'value'=>'UserModule::t($data->position)',
+                    ),
+                    array(
+                        'name' => 'title',
+                        'header' => 'Título',
+                        'class' => 'bootstrap.widgets.TbEditableColumn',
+                        'editable' => array(
+                            'type' => 'text',
+                            'url' => array('updatestartuprelational'),
+                            'mode'=>'popup',
+                        )
+                    ),
+                    array(
+                        'class' => 'bootstrap.widgets.TbToggle2Column',
+                        'toggleAction' => 'toggle',
+                        'name' => 'profile',
+                        'header' => 'Perfil',
+                        'htmlOptions'=>array('style'=>'text-align: center;')
+                    ),
+                    
+                ), 
+            )); ?>
+            
+            
             			
 		</div>
 		

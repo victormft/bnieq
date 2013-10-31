@@ -171,8 +171,24 @@ $('.arrow-container').mouseover(function(event){
                     'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
                     )); 
                 }
-                
-                if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model));
+                echo "<button class='btn-msg-wrap' type='button'>";
+                EQuickDlgs::ajaxLink(
+                    array(
+                        'controllerRoute' => 'messages/composewithid', //'member/view'
+                        'actionParams' => array('id'=>$model->id), //array('id'=>$model->member->id),
+                        //'dialogTitle' => 'Detailview',
+                        'dialogWidth' => 400,
+                        'dialogHeight' => 420,
+                        'openButtonText' => 'Message',
+                        'closeButtonText' => 'Close',
+                        'openButtonHtmlOptions' => array(
+                            'style' => 'width:70px; padding:12px 5px;', 
+                            'class' => 'btn btn-warning',
+                        )
+                    )
+                );
+                echo "</button>";
+                //if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model));
             ?>
         </span>
         <?php endif; ?>
@@ -232,13 +248,13 @@ $('.arrow-container').mouseover(function(event){
             <div class="cards-wrap">
                 <?php foreach($model->startups as $startup):  ?>
                 <?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$model->id, ':s_id'=>$startup->id)); ?>
-                <?php //if($relational_tbl->position=='Founder'):?>
+                <?php if($relational_tbl->profile):?>
                 <div class="startup-card">
-                    <div class="startup-pic" style="overflow: auto;"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'" id="startup-card-img"/>', array('/startup/view', 'name'=>$startup->name)); ?> </div>
-                    <div class="startup-name"><?php echo CHtml::link($startup->name, array('/startup/view', 'name'=>$startup->name)); ?></div>
-                    <div class="user-position"><?php echo UserModule::t($relational_tbl->position);?></div>
+                    <div class="startup-pic" style="overflow: auto;"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'" id="startup-card-img"/>', array('/startup/view', 'name'=>$startup->startupname)); ?> </div>
+                    <div class="startup-name"><?php echo CHtml::link($startup->name, array('/startup/view', 'name'=>$startup->startupname)); ?></div>
+                    <div class="user-position"><?php echo ($relational_tbl->title === NULL || $relational_tbl->title === '') ? UserModule::t($relational_tbl->position) :  UserModule::t($relational_tbl->title);?></div>
                 </div>
-                <?php //endif;  ?>
+                <?php endif;  ?>
                 <?php endforeach;  ?>
             </div>
             

@@ -619,4 +619,9 @@ div.language ul li a img:hover{
     width: 780px;
 }
 
+#portfolio-grid td
+{
+    vertical-align: middle;
+}
+
 

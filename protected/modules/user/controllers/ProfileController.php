@@ -28,11 +28,11 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('profile', 'edit'),
+				'actions'=>array('profile', 'edit', 'toggle'),
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors'),
+				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors', 'updatestartuprelational'),
                 'verbs'=>array('POST'),
 				'users'=>array('@'),
 			),
@@ -65,8 +65,7 @@ class ProfileController extends Controller
 	{	        
 		$model = $this->loadModel($username);
         if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id)))
-            throw new CHttpException(403, 'You cannot edit this profile.');		    
-        
+            throw new CHttpException(403, 'You cannot edit this profile.');	
         $profile = $model->profile;  
         
         if(isset($_POST['Profile']['pic']))
@@ -203,8 +202,27 @@ class ProfileController extends Controller
         $es = new TbEditableSaver('Profile');  //'Profile' is name of model to be updated        
         $es->update();
     }
-	    
-    /**
+    
+    public function actionUpdateStartupRelational()
+    {
+        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$_POST['pk'])))
+            throw new CHttpException(403, 'You cannot edit this profile.');
+        
+        $es = new TbEditableSaver('UserStartup');  //'Profile' is name of model to be updated        
+        $es->update();
+    }
+    
+    public function actions()
+    {
+        return array(
+            'toggle' => array(
+                'class'=>'bootstrap.actions.TbToggle2Action',
+                'modelName' => 'UserStartup',
+            ),
+        );
+    }
+
+        /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable

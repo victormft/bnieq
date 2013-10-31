@@ -438,7 +438,7 @@ class User extends CActiveRecord
         $string="";
         $lastElement = end($array);
         foreach($array as $a) {
-            $string = $string.CHtml::link($a->name, array('/startup/view', 'name'=>$a->name)); ;
+            $string = $string.CHtml::link($a->name, array('/startup/view', 'name'=>$a->startupname)); ;
             if ($a!==$lastElement) $string = $string.', ';
         } 
         
