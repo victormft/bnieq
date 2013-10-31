@@ -475,6 +475,11 @@ class Startup extends CActiveRecord
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
 	}
+    
+    public function getUserRole($user_id) {
+        $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$user_id, ':s_id'=>$this->id));
+        return UserModule::t($relational_tbl->position);
+    }
 		
 	
 }

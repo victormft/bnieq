@@ -34,6 +34,8 @@ class UserStartup extends CActiveRecord
 			array('user_id, startup_id', 'length', 'max'=>20),
 			array('position', 'length', 'max'=>45),
 			array('title', 'length', 'max'=>100),
+            array('title', 'safe'),
+
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, startup_id, position, title, current_position, profile', 'safe', 'on'=>'search'),
@@ -48,6 +50,7 @@ class UserStartup extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'startup' => array(self::BELONGS_TO, 'Startup', 'startup_id'),
 		);
 	}
 

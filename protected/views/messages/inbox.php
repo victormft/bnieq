@@ -23,7 +23,22 @@
                             'name' => 'subject',
                             'type'=>'raw',
                             'value' => 'CHtml::link(CHtml::encode($data->subject),array("messages/view","message_id"=>$data->id))',
+                            
+                            /*'EQuickDlgs::ajaxLink(
+                                            array(
+                                                "controllerRoute" => "messages/view", 
+                                                "actionParams" => array("message_id"=>$data->id), 
+                                                "dialogTitle" => "Detailview",
+                                                "dialogWidth" => 800,
+                                                "dialogHeight" => 600,
+                                                "openButtonText" => "$data->subject",
+                                                "closeButtonText" => "Close",
+                                            )
+                                        );' 
+                             * 
+                             */
                         ),
+                        
                         array(
                             'name' => 'created_at',
                             'type'=>'raw',
