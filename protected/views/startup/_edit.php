@@ -78,7 +78,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 				data: $('#form-team').serialize(),
 				success: function(data){
 					$('.team-ready').append(data.res);
-					$('.team-item').show('slow');	
+					$('.team-item').show('slow').animate({opacity: 1}, 250);	
 					$('.team-btn').text('Save')
 				}
 			});
@@ -95,7 +95,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name='+getUrlVars()['name'],
 				dataType: 'json',
 				success: function(data){
-					$('.deletable').hide('slow', function(){ $('.deletable').remove(); });
+					$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
 					
 				},
 				error: function(){
@@ -829,83 +829,4 @@ function getUrlVars()
 	</div>	
 
 </div>
-<!--
-	<b><?php echo CHtml::encode($model->getAttributeLabel('one_line_pitch')); ?>:</b>
-	<?php echo CHtml::encode($model->one_line_pitch); ?>
-	<br />
-
-	
-	<b><?php echo CHtml::encode($model->getAttributeLabel('foundation')); ?>:</b>
-	<?php echo CHtml::encode($model->foundation); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('email')); ?>:</b>
-	<?php echo CHtml::encode($model->email); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('telephone')); ?>:</b>
-	<?php echo CHtml::encode($model->telephone); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('skype')); ?>:</b>
-	<?php echo CHtml::encode($model->skype); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('company_number')); ?>:</b>
-	<?php echo CHtml::encode($model->company_number); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('facebook')); ?>:</b>
-	<?php echo CHtml::encode($model->facebook); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('twitter')); ?>:</b>
-	<?php echo CHtml::encode($model->twitter); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('linkedin')); ?>:</b>
-	<?php echo CHtml::encode($model->linkedin); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('location')); ?>:</b>
-	<?php echo CHtml::encode($model->location); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('client_segment')); ?>:</b>
-	<?php echo CHtml::encode($model->client_segment); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('value_proposition')); ?>:</b>
-	<?php echo CHtml::encode($model->value_proposition); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('market_size')); ?>:</b>
-	<?php echo CHtml::encode($model->market_size); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('sales_marketing')); ?>:</b>
-	<?php echo CHtml::encode($model->sales_marketing); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('revenue_generation')); ?>:</b>
-	<?php echo CHtml::encode($model->revenue_generation); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('competitors')); ?>:</b>
-	<?php echo CHtml::encode($model->competitors); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('competitive_advantage')); ?>:</b>
-	<?php echo CHtml::encode($model->competitive_advantage); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('video')); ?>:</b>
-	<?php echo CHtml::encode($model->video); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($model->getAttributeLabel('create_time')); ?>:</b>
-	<?php echo CHtml::encode($model->create_time); ?>
-	<br />
--->
-	 
 
