@@ -111,6 +111,18 @@ $('.remove-search').click(function(event){
             <?php endif?>
 		</ul>
     </div>
+    
+    <?php 
+    if(Yii::app()->getModule('user')->isAdmin()){
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'id'=>'admin-btn',
+            'label'=>'ADMIN',
+            //'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+            'size'=>'large', // null, 'large', 'small' or 'mini'
+            'url'=>$this->createUrl('/user/admin'),//array('unfollow','name'=>$model->name),
+        )); 
+    } ?>
+    
 </div>
     
     <?php $this->widget('application.components.LangBox'); ?>

@@ -40,7 +40,9 @@ $('.arrow-container').mouseover(function(event){
 
 <div class="profile-header" style="padding-bottom: 15px;">
     
-    <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="user-profile-img" alt=" " >    
+    <div id="startup-profile-img">
+        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>">    
+    </div>
     
 	<div class="user-profile-header-info" style="width: 600px">    
         

@@ -85,7 +85,19 @@ class ProfileController extends Controller
 								
 					$profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
 
-					$model_img=new Image;
+                    $image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+                    
+                    if($image->width>=$image->height)
+                    {
+                        $image->resize(120, 120, ImageExt::WIDTH)->quality(75)->sharpen(20);
+                    }
+                    else
+                        $image->resize(120, 120, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+
+                    $image->save(); // or $image->save('images/small.jpg');
+                    
+                    
+                    $model_img=new Image;
 					$model_img->name=$newFileName;
 					$model_img->extension=$profile->pic->type;
 					$model_img->size=$profile->pic->size;	
@@ -105,7 +117,7 @@ class ProfileController extends Controller
 				}
 				else
 				{
-					unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
+					//unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
 					
 					$img=Image::model()->findByPk($profile->profile_picture);
 					$ext_arr = explode('.', $img->name);
@@ -116,8 +128,12 @@ class ProfileController extends Controller
 					
 					$img->save();
 					
-					$profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
-					
+                    $profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					                    
+					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					$image->resize(400, 300)->quality(75)->sharpen(20);
+					$image->save(); // or $image->save('images/small.jpg');
+                    
 					$this->refresh();
 				}
 			}
@@ -204,10 +220,7 @@ class ProfileController extends Controller
     }
     
     public function actionUpdateStartupRelational()
-    {
-        if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$_POST['pk'])))
-            throw new CHttpException(403, 'You cannot edit this profile.');
-        
+    {        
         $es = new TbEditableSaver('UserStartup');  //'Profile' is name of model to be updated        
         $es->update();
     }
