@@ -112,6 +112,10 @@ Yii::app()->clientScript->registerScript('create-script',
 	</div>
 	</div>
 </div>
+
+
+
+
 	<!--
 	<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => 'Logo'), 'class'=>'span4')); ?>
 	<?php echo $form->error($model,'pic', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>

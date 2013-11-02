@@ -206,6 +206,8 @@ class Startup extends CActiveRecord
 			$this->selecionada=1;
 		}
 		
+		$criteria->addCondition('t.published = 1');
+		
 		
 		$criteria->compare('t.id',$this->id,true);
 		$criteria->compare('t.name',$this->name,true);

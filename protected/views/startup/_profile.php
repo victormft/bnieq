@@ -202,6 +202,7 @@ $('.video-images-items').carouFredSel({
 		
 	</div>	
 	
+	<?php if($model->video || $model->images):?>
 	<div class="content-wrap">
 
 		<div class="content-head">
@@ -220,6 +221,8 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
+	
 	
 	<?php if($model->tech):?>
 	<div class="content-wrap">
