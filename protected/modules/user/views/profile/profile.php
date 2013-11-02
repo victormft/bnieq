@@ -102,10 +102,14 @@ $('.arrow-container').mouseover(function(event){
 
 <?php endif; ?>
 
+
+
 <div class="profile-header">	
     
-    <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>" id="user-profile-img">
-	
+    <div id="startup-profile-img">
+        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>">
+	</div>
+    
 	<div class="user-profile-header-info">     
 
         <div class="profile-name">
@@ -143,12 +147,14 @@ $('.arrow-container').mouseover(function(event){
 	
 	<div class="profile-header-right">
 			
-        <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
+        
 		<span class="follow-btn">
             
             <div class="follow-info">
                 <div class="follow-count"><?php echo count($model->followers); ?></div><div class="follow-status">Followers</div>
             </div>
+            
+            <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
             <?php 
                 if(!$model->hasUserFollowing(Yii::app()->user->id))
                 {
@@ -171,54 +177,43 @@ $('.arrow-container').mouseover(function(event){
                     'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
                     )); 
                 }
-                echo "<button class='btn-msg-wrap' type='button'>";
+                //echo "<button class='btn-msg-wrap' type='button'>";
                 EQuickDlgs::ajaxLink(
                     array(
                         'controllerRoute' => 'messages/composewithid', //'member/view'
                         'actionParams' => array('id'=>$model->id), //array('id'=>$model->member->id),
                         //'dialogTitle' => 'Detailview',
-                        'dialogWidth' => 400,
-                        'dialogHeight' => 420,
+                        'dialogWidth' => 450,
+                        'dialogHeight' => 500,
                         'openButtonText' => 'Message',
                         'closeButtonText' => 'Close',
                         'openButtonHtmlOptions' => array(
-                            'style' => 'width:70px; padding:12px 5px;', 
+                            'style' => 'width:70px; padding:12px 5px; margin-left: 10px', 
                             'class' => 'btn btn-warning',
                         )
                     )
                 );
-                echo "</button>";
+                //echo "</button>";
                 //if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model));
             ?>
+            <?php endif; ?>
         </span>
-        <?php endif; ?>
+        
         
         <?php if(Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id))): ?>
-			<span class="edit-btn">
+			<span class="edit-btn-user">
 			
 				<?php $this->widget('bootstrap.widgets.TbButton', array(
-				'label'=>'Editar',
-				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array('edit','username'=>$model->username),
-				'htmlOptions'=>array('style'=>'width:50px;'),
-					)); 
+                    'label'=>'Editar',
+                    'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                    'size'=>'normal', // null, 'large', 'small' or 'mini'
+                    'url'=>array('edit','username'=>$model->username),
+                )); 
 				?>
                 
-                <?php 
-                if(Yii::app()->getModule('user')->isAdmin()){
-                    $this->widget('bootstrap.widgets.TbButton', array(
-                        'label'=>'ADMIN',
-                        'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                        'size'=>'large', // null, 'large', 'small' or 'mini'
-                        'url'=>$this->createUrl('/user/admin'),//array('unfollow','name'=>$model->name),
-                    )); 
-                } ?>
-                
 			</span>
+        
         <?php endif; ?>
-        
-        
         
         <?php //if($model->id !== Yii::app()->user->id): ?>
         <?php //$this->widget('bootstrap.widgets.TbButton', array(
@@ -401,14 +396,48 @@ $('.arrow-container').mouseover(function(event){
             <i class="icon-circle-arrow-up profile-icon"></i> Referências & Follows
         </div>
 		
-		<div class="content-info">
-            
-            <div class="content-info-unit">         
-                <div class="clabel">			
-                    <?php echo 'COMMING SOON...'; ?>                   
-                </div>			 
-            </div>
-            
+		<div class="content-info" style="padding: 0;">            
+            <div class="content-info-unit">
+                <div class="follow-block">
+                <?php EQuickDlgs::ajaxLink(
+                    array(
+                        'controllerRoute' => 'user/user/followpop',
+                        'actionParams' => array('id'=>$model->id, 'follow'=>'ing', 'attr'=>'followed'),
+                        'dialogTitle' => 'Following',
+                        'dialogWidth' => 800,
+                        'dialogHeight' => 600,
+                        'openButtonText' => 'Following',
+                        'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                    )
+                );?>
+                </div>
+                <div class="follow-block">
+                <?php EQuickDlgs::ajaxLink(
+                    array(
+                        'controllerRoute' => 'user/user/followpop',
+                        'actionParams' => array('id'=>$model->id, 'follow'=>'stup'),
+                        'dialogTitle' => 'Startups followed',
+                        'dialogWidth' => 800,
+                        'dialogHeight' => 600,
+                        'openButtonText' => 'Startups',
+                        'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                    )
+                );?>
+                </div>
+                <div class="follow-block">
+                <?php EQuickDlgs::ajaxLink(
+                    array(
+                        'controllerRoute' => 'user/user/followpop',
+                        'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
+                        'dialogTitle' => 'Followers',
+                        'dialogWidth' => 800,
+                        'dialogHeight' => 600,
+                        'openButtonText' => 'Followers',
+                        'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                    )
+                );?>
+                </div>                		 
+            </div>            
 		</div>
     </div>
 		

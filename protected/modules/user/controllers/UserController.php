@@ -25,7 +25,7 @@ class UserController extends Controller
 	{
 		return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index'),
+				'actions'=>array('index', 'followpop'),
 				'users'=>array('*'),
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -151,7 +151,26 @@ class UserController extends Controller
 			throw new CHttpException(404, 'Page not found.');	
 	}
     
-    /**
+    public function actionFollowPop($id, $follow, $attr=NULL)
+    {
+        $model = $this->loadUser($id);
+        
+        switch ($follow){
+            case 'ers':
+                $provider = $model->followers;
+                break;
+            case 'ing':
+                $provider = $model->following;
+                break;
+            case 'stup':
+                $provider = $model->startupFollows;
+                EQuickDlgs::render('_sfollowpop',array('provider'=>$provider));
+                break;
+        }
+        EQuickDlgs::render('_followpop',array('provider'=>$provider, 'attr'=>$attr));
+    }
+
+        /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 */

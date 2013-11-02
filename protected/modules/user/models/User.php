@@ -93,6 +93,7 @@ class User extends CActiveRecord
 			'skills' => array(self::MANY_MANY, 'Skill', 'user_skill(user_id, skill_id)'),
 			'universities' => array(self::MANY_MANY, 'University', 'user_university(user_id, university_id)'),
 			'userWebsites' => array(self::HAS_MANY, 'UserWebsite', 'user_id'),
+            'startupFollows' => array(self::MANY_MANY, 'Startup', 'startup_follow(user_id, startup_id)'),
 		);
         
 	}
