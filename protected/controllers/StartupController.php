@@ -255,11 +255,15 @@ class StartupController extends Controller
 		
 		else
 		{
-			$user = Yii::app()->getComponent('user');
-            $user->setFlash(
-                'warning',
-                '<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)" e "Produto" e clique no botão \'Publicar\'.'
-            );
+			if($model->published==0)
+			{
+				$user = Yii::app()->getComponent('user');
+				$user->setFlash(
+					'warning',
+					'<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)" e "Produto" e clique no botão \'Publicar\'.'
+				);
+			}
+			
 			$this->render('view_edit',array(
 				'model'=>$model,
 			));
@@ -293,6 +297,8 @@ class StartupController extends Controller
 			
 			
 			$model->startupname = $startupname; 
+			
+			$model->published=0;
 			
 			// !!!!!!!!!!!! end formatting startupname !!!!!!!!!!!!!!!
 			
@@ -494,6 +500,12 @@ class StartupController extends Controller
 			else if($_GET['g']=='Novidades')
 				$model->group=$_GET['g'];
 		}	
+		
+		if(isset($_GET['c']))
+		{
+			$model->location=$_GET['c'];
+		}
+		
 			
 		//if(isset($_GET['Startup']))
 		//	$model->attributes=$_GET['Startup'];
