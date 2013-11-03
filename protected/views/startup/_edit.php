@@ -122,6 +122,23 @@ function getUrlVars()
 
 ?>
 
+<div class="spacing-1"></div>
+
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+    'block' => true,
+    'fade' => true,
+    'closeText' => '&times;', // false equals no close link
+    'events' => array(),
+    'htmlOptions' => array(),
+    'userComponentId' => 'user',
+    'alerts' => array( // configurations per alert type
+        // success, info, warning, error or danger
+        
+        'error' => array('block' => false, 'closeText' => '&times;'),
+		'warning' => array('block' => false, 'closeText' => false),
+    ),
+));?>
+
 <div class="profile-header">	
 
 	<div id="startup-profile-img">
@@ -271,14 +288,23 @@ function getUrlVars()
 	
 	<span class="teste" style="float:right;">
 			
-			
-			<?php $this->widget('bootstrap.widgets.TbButton', array(
-				'label'=>'Voltar',
-				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array('view','name'=>$model->startupname),
-				)); 
-			?>
+			<?php if($model->published==1):?>
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Voltar',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('/'.$model->startupname),
+					)); 
+				?>
+			<?php else:?>
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Publicar',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('publish','name'=>$model->startupname),
+					)); 
+				?>	
+			<?php endif;?>
 			
 			
 		
@@ -310,6 +336,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline',
 					 )); ?>  
 					 			
@@ -338,6 +365,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
@@ -420,6 +448,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
@@ -432,6 +461,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
@@ -444,6 +474,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
@@ -456,6 +487,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
@@ -483,6 +515,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -511,6 +544,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -539,6 +573,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -567,6 +602,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -595,6 +631,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -623,6 +660,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -661,6 +699,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'source'    => $model->getCompanyStageOptions(), 
 						'placement' => 'right',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline',
 					 )); ?>  
 									
@@ -689,6 +728,7 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'source'    => $model->getCompanySizeOptions(), 
 						'placement' => 'right',
+						'emptytext' => 'Vazio',
 						'mode'=>'inline',
 					 )); ?>  
 									
@@ -718,6 +758,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'format'      => 'yyyy-mm-dd', //format in which date is expected from model and submitted to server
 						'viewformat'  => 'dd/mm/yyyy', //format in which date is displayed
+						'emptytext' => 'Vazio',
 						'mode'=>'inline',
 					 )); ?>  
 									

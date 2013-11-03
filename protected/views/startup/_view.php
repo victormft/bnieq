@@ -1,12 +1,12 @@
 <div class="view-list">
 	
 	<div class="startup-view-img">
-		<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" />', array('view', 'name'=>$data->startupname)); //id="Startup-list-img"?>	
+		<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" />', array('/'.$data->startupname));?>	
 	</div>
 	
-	<div class="view-list-text">
+	<div class="view-list-text" style="overflow:hidden; max-width:280px;">
 		
-		<?php echo CHtml::link(CHtml::encode($data->name),array('view','name'=>$data->startupname), array('class'=>'startup-view-name'));?>
+		<?php echo CHtml::link(CHtml::encode($data->name),array('/'.$data->startupname), array('class'=>'startup-view-name'));?>
 		
 		<div class="startup-view-pitch">
 			<?php echo CHtml::encode($data->one_line_pitch); ?>

@@ -63,6 +63,7 @@ $('#searchform').change(function(event) {
 			
 			var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
 			var c_stage = ($('#c_stage').val()=='') ? '' : '&c_stage='+encodeURIComponent($('#c_stage').val());
+			var c = ($('#c').val()=='') ? '' : '&c='+encodeURIComponent($('#c').val());
 			
 			
 			var sec=[]; 
@@ -77,13 +78,15 @@ $('#searchform').change(function(event) {
 			
 			};
 			
-            location.href = 'startup?g='+g+n+c_stage+secs;
+            location.href = 'startup?g='+g+n+c_stage+c+secs;
 });
 
 $('.g').click(function(event) {
 			var g = $(this).text();
 			var n = (getUrlVars()['n'] == null) ? '' : '&n='+getUrlVars()['n'];
 			var c_stage = (getUrlVars()['c_stage'] == null) ? '' : '&c_stage='+getUrlVars()['c_stage'];
+			var c = (getUrlVars()['c'] == null) ? '' : '&c='+getUrlVars()['c'];
+			
 			
 			var sec=[]; 
 			$('input[type=checkbox]:checked').each(function(){
@@ -97,7 +100,7 @@ $('.g').click(function(event) {
 			
 			};
 			
-			location.href = 'startup?g='+g+n+c_stage+secs;
+			location.href = 'startup?g='+g+n+c_stage+c+secs;
 			
 });
 
@@ -281,7 +284,7 @@ function SearchFunc()   {
 				$this->widget(
 					'bootstrap.widgets.TbSelect2',
 					array(
-						'name' => 'city',
+						'attribute' => 'location',
 						'model'=>$dataProvider,
 						'data' =>array_merge(array('0'=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
 						'options'=>array(
@@ -289,6 +292,9 @@ function SearchFunc()   {
 							'dropdownAutoWidth'=> true,
 							'minimumInputLength'=> 3,
 							'width'=>'240px',
+						),
+						'htmlOptions'=>array(
+							'name'=>'c',
 						),
 					)
 				);

@@ -36,9 +36,9 @@ Yii::app()->clientScript->registerScript('create-script',
 <?php //echo $form->errorSummary($model); ?>
 
 <div class="group-wrap" style="border-bottom:1px dashed #aaa; padding-bottom:30px; overflow:auto; margin-bottom:40px;">
-	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Máximo de 50 caracteres. Evite caracteres como & ' ".</div></div>
+	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464; box-shadow: -4px 4px 5px 0px #eaeaea;"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Máximo de 40 caracteres. Evite caracteres especiais , como &.</div></div>
 	<div style="float:left;">
-	<?php echo $form->textFieldRow($model,'name',array('labelOptions' => array('label' => 'Nome da Startup', 'class'=>'custom-label'), 'class'=>'span3','maxlength'=>30)); ?>
+	<?php echo $form->textFieldRow($model,'name',array('labelOptions' => array('label' => 'Nome da Startup', 'class'=>'custom-label'), 'class'=>'span3','maxlength'=>40)); ?>
 	<?php echo $form->error($model,'name', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>
 	<div class="tip" style="margin-left:180px; margin-top:5px; color:#646464; width:300px; font-style:italic;">
 	Nome que aparecerá no perfil público da Startup. Quanto mais direto e objetivo melhor.
@@ -80,9 +80,9 @@ Yii::app()->clientScript->registerScript('create-script',
 	
 
 <div class="group-wrap" style="border-bottom:1px dashed #aaa; padding-bottom:30px; overflow:auto; margin-bottom:40px;">
-	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Máximo de 150 caracteres. A ideia é ser bem sucinto!!</div></div>
+	<div class="warn" style="float:right; width:270px; border: 1px solid #ddd; background:#f4f4f4; border-radius:3px; padding:20px 15px 20px 5px; position:relative; color:#646464"><i class="icon-warning-sign" style="font-size:23px; color:#f28d0b; position:absolute; top:50%; margin-top:-8px;"></i><div style="margin-left:35px;">Máximo de 80 caracteres. A ideia é ser bem sucinto!!</div></div>
 	<div style="float:left;">
-	<?php echo $form->textFieldRow($model,'one_line_pitch',array('labelOptions' => array('label' => 'Pitch de uma Linha', 'class'=>'custom-label'), 'class'=>'span3','maxlength'=>30)); ?>
+	<?php echo $form->textFieldRow($model,'one_line_pitch',array('labelOptions' => array('label' => 'Pitch de uma Linha', 'class'=>'custom-label'), 'class'=>'span3','maxlength'=>80)); ?>
 	<?php echo $form->error($model,'one_line_pitch', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>
 	<div class="tip" style="margin-left:180px; margin-top:5px; color:#646464; width:300px; font-style:italic;">
 	Uma frase breve que descreva sua Startup. Na página de edição será possível descrever com mais detalhes.
@@ -112,6 +112,10 @@ Yii::app()->clientScript->registerScript('create-script',
 	</div>
 	</div>
 </div>
+
+
+
+
 	<!--
 	<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => 'Logo'), 'class'=>'span4')); ?>
 	<?php echo $form->error($model,'pic', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>

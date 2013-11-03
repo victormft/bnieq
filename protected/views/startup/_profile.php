@@ -127,7 +127,7 @@ $('.video-images-items').carouFredSel({
 				'label'=>'Editar',
 				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array('edit','name'=>$model->startupname),
+				'url'=>array('edit/'.$model->startupname),
 				'htmlOptions'=>array('style'=>'text-shadow: 1px 1px 1px #555;', /*'class'=>'profile-btn'*/),
 					)); 
 				?>
@@ -202,6 +202,7 @@ $('.video-images-items').carouFredSel({
 		
 	</div>	
 	
+	<?php if($model->video || $model->images):?>
 	<div class="content-wrap">
 
 		<div class="content-head">
@@ -220,6 +221,8 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
+	
 	
 	<?php if($model->tech):?>
 	<div class="content-wrap">

@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit', 'follow', 'unfollow'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam'),
+				'actions'=>array('create', 'edit', 'follow', 'unfollow'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam', 'publish'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -57,9 +57,63 @@ class StartupController extends Controller
 	*/
 	public function actionView($name)
 	{
-		$this->render('view',array(
-		'model'=>$this->loadModel($name),
-		));
+		$model=$this->loadModel($name);
+		
+		if($model->published==1)
+		{
+			$this->render('view',array(
+			'model'=>$model,
+			));
+		}
+		
+		else
+		{
+			 if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+				throw new CHttpException(404, 'Page not found.');
+			
+			else
+				$this->redirect(array('publish','name'=>$model->startupname));
+		}
+	}
+	
+	public function actionPublish($name)
+	{
+		$model=$this->loadModel($name);
+       
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar essa startup!');
+		
+		if(!$model->sectors || !$model->product_description)
+		{
+			$alert_sectors=empty($model->sectors)?'<li>Setor(es)</li>':'';
+			$alert_product=empty($model->product_description)?'<li>Produto</li>':'';
+			
+			$user = Yii::app()->getComponent('user');
+            $user->setFlash(
+                'error',
+                '<strong>Atenção!</strong> Para publicar o perfil, preencha no mínimo os campos listados a seguir:<p><ul>'.$alert_product.$alert_sectors.'</ul></p>'
+            );
+			$this->redirect(array('edit','name'=>$model->startupname));
+		}
+
+		else
+		{
+			$model->published=1;
+			
+			if($model->save())
+				$this->redirect(array('view','name'=>$model->startupname));
+			
+			else
+			{
+				$user = Yii::app()->getComponent('user');
+				$user->setFlash(
+					'error',
+					'<strong>Ops!</strong> Ocorreu algum erro. Tente novamente.'
+				);
+				$this->redirect(array('edit','name'=>$model->startupname));		
+			}
+		}	 
+
 	}
 	
 	public function actionEdit($name)
@@ -201,6 +255,15 @@ class StartupController extends Controller
 		
 		else
 		{
+			if($model->published==0)
+			{
+				$user = Yii::app()->getComponent('user');
+				$user->setFlash(
+					'warning',
+					'<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)" e "Produto" e clique no botão \'Publicar\'.'
+				);
+			}
+			
 			$this->render('view_edit',array(
 				'model'=>$model,
 			));
@@ -234,6 +297,8 @@ class StartupController extends Controller
 			
 			
 			$model->startupname = $startupname; 
+			
+			$model->published=0;
 			
 			// !!!!!!!!!!!! end formatting startupname !!!!!!!!!!!!!!!
 			
@@ -303,7 +368,7 @@ class StartupController extends Controller
                 {		
                     $auth = Yii::app()->authManager;
                     $auth->assign("StartupOwner",Yii::app()->user->id);
-                    $this->redirect(array('view','name'=>$model->startupname));
+                    $this->redirect(array('edit','name'=>$model->startupname));
                 }				
 			}
 		}
@@ -435,6 +500,12 @@ class StartupController extends Controller
 			else if($_GET['g']=='Novidades')
 				$model->group=$_GET['g'];
 		}	
+		
+		if(isset($_GET['c']))
+		{
+			$model->location=$_GET['c'];
+		}
+		
 			
 		//if(isset($_GET['Startup']))
 		//	$model->attributes=$_GET['Startup'];
