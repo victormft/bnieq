@@ -46,6 +46,7 @@ class SettingsController extends Controller
     public function actionPassword()
 	{
         $model = new UserChangePassword;
+        $user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
 		if (Yii::app()->user->id) {
 			
 			// ajax validator
@@ -56,17 +57,45 @@ class SettingsController extends Controller
 			}
 			
 			if(isset($_POST['UserChangePassword'])) {
-					$model->attributes=$_POST['UserChangePassword'];
-					if($model->validate()) {
-						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
-						$new_password->password = UserModule::encrypting($model->password);
-						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
-						$new_password->save();
-						Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
-						$this->redirect(array("password"));
-					}
+                $model->attributes=$_POST['UserChangePassword'];
+                if($model->validate()) {
+                    $new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+                    $new_password->password = UserModule::encrypting($model->password);
+                    $new_password->activkey=UserModule::encrypting(microtime().$model->password);
+                    $new_password->save();
+                    Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
+                    $this->redirect(array("password"));
+                }
 			}
-			$this->render('changepassword',array('model'=>$model));
+			else $this->render('changepassword',array('model'=>$model, 'user'=>$user));
+	    }
+        else $this->redirect(Yii::app()->controller->module->loginUrl);
+	}
+    
+    public function actionPasswordNull()
+	{
+        $model = new UserChangePasswordNull;
+		if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='changepasswordnull-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['UserChangePasswordNull'])) {
+                $model->attributes=$_POST['UserChangePasswordNull'];
+                if($model->validate()) {
+                    $new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+                    $new_password->password = UserModule::encrypting($model->password);
+                    $new_password->activkey = UserModule::encrypting(microtime().$model->password);
+                    $new_password->save();
+                    Yii::app()->user->setFlash('success',UserModule::t("New password is saved."));
+                    $this->redirect($this->createUrl('settings/password'));
+                }
+			}
+			else EQuickDlgs::render('_changepasswordnull',array('model'=>$model));
 	    }
         else $this->redirect(Yii::app()->controller->module->loginUrl);
 	}

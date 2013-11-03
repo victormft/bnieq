@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.MessageModule::t("Messages:inbox"); ?>
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Messages:inbox"); ?>
 
 
 <div class="row">
@@ -6,13 +6,14 @@
     
     <div class="messages-wrap">
         <div class="span8">
-            <h2><?php echo MessageModule::t('Inbox'); ?></h2>
+            <h2><?php echo UserModule::t('Inbox'); ?></h2>
 
                 <?php $this->widget('bootstrap.widgets.TbGridView', array(
                     'id'=>'message-grid',
                     'type' => 'striped bordered condensed',
                     'dataProvider'=>$model->search(),
                     'filter'=>$model,
+                    'rowCssClassExpression'=>'$data->is_read ? "read" : "unread"',
                     'columns'=>array(
                         array(
                             'name' => 'sender_name',

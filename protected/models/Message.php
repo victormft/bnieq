@@ -81,7 +81,7 @@ class Message extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 
-		$module = Yii::app()->getModule('message');
+		//$module = Yii::app()->getModule('message');
 
 		return array(
 			'receiver' => array(self::BELONGS_TO, 'User', 'receiver_id'),

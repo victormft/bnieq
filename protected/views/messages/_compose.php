@@ -9,7 +9,7 @@
         ),
     )); ?>
 
-    <p class="note"><?php echo MessageModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+    <p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
     <?php echo $form->errorSummary($model, null, null, array('class' => 'alert-message block-message error')); ?>
 
@@ -26,7 +26,7 @@
     </div>
 
     <div class="buttons">
-        <button class="btn primary"><?php echo MessageModule::t("Send") ?></button>
+        <button class="btn primary"><?php echo UserModule::t("Send") ?></button>
     </div>
 
     <?php $this->endWidget(); ?>

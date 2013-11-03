@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.MessageModule::t("Messages:sent"); ?>
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Messages:sent"); ?>
 
 
 
@@ -7,7 +7,7 @@
     
     <div class="messages-wrap">
         <div class="span8">
-        <h2><?php echo MessageModule::t('Sent'); ?></h2>
+        <h2><?php echo UserModule::t('Sent'); ?></h2>
 
                 <?php $this->widget('bootstrap.widgets.TbGridView', array(
                     'id'=>'message-grid',
