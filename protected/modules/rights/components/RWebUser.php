@@ -8,6 +8,10 @@
 */
 class RWebUser extends CWebUser
 {
+    
+    // Store model to not repeat query.
+    private $_model;
+  
 	/**
 	* Actions to be taken after logging in.
 	* Overloads the parent method in order to mark superusers.
@@ -82,4 +86,21 @@ class RWebUser extends CWebUser
 		
 		return $returnUrl!==null ? CHtml::normalizeUrl($returnUrl) : CHtml::normalizeUrl($defaultUrl);
 	}
+    
+    function getUsername(){
+        $user = $this->loadUser(Yii::app()->user->id);
+        return $user->username;
+    }
+    
+    // Load user model.
+    protected function loadUser($id=null)
+    {
+        if($this->_model===null)
+        {
+            if($id!==null)
+                $this->_model=User::model()->findByPk($id);
+        }
+        return $this->_model;
+    }
+    
 }

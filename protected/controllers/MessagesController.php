@@ -110,7 +110,7 @@ class MessagesController extends Controller
 			}
 			if ($counter) {
 //pau??
-				Yii::app()->user->setFlash('messageModule', MessageModule::t('{count} message'.($counter > 1 ? 's' : '').' has been deleted', array('{count}' => $counter)));
+				Yii::app()->user->setFlash('messageModule', $counter. ' message'.($counter > 1 ? 's' : '').' has been deleted');
 			}
 			$this->redirect(Yii::app()->request->getUrlReferrer());
 		} else {
@@ -145,17 +145,17 @@ class MessagesController extends Controller
 		$viewedMessage = Message::model()->findByPk($messageId);
 
 		if (!$viewedMessage) {
-			 throw new CHttpException(404, MessageModule::t('Message not found'));
+			 throw new CHttpException(404, UserModule::t('Message not found'));
 		}
 
 		$userId = Yii::app()->user->getId();
 
 		if ($viewedMessage->sender_id != $userId && $viewedMessage->receiver_id != $userId) {
-		    throw new CHttpException(403, MessageModule::t('You can not view this message'));
+		    throw new CHttpException(403, UserModule::t('You can not view this message'));
 		}
 		if (($viewedMessage->sender_id == $userId && $viewedMessage->deleted_by == Message::DELETED_BY_SENDER)
 		    || $viewedMessage->receiver_id == $userId && $viewedMessage->deleted_by == Message::DELETED_BY_RECEIVER) {
-		    throw new CHttpException(404, MessageModule::t('Message not found'));
+		    throw new CHttpException(404, UserModule::t('Message not found'));
 		}
 		$message = new Message();
 
@@ -171,7 +171,7 @@ class MessagesController extends Controller
 			$message->attributes = Yii::app()->request->getPost('Message');
 			$message->sender_id = $userId;
 			if ($message->save()) {
-				Yii::app()->user->setFlash('success', MessageModule::t('Message has been sent'));
+				Yii::app()->user->setFlash('success', UserModule::t('Message has been sent'));
 			    if ($isIncomeMessage) {
 					$this->redirect($this->createUrl('messages/inbox/'));
 			    } else {

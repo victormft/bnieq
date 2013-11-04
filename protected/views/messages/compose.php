@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.MessageModule::t("Compose Message"); ?>
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Compose Message"); ?>
 
 
 <div class="row">
@@ -6,7 +6,7 @@
     
     <div class="messages-wrap">
         <div class="span8">
-            <h2><?php echo MessageModule::t('Compose New Message'); ?></h2>
+            <h2><?php echo UserModule::t('Compose New Message'); ?></h2>
 
             <?php 
             //can message only when following
@@ -31,7 +31,7 @@
                     'enableAjaxValidation'=>false,
                 )); ?>
 
-                <p class="note"><?php echo MessageModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+                <p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
                 <?php echo $form->errorSummary($model, null, null, array('class' => 'alert-message block-message error')); ?>
 
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="buttons">
-                    <button class="btn primary"><?php echo MessageModule::t("Send") ?></button>
+                    <button class="btn primary"><?php echo UserModule::t("Send") ?></button>
                 </div>
 
                 <?php $this->endWidget(); ?>

@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - ' . MessageModule::t("Compose Message"); ?>
+<?php $this->pageTitle=Yii::app()->name . ' - ' . UserModule::t("Compose Message"); ?>
 <?php $isIncomeMessage = $viewedMessage->receiver_id == Yii::app()->user->getId() ?>
 
 
@@ -36,10 +36,10 @@
                 'enableAjaxValidation'=>false,
                 'action' => $this->createUrl('messages/delete/', array('id' => $viewedMessage->id))
             )); ?>
-            <button class="btn danger"><?php echo MessageModule::t("Delete") ?></button>
+            <button class="btn danger"><?php echo UserModule::t("Delete") ?></button>
             <?php $this->endWidget(); ?>
 
-            <h2><?php echo MessageModule::t('Reply') ?></h2>
+            <h2><?php echo UserModule::t('Reply') ?></h2>
 
             <div class="form">
                 <?php $form = $this->beginWidget('CActiveForm', array(
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="buttons">
-                    <button class="btn primary"><?php echo MessageModule::t("Reply") ?></button>
+                    <button class="btn primary"><?php echo UserModule::t("Reply") ?></button>
                 </div>
 
                 <?php $this->endWidget(); ?>

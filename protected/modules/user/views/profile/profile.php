@@ -245,7 +245,7 @@ $('.arrow-container').mouseover(function(event){
                 <?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$model->id, ':s_id'=>$startup->id)); ?>
                 <?php if($relational_tbl->profile):?>
                 <div class="startup-card">
-                    <div class="startup-pic" style="overflow: auto;"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'" id="startup-card-img"/>', array('/startup/view', 'name'=>$startup->startupname)); ?> </div>
+                    <div class="startup-pic" style="overflow: auto;"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'"/>', array('/startup/view', 'name'=>$startup->startupname)); ?> </div>
                     <div class="startup-name"><?php echo CHtml::link($startup->name, array('/startup/view', 'name'=>$startup->startupname)); ?></div>
                     <div class="user-position"><?php echo ($relational_tbl->title === NULL || $relational_tbl->title === '') ? UserModule::t($relational_tbl->position) :  UserModule::t($relational_tbl->title);?></div>
                 </div>
@@ -404,8 +404,8 @@ $('.arrow-container').mouseover(function(event){
                         'controllerRoute' => 'user/user/followpop',
                         'actionParams' => array('id'=>$model->id, 'follow'=>'ing', 'attr'=>'followed'),
                         'dialogTitle' => 'Following',
-                        'dialogWidth' => 800,
-                        'dialogHeight' => 600,
+                        'dialogWidth' => 600,
+                        'dialogHeight' => 500,
                         'openButtonText' => 'Following',
                         'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
@@ -417,8 +417,8 @@ $('.arrow-container').mouseover(function(event){
                         'controllerRoute' => 'user/user/followpop',
                         'actionParams' => array('id'=>$model->id, 'follow'=>'stup'),
                         'dialogTitle' => 'Startups followed',
-                        'dialogWidth' => 800,
-                        'dialogHeight' => 600,
+                        'dialogWidth' => 600,
+                        'dialogHeight' => 500,
                         'openButtonText' => 'Startups',
                         'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
@@ -430,8 +430,8 @@ $('.arrow-container').mouseover(function(event){
                         'controllerRoute' => 'user/user/followpop',
                         'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
                         'dialogTitle' => 'Followers',
-                        'dialogWidth' => 800,
-                        'dialogHeight' => 600,
+                        'dialogWidth' => 600,
+                        'dialogHeight' => 500,
                         'openButtonText' => 'Followers',
                         'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
