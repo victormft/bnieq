@@ -61,7 +61,7 @@ $('.follow-press').click(function(event) {
 $('#searchform').change(function(event) {
 			var g = (getUrlVars()['g'] == null) ? '' : getUrlVars()['g'];
 			
-			var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
+			var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val().replace(/</g, '').replace(/>/g, ''));
 			var c_stage = ($('#c_stage').val()=='') ? '' : '&c_stage='+encodeURIComponent($('#c_stage').val());
 			var c = ($('#c').val()=='') ? '' : '&c='+encodeURIComponent($('#c').val());
 			
