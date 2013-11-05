@@ -99,9 +99,10 @@ class Startup extends CActiveRecord
 			//validation for pic
 			array('pic, mult_pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>' - Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => ' - Imagem deve ser menor que 5MB !!!'),
 			array('pic, mult_pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
-			array('name, one_line_pitch, location', 'required', 'message'=>'Obrigatório'),
-			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>'Obrigatório'),
+			array('name, one_line_pitch, location', 'required', 'message'=>UserModule::t("Required")),
+			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),
 			array('name', 'length', 'max'=>40),
+			array('name', 'match', 'pattern' => '/^[A-Za-z0-9 . _ & \' \"]+$/u','message' => UserModule::t("Incorrect symbols. (A-z0-9)")),
 			array('one_line_pitch', 'length', 'max'=>80),
 			array('email, skype', 'length', 'max'=>99),
 			array('product_description', 'length', 'max'=>1000),

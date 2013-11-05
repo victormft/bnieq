@@ -27,7 +27,7 @@ return array(
     'Retype Password is incorrect.' => 'A redigitação de senha está incorreta.',
     'Incorrect password (minimal length 4 symbols).' => 'Senha incorreta (mínimo 4 caracteres).',
     'Incorrect username (length between 3 and 20 characters).' => "Login incorreto (entre 4 e 20 caracteres).",
-    'Incorrect symbol\'s. (A-z0-9)' => 'Caracteres incorretos. (A-z0-9)',
+    'Incorrect symbols. (A-z0-9)' => 'Caracteres incorretos. (A-z0-9)',
 	'Variable name may consist of a-z, 0-9, underscores, begin with a letter.'=>'Nombre de la variable puede consistir en az, 0-9, guión, comenzar con una letra.',
 	"Length of ' + n + ' must be between '+min+' and '+max+'."=>"Longitud de ' + n + ' debe estar entre '+min+' y '+max+'.",
     'Please enter the letters as they are shown in the image above.' => "Por favor, digite as letras como mostrada na imagem.",
