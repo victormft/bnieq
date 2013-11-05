@@ -799,7 +799,7 @@ function getUrlVars()
 					<input type="hidden" id="my_ac_id" name="user_startup"/>
 					
 					<?php echo CHtml::label('Papel', false); ?>
-					<?php echo CHtml::activeDropDownList($model,'user_role', array_merge(array(''=>'Selecione...'), $model->getCompanyPositionOptions()), array('name'=>'position')) ?>
+					<?php echo CHtml::activeDropDownList($model,'user_role', array_merge(array(''=>UserModule::t("Select...")), $model->getCompanyMembersPositionOptions()), array('name'=>'position')) ?>
 			
 					<?php $this->widget('bootstrap.widgets.TbButton', array(
 						'buttonType'=>'submit',
@@ -863,7 +863,7 @@ function getUrlVars()
 		<div class="team-item">		
 			<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 			<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
-			<div class="team-position"><?php echo $relational_tbl->position;?></div>
+			<div class="team-position"><?php echo UserModule::t($relational_tbl->position);?></div>
 			<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
 		</div>

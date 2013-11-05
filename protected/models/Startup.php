@@ -298,10 +298,16 @@ class Startup extends CActiveRecord
 	public function getCompanyPositionOptions()
 	{
 		return array(
-			self::POS_1=>'Founder',
-			self::POS_2=>'Member',
 			self::POS_3=>'Investor',
 			self::POS_4=>'Advisor',
+		);
+	}
+	
+	public function getCompanyMembersPositionOptions()
+	{
+		return array(
+			self::POS_1=>UserModule::t("Founder"),
+			self::POS_2=>UserModule::t("Member"),
 		);
 	}
 

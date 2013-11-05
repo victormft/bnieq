@@ -507,7 +507,7 @@ $('.video-images-items').carouFredSel({
 				<div class="team-item">		
 					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 					<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
-					<div class="team-position"><?php echo $rel->position;?></div>
+					<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
 					<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
 				</div>
 				<?php endforeach;?>

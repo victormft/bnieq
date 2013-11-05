@@ -136,4 +136,5 @@ return array(
     'Investor' => 'Investidor',
     'Advisor' => 'Conselheiro',
     'Member' => 'Membro',
+	'Select...'=>'Selecione...'
 );
