@@ -73,11 +73,11 @@ $('.remove-search').click(function(event){
      
         <ul class="nav primary">
             <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-suitcase" style="display:block; margin:5px auto;"></i>Startups</a></li>
-			<li><a href= <?php echo Yii::app()->homeUrl . '/user' ?> ><i class="icon-group" style="display:block; margin:5px auto;"></i>Usuários</a></li>       
-            <li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Entenda</a></li>   
-			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i>Sobre Nós</a></li>
-			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i>Nosso Blog </a></li>
-			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-money" style="display:block; margin:5px auto; font-size:15px;"></i>Investir</a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl . '/user' ?> ><i class="icon-group" style="display:block; margin:5px auto;"></i><?php echo UserModule::t("Users") ?></a></li>       
+            <li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("Understand") ?></a></li>   
+			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("About Us") ?></a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("Our Blog") ?></a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-money" style="display:block; margin:5px auto; font-size:15px;"></i><?php echo UserModule::t("Invest") ?></a></li>
 			<li class="search"><a style="border:none; padding:20px 25px;"><i class="icon-search" style="font-size:24px;"></i></a></li>
         </ul>
 		
@@ -90,7 +90,7 @@ $('.remove-search').click(function(event){
 		<ul class="nav pull-right secondary">
 			<?php if(Yii::app()->user->isGuest):?>
                 <li><a style="display:inline-block; padding-right:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-lock" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Login</a></li>
-                <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Registrar</a></li>
+                <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i><?php echo UserModule::t("Register") ?></a></li>
             <?php else: ?>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
@@ -107,7 +107,7 @@ $('.remove-search').click(function(event){
                         </li>
                     </ul>                    
                 </li>
-                <li><a style="display:inline-block;" href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> ><i class="icon-power-off" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i>Logout</a></li>
+                <li><a style="display:inline-block;" href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> ><i class="icon-power-off" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i><?php echo UserModule::t("Logout") ?></a></li>
             <?php endif?>
 		</ul>
     </div>

@@ -433,7 +433,7 @@ class Startup extends CActiveRecord
     
     public function allowCurrentUser($position)
     {
-        $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId AND position=:position";
+        $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId AND position=:position AND approved=1";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue(":startupId", $this->id, PDO::PARAM_INT);
         $command->bindValue(":userId", Yii::app()->user->getId(), PDO::PARAM_INT);

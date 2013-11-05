@@ -136,4 +136,12 @@ return array(
     'Investor' => 'Investidor',
     'Advisor' => 'Conselheiro',
     'Member' => 'Membro',
+    'Entrepreneurs and Investors of NextBlue'=>'Empreendedores e Investidores do NextBlue',
+    'Quick Search'=>'Busca Rápida',
+    'All'=>'Todos',
+    'Understand'=>'Entenda',
+    'About Us'=>'Sobre Nós',
+    'Our Blog'=>'Nosso Blog',
+    'Invest'=>'Investir',
+    'Logout'=>'Sair',
 );
