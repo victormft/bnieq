@@ -699,3 +699,16 @@ div.language ul li a img:hover{
     padding: 15px 0 15px 0;
 }
 
+#portfolio-grid tr.published td
+{
+    background-color: #ffe4e9;
+}
+
+.color-square
+{
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    min-height: 20px;
+    min-width: 20px;
+}
+

@@ -248,6 +248,61 @@ $('.arrow-container').mouseover(function(event){
 		
 		<div class="content-info edit">
             
+            <?php $form = $this->beginWidget(
+                'bootstrap.widgets.TbActiveForm',
+                array(
+                    'id' => 'inlineForm',
+                    'type' => 'inline',
+                    'htmlOptions' => array('class' => 'well', 'enctype' => 'multipart/form-data'),
+                )
+            ); ?>
+            
+            <legend style="line-height: 20px">Adicionar Startup</legend>
+             
+            <?php echo CHtml::activeDropDownList(new Startup,'user_role', array_merge(array(''=>'Papel...'), Startup::model()->getCompanyPositionOptions()), array('name'=>'position', 'style'=>'width: 200px;'));
+			?>
+            
+            <input type="text" id="my_ac" size="30" placeholder="Startup"/>
+            <input type="hidden" id="my_ac_id" name="user_startup"/>
+            
+            
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'buttonType'=>'submit',
+                'label'=>'Add',
+                'size'=>'normal',
+                'type'=>'primary',
+                'htmlOptions'=>array(
+                    'style'=>'display:inline; margin-left: 15px',
+                    'class'=>'team-btn',
+                    ),
+                ));             
+
+            $this->endWidget();
+            unset($form); ?>
+            
+            <script>
+				$(function() {	
+                var img_path = "<?php echo Yii::app()->request->baseUrl.'/images/'?>";
+
+                $("#my_ac").autocomplete({
+                    source: <?php Startup::model()->getStartupsForPortfolio(); ?>,
+                    minLength: 0,
+                    delay: 10,
+                    select: function( event, ui ) {
+                        $( "#my_ac" ).val( ui.item.label);
+                        $( "#my_ac_id" ).val( ui.item.value );
+                        return false;
+                  }
+                }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
+                    var inner_html = '<a><div class="list_item_container"><div class="image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div></div></a>';
+                    return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append(inner_html)
+                        .appendTo( ul );
+                };
+            });
+			</script>
+            
             <?php 
             $criteria=new CDbCriteria;
             $criteria->addCondition('t.user_id = :userId');
@@ -270,6 +325,7 @@ $('.arrow-container').mouseover(function(event){
                 //'afterSortableUpdate' => 'js:function(id, position){ console.log("id: "+id+", position:"+position);}',
                 'dataProvider' => $startupProvider,
                 'template' => "{items}",
+                'rowCssClassExpression'=>'$data->startup->published ? "" : "published"',
                 'columns' => array(
                     array(
                         'class'=>'bootstrap.widgets.TbImageColumn',
@@ -308,12 +364,12 @@ $('.arrow-container').mouseover(function(event){
                         'class'=>'bootstrap.widgets.TbButtonColumn',
                         'template' => '{delete}',
                         'deleteButtonUrl'=>'Yii::app()->createUrl("/user/user/deleterelation", array("uid"=>$data->user_id, "sid"=>$data->startup_id))',
-                    )
-                    
+                    ),                    
                 ), 
             )); ?>
             
-            
+            <div class="color-square" style="background-color: #ffe4e9; width: 20px; float: left; margin-right: 10px;"></div>
+            <span>Não publicado ainda.</span>
             			
 		</div>
 		

@@ -75,7 +75,12 @@ class TbImageColumn extends CGridColumn
 		)
 		) {
 			$this->imageOptions['src'] = $imagePath;
-			$content = CHtml::tag('img', $this->imageOptions);
+            
+            /*
+             * add to be a link
+             */
+            $content = CHtml::link( '<img src="'.$imagePath.'" />', array('/'.$data->startup->startupname));
+			//$content = CHtml::tag('img', $this->imageOptions);
 		} elseif ($this->usePlaceHoldIt && !empty($this->placeHoldItSize)) {
 			$content = CHtml::tag(
 				'img',

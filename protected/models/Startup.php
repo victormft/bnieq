@@ -495,5 +495,20 @@ class Startup extends CActiveRecord
         return UserModule::t($relational_tbl->position);
     }
 		
-	
+	public function getStartupsForPortfolio()
+	{
+		$query = Startup::model()->findAll();
+		$list = array();        
+		foreach($query as $q){
+			$data['value'] = $q->id;
+			//$data['description'] = $q->profile->resume;
+			$data['label'] = $q->name;
+			$data['image'] = $q->logo0->name;
+
+			$list[] = $data;
+			unset($data);
+		}
+
+		echo json_encode($list);
+	}
 }
