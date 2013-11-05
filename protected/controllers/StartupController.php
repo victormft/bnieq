@@ -83,15 +83,16 @@ class StartupController extends Controller
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
             throw new CHttpException(403,'Você não pode editar essa startup!');
 		
-		if(!$model->sectors || !$model->product_description)
+		if(!$model->sectors || !$model->product_description || !$model->company_stage)
 		{
 			$alert_sectors=empty($model->sectors)?'<li>Setor(es)</li>':'';
 			$alert_product=empty($model->product_description)?'<li>Produto</li>':'';
+			$alert_stage=empty($model->company_stage)?'<li>Estágio</li>':'';
 			
 			$user = Yii::app()->getComponent('user');
             $user->setFlash(
                 'error',
-                '<strong>Atenção!</strong> Para publicar o perfil, preencha no mínimo os campos listados a seguir:<p><ul>'.$alert_product.$alert_sectors.'</ul></p>'
+                '<strong>Atenção!</strong> Para publicar o perfil, preencha no mínimo os campos listados a seguir:<p><ul>'.$alert_product.$alert_sectors.$alert_stage.'</ul></p>'
             );
 			$this->redirect(array('edit','name'=>$model->startupname));
 		}
@@ -260,7 +261,7 @@ class StartupController extends Controller
 				$user = Yii::app()->getComponent('user');
 				$user->setFlash(
 					'warning',
-					'<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)" e "Produto" e clique no botão \'Publicar\'.'
+					'<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)", "Produto" e "Estágio" e clique no botão \'Publicar\'.'
 				);
 			}
 			

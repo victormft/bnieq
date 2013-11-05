@@ -774,6 +774,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background: #fff;
 
 	font-size:15px;
+	
+	overflow-wrap: break-word;
 
 }
 
