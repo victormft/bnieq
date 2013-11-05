@@ -25,56 +25,22 @@ class UserController extends Controller
 	{
 		return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index', 'followpop'),
+				'actions'=>array('followpop'),
 				'users'=>array('*'),
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('view', 'follow', 'unfollow'),
 				'users'=>array('@'),
 			),
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('deleterelation'),
+                'verbs'=>array('POST'),
+				'users'=>array('@'),
+			),
             array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
-	}
-    
-
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-        /*
-        if(Yii::app()->user->isGuest){
-            $user = Yii::app()->getComponent('user');
-            $user->setFlash(
-                'error',
-                '<strong>Ops!</strong> Você precisa estar conectado apra acessar essa área.'
-            );
-            $this->redirect(Yii::app()->controller->module->loginUrl);
-        }
-		$model=new Profile('search');
-		$model->unsetAttributes();  // clear any default values
-                
-		if(isset($_GET['n'])) {
-            $model->fullname=$_GET['n'];
-			$model->resume=$_GET['n'];
-		}
-		
-		if(isset($_GET['rol']))
-			$model->roles=$_GET['rol'];	
-				
-        if(isset($_GET['g']))
-		{
-			if($_GET['g']=='Mais seguidos')
-				$model->group=$_GET['g'];
-		}	
-        
-		$this->render('index',array(
-            'dataProvider'=>$model,
-        ));
-         * 
-         */
 	}
     
     public function actionFollow()
@@ -169,8 +135,21 @@ class UserController extends Controller
         }
         EQuickDlgs::render('_followpop',array('provider'=>$provider, 'attr'=>$attr));
     }
+    
+    /*
+     * Delete the relation of a user and a startup
+     */
+    public function actionDeleteRelation($uid, $sid)
+    {
+        $startup = Startup::model()->findByPk($sid);
+        if(!$startup->hasUserRelation())
+            throw new CHttpException(403,'Você não pode fazer isso.');
+        
+        $user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$uid, ':s_id'=>$sid));
+		$user_startup->delete();
+    }
 
-        /**
+    /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 */

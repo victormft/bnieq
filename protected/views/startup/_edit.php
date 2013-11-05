@@ -72,7 +72,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$('.team-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 		
 		$.ajax({
-				url: '".Yii::app()->request->baseUrl."/startup/addTeam?name='+getUrlVars()['name'],
+				url: '".Yii::app()->request->baseUrl."/startup/addTeam?name=".$model->startupname."',
 				dataType: 'json',
 				type: 'POST',
 				data: $('#form-team').serialize(),
@@ -92,7 +92,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$(this).parent().addClass('deletable');
 		
 		$.ajax({
-				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name='+getUrlVars()['name'],
+				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name=".$model->startupname."',
 				dataType: 'json',
 				success: function(data){
 					$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });

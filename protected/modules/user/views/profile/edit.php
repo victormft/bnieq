@@ -303,6 +303,12 @@ $('.arrow-container').mouseover(function(event){
                         'header' => 'Perfil',
                         'htmlOptions'=>array('style'=>'text-align: center;')
                     ),
+                    array(
+                        'htmlOptions' => array('style'=>'text-align: center;'),
+                        'class'=>'bootstrap.widgets.TbButtonColumn',
+                        'template' => '{delete}',
+                        'deleteButtonUrl'=>'Yii::app()->createUrl("/user/user/deleterelation", array("uid"=>$data->user_id, "sid"=>$data->startup_id))',
+                    )
                     
                 ), 
             )); ?>

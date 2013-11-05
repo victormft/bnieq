@@ -95,7 +95,7 @@ class SettingsController extends Controller
                     $this->redirect($this->createUrl('settings/password'));
                 }
 			}
-			else EQuickDlgs::render('_changepasswordnull',array('model'=>$model));
+			else EQuickDlgs::renderPartial('_changepasswordnull',array('model'=>$model));
 	    }
         else $this->redirect(Yii::app()->controller->module->loginUrl);
 	}

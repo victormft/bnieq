@@ -1,5 +1,5 @@
 <div class="settings-wrap">
-    <div class="span8">
+    <div class="span3">
         
         <div class="form">
         <?php $form=$this->beginWidget('CActiveForm', array(
