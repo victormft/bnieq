@@ -480,8 +480,9 @@ class StartupController extends Controller
 		$model->unsetAttributes();  // clear any default values
 		
 		if(isset($_GET['n'])) {
-			$model->name=strip_tags($_GET['n']);
-			$model->one_line_pitch=strip_tags($_GET['n']);
+			$search_name=preg_replace('/[><=]/', '', $_GET['n']);
+			$model->name=strip_tags($search_name);
+			$model->one_line_pitch=strip_tags($search_name);
 		}
 		if(isset($_GET['c_stage']))
 			$model->company_stage=$_GET['c_stage'];	
