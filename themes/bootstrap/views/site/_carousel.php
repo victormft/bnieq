@@ -27,7 +27,8 @@
 					<?php $relational_tbl=UserStartup::model()->find('startup_id=:s_id AND position=:pos', array(':s_id'=>$data->id, ':pos'=>'Founder')); ?>
 					<?php if($relational_tbl):?>
 						<?php $usr=User::model()->findbyPk($relational_tbl->user_id);?>
-						<?php echo $usr->profile->firstname .' '. $usr->profile->lastname;?>
+						<?php //echo $usr->profile->firstname .' '. $usr->profile->lastname;?>
+						<?php echo CHtml::link(CHtml::encode($usr->profile->firstname .' '. $usr->profile->lastname),array('/'.$usr->username), array('style'=>'color:black;'));?>
 					<?php endif;?>
 					
 					</div>
@@ -89,6 +90,9 @@
 				</div>
 			</div>
 			
+		</div>
+		
+		<div class="middle-item">
 			<div class="item-sec">
 				<?php echo Startup::model()->findByPk($data->id)->getSectorNames(); ?>
 			</div>

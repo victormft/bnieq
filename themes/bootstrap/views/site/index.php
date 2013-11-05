@@ -8,15 +8,6 @@ Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/j
 Yii::app()->clientScript->registerScript('script',
 "
 
-$('.carousel-home-item').mouseover(function(event){
-	$(this).find('.item-info').hide();
-	$(this).find('.item-sec').show();
-});
-
-$('.carousel-home-item').mouseout(function(event){
-	$(this).find('.item-sec').hide();
-	$(this).find('.item-info').show();
-});
 
 $(document).ready(function() {
 
@@ -175,7 +166,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 <!-- !!!!!!!!!!!!!!!! Carousel !!!!!!!!!!!!!!!!!! -->
 <div style="padding-bottom: 50px;">
-<div style="position:absolute; height:544px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
+<div style="position:absolute; height:644px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
 <div class="arrow-all"></div>
 <h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Todas</h1>
 <span style="font-size:18px; color:#727272; font-style:italic;">Startups cadastradas na plataforma</span>
@@ -196,7 +187,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 </div>
 
 <div style="padding-bottom: 50px;">
-<div style="position:absolute; height:574px; width:100%; left:0; right:0; z-index:-1; background:#eaeaea;"></div>
+<div style="position:absolute; height:654px; width:100%; left:0; right:0; z-index:-1; background:#eaeaea;"></div>
 <div class="arrow-sel"></div>
 <h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Selecionadas</h1>
 <span style="font-size:18px; color:#727272; font-style:italic;">As preferidas da equipe do NextBlue</span>
