@@ -16,7 +16,8 @@ $(document).ready(function() {
 	}
 });
 
-$('.follow-press').click(function(event) {
+
+$(document.body).on('click','.follow-press',function(event){
 
 		var startup_name = encodeURIComponent($(this).parent().prev().attr('data-name'));
 		var elem = $(this);
@@ -27,6 +28,7 @@ $('.follow-press').click(function(event) {
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/follow?name='+startup_name,
+				type: 'POST',
 				dataType: 'json',
 				success: function(data){
 					elem.removeClass('btn-success');
@@ -44,6 +46,7 @@ $('.follow-press').click(function(event) {
 			
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/unfollow?name='+startup_name,
+				type: 'POST',
 				dataType: 'json',
 				success: function(data){
 					elem.addClass('btn-success');
@@ -63,7 +66,7 @@ $('#searchform').change(function(event) {
 			
 			var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val().replace(/</g, '').replace(/>/g, ''));
 			var c_stage = ($('#c_stage').val()=='') ? '' : '&c_stage='+encodeURIComponent($('#c_stage').val());
-			var c = ($('#c').val()=='') ? '' : '&c='+encodeURIComponent($('#c').val());
+			var c = ($('#c').val()=='0') ? '' : '&c='+encodeURIComponent($('#c').val());
 			
 			
 			var sec=[]; 
@@ -85,7 +88,7 @@ $('.g').click(function(event) {
 			var g = $(this).text();
 			var n = (getUrlVars()['n'] == null) ? '' : '&n='+getUrlVars()['n'];
 			var c_stage = (getUrlVars()['c_stage'] == null) ? '' : '&c_stage='+getUrlVars()['c_stage'];
-			var c = (getUrlVars()['c'] == null) ? '' : '&c='+getUrlVars()['c'];
+			var c = (getUrlVars()['c'] == null || getUrlVars()['c']==0) ? '' : '&c='+getUrlVars()['c'];
 			
 			
 			var sec=[]; 

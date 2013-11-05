@@ -29,31 +29,33 @@
 	
 	</div>
 	
-	<div class="follow-count" data-name="<?php echo $data->startupname; ?>"><?php echo count($data->users); ?></div>   
-    
-    <span class="follow-btn">    
-        <?php 
-        if(!$data->hasUserFollowing(Yii::app()->user->id))
-        {
-            $this->widget('bootstrap.widgets.TbButton', array(
-            'label'=>'Follow',
-            'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-            'size'=>'mini', // null, 'large', 'small' or 'mini'
-            'url'=>'',//array('follow','name'=>$model->name),
-            'htmlOptions'=>array('class'=>'btn-follow follow-press'),
-            )); 
-        }
-        else
-        {
-            $this->widget('bootstrap.widgets.TbButton', array(
-            'label'=>'Unfollow',
-            'size'=>'mini', // null, 'large', 'small' or 'mini'
-            'url'=>'',//array('unfollow','name'=>$model->name),
-            'htmlOptions'=>array('class'=>'btn-unfollow follow-press'),
-            )); 
-        }
-        ?>        
-    </span>
+	<?php if(!Yii::App()->user->isGuest): ?>
+		<div class="follow-count" data-name="<?php echo $data->startupname; ?>"><?php echo count($data->users); ?></div>   
+		
+		<span class="follow-btn">    
+			<?php 
+			if(!$data->hasUserFollowing(Yii::app()->user->id))
+			{
+				$this->widget('bootstrap.widgets.TbButton', array(
+				'label'=>'Follow',
+				'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+				'size'=>'mini', // null, 'large', 'small' or 'mini'
+				'url'=>'',//array('follow','name'=>$model->name),
+				'htmlOptions'=>array('class'=>'btn-follow follow-press',),
+				)); 
+			}
+			else
+			{
+				$this->widget('bootstrap.widgets.TbButton', array(
+				'label'=>'Unfollow',
+				'size'=>'mini', // null, 'large', 'small' or 'mini'
+				'url'=>'',//array('unfollow','name'=>$model->name),
+				'htmlOptions'=>array('class'=>'btn-unfollow follow-press'),
+				)); 
+			}
+			?>        
+		</span>
+	<?php endif;?>
 	
 	
 	<!--Followers: <?php //echo count($data->users); ?>-->

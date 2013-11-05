@@ -33,11 +33,11 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit', 'follow', 'unfollow'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam', 'publish'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam', 'publish'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updatelocation', 'updateSectors'),
+				'actions'=>array('update', 'updatelocation', 'updateSectors', 'follow', 'unfollow'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),

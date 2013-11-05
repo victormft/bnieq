@@ -161,7 +161,10 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-large',
-						'mode'=>'inline'
+						'mode'=>'inline',
+						'options'    => array(
+							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="40">'
+						)
 					 )); ?>  
 					 </span>
 			</div>
@@ -177,7 +180,10 @@ function getUrlVars()
 						'url'       => array('update'),  
 						'placement' => 'right',
 						'inputclass'=> 'input-large',
-						'mode'=>'inline'
+						'mode'=>'inline',
+						'options'    => array(
+							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="80">'
+						)
 					 )); ?>  
 			</div>
 			
@@ -225,7 +231,7 @@ function getUrlVars()
 						'url'       => $this->createUrl('updateLocation'), 
 						'source'    => Cidade::model()->getCities(),
 						'placement' => 'right',
-						'inputclass'=> 'input-large',
+						'inputclass'=> 'input-xlarge',
 						'select2'   => array(
 							'placeholder'=> 'Select...',
 							'allowClear'=> true,   
