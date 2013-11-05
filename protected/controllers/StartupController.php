@@ -363,6 +363,7 @@ class StartupController extends Controller
                 $user_startup->user_id = Yii::app()->user->id;
                 $user_startup->startup_id = $model->id;
                 $user_startup->position = "Founder";
+                $user_startup->approved = 1;
                 
                 if($user_startup->save())
                 {		
@@ -754,6 +755,7 @@ class StartupController extends Controller
 		$user_startup->user_id = $_POST['user_startup'];
 		$user_startup->startup_id = $model->id;
 		$user_startup->position = $_POST['position'];    
+        $user_startup->approved = 1; 
         if($user_startup->save())
         {		
             $auth = Yii::app()->authManager;

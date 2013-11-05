@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - Users'; ?>
+<?php $this->pageTitle=Yii::app()->name . ' - ' . UserModule::t("Users") . ''; ?>
 
 <?php
 Yii::app()->clientScript->registerScript('search',
@@ -228,8 +228,8 @@ $('.follow-press').click(function(event) {
 ?>
 
 
-<h1 class="create-title" style="margin-top:25px;">Usuários</h1>
-<div class="create-sub-title" style="font-style:italic; margin-bottom:40px;">Empreendedores e Investidores do NextBlue</div>
+<h1 class="create-title" style="margin-top:25px;"><?php echo UserModule::t("Users") ?></h1>
+<div class="create-sub-title" style="font-style:italic; margin-bottom:40px;"><?php echo UserModule::t("Entrepreneurs and Investors of NextBlue") ?></div>
 
 <?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),
@@ -248,8 +248,8 @@ $('.follow-press').click(function(event) {
 <div class="user-search-form">
 	
 	<div id="G-Selection">
-		<div class="group-title">Busca Rápida</div>
-        <a class="g" href="<?php echo Yii::app()->baseUrl.'/user' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=='') echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todos</p></a>
+		<div class="group-title"><?php echo UserModule::t("Quick Search") ?></div>
+        <a class="g" href="<?php echo Yii::app()->baseUrl.'/user' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=='') echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i><?php echo UserModule::t("All") ?></p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Investidores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-money profile-icon"></i>Investidores</p></a>
 		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Empreendedores") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-briefcase profile-icon"></i>Empreendedores</p></a>
 		

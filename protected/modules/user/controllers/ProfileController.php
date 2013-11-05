@@ -32,7 +32,7 @@ class ProfileController extends Controller
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors', 'updatestartuprelational'),
+				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors', 'updatestartuprelational', 'addstartuprelation'),
                 'verbs'=>array('POST'),
 				'users'=>array('@'),
 			),
@@ -234,8 +234,20 @@ class ProfileController extends Controller
             ),
         );
     }
+    
+    public function actionAddStartupRelation()
+    {		
+		$user_startup = new UserStartup;
+		
+		$user_startup->user_id = Yii::app()->user->id;
+		$user_startup->startup_id = $_POST['startup'];
+		$user_startup->position = $_POST['position'];    
+        $user_startup->save();
+        
+        $this->redirect($this->createUrl('profile/edit/username/'.Yii::app()->user->getUsername()));
+    }
 
-        /**
+    /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the primary key value. Defaults to null, meaning using the 'id' GET variable

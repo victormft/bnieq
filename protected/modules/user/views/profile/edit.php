@@ -34,6 +34,7 @@ $('.arrow-container').mouseover(function(event){
 		}
 		
 	});
+    
 ");
     
 ?>
@@ -253,6 +254,7 @@ $('.arrow-container').mouseover(function(event){
                 array(
                     'id' => 'inlineForm',
                     'type' => 'inline',
+                    'action'=>Yii::app()->request->baseUrl.'/user/profile/addstartuprelation',
                     'htmlOptions' => array('class' => 'well', 'enctype' => 'multipart/form-data'),
                 )
             ); ?>
@@ -263,7 +265,7 @@ $('.arrow-container').mouseover(function(event){
 			?>
             
             <input type="text" id="my_ac" size="30" placeholder="Startup"/>
-            <input type="hidden" id="my_ac_id" name="user_startup"/>
+            <input type="hidden" id="my_ac_id" name="startup"/>
             
             
             <?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -369,7 +371,7 @@ $('.arrow-container').mouseover(function(event){
             )); ?>
             
             <div class="color-square" style="background-color: #ffe4e9; width: 20px; float: left; margin-right: 10px;"></div>
-            <span>Não publicado ainda.</span>
+            <span>Não publicado ainda. Essas startups não aparecerão no seu perfil público.</span>
             			
 		</div>
 		
