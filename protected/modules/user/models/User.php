@@ -85,7 +85,11 @@ class User extends CActiveRecord
             'profile' => array(self::HAS_ONE, 'Profile', 'user_id'),
 			'senders' => array(self::HAS_MANY, 'Message', 'sender_id'),
 			'receivers' => array(self::HAS_MANY, 'Message', 'receiver_id'),
-			'startups' => array(self::MANY_MANY, 'Startup', 'user_startup(user_id, startup_id)'),
+			'startups' => array(self::MANY_MANY, 'Startup', 'user_startup(user_id, startup_id)',
+                'together' => true,
+                'on'=>'startups.published=:p',
+                'params'=>array(':p' => 1)
+            ),
 			'followers' => array(self::HAS_MANY, 'UserFollow', 'followed_id'),    //o numero de followers eh quantas vezes aparece ele como followed_id
 			'following' => array(self::HAS_MANY, 'UserFollow', 'follower_id'),
 			'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'),

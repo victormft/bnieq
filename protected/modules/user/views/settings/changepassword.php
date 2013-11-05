@@ -20,8 +20,8 @@
                         'controllerRoute' => 'user/settings/passwordnull',
                         //'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
                         'dialogTitle' => 'Create Password',
-                        'dialogWidth' => 600,
-                        'dialogHeight' => 500,
+                        'dialogWidth' => 400,
+                        'dialogHeight' => 400,
                         'openButtonText' => 'clique aqui.',
                         'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )

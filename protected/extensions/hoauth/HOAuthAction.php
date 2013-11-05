@@ -196,8 +196,12 @@ class HOAuthAction extends CAction
 				{
 					// this social network account is bond to existing local account
 					Yii::log("Logged in with existing link with '$provider' provider", CLogger::LEVEL_INFO, 'hoauth.'.__CLASS__);
-					if($this->useYiiUser)
+					if($this->useYiiUser){                        
 						$user = User::model()->findByPk($oAuth->user_id);
+                        $lastVisit = User::model()->notsafe()->findByPk($oAuth->user_id);
+                        $lastVisit->lastvisit = time();
+                        $lastVisit->save();
+                    }
 					else
 						$user = call_user_func(array($this->model, 'model'))->findByPk($oAuth->user_id);
 				}

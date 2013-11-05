@@ -440,6 +440,15 @@ class Startup extends CActiveRecord
         return $command->execute()==1;
     }
     
+    public function hasUserRelation()
+    {
+        $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":startupId", $this->id, PDO::PARAM_INT);
+        $command->bindValue(":userId", Yii::app()->user->getId(), PDO::PARAM_INT);
+        return $command->execute()==1;
+    }
+    
     public function isUserInRole($position, $user_id)
     {
         $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId AND position=:position";
