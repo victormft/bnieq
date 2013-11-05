@@ -136,7 +136,7 @@ return array(
     'Investor' => 'Investidor',
     'Advisor' => 'Conselheiro',
     'Member' => 'Membro',
-	'Select...'=>'Selecione...'
+	'Select...'=>'Selecione...',
     'Entrepreneurs and Investors of NextBlue'=>'Empreendedores e Investidores do NextBlue',
     'Quick Search'=>'Busca Rápida',
     'All'=>'Todos',
