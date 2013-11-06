@@ -20,8 +20,10 @@ class TbImageColumn extends CGridColumn
 	 * @var array the HTML options of the image tag
 	 */
 	public $imageOptions = array();
+    
+    public $link;
 
-	/**
+    /**
 	 * @var string $imagePathExpression is evaluated in every data cell and
 	 * is used as the path of the image. The expression will have:
 	 * <code>$row</code> the row number
@@ -75,11 +77,16 @@ class TbImageColumn extends CGridColumn
 		)
 		) {
 			$this->imageOptions['src'] = $imagePath;
+            if($this->link && $link = $this->evaluateExpression(
+                $this->link,
+                array('row' => $row, 'data' => $data)
+            )
+            );
             
             /*
              * add to be a link
              */
-            $content = CHtml::link( '<img src="'.$imagePath.'" />', array('/'.$data->startup->startupname));
+            $content = CHtml::link( '<img src="'.$imagePath.'" />', array('/'.$link));
 			//$content = CHtml::tag('img', $this->imageOptions);
 		} elseif ($this->usePlaceHoldIt && !empty($this->placeHoldItSize)) {
 			$content = CHtml::tag(

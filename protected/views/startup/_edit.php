@@ -853,6 +853,35 @@ function getUrlVars()
 			<span class="tip">Equipe da Startup (edite na aba acima)</span>
 		</div>
 		-->
+        <div class="content-info team-ready" style="border-radius: 0;">
+            <?php 
+            
+            $array=UserStartup::model()->findAll('startup_id=:s_id AND approved=0', array(':s_id'=>$model->id)); 
+
+            ?>
+            
+            <?php foreach($array as $ar):  ?>	
+            <div class="team-item" id="some">		
+                <?php echo $ar->user->getFullName(); ?>
+                <?php
+                echo CHtml::ajaxButton('ButtonName',Yii::app()->createUrl('/startup/approve', array('uid'=>$ar->user->id, 'sid'=>$model->id)),
+                        array(
+                            'type'=>'POST',
+                            'success'=>'js:function(string){ 
+                                alert("Usuário adicionado com sucesso.");
+                                $("#some").animate({opacity: 0}, 100).hide("slow");
+                            }'
+                        ));
+                ?>
+            </div>
+
+            <?php endforeach;?>
+            
+            
+            
+            
+        </div>
+        
 		<div class="content-info team-ready">
 
 		

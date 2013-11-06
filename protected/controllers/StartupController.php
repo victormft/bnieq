@@ -37,7 +37,7 @@ class StartupController extends Controller
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updatelocation', 'updateSectors', 'follow', 'unfollow'),
+				'actions'=>array('update', 'updatelocation', 'updateSectors', 'follow', 'unfollow', 'approve'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
@@ -816,9 +816,16 @@ class StartupController extends Controller
 			));
 		exit;
 	}
-	
-	
-	
-	
+    
+    public function actionApprove($uid, $sid)
+    {
+        $startup = Startup::model()->findByPk($sid);
+        if(!$startup->hasUserRelation())
+            throw new CHttpException(403,'Você não pode fazer isso.');
+        
+        $user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$uid, ':s_id'=>$sid));
+		$user_startup->approved=1;
+        $user_startup->save();
+    }
 	
 }

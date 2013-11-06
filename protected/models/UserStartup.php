@@ -30,7 +30,7 @@ class UserStartup extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('user_id, startup_id, position', 'required'),
-			array('current_position, profile', 'numerical', 'integerOnly'=>true),
+			array('current_position, profile, approved', 'numerical', 'integerOnly'=>true),
 			array('user_id, startup_id', 'length', 'max'=>20),
 			array('position', 'length', 'max'=>45),
 			array('title', 'length', 'max'=>100),
@@ -38,7 +38,7 @@ class UserStartup extends CActiveRecord
 
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, startup_id, position, title, current_position, profile', 'safe', 'on'=>'search'),
+			array('user_id, startup_id, position, title, current_position, profile, order, approved', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -51,6 +51,7 @@ class UserStartup extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
             'startup' => array(self::BELONGS_TO, 'Startup', 'startup_id'),
+            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 		);
 	}
 
@@ -66,6 +67,7 @@ class UserStartup extends CActiveRecord
 			'title' => 'Title',
 			'current_position' => 'Current Position',
 			'profile' => 'Profile',
+            'approved' => 'Approved',
 		);
 	}
 
@@ -93,6 +95,7 @@ class UserStartup extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('current_position',$this->current_position);
 		$criteria->compare('profile',$this->profile);
+        $criteria->compare('approved',$this->approved);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
