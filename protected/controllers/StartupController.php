@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -126,12 +126,12 @@ class StartupController extends Controller
 		
 		if(isset($_POST['Startup']['pic']))
 		{
-			
+		
 			$model->pic=CUploadedFile::getInstance($model,'pic');
 			
 			if($model->pic !== null && $model->validate())
 			{
-			
+		
 				if($model->logo==1)
 				{
 					$fileName=$model->pic;
@@ -201,12 +201,16 @@ class StartupController extends Controller
 					$this->refresh();
 				}
 			}
+			
+			$this->render('view_edit',array(
+					'model'=>$model,
+			));
+			
 		}
 		
 		else if(isset($_FILES['mult_pic']) && count($model->images)<4)
 		{
-		
-			
+
 			$model=$this->loadModel($name);
 			
 			$img_list=CUploadedFile::getInstancesByName('mult_pic');
@@ -247,9 +251,10 @@ class StartupController extends Controller
 					$this->refresh();
 			
 			}	
-				$this->render('view_edit',array(
-						'model'=>$this->loadModel($name),
-				));
+			
+			$this->render('view_edit',array(
+					'model'=>$this->loadModel($name),
+			));
 					
 		}
 		
@@ -264,7 +269,7 @@ class StartupController extends Controller
 					'<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)", "Produto" e "Estágio" e clique no botão \'Publicar\'.'
 				);
 			}
-			
+				
 			$this->render('view_edit',array(
 				'model'=>$model,
 			));
@@ -839,5 +844,57 @@ class StartupController extends Controller
 		$user_startup->approved=1;
         $user_startup->save();
     }
+	
+	public function actionMultUp($name)
+	{
+		  
+		 
+    $model=$this->loadModel($name);
+  
+    
+		if(isset($_POST)){
+			$nome_imagem    = $_FILES['imagem']['name'];
+			$tamanho_imagem = $_FILES['imagem']['size'];
+			
+			
+			$rnd = rand(0,99999999);  // generate random number between 0-99999999
+			$extension_array = explode('.', $nome_imagem); //extension of the file
+			$extension=end($extension_array);
+			$newFileName = md5("{$rnd}-{$nome_imagem}").'.'.$extension;  // random number + file name
+			
+			$tmp = $_FILES['imagem']['tmp_name']; 
+			  
+			move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$newFileName); 
+			
+
+			
+			$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+			
+			$image->resize(400, 300)->quality(75)->sharpen(20);
+					$image->save(); // or $image->save('images/small.jpg');
+					
+					$model_img=new Image;
+					$model_img->name=$newFileName;
+					$model_img->extension=$extension;
+					$model_img->size=0;//$model->pic->size;	
+					$model_img->save();	
+
+					$model->images=$model_img;
+					$model->saveWithRelated(array('images' => array('append' => true)));	
+ 
+         
+        
+                    echo "<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' id='previsualizar'>"; //imprime a foto na tela
+             
+            exit;
+        
+		}
+	}
+
+	
+								
+				
+					
+					
 	
 }

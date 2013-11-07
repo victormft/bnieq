@@ -1,9 +1,25 @@
 <?php
 
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js');
 
 
 Yii::app()->clientScript->registerScript('loading-img',
 "	
+	
+	$(document).ready(function(){ 
+		
+		$('#imagem').live('change',function(){ $('#visualizar').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/> Enviando...'); 
+		
+		$('#formulario').ajaxForm({ 
+			target:'#visualizar'  
+		}).submit(); }); 
+	});
+
+
+	
+	$('.pic-btn').click(function(event){
+		$('#pic-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+	});
 	
 	$('.team-ready').on('mouseover','.team-item',function(event){
 		$(this).find('.team-delete').css({'color':'red', 'font-size':'22px'});	
@@ -261,19 +277,23 @@ function getUrlVars()
 						'clientOptions'=>array(
 							'validateOnSubmit'=>true,
 						),
+						'enableClientValidation'=>true,
 						'htmlOptions' => array(
-							'enctype' => 'multipart/form-data'),
+							'enctype' => 'multipart/form-data'
+						),
+						'inlineErrors'=>false,
 					)); 
 					?>
 					
 					<div class="pic-wrap">
 						<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => ''))); ?>
+						<!-- necessário isso aqui, por causa da classe de errorcss<?php echo $form->error($model,'pic', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>-->
 					</div>
 					
 					<?php $this->widget('bootstrap.widgets.TbButton', array(
 							'buttonType'=>'submit',
 							'id'=>'pic-btn',
-							'label'=>'Save',
+							'label'=>'Upload',
 							'size'=>'normal',
 							'htmlOptions'=>array(
 								'class'=>'pic-btn',
@@ -406,7 +426,7 @@ function getUrlVars()
 							'accept' => 'jpeg|jpg|gif|png',
 							'max'=>4-count($model->images),
 							// useful for verifying files
-							//'duplicate' => 'Arquivo duplicado!', // useful, i think
+							'duplicate' => 'Arquivo duplicado!', // useful, i think
 							'denied' => '', // useful, i think
 						));
 					?>
@@ -416,6 +436,7 @@ function getUrlVars()
 			
 				<?php $this->widget('bootstrap.widgets.TbButton', array(
 						'buttonType'=>'submit',
+						'id'=>'pic-mult',
 						'label'=>'Upload',
 						'size'=>'normal',
 						'htmlOptions'=>array(
@@ -430,6 +451,12 @@ function getUrlVars()
 			<div class="mult-pic-preview"></div>
 			
 			
+			<form id="formulario" method="post" enctype="multipart/form-data" action="<?php echo Yii::app()->request->baseUrl.'/startup/multUp?name='.$model->startupname; ?>"> 
+			Foto 
+			<input type="file" id="imagem" name="imagem" /> </form> 
+			
+			<div id="visualizar"></div>
+
 			
 			
 		</div>
