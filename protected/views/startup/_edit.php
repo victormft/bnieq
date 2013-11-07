@@ -916,37 +916,40 @@ function getUrlVars()
 			<span class="tip">Equipe da Startup (edite na aba acima)</span>
 		</div>
 		-->
-        <div class="content-info team-ready2" style="border-radius: 0;">
-            <?php 
-            
-            $array=UserStartup::model()->findAll('startup_id=:s_id AND approved=0', array(':s_id'=>$model->id)); 
-
-            ?>
-            
+        
+        <?php $array=UserStartup::model()->findAll('startup_id=:s_id AND approved=0', array(':s_id'=>$model->id)); ?>
+        <?php if(count($array)>0): ?>
+        <div class="content-info team-ready2" style="border-radius: 0;">            
             <?php foreach($array as $ar):  ?>	
-            <div class="team-item" id="some">		
-                <?php echo $ar->user->getFullName(); ?>
-                <?php
-                echo CHtml::ajaxButton('ButtonName',Yii::app()->createUrl('/startup/approve', array('uid'=>$ar->user->id, 'sid'=>$model->id)),
-                        array(
+            <div class="team-item" id="some">	
+                <div class="team-name" style="display: inline;"><?php echo $ar->user->getFullName(); ?></div>
+                <?php                
+                $this->widget(
+                    'bootstrap.widgets.TbButton',
+                    array(
+                        'label' => 'Approve',
+                        'buttonType'=>'ajaxButton',
+                        'size' => 'small',
+                        'type'=>'primary',
+                        'url'=>Yii::app()->createUrl('/startup/approve', array('uid'=>$ar->user->id, 'sid'=>$model->id)),                        
+                        'ajaxOptions'=>array(
                             'type'=>'POST',
-                            'success'=>'js:function(string){ 
+                            'context'=>'this',
+                            'success'=> '$.proxy(function(response) { 
                                 alert("Usuário adicionado com sucesso.");
-                                $("#some").animate({opacity: 0}, 100).hide("slow");
-                            }'
-                        ));
+                                $(this).parent().animate({opacity: 0}, 100).hide("slow");
+                                }, $(this)
+                            )',
+                        )
+                    )
+                );
                 ?>
             </div>
-
             <?php endforeach;?>
-            
-            
-            
-            
         </div>
+        <?php endif ?>
         
 		<div class="content-info team-ready">
-
 		
 		<?php foreach($model->users1 as $usr_startup):  ?>
 		
