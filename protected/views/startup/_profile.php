@@ -61,6 +61,9 @@ function getUrlVars()
 }
 
 $('.video-images-items').carouFredSel({
+	scroll: {
+		fx			: 'fade'
+	},
 		items : 1,
 		auto:false,
 		pagination: '#video-images-pagination'

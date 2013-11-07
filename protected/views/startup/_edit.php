@@ -94,6 +94,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name=".$model->startupname."',
 				dataType: 'json',
+				type: 'POST',
 				success: function(data){
 					$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
 					
@@ -853,7 +854,7 @@ function getUrlVars()
 			<span class="tip">Equipe da Startup (edite na aba acima)</span>
 		</div>
 		-->
-        <div class="content-info team-ready" style="border-radius: 0;">
+        <div class="content-info team-ready2" style="border-radius: 0;">
             <?php 
             
             $array=UserStartup::model()->findAll('startup_id=:s_id AND approved=0', array(':s_id'=>$model->id)); 

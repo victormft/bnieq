@@ -33,11 +33,11 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'updateName', 'multPic', 'addTeam', 'deleteTeam', 'publish'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updatelocation', 'updateSectors', 'follow', 'unfollow', 'approve'),
+				'actions'=>array('update', 'updatelocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'deleteTeam'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
@@ -413,7 +413,7 @@ class StartupController extends Controller
 		
 	*/	
 	}
-
+/*
 	public function actionUpdateName()
     {
 		$model = $this->loadModelId($_POST['pk']);
@@ -423,10 +423,13 @@ class StartupController extends Controller
 		
 		
 	}
-	
+*/	
 	public function actionUpdateLocation()
     {
         $model = $this->loadModelId($_POST['pk']);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar esse projeto!');
+			
         if($_POST['value']==0) $model->location=NULL;
         else $model->location = $_POST['value'];
         $model->save();         
@@ -436,6 +439,9 @@ class StartupController extends Controller
 	public function actionUpdateSectors()
     {
         $model = $this->loadModelId($_POST['pk']);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar esse projeto!');
+			
         $vals = array();
         if(isset($_POST['value']))
         {
@@ -595,6 +601,8 @@ class StartupController extends Controller
 	public function actionEditSectors()
     {	
 		$model = $this->loadModel($_GET['name']);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar esse projeto!');
          
         if(isset($_POST['sectors']))
         {                    
@@ -693,6 +701,8 @@ class StartupController extends Controller
 		{
 		
 			$model=$this->loadModel($name);
+			if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+				throw new CHttpException(403,'Você não pode editar esse projeto!');
 			
 			$img_list=CUploadedFile::getInstancesByName('mult_pic');
 			
@@ -790,7 +800,7 @@ class StartupController extends Controller
 		<div class="team-item" style="display:none; opacity:0;">
 			<div class="team-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $usr->profile->logo->name .'" id="team-img"/></div>
 			<div class="team-name"><span data-id="'. $usr->id .'">'. $usr->profile->firstname . ' ' . $usr->profile->lastname .'</span></div>
-			<div class="team-position">'. $user_startup->position . '</div>
+			<div class="team-position">'. UserModule::t($user_startup->position) . '</div>
 			<div class="team-resume">'. $usr->profile->resume . '</div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
 		</div>
@@ -808,6 +818,8 @@ class StartupController extends Controller
 	public function actionDeleteTeam($id, $name)
 	{
 		$model=$this->loadModel($name);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar esse projeto!');
 		$user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$id, ':s_id'=>$model->id));
 		$user_startup->delete();
 			
