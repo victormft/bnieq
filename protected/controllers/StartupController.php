@@ -842,7 +842,11 @@ class StartupController extends Controller
         
         $user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$uid, ':s_id'=>$sid));
 		$user_startup->approved=1;
-        $user_startup->save();
+        if($user_startup->save())
+        {		
+            $auth = Yii::app()->authManager;
+            $auth->assign("StartupMember",$user_startup->user_id);
+        }	
     }
 	
 	public function actionMultUp($name)
