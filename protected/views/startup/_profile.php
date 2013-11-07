@@ -430,7 +430,7 @@ $('.video-images-items').carouFredSel({
 			-->
 		</div>
 		
-		<div class="content-info" style="text-align:center;">
+		<div class="content-info" style="text-align:center; overflow:visible;">
 		
 			<?php
 			

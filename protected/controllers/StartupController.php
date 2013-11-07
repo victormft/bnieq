@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -849,10 +849,18 @@ class StartupController extends Controller
 	{
 		  
 		 
-    $model=$this->loadModel($name);
-  
+		$model=$this->loadModel($name);
+	
+		if(count($model->images)>=4)
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'<span style="color:red;">Limite atingido!</span>'
+			));
+			exit;
+		}
     
-		if(isset($_POST)){
+		else if(isset($_POST)){
 			$nome_imagem    = $_FILES['imagem']['name'];
 			$tamanho_imagem = $_FILES['imagem']['size'];
 			
@@ -884,7 +892,14 @@ class StartupController extends Controller
  
          
         
-                    echo "<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' id='previsualizar'>"; //imprime a foto na tela
+                    //echo "<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' id='previsualizar'>"; //imprime a foto na tela
+					
+					$html="<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' data-name='".$newFileName."' class='mult-list-img' style='float:left; width: 100px; height:100px; margin:0 20px 20px 0; opacity:0;' data-toggle='tooltip' data-html=true data-original-title='clique para deletar' >";
+	
+		
+					echo CJSON::encode(array(
+							'res'=>$html
+						));
              
             exit;
         
@@ -892,7 +907,18 @@ class StartupController extends Controller
 	}
 
 	
-								
+	public function actionMultDel($name, $imgname)
+	{
+		$model=$this->loadModel($name);
+		
+		unlink(Yii::getPathOfAlias('webroot').'/images/'.$imgname);
+		
+		$img=Image::model()->find('name=:name', array(':name'=>$imgname));
+		$img->delete();
+		
+		exit;
+		
+	}	
 				
 					
 					

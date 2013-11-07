@@ -776,6 +776,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	font-size:15px;
 	
 	overflow-wrap: break-word;
+	overflow:auto;
 
 }
 
@@ -1733,4 +1734,9 @@ body input[type="file"]{
 .select2-container .select2-choice .select2-search-choice-close
 {
 	display:block;
+}
+
+.list-view-loading
+{
+	opacity: 0.5;
 }

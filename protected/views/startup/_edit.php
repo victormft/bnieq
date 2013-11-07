@@ -8,13 +8,42 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	$(document).ready(function(){ 
 		
-		$('#imagem').live('change',function(){ $('#visualizar').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/> Enviando...'); 
+		$('#imagem').live('change',function(){ $('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>');
 		
 		$('#formulario').ajaxForm({ 
-			target:'#visualizar'  
+			dataType: 'json',		
+			success: function(data){
+				if(data.res=='no')
+				{
+					$('.mult-img-loading').html(data.msg);
+				}
+				else
+				{
+					$('#visualizar').append(data.res);
+					$('.mult-img-loading').empty();
+					$('.mult-list-img').animate({opacity: 1}, 500);
+				}
+			}
 		}).submit(); }); 
 	});
 
+	$('#visualizar').on('click','.mult-list-img',function(event){
+		$('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>')
+		var elem = $(this);
+		var imgname = elem.attr('data-name');
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/multDel?name=".$model->startupname."&imgname='+imgname+'',
+				dataType: 'json',
+				type: 'POST',
+				success: function(data){
+					$('.mult-img-loading').empty();
+					elem.animate({opacity: 0}, 500, function(){
+						elem.hide();
+					});
+					
+				}
+			});
+	});
 
 	
 	$('.pic-btn').click(function(event){
@@ -452,10 +481,16 @@ function getUrlVars()
 			
 			
 			<form id="formulario" method="post" enctype="multipart/form-data" action="<?php echo Yii::app()->request->baseUrl.'/startup/multUp?name='.$model->startupname; ?>"> 
-			Foto 
-			<input type="file" id="imagem" name="imagem" /> </form> 
 			
-			<div id="visualizar"></div>
+			<input type="file" id="imagem" name="imagem" /> <div class="mult-img-loading" style="display:inline;"></div>
+			
+			</form> 
+			
+			<div id="visualizar">
+				<?php foreach($model->images as $img) :?>
+						<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" data-name="<?php echo $img->name;?>" class="mult-list-img" style="float:left; width: 100px; height:100px; margin:0 20px 20px 0;" data-toggle="tooltip" data-html=true data-original-title="clique para deletar"/>
+				<?php endforeach; ?>
+			</div>
 
 			
 			
