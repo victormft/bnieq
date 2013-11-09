@@ -83,9 +83,69 @@ $('.remove-search').click(function(event){
 		
 		
 		<form class="navbar-search pull-left" style="display:none; opacity:0;">
-            <input type="text" class="search-query" placeholder="Buscar...">
+            <input type="text" class="search-query" id="main_search" placeholder="Buscar..."> <div class="team-loading" style="display:inline;"></div>
 			<i class="icon-remove-sign remove-search" style="margin-top: 5px;"></i>
         </form>
+	
+
+	
+		<script>
+				$(function() {
+	
+	var img_path = "<?php echo Yii::app()->request->baseUrl.'/images/'?>";
+	
+    $("#main_search").autocomplete({
+        source: function( request, response ) {
+			$.ajax({
+				beforeSend: function(){
+					 $(".team-loading").html("<img src='<?php echo Yii::app()->request->baseUrl; ?>/images/loading.gif'/>");
+				},
+				url: "<?php echo Yii::app()->request->baseUrl.'/site/autotest'?>",
+				data: {term: request.term},
+				dataType: "json",
+				success: function( data ) {
+					response( $.map( data.myData, function( item ) {
+						return {
+							value: item.label,
+							description: item.description,
+							label: _highlight(item.label, request.term),
+							label_form: item.label,
+							image: item.image,
+							uname: item.uname
+							
+						}
+					}));
+					$(".team-loading").empty();
+				},
+				error: function(){
+					$(".team-loading").empty();
+					$(".ui-autocomplete").css({'display':'none'});
+				}
+			});
+		},
+        minLength: 0,
+		delay: 300,
+		select: function( event, ui ) {
+			$( "#main_search" ).val( ui.item.label_form);
+			return false;
+      }
+    }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
+        var inner_html = '<a href="<?php echo Yii::app()->request->baseUrl; ?>/' + item.uname + '"><div class="list_item_container"><div class="image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div><div class="description">' + item.description + '</div></div></a>';
+        return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append(inner_html)
+            .appendTo( ul );
+    };
+	
+	function _highlight(s, t) {
+		var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
+		return s.replace(matcher, "<strong>$1</strong>");
+	}
+});
+			</script>
+		
+		
+		
 		
 		<ul class="nav pull-right secondary">
 			<?php if(Yii::app()->user->isGuest):?>

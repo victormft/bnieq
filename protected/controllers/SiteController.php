@@ -110,4 +110,47 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+	
+	public function actionAutoTest()
+	{
+		if(!empty($_GET['term']))
+		{
+			$param = addcslashes($_GET['term'], '%_'); // escape LIKE's special characters
+			$qry = new CDbCriteria( array(
+				'condition' => "firstname LIKE :param OR lastname LIKE :param OR CONCAT(firstname, ' ' , lastname) LIKE :param",         // no quotes around :match
+				'params'    => array(':param' => "%$param%")  // Aha! Wildcards go here
+			) );
+			
+			$query = Profile::model()->findAll($qry);     // works!
+		}
+		else
+			$query = null;
+ 
+		
+		
+		
+		$list = array();        
+		foreach($query as $q){
+			$data['value'] = $q->user_id;
+			$data['description'] = $q->resume;
+			$data['label'] = $q->firstname .' '. $q->lastname;
+			$data['image'] = $q->logo->name;
+			
+			// !!!! get the username
+			$usr=User::model()->find('id=:id', array(':id'=>$q->user_id));
+			// !!!! end getting username
+			
+			$data['uname'] = $usr->username;
+			
+			$list['myData'][] = $data;
+			unset($data);
+		}
+		
+		if(!empty($query))
+			echo json_encode($list);
+		
+		else 
+			throw new CHttpException(403,'Você não pode editar essa startup!');
+			
+	}
 }
