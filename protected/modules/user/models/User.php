@@ -324,7 +324,7 @@ class User extends CActiveRecord
         $sectors=$this->sectors;
         $lastElement = end($sectors);
         foreach($sectors as $sector) {
-            $string = $string.'<a href="#">'.$sector->name.'</a>' ;
+            $string = $string.'<a href="'. Yii::app()->baseUrl.'/startup?g=&sec[0]='.$sector->sector_id .'">'.$sector->name.'</a>' ;
             if ($sector!==$lastElement) $string = $string.' · ';
         } 
         
@@ -375,7 +375,7 @@ class User extends CActiveRecord
         $skills=$this->skills;
         $lastElement = end($skills);
         foreach($skills as $skill) {
-            $string = $string.'<a href="#">'.$skill->name.'</a>' ;
+            $string = $string.'<a href="'. Yii::app()->baseUrl.'/user?g=&ski[0]='.$skill->skill_id .'">'.$skill->name.'</a>' ;
             if ($skill!==$lastElement) $string = $string.' · ';
         } 
         

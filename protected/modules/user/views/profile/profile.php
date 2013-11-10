@@ -113,7 +113,7 @@ $('.arrow-container').mouseover(function(event){
 	<div class="user-profile-header-info">     
 
         <div class="profile-name">
-            <span><?php echo $profile->firstname.' '.$profile->lastname; ?></span>
+            <span><?php echo $model->getFullName(); ?></span>
         </div>
 
         <div class="user-profile-onelinepitch">
