@@ -136,7 +136,12 @@ class SiteController extends Controller
 		$list = array();        
 		foreach($query as $q){
 			$data['value'] = $q->user_id;
-			$data['description'] = $q->resume;
+			
+			if(isset($q->user->roles) && isset($q->city))
+				$data['description'] = $q->user->roles[0]->name .' · '. $q->city->nome;
+			else
+				$data['description'] = '';
+			
 			$data['label'] = $q->firstname .' '. $q->lastname;
 			$data['image'] = $q->logo->name;
 			

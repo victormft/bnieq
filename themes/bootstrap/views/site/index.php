@@ -11,19 +11,6 @@ Yii::app()->clientScript->registerScript('script',
 
 $(document).ready(function() {
 
-	$('.carousel').carousel()
-
-	// Using default configuration
-	$('#foo').carouFredSel({
-		items				: 2,
-		direction			: 'up',
-		scroll : {
-			items			: 1,
-			easing			: 'elastic',
-			duration		: 1000,							
-			pauseOnHover	: true
-		}					
-	});	
 	
 	$('#startup_carousel_all .items').carouFredSel({
 		items : 4,
@@ -174,70 +161,70 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 
 <!-- !!!!!!!!!!!!!!!! Carousel !!!!!!!!!!!!!!!!!! -->
-<div style="padding-bottom: 50px;">
-<div style="position:absolute; height:644px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
-<div class="arrow-all"></div>
-<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Selecionadas</h1>
-<span style="font-size:18px; color:#727272; font-style:italic;">As preferidas da equipe do NextBlue</span>
-<div style="margin-bottom:20px; position:relative;">
+<div class="carousel-index-wrap">
+	<div class="carousel-background car-back-white"></div>
+	<div class="arrow-all"></div>
+	<h1>Selecionadas</h1>
+	<span class="carousel-header-span">As preferidas da equipe do NextBlue</span>
+	<div class="carousel-wrap-items">
 
-<?php $this->widget('bootstrap.widgets.TbListView',array(
-'dataProvider'=>$dataProvider->search(20, 1),
-'itemView'=>'_carousel',
-'id'=>'startup_carousel_all',
-'template'=>'{items}',
-)); 
-?>
-	<div class="clearfix"></div>
-	<a class="startup_carousel_control prev" id="startup_carousel_all_prev" href="#"><span>&lsaquo;</span></a>
-	<a class="startup_carousel_control next" id="startup_carousel_all_next" href="#"><span>&rsaquo;</span></a>
-	<div class="pagination carousel-pag" id="startup_carousel_all_pagination"></div>
-</div>
-</div>
-
-<div style="padding-bottom: 50px;">
-<div style="position:absolute; height:654px; width:100%; left:0; right:0; z-index:-1; background:#eaeaea;"></div>
-<div class="arrow-sel"></div>
-<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Populares</h1>
-<span style="font-size:18px; color:#727272; font-style:italic;">As mais procuradas pelos usuários</span>
-<div style="margin-bottom:20px; position:relative;">
-
-
-<?php $this->widget('bootstrap.widgets.TbListView',array(
-'dataProvider'=>$popProvider->search(20, 2),
-'itemView'=>'_carousel',
-'id'=>'startup_carousel_sel',
-'template'=>'{items}',
-)); 
-?>
-	<div class="clearfix"></div>
-	<a class="startup_carousel_control prev" id="startup_carousel_sel_prev" href="#"><span>&lsaquo;</span></a>
-	<a class="startup_carousel_control next" id="startup_carousel_sel_next" href="#"><span>&rsaquo;</span></a>
-	<div class="pagination carousel-pag" id="startup_carousel_sel_pagination"></div>
-</div>
+	<?php $this->widget('bootstrap.widgets.TbListView',array(
+	'dataProvider'=>$dataProvider->search(12, 1),
+	'itemView'=>'_carousel',
+	'id'=>'startup_carousel_all',
+	'template'=>'{items}',
+	)); 
+	?>
+		<div class="clearfix"></div>
+		<a class="startup_carousel_control prev" id="startup_carousel_all_prev" href="#"><span>&lsaquo;</span></a>
+		<a class="startup_carousel_control next" id="startup_carousel_all_next" href="#"><span>&rsaquo;</span></a>
+		<div class="pagination carousel-pag" id="startup_carousel_all_pagination"></div>
+	</div>
 </div>
 
+<div class="carousel-index-wrap">
+	<div class="carousel-background car-back-gray"></div>
+	<div class="arrow-sel"></div>
+	<h1>Populares</h1>
+	<span class="carousel-header-span">As mais procuradas pelos usuários</span>
+	<div class="carousel-wrap-items">
 
-<div style="padding-bottom: 50px;">
-<div style="position:absolute; height:654px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
-<div class="arrow-rec"></div>
-<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Recentes</h1>
-<span style="font-size:18px; color:#727272; font-style:italic;">Cadastradas recentemente</span>
-<div style="margin-bottom:20px; position:relative;">
 
-
-<?php $this->widget('bootstrap.widgets.TbListView',array(
-'dataProvider'=>$recProvider->search(20, 3),
-'itemView'=>'_carousel',
-'id'=>'startup_carousel_rec',
-'template'=>'{items}',
-)); 
-?>
-	<div class="clearfix"></div>
-	<a class="startup_carousel_control prev" id="startup_carousel_rec_prev" href="#"><span>&lsaquo;</span></a>
-	<a class="startup_carousel_control next" id="startup_carousel_rec_next" href="#"><span>&rsaquo;</span></a>
-	<div class="pagination carousel-pag" id="startup_carousel_rec_pagination"></div>
+	<?php $this->widget('bootstrap.widgets.TbListView',array(
+	'dataProvider'=>$popProvider->search(12, 2),
+	'itemView'=>'_carousel',
+	'id'=>'startup_carousel_sel',
+	'template'=>'{items}',
+	)); 
+	?>
+		<div class="clearfix"></div>
+		<a class="startup_carousel_control prev" id="startup_carousel_sel_prev" href="#"><span>&lsaquo;</span></a>
+		<a class="startup_carousel_control next" id="startup_carousel_sel_next" href="#"><span>&rsaquo;</span></a>
+		<div class="pagination carousel-pag" id="startup_carousel_sel_pagination"></div>
+	</div>
 </div>
+
+
+<div class="carousel-index-wrap">
+	<div class="carousel-background car-back-white"></div>
+	<div class="arrow-rec"></div>
+	<h1>Recentes</h1>
+	<span class="carousel-header-span">Cadastradas recentemente</span>
+	<div class="carousel-wrap-items">
+
+
+	<?php $this->widget('bootstrap.widgets.TbListView',array(
+	'dataProvider'=>$recProvider->search(12, 3),
+	'itemView'=>'_carousel',
+	'id'=>'startup_carousel_rec',
+	'template'=>'{items}',
+	)); 
+	?>
+		<div class="clearfix"></div>
+		<a class="startup_carousel_control prev" id="startup_carousel_rec_prev" href="#"><span>&lsaquo;</span></a>
+		<a class="startup_carousel_control next" id="startup_carousel_rec_next" href="#"><span>&rsaquo;</span></a>
+		<div class="pagination carousel-pag" id="startup_carousel_rec_pagination"></div>
+	</div>
 </div>
 
 <!-- !!!!!!!!!!!!!!!!!! End Carousel !!!!!!!!!!!!!!!!!!!! -->

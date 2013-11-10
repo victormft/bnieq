@@ -805,9 +805,11 @@ class StartupController extends Controller
 		
 		<div class="team-item" style="display:none; opacity:0;">
 			<div class="team-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $usr->profile->logo->name .'" id="team-img"/></div>
-			<div class="team-name"><span data-id="'. $usr->id .'">'. $usr->profile->firstname . ' ' . $usr->profile->lastname .'</span></div>
-			<div class="team-position">'. UserModule::t($user_startup->position) . '</div>
-			<div class="team-resume">'. $usr->profile->resume . '</div>
+			<div class="team-text">
+				<div class="team-name"><span data-id="'. $usr->id .'">'. $usr->profile->firstname . ' ' . $usr->profile->lastname .'</span></div>
+				<div class="team-position">'. UserModule::t($user_startup->position) . '</div>
+				<div class="team-resume">'. $usr->profile->resume . '</div>
+			</div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
 		</div>
 		
@@ -944,7 +946,12 @@ class StartupController extends Controller
 		$list = array();        
 		foreach($query as $q){
 			$data['value'] = $q->user_id;
-			$data['description'] = $q->resume;
+			
+			if(isset($q->user->roles) && isset($q->city))
+				$data['description'] = $q->user->roles[0]->name .' · '. $q->city->nome;
+			else
+				$data['description'] = '';
+				
 			$data['label'] = $q->firstname .' '. $q->lastname;
 			$data['image'] = $q->logo->name;
 

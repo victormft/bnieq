@@ -68,16 +68,6 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$(this).find('.pic-btn').removeClass('btn-primary');	
 	});
 	
-	$('.team').mouseover(function(event) {
-		$(this).css('color','#333');
-		$('.team-btn').addClass('btn-primary');	
-	});
-	
-	$('.team').mouseout(function(event) {
-		$(this).css('color','#aaa');
-		$('.team-btn').removeClass('btn-primary');	
-	});
-	
 	$('.arrow-container').mouseover(function(event){
 		$(this).css('background-color', '#fefefe');
 	});
@@ -849,7 +839,7 @@ function getUrlVars()
 		
 		<div class="content-info edit" style="border-radius: 0;">
 			
-			<div class="editable-wrap team">
+			<div class="editable-wrap-team">
 		
 				<?php $form=$this->beginWidget('CActiveForm', array(
 					'id'=>'form-team',
@@ -870,7 +860,7 @@ function getUrlVars()
 						'size'=>'normal',
 						'htmlOptions'=>array(
 							'style'=>'display:block',
-							'class'=>'team-btn',
+							'class'=>'team-btn btn-primary',
 							),
 						)); 
 					?>
@@ -906,6 +896,7 @@ function getUrlVars()
 						}
 					}));
 					$(".team-loading").empty();
+					$(".ui-autocomplete").css({'width':'300px'});
 				},
 				error: function(){
 					$(".team-loading").html('<span style="color:red;"> Registro não encontrado! </span>').find('span').delay(1000).fadeOut(600);
@@ -989,9 +980,11 @@ function getUrlVars()
 		
 		<div class="team-item">		
 			<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
-			<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
-			<div class="team-position"><?php echo UserModule::t($relational_tbl->position);?></div>
-			<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+			<div class="team-text">
+				<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
+				<div class="team-position"><?php echo UserModule::t($relational_tbl->position);?></div>
+				<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+			</div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
 		</div>
 		
