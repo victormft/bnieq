@@ -299,12 +299,13 @@ class StartupController extends Controller
 			$startupname = $_POST['Startup']['name'];
 			$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
 			$startupname = preg_replace('/[\"\']/', '', $startupname);
-			$startupname = preg_replace('/\s+/', '-', strtolower($startupname));
-			
+			$startupname = preg_replace('/\s+/', '-', strtolower($startupname));			
 			
 			$model->startupname = $startupname; 
 			
 			$model->published=0;
+            
+            $model->setCreateTime(time());
 			
 			// !!!!!!!!!!!! end formatting startupname !!!!!!!!!!!!!!!
 			

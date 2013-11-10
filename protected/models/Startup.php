@@ -527,4 +527,8 @@ class Startup extends CActiveRecord
 
 		echo json_encode($list);
 	}
+    
+    public function setCreatetime($value) {
+        $this->create_time=date('Y-m-d H:i:s',$value);
+    }
 }
