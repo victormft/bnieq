@@ -1,6 +1,8 @@
 <?php
 $this->layout='//layouts/column1';
 
+
+
 Yii::app()->clientScript->registerScript('loading-img',
 "
 $('.arrow-container').mouseover(function(event){
@@ -259,7 +261,7 @@ $('.arrow-container').mouseover(function(event){
                 )
             ); ?>
             
-            <legend style="line-height: 20px">Adicionar Startup</legend>
+            <legend style="line-height: 20px;">Adicionar Startup &nbsp&nbsp&nbsp<div class="team-loading" style="display:inline; font-size: 15px;"></div></legend>
              
             <?php echo CHtml::activeDropDownList(new Startup,'user_role', array_merge(array(''=>'Papel...'), Startup::model()->getCompanyPositionOptions() + Startup::model()->getCompanyMembersPositionOptions()), array('name'=>'position', 'style'=>'width: 200px;'));
 			?>
@@ -283,16 +285,44 @@ $('.arrow-container').mouseover(function(event){
             unset($form); ?>
             
             <script>
-				$(function() {	
+				
+            
+                $(function() {
+            
                 var img_path = "<?php echo Yii::app()->request->baseUrl.'/images/'?>";
 
                 $("#my_ac").autocomplete({
-                    source: <?php Startup::model()->getStartupsForPortfolio(); ?>,
+                    source: function( request, response ) {
+                        $.ajax({
+                            beforeSend: function(){
+                                 $(".team-loading").html("<img src='<?php echo Yii::app()->request->baseUrl; ?>/images/loading.gif'/>");
+                            },
+                            url: "<?php echo Yii::app()->request->baseUrl.'/user/profile/startupsforportfolio'?>",
+                            data: {term: request.term},
+                            dataType: "json",
+                            success: function( data ) {
+                                response( $.map( data.myData, function( item ) {
+                                    return {
+                                        value: item.label,
+                                        id: item.value,
+                                        label: _highlight(item.label, request.term),
+                                        label_form: item.label,
+                                        image: item.image
+                                    }
+                                }));
+                                $(".team-loading").empty();
+                            },
+                            error: function(){
+                                $(".team-loading").html('<span style="color:red;"> Registro não encontrado! </span>').find('span').delay(1000).fadeOut(600);
+                                $(".ui-autocomplete").css({'display':'none'});
+                            }
+                        });
+                    },
                     minLength: 0,
-                    delay: 10,
+                    delay: 300,
                     select: function( event, ui ) {
-                        $( "#my_ac" ).val( ui.item.label);
-                        $( "#my_ac_id" ).val( ui.item.value );
+                        $( "#my_ac" ).val( ui.item.label_form);
+                        $( "#my_ac_id" ).val( ui.item.id );
                         return false;
                   }
                 }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
@@ -302,6 +332,11 @@ $('.arrow-container').mouseover(function(event){
                         .append(inner_html)
                         .appendTo( ul );
                 };
+
+                function _highlight(s, t) {
+                    var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
+                    return s.replace(matcher, "<strong>$1</strong>");
+                }
             });
 			</script>
             

@@ -15,7 +15,7 @@
     $.fn.toggleButtons = function (method) {
         var $element
             , $div
-            , transitionSpeed = 0.05
+            , transitionSpeed = 0.4
             , methods = {
                 init: function (opt) {
                     this.each(function () {

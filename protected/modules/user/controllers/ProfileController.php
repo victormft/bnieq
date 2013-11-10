@@ -32,7 +32,7 @@ class ProfileController extends Controller
 				'users'=>array('*'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('edit'),
+				'actions'=>array('edit', 'startupsforportfolio'),
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -259,6 +259,39 @@ class ProfileController extends Controller
         
         $this->redirect($this->createUrl('profile/edit/username/'.Yii::app()->user->getUsername()));
     }
+    
+    public function actionStartupsForPortfolio()
+	{
+        if(!empty($_GET['term']))
+		{
+			$param = addcslashes($_GET['term'], '%_'); // escape LIKE's special characters
+			$qry = new CDbCriteria( array(
+				'condition' => "name LIKE :param",         // no quotes around :match
+				'params'    => array(':param' => "%$param%")  // Aha! Wildcards go here
+			) );
+			
+			$query = Startup::model()->findAll($qry);     // works!
+		}
+		else
+			$query = null;
+        
+		$list = array();        
+		foreach($query as $q){
+			$data['value'] = $q->id;
+			//$data['description'] = $q->profile->resume;
+			$data['label'] = $q->name;
+			$data['image'] = $q->logo0->name;
+
+			$list['myData'][] = $data;
+			unset($data);
+		}
+
+		if(!empty($query))
+			echo json_encode($list);
+		
+		else 
+			throw new CHttpException(403,'Você não pode editar essa startup!');
+	}
 
     /**
 	 * Returns the data model based on the primary key given in the GET variable.
