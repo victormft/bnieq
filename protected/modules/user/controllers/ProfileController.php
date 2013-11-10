@@ -28,7 +28,11 @@ class ProfileController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('profile', 'edit'),
+				'actions'=>array('profile'),
+				'users'=>array('*'),
+			),
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('edit'),
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -48,6 +52,15 @@ class ProfileController extends Controller
 	 */
 	public function actionProfile()
 	{
+        if(Yii::app()->user->isGuest){
+            $user = Yii::app()->getComponent('user');
+            $user->setFlash(
+                'error',
+                '<strong>Ops!</strong> Você precisa estar conectado apra acessar essa área.'
+            );
+            $this->redirect(Yii::app()->controller->module->loginUrl);
+        }
+        
         if(!isset($_GET['username']))
         {
             $model=$this->loadUser(Yii::app()->user->id);
