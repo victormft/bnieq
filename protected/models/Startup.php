@@ -204,9 +204,19 @@ class Startup extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		if($group==1)
+		if($group)
 		{
-			$this->selecionada=1;
+			switch ($group) {
+                case 1:
+                    $this->selecionada=1;
+                    break;
+                case 2:
+                    $criteria->order="t.followers_num DESC";
+                    break;
+                case 3:
+                    $criteria->order="t.create_time DESC";
+                    break;
+            }            
 		}
 		
 		$criteria->addCondition('t.published = 1');

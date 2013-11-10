@@ -27,12 +27,16 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-	
+        //um pra cada listing
 		$model=new Startup('search');
+        $model2=new Startup('search');
+        $model3=new Startup('search');
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index',array(
                 'dataProvider'=>$model,
+                'popProvider'=>$model2,
+                'recProvider'=>$model3,
             ));
 	}
 
@@ -150,7 +154,7 @@ class SiteController extends Controller
 			echo json_encode($list);
 		
 		else 
-			throw new CHttpException(403,'Você não pode editar essa startup!');
+			throw new CHttpException(403,'Vocï¿½ nï¿½o pode editar essa startup!');
 			
 	}
 }

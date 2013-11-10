@@ -1723,6 +1723,19 @@ body input[type="file"]{
 	border-top: 30px solid #f4f4f4;
 }
 
+.arrow-rec
+{
+	width: 0; 
+	height: 0; 
+	margin:0 auto;
+	border-left: 30px solid transparent;
+	border-right: 30px solid transparent;
+	position:absolute;
+	left:0;
+	right:0;
+	border-top: 30px solid #eaeaea;
+}
+
 .custom-label
 {
 	color: #0088cc;

@@ -42,6 +42,15 @@ $(document).ready(function() {
 		next : '#startup_carousel_sel_next',
 		pagination: '#startup_carousel_sel_pagination'
 	});	
+    
+    $('#startup_carousel_rec .items').carouFredSel({
+		items : 4,
+		auto : false,
+		circular: false,
+		prev : '#startup_carousel_rec_prev',
+		next : '#startup_carousel_rec_next',
+		pagination: '#startup_carousel_rec_pagination'
+	});	
 	
 	$('.startup_carousel_main').carouFredSel({
 		items : 1,
@@ -168,12 +177,12 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 <div style="padding-bottom: 50px;">
 <div style="position:absolute; height:644px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
 <div class="arrow-all"></div>
-<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Todas</h1>
-<span style="font-size:18px; color:#727272; font-style:italic;">Startups cadastradas na plataforma</span>
+<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Selecionadas</h1>
+<span style="font-size:18px; color:#727272; font-style:italic;">As preferidas da equipe do NextBlue</span>
 <div style="margin-bottom:20px; position:relative;">
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
-'dataProvider'=>$dataProvider->search(20),
+'dataProvider'=>$dataProvider->search(20, 1),
 'itemView'=>'_carousel',
 'id'=>'startup_carousel_all',
 'template'=>'{items}',
@@ -189,13 +198,13 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 <div style="padding-bottom: 50px;">
 <div style="position:absolute; height:654px; width:100%; left:0; right:0; z-index:-1; background:#eaeaea;"></div>
 <div class="arrow-sel"></div>
-<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Selecionadas</h1>
-<span style="font-size:18px; color:#727272; font-style:italic;">As preferidas da equipe do NextBlue</span>
+<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Populares</h1>
+<span style="font-size:18px; color:#727272; font-style:italic;">As mais procuradas pelos usuários</span>
 <div style="margin-bottom:20px; position:relative;">
 
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
-'dataProvider'=>$dataProvider->search(20, 1),
+'dataProvider'=>$popProvider->search(20, 2),
 'itemView'=>'_carousel',
 'id'=>'startup_carousel_sel',
 'template'=>'{items}',
@@ -205,6 +214,29 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 	<a class="startup_carousel_control prev" id="startup_carousel_sel_prev" href="#"><span>&lsaquo;</span></a>
 	<a class="startup_carousel_control next" id="startup_carousel_sel_next" href="#"><span>&rsaquo;</span></a>
 	<div class="pagination carousel-pag" id="startup_carousel_sel_pagination"></div>
+</div>
+</div>
+
+
+<div style="padding-bottom: 50px;">
+<div style="position:absolute; height:654px; width:100%; left:0; right:0; z-index:-1; background:#fff;"></div>
+<div class="arrow-rec"></div>
+<h1 style="font-weight:normal; text-shadow: 1px 1px white; padding-top:60px; margin:0;">Recentes</h1>
+<span style="font-size:18px; color:#727272; font-style:italic;">Cadastradas recentemente</span>
+<div style="margin-bottom:20px; position:relative;">
+
+
+<?php $this->widget('bootstrap.widgets.TbListView',array(
+'dataProvider'=>$recProvider->search(20, 3),
+'itemView'=>'_carousel',
+'id'=>'startup_carousel_rec',
+'template'=>'{items}',
+)); 
+?>
+	<div class="clearfix"></div>
+	<a class="startup_carousel_control prev" id="startup_carousel_rec_prev" href="#"><span>&lsaquo;</span></a>
+	<a class="startup_carousel_control next" id="startup_carousel_rec_next" href="#"><span>&rsaquo;</span></a>
+	<div class="pagination carousel-pag" id="startup_carousel_rec_pagination"></div>
 </div>
 </div>
 
