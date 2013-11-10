@@ -162,10 +162,13 @@ class Profile extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+        /* only if you don't want the logged user to show in the index
         $criteria->addCondition('t.user_id <> :userId');
         $criteria->params = array(
 			'userId' => Yii::app()->user->getId(),
 		);
+         * 
+         */
         
         $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
 		$criteria->compare('user_id',$this->user_id,true);

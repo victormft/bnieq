@@ -1,4 +1,3 @@
-<?php //if($data->user->id !== Yii::app()->user->id): ?>
 
 <div class="view-list">
 
@@ -19,6 +18,9 @@
         </div>
     </div>
        
+        
+    <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$data->user_id))): ?>
+    
     <div class="follow-count" data-name="<?php echo $data->user->username; ?>"><?php echo count($data->user->followers); ?></div>   
     
     <span class="follow-btn">    
@@ -45,6 +47,7 @@
         ?>        
     </span>
     
+    <?php endif ?>
+    
 </div>
 
-<?php //endif ?>
