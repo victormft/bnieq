@@ -857,7 +857,7 @@ function getUrlVars()
 					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
 				)); ?>
 		
-					<?php echo CHtml::label('Nome', false); ?>
+					<?php echo CHtml::label('Nome', false, array('style'=>'display:inline-block; margin-right:30px;')); ?><div class="team-loading" style="display:inline;"></div>
 					<input type="text" id="my_ac" size="40" />
 					<input type="hidden" id="my_ac_id" name="user_startup"/>
 					
@@ -885,12 +885,39 @@ function getUrlVars()
 	var img_path = "<?php echo Yii::app()->request->baseUrl.'/images/'?>";
 	
     $("#my_ac").autocomplete({
-        source: <?php $model->getAutoTest(); ?>,
+        source: function( request, response ) {
+			$.ajax({
+				beforeSend: function(){
+					 $(".team-loading").html("<img src='<?php echo Yii::app()->request->baseUrl; ?>/images/loading.gif'/>");
+				},
+				url: "<?php echo Yii::app()->request->baseUrl.'/startup/autotest'?>",
+				data: {term: request.term},
+				dataType: "json",
+				success: function( data ) {
+					response( $.map( data.myData, function( item ) {
+						return {
+							value: item.label,
+							id: item.value,
+							description: item.description,
+							label: _highlight(item.label, request.term),
+							label_form: item.label,
+							image: item.image
+							
+						}
+					}));
+					$(".team-loading").empty();
+				},
+				error: function(){
+					$(".team-loading").html('<span style="color:red;"> Registro não encontrado! </span>').find('span').delay(1000).fadeOut(600);
+					$(".ui-autocomplete").css({'display':'none'});
+				}
+			});
+		},
         minLength: 0,
-		delay: 10,
+		delay: 300,
 		select: function( event, ui ) {
-			$( "#my_ac" ).val( ui.item.label);
-			$( "#my_ac_id" ).val( ui.item.value );
+			$( "#my_ac" ).val( ui.item.label_form);
+			$( "#my_ac_id" ).val( ui.item.id );
 			return false;
       }
     }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
@@ -900,6 +927,11 @@ function getUrlVars()
             .append(inner_html)
             .appendTo( ul );
     };
+	
+	function _highlight(s, t) {
+		var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
+		return s.replace(matcher, "<strong>$1</strong>");
+	}
 });
 			</script>
 		

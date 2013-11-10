@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -923,6 +923,41 @@ class StartupController extends Controller
 		exit;
 		
 	}	
+	
+	public function actionAutoTest()
+	{
+		if(!empty($_GET['term']))
+		{
+			$param = addcslashes($_GET['term'], '%_'); // escape LIKE's special characters
+			$qry = new CDbCriteria( array(
+				'condition' => "firstname LIKE :param OR lastname LIKE :param OR CONCAT(firstname, ' ' , lastname) LIKE :param",         // no quotes around :match
+				'params'    => array(':param' => "%$param%")  // Aha! Wildcards go here
+			) );
+			
+			$query = Profile::model()->findAll($qry);     // works!
+		}
+		else
+			$query = null;
+		
+		
+		$list = array();        
+		foreach($query as $q){
+			$data['value'] = $q->user_id;
+			$data['description'] = $q->resume;
+			$data['label'] = $q->firstname .' '. $q->lastname;
+			$data['image'] = $q->logo->name;
+
+			$list['myData'][] = $data;
+			unset($data);
+		}
+		
+		if(!empty($query))
+			echo json_encode($list);
+		
+		else 
+			throw new CHttpException(403,'Você não pode editar essa startup!');
+			
+	}
 				
 					
 					
