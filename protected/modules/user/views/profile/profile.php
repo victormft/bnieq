@@ -1,6 +1,7 @@
-<?php
-$this->layout='//layouts/column1';
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t($model->getFullName()); ?>
 
+<?php
+$this->layout='//layouts/column1'; 
 ?>
 
 <?php
@@ -151,7 +152,7 @@ $('.arrow-container').mouseover(function(event){
 		<span class="follow-btn">
             
             <div class="follow-info">
-                <div class="follow-count"><?php echo count($model->followers); ?></div><div class="follow-status">Followers</div>
+                <div class="follow-count"><?php echo count($model->followers); ?></div><div class="follow-status"><?php echo UserModule::t('Followers'); ?></div>
             </div>
             
             <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
@@ -185,7 +186,7 @@ $('.arrow-container').mouseover(function(event){
                         //'dialogTitle' => 'Detailview',
                         'dialogWidth' => 450,
                         'dialogHeight' => 500,
-                        'openButtonText' => 'Message',
+                        'openButtonText' => UserModule::t('Message'),
                         'closeButtonText' => 'Close',
                         'openButtonHtmlOptions' => array(
                             'style' => 'width:70px; padding:12px 5px; margin-left: 10px', 
@@ -204,7 +205,7 @@ $('.arrow-container').mouseover(function(event){
 			<span class="edit-btn-user">
 			
 				<?php $this->widget('bootstrap.widgets.TbButton', array(
-                    'label'=>'Editar',
+                    'label'=>UserModule::t('Edit'),
                     'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
                     'url'=>array('edit','username'=>$model->username),
@@ -315,7 +316,7 @@ $('.arrow-container').mouseover(function(event){
             
             <div class="content-info-unit">         
                 <div class="clabel">			
-                    <?php echo '<b>Skills: </b>'; ?>
+                    <?php echo '<b>'.UserModule::t('Skills').': </b>'; ?>
                     <span class="tip">O que você faz de melhor?</span>                    
                 </div>
                 <div class="editable-wrap-profile">		                    
@@ -393,7 +394,7 @@ $('.arrow-container').mouseover(function(event){
     <div class="content-wrap">
         
         <div class="content-head clicked">
-            <i class="icon-circle-arrow-up profile-icon"></i> Referências & Follows
+            <i class="icon-circle-arrow-up profile-icon"></i> <?php echo UserModule::t('References & Follows'); ?>
         </div>
 		
 		<div class="content-info" style="padding: 0;">            
@@ -403,10 +404,10 @@ $('.arrow-container').mouseover(function(event){
                     array(
                         'controllerRoute' => 'user/user/followpop',
                         'actionParams' => array('id'=>$model->id, 'follow'=>'ing', 'attr'=>'followed'),
-                        'dialogTitle' => 'Following',
+                        'dialogTitle' => UserModule::t('Following'),
                         'dialogWidth' => 600,
                         'dialogHeight' => 500,
-                        'openButtonText' => 'Following',
+                        'openButtonText' => UserModule::t('Following'),
                         'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
                 );?>
@@ -429,10 +430,10 @@ $('.arrow-container').mouseover(function(event){
                     array(
                         'controllerRoute' => 'user/user/followpop',
                         'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
-                        'dialogTitle' => 'Followers',
+                        'dialogTitle' => UserModule::t('Followers'),
                         'dialogWidth' => 600,
                         'dialogHeight' => 500,
-                        'openButtonText' => 'Followers',
+                        'openButtonText' => UserModule::t('Followers'),
                         'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
                 );?>
@@ -487,9 +488,9 @@ $('.arrow-container').mouseover(function(event){
                 </div>
                 <div class="editable-wrap-r">			
                     <?php 
-                    if($profile->gender === 'M') echo 'Male';
-                    elseif($profile->gender === 'F') echo 'Female';
-                    else echo 'not selected...';
+                    if($profile->gender === 'M') echo UserModule::t('Male');
+                    elseif($profile->gender === 'F') echo UserModule::t('Female');
+                    else echo UserModule::t('Not selected...');
                     ?>                        
                 </div>
             </div>
@@ -499,7 +500,7 @@ $('.arrow-container').mouseover(function(event){
                     <?php echo '<b>Data de nascimento: </b>'; ?>                    
                 </div>
                 <div class="editable-wrap-r">			
-                    <?php echo (isset($profile->birthday)) ? date('d-F-Y', strtotime($profile->birthday)) : 'not selected...'; ?>				
+                    <?php echo (isset($profile->birthday)) ? Yii::app()->getDateFormatter()->format('d-MMMM-yyyy', $profile->birthday) : UserModule::t('Not selected...'); ?>				
                 </div>
             </div>        
 		</div>

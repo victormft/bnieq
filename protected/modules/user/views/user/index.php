@@ -279,7 +279,7 @@ $(document.body).on('click','.follow-press',function(event){
             </div>
             
             <div style="margin-bottom:20px; position:relative;">
-                <label class="rol-label">Roles <div class="rol-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
+                <label class="rol-label"><?php echo UserModule::t('Roles'); ?> <div class="rol-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
 
                 <div id="search-role">
                     <?php echo CHtml::activeCheckBoxList($dataProvider,'roles', CHtml::listData(Role::model()->findAll(), 'role_id', 'name'), array('name'=>'rol', 'labelOptions'=>array('style'=>'display:inline'))) 
@@ -288,7 +288,7 @@ $(document.body).on('click','.follow-press',function(event){
             </div>
             
             <div style="margin-bottom:20px; position:relative;">
-                <label class="ski-label">Skills <div class="ski-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
+                <label class="ski-label"><?php echo UserModule::t('Skills'); ?> <div class="ski-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
 
                 <div id="search-skill">
                     <?php echo CHtml::activeCheckBoxList($dataProvider,'skills', CHtml::listData(Skill::model()->findAll(), 'skill_id', 'name'), array('name'=>'ski', 'labelOptions'=>array('style'=>'display:inline'))) 
@@ -297,7 +297,7 @@ $(document.body).on('click','.follow-press',function(event){
             </div>
             
             <div style="margin-bottom:20px; position:relative;">
-                <label class="sec-label">Sectors of interest <div class="sec-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
+                <label class="sec-label"><?php echo UserModule::t('Sectors of interest'); ?> <div class="sec-arrow arrow-down" style="display: inline-block; margin-left: 5px;"></div></label>
 
                 <div id="search-sector">
                     <?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) 

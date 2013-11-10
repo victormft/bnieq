@@ -172,7 +172,7 @@ class Startup extends CActiveRecord
 			'video' => 'Video',
 			'create_time' => 'Create Time',
 			'selecionada' => 'Selecionada',
-			'followers_num' => 'Followers',
+			'followers_num' => UserModule::t('Followers'),
 		);
 	}
 	

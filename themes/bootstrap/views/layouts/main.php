@@ -156,14 +156,14 @@ $('.remove-search').click(function(event){
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> >Profile</a>
+                            <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><?php echo UserModule::t('Profile'); ?></a>
                         </li>
-						<li><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> >Messages <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
+						<li><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><?php echo UserModule::t('Messages'); ?> <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
                         ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>
 						</li>
                         <li class="divider"></li>
                         <li>
-                            <a href=<?php echo Yii::app()->homeUrl . '/user/settings/general' ?>>Settings</a>
+                            <a href=<?php echo Yii::app()->homeUrl . '/user/settings/general' ?>><?php echo UserModule::t('Settings'); ?></a>
                         </li>
                     </ul>                    
                 </li>
