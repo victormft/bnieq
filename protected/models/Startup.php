@@ -521,7 +521,7 @@ class Startup extends CActiveRecord
 			$data['label'] = $q->name;
 			$data['image'] = $q->logo0->name;
 
-			$list[] = $data;
+			$list['myData'][] = $data;
 			unset($data);
 		}
 

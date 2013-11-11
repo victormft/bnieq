@@ -190,13 +190,20 @@ class TbToggle2Column extends TbDataColumn
 
 		$this->button['click'] = "js:
 function() {
+    var elem = $(this);
 	var th=this;
 	var afterToggle={$this->afterToggle};
 	$.fn.yiiGridView.update('{$this->grid->id}', {
 		type:'POST',
 		url:$(this).attr('href'),{$csrf}
-		success:function(data) {
-			$.fn.yiiGridView.update('{$this->grid->id}');
+		success:function(data) {                
+            if(elem.children().hasClass('icon-remove-sign')){
+                elem.find('.icon-remove-sign').addClass('icon-ok-circle').removeClass('icon-remove-sign');  
+                elem.attr('title','Uncheck');
+            } else{
+                elem.find('.icon-ok-circle').addClass('icon-remove-sign').removeClass('icon-ok-circle'); 
+                elem.attr('title','Check'); 
+            }
 			afterToggle(true, data);
 		},
 		error:function(XHR){

@@ -120,6 +120,9 @@ abstract class EBaseJuiDlg extends CWidget
         'height' => 480,
         'autoOpen' => false,
         'modal' => true,
+        'open' => 'js: function(){
+            $(".ui-widget-overlay").bind("click", function () { $(this).siblings(".ui-dialog").find(".ui-dialog-content").dialog("close"); });
+        }'
     );
 
     /**
