@@ -431,6 +431,7 @@ function getUrlVars()
 		</div>
 		
 		<div class="content-info edit">
+			<!--
 			<div class="editable-wrap editable-img">
 				<?php $form=$this->beginWidget('CActiveForm', array(
 					'id'=>'mult-image-edit-form',
@@ -466,7 +467,7 @@ function getUrlVars()
 			</div>
 	
 	<?php $this->endWidget(); ?>
-			
+	-->		
 			<div class="mult-pic-preview"></div>
 			
 			

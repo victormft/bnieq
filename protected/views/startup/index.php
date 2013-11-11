@@ -146,6 +146,25 @@ $('.sec-label').click(function(event) {
 		
 });
 
+$('.sec-arrow').click(function(event) {
+
+		if(!$('.sec-arrow').hasClass('arrow-up'))
+		{	
+			$('.sec-arrow').removeClass('arrow-down').addClass('arrow-up');
+			$('#search-sector').slideDown('slow');
+			$('.sec-label').addClass('clicked');
+		}
+		
+		else
+		{
+			$('#search-sector').slideUp('slow', function(){
+				$('.sec-arrow').removeClass('arrow-up').addClass('arrow-down');
+			});
+			$('.sec-label').removeClass('clicked');
+		}
+		
+});
+
 
 
 ");

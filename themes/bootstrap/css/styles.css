@@ -1801,6 +1801,8 @@ body input[type="file"]{
 	font-size:18px; 
 	color:#727272; 
 	font-style:italic;
+	margin-left:0px;
+	margin-bottom: 20px;
 }
 
 .carousel-background

@@ -97,7 +97,7 @@ class Startup extends CActiveRecord
 		return array(
 		
 			//validation for pic
-			array('pic, mult_pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>'Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => 'Imagem deve ser menor que 5MB !!!'),
+			array('pic, mult_pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>'Apenas os tipos: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => 'Deve ser menor que 5MB !!!'),
 			array('pic, mult_pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
 			array('name, one_line_pitch, location', 'required', 'message'=>UserModule::t("Required")),
 			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),

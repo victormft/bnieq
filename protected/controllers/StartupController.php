@@ -878,6 +878,20 @@ class StartupController extends Controller
 			$newFileName = md5("{$rnd}-{$nome_imagem}").'.'.$extension;  // random number + file name
 			
 			$tmp = $_FILES['imagem']['tmp_name']; 
+			
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
+			
+			$model->pic=CUploadedFile::getInstanceByName('imagem');
+			if(!$model->validate())
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'<span style="color:red;">'. $model->getErrors('pic')[0] .'</span>'
+			));
+			exit;
+		}
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
+		
 			  
 			move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$newFileName); 
 			
