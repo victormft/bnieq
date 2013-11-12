@@ -117,15 +117,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 {
 	float:left;
 	margin-right:10px; 
-	border: 1px solid #aaa; 
-	background:#fff;
+	border: 1px solid #eee; 
+	background:#fbfbfb;
 	width:80px; 
 	height:80px;
 	border-radius: 5px;
 	overflow:hidden;
 	line-height:75px;
 	text-align:center;
-	/*box-shadow: 0px 0px 4px 1px #ddd;*/
+	box-shadow: 0px 0px 3px 0px #ddd;
+	-webkit-box-shadow: 0px 0px 3px 0px #ddd;
 }
 
 .items .view-list .startup-view-img img
@@ -946,7 +947,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	float:left;
 	margin-right:10px; 
-	border: 1px solid #aaa;
+	border: 1px solid #eee;
 	background:#fff;
 	width:80px; 
 	height:80px;
@@ -954,7 +955,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	overflow:hidden;
 	line-height:75px;
 	text-align:center;
-	/*box-shadow: 0px 0px 4px 1px #ddd;*/
+	box-shadow: 0px 0px 3px 0px #ddd;
+	-webkit-box-shadow: 0px 0px 3px 0px #ddd;
 }
 
 .carousel-home-item .top-item .startup-view-img img
