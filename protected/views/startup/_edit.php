@@ -46,7 +46,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 				}
 			});
 			}
-		}, 3000);
+		}, 2000);
 		
 		
 			
