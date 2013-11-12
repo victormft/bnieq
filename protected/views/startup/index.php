@@ -238,7 +238,7 @@ function SearchFunc()   {
 'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
-        'name',
+        'create_time',
 		'followers_num'
     ),
 'template'=>'{sorter} {items} {pager}',

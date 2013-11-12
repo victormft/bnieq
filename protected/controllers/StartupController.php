@@ -510,7 +510,7 @@ class StartupController extends Controller
 		if(isset($_GET['n'])) {
 			$search_name=preg_replace('/[><=]/', '', $_GET['n']);
 			$model->name=strip_tags($search_name);
-			$model->one_line_pitch=strip_tags($search_name);
+			//$model->one_line_pitch=strip_tags($search_name);
 		}
 		if(isset($_GET['c_stage']))
 			$model->company_stage=$_GET['c_stage'];	

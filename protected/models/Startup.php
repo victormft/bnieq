@@ -174,7 +174,7 @@ class Startup extends CActiveRecord
 			'competitive_advantage' => 'Competitive Advantage',
 			'history' => 'History',
 			'video' => 'Video',
-			'create_time' => 'Create Time',
+			'create_time' => 'Juntou-se',
 			'selecionada' => 'Selecionada',
 			'followers_num' => UserModule::t('Followers'),
 		);
@@ -229,7 +229,7 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.id',$this->id,true);
 		$criteria->compare('t.name',$this->name,true);
 		$criteria->compare('t.logo',$this->logo,true);
-		$criteria->compare('t.one_line_pitch',$this->one_line_pitch,true, 'OR');
+		$criteria->compare('t.one_line_pitch',$this->one_line_pitch,true/*, 'OR'*/);
 		$criteria->compare('t.product_description',$this->product_description,true);
 		$criteria->compare('t.company_size',$this->company_size,true);
 		$criteria->compare('t.company_stage',$this->company_stage,true);
@@ -242,7 +242,7 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.twitter',$this->twitter,true);
 		$criteria->compare('t.linkedin',$this->linkedin,true);
 		$criteria->compare('t.website',$this->website,true);
-		$criteria->compare('t.location',$this->location,true);
+		$criteria->compare('t.location',$this->location,false);
 		$criteria->compare('t.client_segment',$this->client_segment,true);
 		$criteria->compare('t.tech',$this->tech,true);
 		$criteria->compare('t.value_proposition',$this->value_proposition,true);
