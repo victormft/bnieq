@@ -26,6 +26,31 @@ Yii::app()->clientScript->registerScript('loading-img',
 			}
 		}).submit(); }); 
 	});
+	
+	$('.start-name').on('click','.editable-submit', function(event){
+		//$('.header-label').html('aaa');
+		
+		setTimeout(function(){
+			if(!$('.start-name').find('a').hasClass('editable-open') && !$('.start-name').find('a').hasClass('editable-bg-transition'))
+			{
+			
+				var new_name = $('.start-name').find('a').text();
+				
+				$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
+				dataType: 'json',
+				type: 'POST',
+				success: function(data){
+					location.href = data.res;
+					
+				}
+			});
+			}
+		}, 3000);
+		
+		
+			
+	});
 
 	$('#visualizar').on('click','.mult-list-img',function(event){
 		$('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>')
@@ -189,19 +214,19 @@ function getUrlVars()
 				<div class="header-label">
 					<b>Nome:</b> 
 				</div>
-					<span class="macaco">
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'text',
-						'model'     => $model,
-						'attribute' => 'name',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'inputclass'=> 'input-large',
-						'mode'=>'inline',
-						'options'    => array(
-							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="40">'
-						)
-					 )); ?>  
+					<span class="start-name">
+						<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+							'type'      => 'text',
+							'model'     => $model,
+							'attribute' => 'name',
+							'url'       => array('update'),  
+							'placement' => 'right',
+							'inputclass'=> 'input-large',
+							'mode'=>'inline',
+							'options'    => array(
+								'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="40">'
+							)
+						 )); ?>  
 					 </span>
 			</div>
 			

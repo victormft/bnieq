@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'updateStartupName'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -979,6 +979,24 @@ class StartupController extends Controller
 		else 
 			throw new CHttpException(403,'Você não pode editar essa startup!');
 			
+	}
+	
+	public function actionUpdateStartupName($startname, $name)
+	{
+		$model=$this->loadModel($name);
+		
+		$startupname = $startname;
+		$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
+		$startupname = preg_replace('/[\"\']/', '', $startupname);
+		$startupname = preg_replace('/\s+/', '-', strtolower($startupname));			
+			
+		$model->startupname = $startupname; 
+		
+		$model->save();
+		
+		echo CJSON::encode(array(
+			'res'=>$startupname
+		));
 	}
 				
 					
