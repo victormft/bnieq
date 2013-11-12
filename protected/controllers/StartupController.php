@@ -80,6 +80,10 @@ class StartupController extends Controller
 	{
 		$model=$this->loadModel($name);
        
+		$model->scenario='publish';
+		
+		$model->sec=$model->sectors;
+		
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
             throw new CHttpException(403,'Você não pode editar essa startup!');
 		
@@ -88,12 +92,22 @@ class StartupController extends Controller
 			$alert_sectors=empty($model->sectors)?'<li>Setor(es)</li>':'';
 			$alert_product=empty($model->product_description)?'<li>Produto</li>':'';
 			$alert_stage=empty($model->company_stage)?'<li>Estágio</li>':'';
+			/*
+			$err=array();
+			if(!$model->sectors) $err['sec']=UserModule::t("Required");
+			if(!$model->product_description) $err['product']=UserModule::t("Required");
+			if(!$model->company_stage) $err['c_stage']=UserModule::t("Required");
+			*/
+			//$model->saveAttributes(array('err'=>$err));
 			
 			$user = Yii::app()->getComponent('user');
             $user->setFlash(
                 'error',
                 '<strong>Atenção!</strong> Para publicar o perfil, preencha no mínimo os campos listados a seguir:<p><ul>'.$alert_product.$alert_sectors.$alert_stage.'</ul></p>'
             );
+			
+			
+			
 			$this->redirect(array('edit','name'=>$model->startupname));
 		}
 

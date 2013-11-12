@@ -25,6 +25,11 @@ Yii::app()->clientScript->registerScript('loading-img',
 				}
 			}
 		}).submit(); }); 
+		
+		if($('.alert-error').length)
+		{
+			$('.err-publish').css({'display':'inline'});
+		}
 	});
 	
 	$('.start-name').on('click','.editable-submit', function(event){
@@ -278,6 +283,7 @@ function getUrlVars()
 							$("#select2-drop").css("display","none");
 						}',
 					)); ?>
+					<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48;"><?php if(!$model->sectors) echo UserModule::t("Required"); ?></div>
 			</div>
 				
 			<div class="content-info-unit">			
@@ -393,7 +399,8 @@ function getUrlVars()
 	<div class="content-wrap">
 
 		<div class="content-head rounded">
-			<i class="icon-lightbulb profile-icon"></i>O Produto
+			<i class="icon-lightbulb profile-icon"></i>O Produto 
+			<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->product_description) echo UserModule::t("Required"); ?></div>
 			<span class="tip">Descreva o produto detalhadamente</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
@@ -771,6 +778,7 @@ function getUrlVars()
 
 		<div class="content-head rounded">
 			<i class="icon-signal profile-icon"></i> Estágio
+			<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->company_stage) echo UserModule::t("Required"); ?></div>
 			<span class="tip">Indique o Estágio de Desenvolvimento do Produto</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
