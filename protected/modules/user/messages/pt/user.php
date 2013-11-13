@@ -160,5 +160,6 @@ return array(
     'Settings'=>'Configurações',
     'Roles'=>'Papéis',
     'Sectors of interest'=>'Setores de interesse',
+	'See All'=>'Ver Todos',
     
 );
