@@ -232,9 +232,9 @@ $(document.body).on('click','.follow-press',function(event){
 ");
 ?>
 
-
+<div class="sub-header-bg"></div>
 <h1 class="create-title" style="margin-top:25px;"><?php echo UserModule::t("Users") ?></h1>
-<div class="create-sub-title" style="font-style:italic; margin-bottom:40px;"><?php echo UserModule::t("Entrepreneurs and Investors of NextBlue") ?></div>
+<div class="create-sub-title" style="font-style:italic; margin-bottom:60px;"><?php echo UserModule::t("Entrepreneurs and Investors of NextBlue") ?></div>
 
 <?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),

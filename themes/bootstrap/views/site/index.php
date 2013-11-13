@@ -151,9 +151,9 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 <hr style="border-top: 1px solid #ddd;">
 
-<div class="home-description" style="text-align:center; text-shadow: 2px 2px white; margin:0 auto; width:800px;">
-<h1 style="margin-bottom:5px; color:#444; font-weight:normal;">A primeira plataforma de Equity Crowdfunding do Brasil</h1>
-<span style="font-size:22px; color:#727272; line-height:30px; font-style:italic;">NextBlue proporciona o contato direto de investidores com Startups de todo o Brasil em uma plataforma de Equity Crowdfunding. Faça parte dessa novidade: uma rede social do investimento!</span>
+<div class="home-description" style="text-align:center; text-shadow: 1px 1px white; margin:0 auto; width:800px;">
+<h1 style="margin-bottom:5px; color:#009cd7; font-weight:normal;">A primeira plataforma de Equity Crowdfunding do Brasil</h1>
+<span style="font-size:22px; color:#626262; line-height:30px; font-style:italic;">NextBlue proporciona o contato direto de investidores com Startups de todo o Brasil em uma plataforma de Equity Crowdfunding. Faça parte dessa novidade: uma rede social do investimento!</span>
 
 </div>
 
