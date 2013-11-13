@@ -913,8 +913,15 @@ class StartupController extends Controller
 			
 			$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
 			
-			$image->resize(400, 300)->quality(75)->sharpen(20);
-					$image->save(); // or $image->save('images/small.jpg');
+			if($image->width>=$image->height)
+				{
+					$image->resize(500, 312, ImageExt::WIDTH)->quality(75)->sharpen(20);
+				}
+				else
+					$image->resize(500, 312, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+				
+				$image->save(); // or $image->save('images/small.jpg');
+			
 					
 					$model_img=new Image;
 					$model_img->name=$newFileName;
@@ -929,8 +936,11 @@ class StartupController extends Controller
         
                     //echo "<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' id='previsualizar'>"; //imprime a foto na tela
 					
-					$html="<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' data-name='".$newFileName."' class='mult-list-img' style='float:left; width: 100px; height:100px; margin:0 20px 20px 0; opacity:0;' data-toggle='tooltip' data-html=true data-original-title='clique para deletar' >";
+					//$html="<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' data-name='".$newFileName."' class='mult-list-img' style='float:left; width: 100px; height:100px; margin:0 20px 20px 0; opacity:0;' data-toggle='tooltip' data-html=true data-original-title='clique para deletar' >";
 	
+					$html="<div class='mult-list-img-wrap' data-name='".$newFileName."' style='float:left; width: 100px; height:80px; line-height:80px; text-align:center; margin:0 20px 20px 0; background: #f6f6f6; border-radius: 3px;' data-toggle='tooltip' data-html=true data-original-title='clique para deletar'>
+								<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' class='mult-list-img' style='max-width: 100px; max-height:63px;'/>
+						   </div>";
 		
 					echo CJSON::encode(array(
 							'res'=>$html

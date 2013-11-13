@@ -57,7 +57,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 			
 	});
 
-	$('#visualizar').on('click','.mult-list-img',function(event){
+	$('#visualizar').on('click','.mult-list-img-wrap',function(event){
 		$('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>')
 		var elem = $(this);
 		var imgname = elem.attr('data-name');
@@ -511,7 +511,9 @@ function getUrlVars()
 			
 			<div id="visualizar">
 				<?php foreach($model->images as $img) :?>
-						<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" data-name="<?php echo $img->name;?>" class="mult-list-img" style="float:left; width: 100px; height:100px; margin:0 20px 20px 0;" data-toggle="tooltip" data-html=true data-original-title="clique para deletar"/>
+					<div class="mult-list-img-wrap" data-name="<?php echo $img->name;?>" style="float:left; width: 100px; height:80px; line-height:80px; text-align:center; margin:0 20px 20px 0; background: #f6f6f6; border-radius: 3px;" data-toggle="tooltip" data-html=true data-original-title="clique para deletar">
+						<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" class="mult-list-img" style="max-width: 100px; max-height:63px;"/>
+					</div>
 				<?php endforeach; ?>
 			</div>
 
