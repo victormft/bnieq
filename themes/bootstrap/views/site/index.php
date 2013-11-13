@@ -151,9 +151,9 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 <hr style="border-top: 1px solid #ddd;">
 
-<div class="home-description" style="text-align:center; text-shadow: 2px 2px white; margin:0 auto; width:800px;">
-<h1 style="margin-bottom:5px; color:#444; font-weight:normal;">A primeira plataforma de Equity Crowdfunding do Brasil</h1>
-<span style="font-size:22px; color:#727272; line-height:30px; font-style:italic;">NextBlue proporciona o contato direto de investidores com Startups de todo o Brasil em uma plataforma de Equity Crowdfunding. Faça parte dessa novidade: uma rede social do investimento!</span>
+<div class="home-description" style="text-align:center; text-shadow: 1px 1px white; margin:0 auto; width:800px;">
+<h1 style="margin-bottom:5px; color:#009cd7; font-weight:normal;">A primeira plataforma de Equity Crowdfunding do Brasil</h1>
+<span style="font-size:22px; color:#626262; line-height:30px; font-style:italic;">NextBlue proporciona o contato direto de investidores com Startups de todo o Brasil em uma plataforma de Equity Crowdfunding. Faça parte dessa novidade: uma rede social do investimento!</span>
 
 </div>
 
@@ -165,7 +165,9 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 	<div class="carousel-background car-back-white"></div>
 	<div class="arrow-all"></div>
 	<h1>Selecionadas</h1>
-	<span class="carousel-header-span">As preferidas da equipe do NextBlue</span>
+	<span class="carousel-header-span">As preferidas da equipe do NextBlue</span> 
+	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Selecionadas'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-25px;'));?>
+	<!--<a><span style="display:inline; float:right;">lala</span></a>-->
 	<div class="carousel-wrap-items">
 
 	<?php $this->widget('bootstrap.widgets.TbListView',array(
@@ -187,6 +189,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 	<div class="arrow-sel"></div>
 	<h1>Populares</h1>
 	<span class="carousel-header-span">As mais procuradas pelos usuários</span>
+	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Populares'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-25px;'));?>
 	<div class="carousel-wrap-items">
 
 
@@ -210,6 +213,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 	<div class="arrow-rec"></div>
 	<h1>Recentes</h1>
 	<span class="carousel-header-span">Cadastradas recentemente</span>
+	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Novidades'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-25px;'));?>
 	<div class="carousel-wrap-items">
 
 

@@ -4,7 +4,7 @@
  */
 return array(
     'Registration' => 'Cadastro',
-	'Register' => 'Cadastre-se',
+	'Register' => 'Cadastrar',
     'Login' => 'Login',
     'Logout' => 'Logout',
     'username' => "Login",
@@ -160,5 +160,6 @@ return array(
     'Settings'=>'Configurações',
     'Roles'=>'Papéis',
     'Sectors of interest'=>'Setores de interesse',
+	'See All'=>'Ver Todos',
     
 );

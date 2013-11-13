@@ -62,6 +62,9 @@ class Startup extends CActiveRecord
 	
 	public $sec;
 	
+	//para os erros no publish/edit
+	public $err;
+	
 	//company size
 	const SIZE_1="1-5";
 	const SIZE_2="6-10";
@@ -97,9 +100,10 @@ class Startup extends CActiveRecord
 		return array(
 		
 			//validation for pic
-			array('pic, mult_pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>'Imagem apenas do tipo: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => 'Imagem deve ser menor que 5MB !!!'),
+			array('pic, mult_pic', 'file', 'types'=>'jpg, png, jpeg', 'wrongType'=>'Apenas os tipos: jpg, jpeg, png', 'allowEmpty'=>true, 'maxSize' => 1024 * 1024 * 5, 'tooLarge' => 'Deve ser menor que 5MB !!!'),
 			array('pic, mult_pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
 			array('name, one_line_pitch, location', 'required', 'message'=>UserModule::t("Required")),
+			array('product_description, company_stage, sec', 'required', 'message'=>UserModule::t("Required"), 'on'=>'publish'),
 			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),
 			array('name', 'length', 'max'=>40),
 			array('name', 'match', 'pattern' => '/^[A-Za-z0-9 . _ & \' \"]+$/u','message' => UserModule::t("Incorrect symbols. (A-z0-9)")),
@@ -170,7 +174,7 @@ class Startup extends CActiveRecord
 			'competitive_advantage' => 'Competitive Advantage',
 			'history' => 'History',
 			'video' => 'Video',
-			'create_time' => 'Create Time',
+			'create_time' => 'Juntou-se',
 			'selecionada' => 'Selecionada',
 			'followers_num' => UserModule::t('Followers'),
 		);
@@ -225,7 +229,7 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.id',$this->id,true);
 		$criteria->compare('t.name',$this->name,true);
 		$criteria->compare('t.logo',$this->logo,true);
-		$criteria->compare('t.one_line_pitch',$this->one_line_pitch,true, 'OR');
+		$criteria->compare('t.one_line_pitch',$this->one_line_pitch,true/*, 'OR'*/);
 		$criteria->compare('t.product_description',$this->product_description,true);
 		$criteria->compare('t.company_size',$this->company_size,true);
 		$criteria->compare('t.company_stage',$this->company_stage,true);
@@ -238,7 +242,7 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.twitter',$this->twitter,true);
 		$criteria->compare('t.linkedin',$this->linkedin,true);
 		$criteria->compare('t.website',$this->website,true);
-		$criteria->compare('t.location',$this->location,true);
+		$criteria->compare('t.location',$this->location,false);
 		$criteria->compare('t.client_segment',$this->client_segment,true);
 		$criteria->compare('t.tech',$this->tech,true);
 		$criteria->compare('t.value_proposition',$this->value_proposition,true);

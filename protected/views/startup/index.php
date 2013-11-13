@@ -146,6 +146,25 @@ $('.sec-label').click(function(event) {
 		
 });
 
+$('.sec-arrow').click(function(event) {
+
+		if(!$('.sec-arrow').hasClass('arrow-up'))
+		{	
+			$('.sec-arrow').removeClass('arrow-down').addClass('arrow-up');
+			$('#search-sector').slideDown('slow');
+			$('.sec-label').addClass('clicked');
+		}
+		
+		else
+		{
+			$('#search-sector').slideUp('slow', function(){
+				$('.sec-arrow').removeClass('arrow-up').addClass('arrow-down');
+			});
+			$('.sec-label').removeClass('clicked');
+		}
+		
+});
+
 
 
 ");
@@ -208,8 +227,10 @@ function SearchFunc()   {
 
 ?>
 
+<div class="sub-header-bg"></div>
 <h1 class="create-title" style="margin-top:25px;">Startups</h1>
-<div class="create-sub-title" style="font-style:italic; margin-bottom:40px;">Confira as empresas cadastradas no NextBlue!</div>
+<div class="create-sub-title" style="font-style:italic; margin-bottom:60px;">Confira as empresas cadastradas no NextBlue!</div>
+
 
 <?php $this->widget('zii.widgets.CListView',array(
 'dataProvider'=>$dataProvider->search(),
@@ -219,7 +240,7 @@ function SearchFunc()   {
 'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
-        'name',
+        'create_time',
 		'followers_num'
     ),
 'template'=>'{sorter} {items} {pager}',

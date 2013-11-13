@@ -25,9 +25,39 @@ Yii::app()->clientScript->registerScript('loading-img',
 				}
 			}
 		}).submit(); }); 
+		
+		if($('.alert-error').length)
+		{
+			$('.err-publish').css({'display':'inline'});
+		}
+	});
+	
+	$('.start-name').on('click','.editable-submit', function(event){
+		//$('.header-label').html('aaa');
+		
+		setTimeout(function(){
+			if(!$('.start-name').find('a').hasClass('editable-open') && !$('.start-name').find('a').hasClass('editable-bg-transition'))
+			{
+			
+				var new_name = $('.start-name').find('a').text();
+				
+				$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
+				dataType: 'json',
+				type: 'POST',
+				success: function(data){
+					location.href = data.res;
+					
+				}
+			});
+			}
+		}, 2000);
+		
+		
+			
 	});
 
-	$('#visualizar').on('click','.mult-list-img',function(event){
+	$('#visualizar').on('click','.mult-list-img-wrap',function(event){
 		$('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>')
 		var elem = $(this);
 		var imgname = elem.attr('data-name');
@@ -189,19 +219,19 @@ function getUrlVars()
 				<div class="header-label">
 					<b>Nome:</b> 
 				</div>
-					<span class="macaco">
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'text',
-						'model'     => $model,
-						'attribute' => 'name',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'inputclass'=> 'input-large',
-						'mode'=>'inline',
-						'options'    => array(
-							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="40">'
-						)
-					 )); ?>  
+					<span class="start-name">
+						<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+							'type'      => 'text',
+							'model'     => $model,
+							'attribute' => 'name',
+							'url'       => array('update'),  
+							'placement' => 'right',
+							'inputclass'=> 'input-large',
+							'mode'=>'inline',
+							'options'    => array(
+								'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="40">'
+							)
+						 )); ?>  
 					 </span>
 			</div>
 			
@@ -253,6 +283,7 @@ function getUrlVars()
 							$("#select2-drop").css("display","none");
 						}',
 					)); ?>
+					<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48;"><?php if(!$model->sectors) echo UserModule::t("Required"); ?></div>
 			</div>
 				
 			<div class="content-info-unit">			
@@ -368,7 +399,8 @@ function getUrlVars()
 	<div class="content-wrap">
 
 		<div class="content-head rounded">
-			<i class="icon-lightbulb profile-icon"></i>O Produto
+			<i class="icon-lightbulb profile-icon"></i>O Produto 
+			<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->product_description) echo UserModule::t("Required"); ?></div>
 			<span class="tip">Descreva o produto detalhadamente</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
@@ -431,6 +463,7 @@ function getUrlVars()
 		</div>
 		
 		<div class="content-info edit">
+			<!--
 			<div class="editable-wrap editable-img">
 				<?php $form=$this->beginWidget('CActiveForm', array(
 					'id'=>'mult-image-edit-form',
@@ -466,7 +499,7 @@ function getUrlVars()
 			</div>
 	
 	<?php $this->endWidget(); ?>
-			
+	-->		
 			<div class="mult-pic-preview"></div>
 			
 			
@@ -478,7 +511,9 @@ function getUrlVars()
 			
 			<div id="visualizar">
 				<?php foreach($model->images as $img) :?>
-						<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" data-name="<?php echo $img->name;?>" class="mult-list-img" style="float:left; width: 100px; height:100px; margin:0 20px 20px 0;" data-toggle="tooltip" data-html=true data-original-title="clique para deletar"/>
+					<div class="mult-list-img-wrap" data-name="<?php echo $img->name;?>" style="float:left; width: 100px; height:80px; line-height:80px; text-align:center; margin:0 20px 20px 0; background: #f6f6f6; border-radius: 3px;" data-toggle="tooltip" data-html=true data-original-title="clique para deletar">
+						<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" class="mult-list-img" style="max-width: 100px; max-height:63px;"/>
+					</div>
 				<?php endforeach; ?>
 			</div>
 
@@ -745,6 +780,7 @@ function getUrlVars()
 
 		<div class="content-head rounded">
 			<i class="icon-signal profile-icon"></i> Estágio
+			<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->company_stage) echo UserModule::t("Required"); ?></div>
 			<span class="tip">Indique o Estágio de Desenvolvimento do Produto</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
@@ -904,7 +940,7 @@ function getUrlVars()
 				}
 			});
 		},
-        minLength: 0,
+        minLength: 1,
 		delay: 300,
 		select: function( event, ui ) {
 			$( "#my_ac" ).val( ui.item.label_form);

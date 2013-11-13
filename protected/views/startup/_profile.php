@@ -219,7 +219,9 @@ $('.video-images-items').carouFredSel({
 			<div class="video-images-items">
 				<?php if($model->video){$this->widget('ext.Yiitube', array('size' => 'small', 'v' => $model->video));} ?>	
 				<?php foreach($model->images as $img) :?>
-					<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" id="generic-img" alt="asdasd" style="float:left; width: 500px; height:312px;"/>
+					<div style="float:left; width: 500px; height:312px; line-height:300px; text-align:center;">
+						<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" id="generic-img" alt="asdasd" style="vertical-align:middle; max-width:500px; max-height:312px;"/>
+					</div>
 				<?php endforeach; ?>
 			</div>
 			<div class="pagination carousel-pag" id="video-images-pagination"></div>

@@ -122,15 +122,30 @@ class SiteController extends Controller
 			$param = addcslashes($_GET['term'], '%_'); // escape LIKE's special characters
 			$qry = new CDbCriteria( array(
 				'condition' => "firstname LIKE :param OR lastname LIKE :param OR CONCAT(firstname, ' ' , lastname) LIKE :param",         // no quotes around :match
-				'params'    => array(':param' => "%$param%")  // Aha! Wildcards go here
+				'params'    => array(':param' => "%$param%"),  // Aha! Wildcards go here
+				'limit'=> 5
 			) );
 			
 			$query = Profile::model()->findAll($qry);     // works!
+			
+			//!!!!!!!!!!!! for startups
+			
+			$qry_s = new CDbCriteria( array(
+				'condition' => "name LIKE :param",         // no quotes around :match
+				'params'    => array(':param' => "%$param%"),  // Aha! Wildcards go here
+				'limit'=> 5
+			) );
+			
+			$query_s = Startup::model()->findAll($qry_s);     // works!
+			
+			//!!!!!!!!!!!! end for startups
+			
 		}
 		else
+		{
 			$query = null;
- 
-		
+			$query_s = null;
+		}
 		
 		
 		$list = array();        
@@ -141,25 +156,34 @@ class SiteController extends Controller
 				$data['description'] = $q->user->roles[0]->name .' · '. $q->city->nome;
 			else
 				$data['description'] = '';
-			
+				
 			$data['label'] = $q->firstname .' '. $q->lastname;
 			$data['image'] = $q->logo->name;
+			$data['uname'] = $q->user->username;
 			
-			// !!!! get the username
-			$usr=User::model()->find('id=:id', array(':id'=>$q->user_id));
-			// !!!! end getting username
-			
-			$data['uname'] = $usr->username;
-			
+
 			$list['myData'][] = $data;
 			unset($data);
 		}
 		
-		if(!empty($query))
+		foreach($query_s as $q){
+			$data['value'] = $q->id;		
+
+			$data['description'] = 'Company';
+				
+			$data['label'] = $q->name;
+			$data['image'] = $q->logo0->name;
+			$data['uname'] = $q->startupname;
+
+			$list['myData'][] = $data;
+			unset($data);
+		}
+		
+		if(!empty($query) || !empty($query_s))
 			echo json_encode($list);
 		
 		else 
-			throw new CHttpException(403,'Voc� n�o pode editar essa startup!');
+			throw new CHttpException(403,'Você não pode editar essa startup!');
 			
 	}
 }

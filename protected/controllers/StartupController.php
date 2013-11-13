@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'updateStartupName'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -80,6 +80,10 @@ class StartupController extends Controller
 	{
 		$model=$this->loadModel($name);
        
+		$model->scenario='publish';
+		
+		$model->sec=$model->sectors;
+		
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
             throw new CHttpException(403,'Você não pode editar essa startup!');
 		
@@ -88,12 +92,22 @@ class StartupController extends Controller
 			$alert_sectors=empty($model->sectors)?'<li>Setor(es)</li>':'';
 			$alert_product=empty($model->product_description)?'<li>Produto</li>':'';
 			$alert_stage=empty($model->company_stage)?'<li>Estágio</li>':'';
+			/*
+			$err=array();
+			if(!$model->sectors) $err['sec']=UserModule::t("Required");
+			if(!$model->product_description) $err['product']=UserModule::t("Required");
+			if(!$model->company_stage) $err['c_stage']=UserModule::t("Required");
+			*/
+			//$model->saveAttributes(array('err'=>$err));
 			
 			$user = Yii::app()->getComponent('user');
             $user->setFlash(
                 'error',
                 '<strong>Atenção!</strong> Para publicar o perfil, preencha no mínimo os campos listados a seguir:<p><ul>'.$alert_product.$alert_sectors.$alert_stage.'</ul></p>'
             );
+			
+			
+			
 			$this->redirect(array('edit','name'=>$model->startupname));
 		}
 
@@ -496,7 +510,7 @@ class StartupController extends Controller
 		if(isset($_GET['n'])) {
 			$search_name=preg_replace('/[><=]/', '', $_GET['n']);
 			$model->name=strip_tags($search_name);
-			$model->one_line_pitch=strip_tags($search_name);
+			//$model->one_line_pitch=strip_tags($search_name);
 		}
 		if(isset($_GET['c_stage']))
 			$model->company_stage=$_GET['c_stage'];	
@@ -878,6 +892,20 @@ class StartupController extends Controller
 			$newFileName = md5("{$rnd}-{$nome_imagem}").'.'.$extension;  // random number + file name
 			
 			$tmp = $_FILES['imagem']['tmp_name']; 
+			
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
+			
+			$model->pic=CUploadedFile::getInstanceByName('imagem');
+			if(!$model->validate())
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'<span style="color:red;">'. $model->getErrors('pic')[0] .'</span>'
+			));
+			exit;
+		}
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
+		
 			  
 			move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$newFileName); 
 			
@@ -885,8 +913,15 @@ class StartupController extends Controller
 			
 			$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
 			
-			$image->resize(400, 300)->quality(75)->sharpen(20);
-					$image->save(); // or $image->save('images/small.jpg');
+			if($image->width>=$image->height)
+				{
+					$image->resize(500, 312, ImageExt::WIDTH)->quality(75)->sharpen(20);
+				}
+				else
+					$image->resize(500, 312, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+				
+				$image->save(); // or $image->save('images/small.jpg');
+			
 					
 					$model_img=new Image;
 					$model_img->name=$newFileName;
@@ -901,8 +936,11 @@ class StartupController extends Controller
         
                     //echo "<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' id='previsualizar'>"; //imprime a foto na tela
 					
-					$html="<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' data-name='".$newFileName."' class='mult-list-img' style='float:left; width: 100px; height:100px; margin:0 20px 20px 0; opacity:0;' data-toggle='tooltip' data-html=true data-original-title='clique para deletar' >";
+					//$html="<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' data-name='".$newFileName."' class='mult-list-img' style='float:left; width: 100px; height:100px; margin:0 20px 20px 0; opacity:0;' data-toggle='tooltip' data-html=true data-original-title='clique para deletar' >";
 	
+					$html="<div class='mult-list-img-wrap' data-name='".$newFileName."' style='float:left; width: 100px; height:80px; line-height:80px; text-align:center; margin:0 20px 20px 0; background: #f6f6f6; border-radius: 3px;' data-toggle='tooltip' data-html=true data-original-title='clique para deletar'>
+								<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' class='mult-list-img' style='max-width: 100px; max-height:63px;'/>
+						   </div>";
 		
 					echo CJSON::encode(array(
 							'res'=>$html
@@ -934,7 +972,8 @@ class StartupController extends Controller
 			$param = addcslashes($_GET['term'], '%_'); // escape LIKE's special characters
 			$qry = new CDbCriteria( array(
 				'condition' => "firstname LIKE :param OR lastname LIKE :param OR CONCAT(firstname, ' ' , lastname) LIKE :param",         // no quotes around :match
-				'params'    => array(':param' => "%$param%")  // Aha! Wildcards go here
+				'params'    => array(':param' => "%$param%"),  // Aha! Wildcards go here
+				'limit'=>5
 			) );
 			
 			$query = Profile::model()->findAll($qry);     // works!
@@ -965,6 +1004,24 @@ class StartupController extends Controller
 		else 
 			throw new CHttpException(403,'Você não pode editar essa startup!');
 			
+	}
+	
+	public function actionUpdateStartupName($startname, $name)
+	{
+		$model=$this->loadModel($name);
+		
+		$startupname = $startname;
+		$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
+		$startupname = preg_replace('/[\"\']/', '', $startupname);
+		$startupname = preg_replace('/\s+/', '-', strtolower($startupname));			
+			
+		$model->startupname = $startupname; 
+		
+		$model->save();
+		
+		echo CJSON::encode(array(
+			'res'=>$startupname
+		));
 	}
 				
 					
