@@ -54,37 +54,6 @@ function getUrlVars()
     return vars;
 }
 
-$('.arrow-container').mouseover(function(event){
-		$(this).css('background-color', '#fefefe');
-	});
-	
-	$('.arrow-container').mouseout(function(event){
-		$(this).css('background-color', '#f6f6f6');
-	});
-	
-	$('.content-head').click(function(event){
-		
-		if(!$(this).hasClass('clicked'))
-		{
-			$(this).removeClass('rounded');
-			$(this).next().slideDown();
-			$(this).addClass('clicked');
-			$(this).find('.arrow').removeClass('arrow-down');
-			$(this).find('.arrow').addClass('arrow-up');
-		}
-		
-		else
-		{
-			$(this).next().slideUp(function(){
-				$(this).prev().addClass('rounded');
-			});
-			$(this).removeClass('clicked');
-			$(this).find('.arrow').removeClass('arrow-up');
-			$(this).find('.arrow').addClass('arrow-down');
-			
-		}
-		
-	});
 
 ");
 
