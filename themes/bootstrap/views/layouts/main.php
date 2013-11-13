@@ -75,13 +75,14 @@ $('.remove-search').click(function(event){
 			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("About Us") ?></a></li>
 			<li><a href= "http://euanjo.com.br/dep" ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("Our Blog") ?></a></li>
 			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-money" style="display:block; margin:5px auto; font-size:15px;"></i><?php echo UserModule::t("Invest") ?></a></li>
-			<li class="search"><a style="border:none; padding:20px 25px;"><i class="icon-search" style="font-size:24px;"></i><span style="font-size:18px; margin-left:10px; line-height:18px;">Procurar</span></a></li>
+			<li class="search"><a href="javascript:void(0);" style="border:none; padding:20px 5px 20px 25px;"><i class="icon-search" style="font-size:24px;"></i><span style="font-size:18px; margin-left:10px; line-height:18px;">Procurar</span></a></li>
         </ul>
 		
 		
 		<form class="navbar-search pull-left" style="display:none; opacity:0;">
-            <input type="text" class="search-query" id="main_search" placeholder="Buscar..."> <div class="team-loading" style="display:inline;"></div>
-			<i class="icon-remove-sign remove-search" style="margin-top: 5px;"></i>
+            <input type="text" class="search-query" id="main_search" placeholder="Buscar...">
+			<a href="javascript:void(0);" style="margin-top: 5px; text-decoration:none;"><i class="icon-remove-sign remove-search" style="color:#333; line-height:20px;"></i></a>
+			<div class="team-loading" style="display:inline;"></div>
         </form>
 	
 

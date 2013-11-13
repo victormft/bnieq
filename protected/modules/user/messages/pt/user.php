@@ -4,7 +4,7 @@
  */
 return array(
     'Registration' => 'Cadastro',
-	'Register' => 'Cadastre-se',
+	'Register' => 'Cadastrar',
     'Login' => 'Login',
     'Logout' => 'Logout',
     'username' => "Login",
