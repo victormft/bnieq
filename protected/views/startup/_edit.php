@@ -938,7 +938,7 @@ function getUrlVars()
 				}
 			});
 		},
-        minLength: 0,
+        minLength: 1,
 		delay: 300,
 		select: function( event, ui ) {
 			$( "#my_ac" ).val( ui.item.label_form);

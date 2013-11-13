@@ -1545,6 +1545,8 @@ body input[type="file"]{
 {
 	padding:20px;
 	margin-right: 10px;
+	color: #009cd7;
+	font-weight: bold;
 	
 }
 

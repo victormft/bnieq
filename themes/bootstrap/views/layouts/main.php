@@ -75,7 +75,7 @@ $('.remove-search').click(function(event){
 			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("About Us") ?></a></li>
 			<li><a href= "http://euanjo.com.br/dep" ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("Our Blog") ?></a></li>
 			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-money" style="display:block; margin:5px auto; font-size:15px;"></i><?php echo UserModule::t("Invest") ?></a></li>
-			<li class="search"><a style="border:none; padding:20px 25px;"><i class="icon-search" style="font-size:24px;"></i></a></li>
+			<li class="search"><a style="border:none; padding:20px 25px;"><i class="icon-search" style="font-size:24px;"></i><span style="font-size:18px; margin-left:10px; line-height:18px;">Procurar</span></a></li>
         </ul>
 		
 		
@@ -304,7 +304,7 @@ $('.remove-search').click(function(event){
 				}
 			});
 		},
-        minLength: 0,
+        minLength: 1,
 		delay: 300,
 		select: function( event, ui ) {
 			$( "#main_search" ).val( ui.item.label_form);
