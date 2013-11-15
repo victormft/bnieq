@@ -362,7 +362,7 @@ $('.arrow-container').mouseover(function(event){
                 //'afterSortableUpdate' => 'js:function(id, position){ console.log("id: "+id+", position:"+position);}',
                 'dataProvider' => $startupProvider,
                 'template' => "{items}",
-                'rowCssClassExpression'=>'$data->startup->published ? "" : "published"',
+                'rowCssClassExpression'=>'$data->startup->published ? $data->approved ? "" : "approved" : "published";',
                 'columns' => array(
                     array(
                         'class'=>'bootstrap.widgets.TbImageColumn',
@@ -408,6 +408,9 @@ $('.arrow-container').mouseover(function(event){
             
             <div class="color-square" style="background-color: #ffe4e9; width: 20px; float: left; margin-right: 10px;"></div>
             <span>Não publicado ainda. Essas startups não aparecerão no seu perfil público.</span>
+            <div class="spacing-1"></div>
+            <div class="color-square" style="background-color: #ccccff; width: 20px; float: left; margin-right: 10px;"></div>
+            <span>Ainda não aprovado pelos administradores da startup. Essas startups não aparecerão no seu perfil público.</span>
             			
 		</div>
 		
@@ -628,7 +631,7 @@ $('.arrow-container').mouseover(function(event){
             <div class="arrow-container"><div class="arrow arrow-down"></div></div>
         </div>
 		
-		<div class="content-info edit wnote">
+		<div class="content-info edit wnote" style="overflow: visible;">
             
             <div class="content-info-unit"> 
                 <div class="clabel-r">			
@@ -686,7 +689,7 @@ $('.arrow-container').mouseover(function(event){
             <div class="arrow-container"><div class="arrow arrow-down"></div></div>
         </div>
 		
-		<div class="content-info edit wnote">
+		<div class="content-info edit wnote" style="overflow: visible;">
             
             <div class="content-info-unit"> 
                 <div class="clabel-r">			

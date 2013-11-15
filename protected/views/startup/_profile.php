@@ -499,7 +499,7 @@ $('.video-images-items').carouFredSel({
 	<?php endif;?>
 
 	
-	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos', array(':s_id'=>$model->id, ':pos'=>'Founder'))):?>
+	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos AND approved=1', array(':s_id'=>$model->id, ':pos'=>'Founder'))):?>
 		<div class="content-wrap">
 
 			<div class="content-head"><i class="icon-group profile-icon"></i> Fundadores</div>
@@ -524,7 +524,7 @@ $('.video-images-items').carouFredSel({
 		</div>	
 	<?php endif;  ?>
 	
-	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos', array(':s_id'=>$model->id, ':pos'=>'Member'))):?>
+	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos AND approved=1', array(':s_id'=>$model->id, ':pos'=>'Member'))):?>
 		<div class="content-wrap">
 
 			<div class="content-head"><i class="icon-group profile-icon"></i> Time</div>

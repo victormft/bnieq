@@ -712,6 +712,11 @@ div.language ul li a img:hover{
     background-color: #ffe4e9;
 }
 
+#portfolio-grid tr.approved td
+{
+    background-color: #ccccff;
+}
+
 .color-square
 {
     border: 1px solid #aaa;

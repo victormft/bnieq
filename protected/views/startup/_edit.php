@@ -1012,8 +1012,8 @@ function getUrlVars()
 		
 		<?php foreach($model->users1 as $usr_startup):  ?>
 		
-		<?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$usr_startup->id, ':s_id'=>$model->id)); ?>
-		
+		<?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id AND approved=1', array(':u_id'=>$usr_startup->id, ':s_id'=>$model->id)); ?>
+		<?php if($relational_tbl): ?>
 		<div class="team-item">		
 			<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 			<div class="team-text">
@@ -1023,7 +1023,7 @@ function getUrlVars()
 			</div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
 		</div>
-		
+		<?php endif; ?>
 		<?php endforeach;?>
 			
 		

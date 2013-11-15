@@ -24,7 +24,7 @@
 				<div class="item-info-sub"><span style="color:#676767;">FUNDADOR</span>
 					<div style="float:right; font-size:13px; color:black;">
 					
-					<?php $relational_tbl=UserStartup::model()->find('startup_id=:s_id AND position=:pos', array(':s_id'=>$data->id, ':pos'=>'Founder')); ?>
+					<?php $relational_tbl=UserStartup::model()->find('startup_id=:s_id AND position=:pos AND approved=1', array(':s_id'=>$data->id, ':pos'=>'Founder')); ?>
 					<?php if($relational_tbl):?>
 						<?php $usr=User::model()->findbyPk($relational_tbl->user_id);?>
 						<?php //echo $usr->profile->firstname .' '. $usr->profile->lastname;?>
