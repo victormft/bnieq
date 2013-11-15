@@ -712,3 +712,8 @@ div.language ul li a img:hover{
     min-width: 20px;
 }
 
+.login-captcha div a
+{
+    display: block;
+}
+
