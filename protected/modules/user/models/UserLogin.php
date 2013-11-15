@@ -10,6 +10,8 @@ class UserLogin extends CFormModel
 	public $username;
 	public $password;
 	public $rememberMe;
+    
+    public $verifyCode;
 
 	/**
 	 * Declares the validation rules.
@@ -25,6 +27,9 @@ class UserLogin extends CFormModel
 			array('rememberMe', 'boolean'),
 			// password needs to be authenticated
 			array('password', 'authenticate'),
+            
+            array('username,password,verifyCode','required','on'=>'captchaRequired'),
+            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),   
 		);
 	}
 

@@ -4,13 +4,17 @@ class LoginController extends Controller
 {
 	public $defaultAction = 'login';
 
+    public $attempts = 3; // allowed 3 attempts
+    public $counter;
+    
 	/**
 	 * Displays the login page
 	 */
 	public function actionLogin()
 	{
 		if (Yii::app()->user->isGuest) {
-            $login=new UserLogin;
+            $login = $this->captchaRequired()? new UserLogin('captchaRequired') : new UserLogin;
+            //$login=new UserLogin;
             $model = new RegistrationForm;
             $profile=new Profile;
             $profile->regMode = true;
@@ -85,15 +89,22 @@ class LoginController extends Controller
 					else
 						$this->redirect(Yii::app()->user->returnUrl);
 				}
+                else
+                {
+                    $this->counter = Yii::app()->session->itemAt('captchaRequired') + 1;
+                    Yii::app()->session->add('captchaRequired',$this->counter);
+                }
 			}
 			// display the login form
 			$this->render('/user/login',array('login'=>$login, 'model'=>$model,'profile'=>$profile));
 		} else
 			$this->redirect(Yii::app()->controller->module->returnUrl);
-        
-        
-        
 	}
+    
+    private function captchaRequired()
+    {           
+        return Yii::app()->session->itemAt('captchaRequired') >= $this->attempts;
+    }
 	
 	private function lastViset() {
 		$lastVisit = User::model()->notsafe()->findByPk(Yii::app()->user->id);
@@ -105,7 +116,11 @@ class LoginController extends Controller
     {   
       return array(
         'oauth' => array(
-          'class'=>'ext.hoauth.HOAuthAction',
+            'class'=>'ext.hoauth.HOAuthAction',
+        ),
+        'captcha'=>array(
+            'class'=>'CCaptchaAction',
+            'backColor'=>0xFFFFFF,
         ),
       );
     }

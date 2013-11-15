@@ -55,11 +55,23 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
         
         <?php echo $form->passwordFieldRow($login,'password'); ?>     
                 
+        <?php if($login->scenario == 'captchaRequired'): ?>
+        <div class="row login-captcha">
+                <?php echo CHtml::activeLabelEx($login,'verifyCode'); ?>
+                <div>
+                <?php $this->widget('CCaptcha'); ?>
+                <?php echo CHtml::activeTextField($login,'verifyCode'); ?>
+                </div>
+        </div>
+        <?php endif; ?>
+        
         <div class="row">
             <p class="hint">
             <?php echo CHtml::link(UserModule::t("Lost Password?"),Yii::app()->getModule('user')->recoveryUrl); ?>
             </p>
         </div>
+        
+        
         
         <?php
         $this->widget(
