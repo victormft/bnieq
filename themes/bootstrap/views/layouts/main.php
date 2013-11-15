@@ -175,28 +175,28 @@ $('.remove-search').click(function(event){
 			<span class="col-head">Startups</span>
 			<ul>
 				<li>
-					<a>Art</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=1'?>">Art</a>
 				</li>
 				<li>
-					<a>Creative Economy</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=2'?>">Creative Economy</a>
 				</li>
 				<li>
-					<a>Education</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=3'?>">Education</a>
 				</li>
 				<li>
-					<a>Entertainment</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=4'?>">Entertainment</a>
 				</li>
 				<li>
-					<a>Environment</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=5'?>">Environment</a>
 				</li>
 				<li>
-					<a>Financial</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=6'?>">Financial</a>
 				</li>
 				<li>
-					<a>Internet Business</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=9'?>">Internet Business</a>
 				</li>
 				<li>
-					<a>Technology</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup?g=&sec[0]=14'?>">Technology</a>
 				</li>		 
 			</ul>
 		</div>
@@ -204,16 +204,10 @@ $('.remove-search').click(function(event){
 			<span class="col-head">Usuários</span>
 			<ul>
 				<li>
-					<a>Populares</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/user?g=Investidores'?>">Investidores</a>
 				</li>
 				<li>
-					<a>Recentes</a>
-				</li>
-				<li>
-					<a>Investidores</a>
-				</li>
-				<li>
-					<a>Empreendedores</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/user?g=Empreendedores'?>">Empreendedores</a>
 				</li>
 			</ul>
 		</div>
@@ -221,13 +215,13 @@ $('.remove-search').click(function(event){
 			<span class="col-head">Sobre</span>
 			<ul>
 				<li>
-					<a>Sobre Nós</a>
+					<a href="<?php echo Yii::app()->request->baseUrl?>">Sobre Nós</a>
 				</li>
 				<li>
-					<a>Como Funciona</a>
+					<a href="<?php echo Yii::app()->request->baseUrl?>">Como Funciona</a>
 				</li>
 				<li>
-					<a>Ajuda</a>
+					<a href="<?php echo Yii::app()->request->baseUrl?>">Ajuda</a>
 				</li>
 			</ul>
 		</div>
@@ -235,13 +229,13 @@ $('.remove-search').click(function(event){
 			<span class="col-head">Navegue</span>
 			<ul>
 				<li>
-					<a>Startups</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/startup'?>">Startups</a>
 				</li>
 				<li>
-					<a>Usuários</a>
+					<a href="<?php echo Yii::app()->request->baseUrl.'/user'?>">Usuários</a>
 				</li>
 				<li>
-					<a>Pitches</a>
+					<a href="<?php echo Yii::app()->request->baseUrl?>">Pitches</a>
 				</li>
 			</ul>
 		</div>
