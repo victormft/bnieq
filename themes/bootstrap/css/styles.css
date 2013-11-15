@@ -1881,6 +1881,12 @@ body input[type="file"]{
 	font-size:15px;
 }
 
+.login-wrap input:focus
+{
+	background-color: #fff;
+}
+
+
 .login-method
 {
 	min-height: 435px;
