@@ -1874,6 +1874,13 @@ body input[type="file"]{
 	overflow:auto;
 }
 
+.login-wrap input
+{
+	background-color: #fdfdfd;
+	color: #000;
+	font-size:15px;
+}
+
 .login-method
 {
 	min-height: 435px;
@@ -1884,3 +1891,4 @@ body input[type="file"]{
 {
 	border:none;
 }
+
