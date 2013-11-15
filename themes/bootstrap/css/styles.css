@@ -1603,6 +1603,13 @@ body input[type="file"]{
 	color:#000;
 }
 
+.navbar .nav-inner .nav.secondary .name-hover a:hover
+{
+	color:#fff;
+	text-shadow:none;
+	font-weight:bold;
+}
+
 .navbar .navbar-search
 {
 	margin-top:15px;
