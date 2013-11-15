@@ -202,15 +202,16 @@ function getUrlVars()
 
 <div class="profile-column-l">
 	
-    <?php if(count($model->startups) > 0):?>
+    
     <div class="content-wrap">
-
+        
 		<div class="content-head clicked">
             <i class="icon-briefcase profile-icon"></i> Porfolio
         </div>
 		
+        
 		<div class="content-info">
-            
+            <?php if(count($model->startups) > 0):?>
             <div class="cards-wrap">
                 <?php foreach($model->startups as $startup):  ?>
                 <?php $relational_tbl=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$model->id, ':s_id'=>$startup->id)); ?>
@@ -258,12 +259,17 @@ function getUrlVars()
             <div class="profile-content">			
                 <?php echo $model->echoWithComma($model->getStartupsByRole('Investor'));?>				
             </div>
-            <?php endif; ?>			
+            <?php endif; ?>		
+            
+            <?php else: ?>	
+                Este usuário ainda não está relacionado a nenhuma Startup da NextBlue.
+            <?php endif; ?>
 		</div>
 		
 	</div>	
-    <?php endif; ?>	
     
+    
+    <?php if($profile->experiences || $model->getSkillsForPrint()):?>
 	<div class="content-wrap">
 
 		<div class="content-head clicked">
@@ -294,8 +300,11 @@ function getUrlVars()
 			
 		</div>
 		
-	</div>		
+	</div>	
+    <?php endif; ?>
 	
+    
+    <?php if($profile->interests || $model->getSectorsForPrint()):?>
 	<div class="content-wrap">
 
 		<div class="content-head clicked">
@@ -327,6 +336,7 @@ function getUrlVars()
 		</div>
 		
 	</div>	
+    <?php endif; ?>
 </div>
     
 <div class="profile-column-r">
