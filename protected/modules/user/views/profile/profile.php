@@ -202,6 +202,7 @@ function getUrlVars()
 
 <div class="profile-column-l">
 	
+    <?php if(count($model->startups) > 0):?>
     <div class="content-wrap">
 
 		<div class="content-head clicked">
@@ -257,13 +258,11 @@ function getUrlVars()
             <div class="profile-content">			
                 <?php echo $model->echoWithComma($model->getStartupsByRole('Investor'));?>				
             </div>
-            <?php endif; ?>
-            
-            
-			
+            <?php endif; ?>			
 		</div>
 		
 	</div>	
+    <?php endif; ?>	
     
 	<div class="content-wrap">
 

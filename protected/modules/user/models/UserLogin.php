@@ -25,11 +25,13 @@ class UserLogin extends CFormModel
 			array('username, password', 'required', 'message' => UserModule::t("Required")),
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
-			// password needs to be authenticated
-			array('password', 'authenticate'),
+			
             
             array('username,password,verifyCode','required','on'=>'captchaRequired'),
-            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),   
+            array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'on'=>'captchaRequired'),   
+            
+            // password needs to be authenticated
+			array('password', 'authenticate'),
 		);
 	}
 
