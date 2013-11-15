@@ -127,7 +127,7 @@ $this->layout='column1';
 	</script>
 
 
-<div class="form-actions">
+<div class="form-actions" style="padding-left:0px; text-align:center;">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
