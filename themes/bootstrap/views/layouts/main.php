@@ -99,14 +99,14 @@ $('.remove-search').click(function(event){
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>
+                        <li class="name-hover">
                             <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><?php echo UserModule::t('Profile'); ?></a>
                         </li>
-						<li><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><?php echo UserModule::t('Messages'); ?> <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
+						<li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><?php echo UserModule::t('Messages'); ?> <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
                         ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>
 						</li>
                         <li class="divider"></li>
-                        <li>
+                        <li class="name-hover">
                             <a href=<?php echo Yii::app()->homeUrl . '/user/settings/general' ?>><?php echo UserModule::t('Settings'); ?></a>
                         </li>
                     </ul>                    
