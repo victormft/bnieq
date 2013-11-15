@@ -58,7 +58,15 @@
 	position:absolute;
 	top: 0;
 	right: 0;
-	padding: 15px 82px 30px 0;
+	padding: 15px 120px 30px 0;
+}
+
+.view-list .joined-date
+{
+	position:absolute;
+	top: 0;
+	right: 0;
+	padding: 15px 195px 30px 0;
 }
 
 .view-list-text

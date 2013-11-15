@@ -29,9 +29,10 @@
 	
 	</div>
 	
-	<?php if(!Yii::App()->user->isGuest): ?>
+		<div class="joined-date"><?php echo date('d/m/y', strtotime($data->create_time)); ?></div> 
 		<div class="follow-count" data-name="<?php echo $data->startupname; ?>"><?php echo count($data->users); ?></div>   
-		
+	
+	<?php if(!Yii::App()->user->isGuest): ?>	
 		<span class="follow-btn">    
 			<?php 
 			if(!$data->hasUserFollowing(Yii::app()->user->id))
