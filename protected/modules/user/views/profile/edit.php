@@ -37,6 +37,28 @@ $('.arrow-container').mouseover(function(event){
 		
 	});
     
+    $('#inlineForm').submit(function(event) {		
+		event.preventDefault(); 
+		$('.team-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+		
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/user/profile/addstartuprelation',
+				type: 'POST',
+                dataType: 'json',
+				data: $('#inlineForm').serialize(),
+				success: function(data){
+					$('.team-btn').text('Save');
+                    
+                    $.fn.yiiGridView.update('portfolio-grid');
+				},
+                error: function(){
+					$('.team-loading').html('<span style=\"color:red;\"> Nenhum campo pode ficar vazio! </span>').find('span').delay(1000).fadeOut(600);
+                    
+                    $('.team-btn').text('Save');
+				}
+			});
+	});
+    
 ");
     
 ?>
@@ -256,7 +278,7 @@ $('.arrow-container').mouseover(function(event){
                 array(
                     'id' => 'inlineForm',
                     'type' => 'inline',
-                    'action'=>Yii::app()->request->baseUrl.'/user/profile/addstartuprelation',
+                    'action'=>'',
                     'htmlOptions' => array('class' => 'well', 'enctype' => 'multipart/form-data'),
                 )
             ); ?>
