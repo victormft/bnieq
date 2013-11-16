@@ -66,7 +66,7 @@
 	position:absolute;
 	top: 0;
 	right: 0;
-	padding: 15px 195px 30px 0;
+	padding: 15px 190px 30px 0;
 }
 
 .view-list-text
@@ -648,8 +648,8 @@ div.language ul li a img:hover{
 
 .profile-header-right .edit-btn-user
 {
-    width:50px;
-    margin-right: 28px;
+    /*width:50px;*/
+    /*margin-right: 28px;*/
     float:right;
 }
 

@@ -8,7 +8,7 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 
 <div class="welcome">
 	<div class="sub-header-bg" style="margin-top:-25px; "></div>
-    <h1 class="create-title" style="margin-top:30px;"><?php echo UserModule::t("Welcome to NextBlue!"); ?></h1> 
+    <h1 class="create-title" style="margin-top:25px;"><?php echo UserModule::t("Welcome to NextBlue!"); ?></h1> 
     <div class="create-sub-title" style="font-style:italic; margin-bottom:65px;"><?php echo UserModule::t("Login or create an account to continue."); ?></div>
     
 </div>

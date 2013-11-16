@@ -161,5 +161,6 @@ return array(
     'Roles'=>'Papéis',
     'Sectors of interest'=>'Setores de interesse',
 	'See All'=>'Ver Todos',
+	'Joined'=>'Cadastro',
     
 );
