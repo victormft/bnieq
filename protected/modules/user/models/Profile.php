@@ -190,19 +190,15 @@ class Profile extends CActiveRecord
         
         $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";                
       
-        /*
+        
         if($this->group){
             if($this->group=='Empreendedores'){
-                $criteria->with = array('roles');
-                $criteria->together = true;
-                $criteria->addCondition('roles.role_id = :roleId');
+                $criteria->addCondition('user_id = :roleId');
                 $criteria->params = array(
                     'roleId' => 5,
                 );                
             }
         }
-         * 
-         */
         
         if($this->roles){
 			$criteria->with = array('roles');
@@ -243,7 +239,12 @@ class Profile extends CActiveRecord
 		));
 	}
     
-    public function getGenderOptions() {
+    public function searchFounders()
+    {
+        
+    }
+
+        public function getGenderOptions() {
 		return array (
 		self::MALE => 'Male',
 		self::FEMALE => 'Female',
