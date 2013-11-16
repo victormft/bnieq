@@ -1604,12 +1604,24 @@ body input[type="file"]{
 	color:#000;
 }
 
+.navbar .nav-inner .nav.secondary .name-hover a
+{
+	padding-left: 15px;
+}
+
 .navbar .nav-inner .nav.secondary .name-hover a:hover
 {
 	color:#fff;
 	text-shadow:none;
 	font-weight:bold;
+	background-color: #000;
 }
+
+.navbar .nav-inner .nav.secondary .name-hover a:hover i
+{
+	background-position: 14px 14px;
+}
+
 
 .navbar .navbar-search
 {
