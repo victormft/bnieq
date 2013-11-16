@@ -174,7 +174,7 @@ class Startup extends CActiveRecord
 			'competitive_advantage' => 'Competitive Advantage',
 			'history' => 'History',
 			'video' => 'Video',
-			'create_time' => 'Juntou-se',
+			'create_time' => UserModule::t('Joined'),
 			'selecionada' => 'Selecionada',
 			'followers_num' => UserModule::t('Followers'),
 		);
