@@ -250,14 +250,19 @@ class ProfileController extends Controller
     
     public function actionAddStartupRelation()
     {		
+        
 		$user_startup = new UserStartup;
 		
 		$user_startup->user_id = Yii::app()->user->id;
 		$user_startup->startup_id = $_POST['startup'];
 		$user_startup->position = $_POST['position'];    
-        $user_startup->save();
+        if($user_startup->save()){}
+        else{
+            throw new CHttpException(403, 'pode naaaaao');
+            exit;
+        }
         
-        $this->redirect($this->createUrl('profile/edit/username/'.Yii::app()->user->getUsername()));
+        //$this->redirect($this->createUrl('profile/edit/username/'.Yii::app()->user->getUsername()));
     }
     
     public function actionStartupsForPortfolio()
@@ -277,16 +282,18 @@ class ProfileController extends Controller
         
 		$list = array();        
 		foreach($query as $q){
-			$data['value'] = $q->id;
-			//$data['description'] = $q->profile->resume;
-			$data['label'] = $q->name;
-			$data['image'] = $q->logo0->name;
+            if(!$q->hasUserRelation()){
+                $data['value'] = $q->id;
+                //$data['description'] = $q->profile->resume;
+                $data['label'] = $q->name;
+                $data['image'] = $q->logo0->name;
 
-			$list['myData'][] = $data;
-			unset($data);
+                $list['myData'][] = $data;
+                unset($data);
+            }
 		}
 
-		if(!empty($query))
+		if(!empty($list))
 			echo json_encode($list);
 		
 		else 
