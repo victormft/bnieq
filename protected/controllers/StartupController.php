@@ -787,7 +787,35 @@ class StartupController extends Controller
 		$user_startup->startup_id = $model->id;
 		$user_startup->position = $_POST['position'];    
         $user_startup->approved = 1; 
-        if($user_startup->save())
+		
+		if(empty($_POST['user_startup']))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Usuário não existe!'
+			));
+			exit;
+		}
+		
+		if($user_startup->position!=='Founder' && $user_startup->position!=='Member' && $user_startup->position!=='Advisor' && $user_startup->position!=='Investor')
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Defina o papel!'
+			));
+			exit;
+		}
+		
+		if(UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$user_startup->user_id, ':s_id'=>$user_startup->startup_id)))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Usuário já existe!'
+			));
+			exit;
+		}
+		
+        if($user_startup->save() && ($user_startup->position!=='Advisor' && $user_startup->position!=='Investor'))
         {		
             $auth = Yii::app()->authManager;
             $auth->assign("StartupMember",$user_startup->user_id);

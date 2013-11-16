@@ -142,9 +142,18 @@ Yii::app()->clientScript->registerScript('loading-img',
 				type: 'POST',
 				data: $('#form-team').serialize(),
 				success: function(data){
-					$('.team-ready').append(data.res);
-					$('.team-item').show('slow').animate({opacity: 1}, 250);	
-					$('.team-btn').text('Save')
+					if(data.res=='no')
+					{
+						$('.team-error').html(data.msg);
+						$('.team-btn').text('Save')
+					}
+					else
+					{
+						$('.team-error').html('');
+						$('.team-ready').append(data.res);
+						$('.team-item').show('slow').animate({opacity: 1}, 250);	
+						$('.team-btn').text('Save')
+					}
 				}
 			});
 		
@@ -888,18 +897,19 @@ function getUrlVars()
 					<input type="hidden" id="my_ac_id" name="user_startup"/>
 					
 					<?php echo CHtml::label('Papel', false); ?>
-					<?php echo CHtml::activeDropDownList($model,'user_role', array_merge(array(''=>UserModule::t("Select...")), $model->getCompanyMembersPositionOptions()), array('name'=>'position')) ?>
+					<?php echo CHtml::activeDropDownList($model,'user_role', array_merge(array(''=>UserModule::t("Select...")), $model->getCompanyPositionOptions()), array('name'=>'position')) ?>
 			
 					<?php $this->widget('bootstrap.widgets.TbButton', array(
 						'buttonType'=>'submit',
 						'label'=>'Save',
 						'size'=>'normal',
 						'htmlOptions'=>array(
-							'style'=>'display:block',
+							'style'=>'display:inline-block',
 							'class'=>'team-btn btn-primary',
 							),
 						)); 
 					?>
+					<div class="team-error" style="display:inline; margin-left:10px; color:#b94a48;"></div>
 			
 				<?php $this->endWidget(); ?>
 				
@@ -935,7 +945,7 @@ function getUrlVars()
 					$(".ui-autocomplete").css({'width':'300px'});
 				},
 				error: function(){
-					$(".team-loading").html('<span style="color:red;"> Registro não encontrado! </span>').find('span').delay(1000).fadeOut(600);
+					$(".team-loading").html('<span style="color:#b94a48;"> Registro não encontrado! </span>').find('span').delay(1000).fadeOut(600);
 					$(".ui-autocomplete").css({'display':'none'});
 				}
 			});

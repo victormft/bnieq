@@ -312,11 +312,13 @@ class Startup extends CActiveRecord
 	public function getCompanyPositionOptions()
 	{
 		return array(
-			self::POS_3=>'Investor',
-			self::POS_4=>'Advisor',
+			self::POS_1=>UserModule::t("Founder"),
+			self::POS_2=>UserModule::t("Member"),
+			self::POS_3=>UserModule::t("Investor"),
+			self::POS_4=>UserModule::t("Advisor"),
 		);
 	}
-	
+/*
 	public function getCompanyMembersPositionOptions()
 	{
 		return array(
@@ -324,7 +326,7 @@ class Startup extends CActiveRecord
 			self::POS_2=>UserModule::t("Member"),
 		);
 	}
-
+*/
 	public function getSectorNames()
     {
         $string="";
@@ -463,6 +465,7 @@ class Startup extends CActiveRecord
     
     public function hasUserRelation()
     {
+		if(UserModule::isAdmin()) return 1;
         $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue(":startupId", $this->id, PDO::PARAM_INT);
