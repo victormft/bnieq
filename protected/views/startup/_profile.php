@@ -253,7 +253,7 @@ $('.video-images-items').carouFredSel({
 
 		<div class="content-head">
 			<i class="icon-screenshot profile-icon"></i> Público Alvo
-			<span class="tip">ddad as d sd a d</span>
+			<span class="tip">Pessoas a quem se destina nosso Produto</span>
 		</div>
 		
 		<div class="content-info">
@@ -270,7 +270,7 @@ $('.video-images-items').carouFredSel({
 
 		<div class="content-head">
 			<i class="icon-money profile-icon"></i> Geração de Renda
-			<span class="tip">ddad as d sd a d</span>
+			<span class="tip">Como nosso empresa gera renda</span>
 		</div>
 		
 		<div class="content-info">
@@ -287,7 +287,7 @@ $('.video-images-items').carouFredSel({
 
 		<div class="content-head">
 			<i class="icon-warning-sign profile-icon"></i> Principais Concorrentes
-			<span class="tip">ddad as d sd a d</span>
+			<span class="tip">Os maiores players no mercado em que atuamos</span>
 		</div>
 		
 		<div class="content-info">
@@ -304,7 +304,7 @@ $('.video-images-items').carouFredSel({
 
 		<div class="content-head">
 			<i class="icon-trophy profile-icon"></i> Vantagem Competitiva
-			<span class="tip">ddad as d sd a d</span>
+			<span class="tip">O diferencial da nossa empresa</span>
 		</div>
 		
 		<div class="content-info">
@@ -321,7 +321,7 @@ $('.video-images-items').carouFredSel({
 
 		<div class="content-head">
 			<i class="icon-book profile-icon"></i> História da Empresa
-			<span class="tip">ddad as d sd a d</span>
+			<span class="tip">Nossa história até o momento</span>
 		</div>
 		
 		<div class="content-info">
@@ -539,7 +539,7 @@ $('.video-images-items').carouFredSel({
 					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 					<div class="team-text">
 						<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
-						<div class="team-position"><?php echo $rel->position;?></div>
+						<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
 						<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
 					</div>
 				</div>
@@ -550,18 +550,55 @@ $('.video-images-items').carouFredSel({
 		</div>	
 	<?php endif;  ?>
 	
-	<div class="content-wrap">
-
-		<div class="content-head"><i class="icon-group profile-icon"></i> Conselheiros</div>
-		
-		<div class="content-info">
-			
-			COMING SOON!!
-		
-		</div>
-		
-	</div>	
 	
+	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos AND approved=1', array(':s_id'=>$model->id, ':pos'=>'Advisor'))):?>
+		<div class="content-wrap">
+
+			<div class="content-head"><i class="icon-group profile-icon"></i> Conselheiros</div>
+			
+			<div class="content-info team-ready">
+				
+				<?php foreach($relational_tbl as $rel):?>
+				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
+				<div class="team-item">		
+					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
+					<div class="team-text">
+						<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
+						<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
+						<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+					</div>
+				</div>
+				<?php endforeach;?>
+			
+			</div>
+			
+		</div>	
+	<?php endif;  ?>
+	
+	<?php if($relational_tbl=UserStartup::model()->findAll('startup_id=:s_id AND position=:pos AND approved=1', array(':s_id'=>$model->id, ':pos'=>'Investor'))):?>
+		<div class="content-wrap">
+
+			<div class="content-head"><i class="icon-group profile-icon"></i> Investidores</div>
+			
+			<div class="content-info team-ready">
+				
+				<?php foreach($relational_tbl as $rel):?>
+				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
+				<div class="team-item">		
+					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
+					<div class="team-text">
+						<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
+						<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
+						<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+					</div>
+				</div>
+				<?php endforeach;?>
+			
+			</div>
+			
+		</div>	
+	<?php endif;  ?>
+		
 
 </div>
 <!--
