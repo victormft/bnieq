@@ -143,8 +143,9 @@
 .header-content
 {
     float: left;
-    overflow: auto;
+    overflow: visible;
     width: 460px;
+    margin-bottom: 15px
 }
 
 .profile-edit-header-right 
@@ -662,6 +663,12 @@ div.language ul li a img:hover{
     padding: 5px 5px;    
 }
 
+.header-content-info-unit
+{
+    height: 35px;
+    overflow: visible;
+}
+
 .content-info-unit .follow-block
 {
     width: 33%;
@@ -730,3 +737,23 @@ div.language ul li a img:hover{
     display: block;
 }
 
+.search-image
+{
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    line-height: 37px;
+    float: left;
+    border: 2px solid #eee;
+    background: #eee;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 1px 1px #ddd;
+}
+
+.search-image img
+{
+    max-width: 40px;
+    max-height: 40px;
+    vertical-align: middle;
+}

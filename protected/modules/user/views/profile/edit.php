@@ -49,7 +49,7 @@ $('.arrow-container').mouseover(function(event){
     
 	<div class="user-profile-header-info" style="width: 600px">    
         
-        <div class="content-info-unit">         
+        <div class="header-content-info-unit">         
             <div class="header-label">			
                 <?php echo '<b>Nome: </b>'; ?>                 
             </div>
@@ -65,7 +65,7 @@ $('.arrow-container').mouseover(function(event){
                 ?>
             </div>
         </div>
-        <div class="content-info-unit">
+        <div class="header-content-info-unit">
             <div class="header-label">			
                 <?php echo '<b>Sobrenome: </b>'; ?>                 
             </div>
@@ -82,7 +82,7 @@ $('.arrow-container').mouseover(function(event){
             </div>				 
         </div>   
         
-        <div class="content-info-unit">
+        <div class="header-content-info-unit">
             <div class="header-label">			
                 <?php echo '<b>Mini-currículo: </b>';?>                 
             </div>
@@ -140,7 +140,7 @@ $('.arrow-container').mouseover(function(event){
             });
         </script>
         
-        <div class="content-info-unit">
+        <div class="header-content-info-unit">
             <div class="header-label">			
                 <?php echo '<b>Cidade: </b>';?>                 
             </div>
@@ -169,7 +169,7 @@ $('.arrow-container').mouseover(function(event){
             </div>
         </div>
         
-        <div class="content-info-unit">
+        <div class="header-content-info-unit">
             <div class="header-label">			
                 <?php echo '<b>Papéis: </b>';?>                 
             </div>
@@ -326,7 +326,7 @@ $('.arrow-container').mouseover(function(event){
                         return false;
                   }
                 }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
-                    var inner_html = '<a><div class="list_item_container"><div class="image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div></div></a>';
+                    var inner_html = '<a><div class="list_item_container"><div class="search-image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div></div></a>';
                     return $( "<li></li>" )
                         .data( "item.autocomplete", item )
                         .append(inner_html)

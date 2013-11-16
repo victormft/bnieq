@@ -90,9 +90,11 @@ function getUrlVars()
             <span><?php echo $profile->resume; ?></span>
         </div>
 
+        <?php if (isset($profile->city)): ?>
         <div class="user-profile-location">
             <i class="icon-map-marker profile-icon"></i><a href="#"><?php if (isset($profile->city)) echo $profile->city->nome; ?></a>
         </div>
+        <?php endif; ?>        
 
         <div class="user-profile-sectors">
             <?php echo $model->getRolesForPrint(); ?>
