@@ -467,7 +467,7 @@ function getUrlVars()
 
 		<div class="content-head rounded">
 			<i class="icon-picture profile-icon"></i> Imagens
-			<span class="tip">Insira até 4 imagens do seu produto (500 x 312px)</span>
+			<span class="tip">Insira até 4 imagens do seu produto (resize para 500 x 312px)</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
 		

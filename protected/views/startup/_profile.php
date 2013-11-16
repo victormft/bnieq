@@ -346,21 +346,23 @@ $('.video-images-items').carouFredSel({
 			<div class="profile-links">
 				<div class="profile-link">
 					<?php if($model->facebook): ?>
-						<a href="<?php echo $model->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
+						<a href="<?php if(strpos($model->facebook, 'http')!==false){ echo $model->facebook;} else {echo 'http://'.$model->facebook;} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
 					<?php endif; ?>
 				</div>
 				<div class="profile-link">
 					<?php if($model->twitter): ?>
-						<a href="<?php echo $model->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
+						<a href="<?php if(strpos($model->twitter, 'http')!==false){ echo $model->twitter;} else {echo 'http://'.$model->twitter;} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
 					<?php endif; ?>
 				</div>
 				<div class="profile-link">
 					<?php if($model->linkedin): ?>
-						<a href="<?php echo $model->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
+						<a href="<?php if(strpos($model->linkedin, 'http')!==false){ echo $model->linkedin;} else {echo 'http://'.$model->linkedin;} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
 					<?php endif; ?>
 				</div>
 				<div class="profile-website">
-					<i class="icon-globe"></i><a class="web-link" href="<?php echo $model->website; ?>" target="_blank"><?php echo $model->website; ?></a>
+					<?php if($model->website): ?>
+						<i class="icon-globe"></i><a class="web-link" href="<?php if(strpos($model->website, 'http')!==false){ echo $model->website;} else {echo 'http://'.$model->website;} ?>" target="_blank"><?php echo $model->website; ?></a>
+					<?php endif; ?>
 				</div>
 			</div>
 		
