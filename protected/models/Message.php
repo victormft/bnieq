@@ -68,7 +68,7 @@ class Message extends CActiveRecord
 			array('body', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sender_id, receiver_id, subject, body, is_read, deleted_by, created_at, sender_name', 'safe', 'on'=>'search'),
+			array('id, sender_id, receiver_id, subject, body, is_read, deleted_by, created_at, sender_name, receiver_name', 'safe', 'on'=>'search'),
             array('id, sender_id, receiver_id, subject, body, is_read, deleted_by, created_at, receiver_name', 'safe', 'on'=>'searchForSent'),
 		);
 	}
@@ -98,11 +98,11 @@ class Message extends CActiveRecord
 			'id' => 'ID',
 			'sender_id' => 'Sender',
 			'receiver_id' => 'Receiver',
-			'subject' => 'Subject',
-			'body' => 'Body',
+			'subject' => UserModule::t('Subject'),
+			'body' => UserModule::t('Body'),
 			'is_read' => 'Is Read',
 			'deleted_by' => 'Deleted By',
-			'created_at' => 'Created At',
+			'created_at' => UserModule::t('Created at'),
 		);
 	}
 

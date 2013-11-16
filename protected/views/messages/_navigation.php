@@ -5,8 +5,8 @@
         'id'=>'messages-menu',
         'stacked'=>true, // whether this is a stacked menu
         'items'=>array(
-            array('label'=>'Inbox', 'url'=>'inbox', 'active'=>($active==='inbox') ? true:false),
-            array('label'=>'Sent', 'url'=>'sent', 'active'=>($active==='sent') ? true:false),
+            array('label'=>UserModule::t('Inbox'), 'url'=>'inbox', 'active'=>($active==='inbox') ? true:false),
+            array('label'=>UserModule::t('Sent'), 'url'=>'sent', 'active'=>($active==='sent') ? true:false),
         ),
     )); ?>
 

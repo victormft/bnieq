@@ -41,7 +41,7 @@ class MessagesController extends Controller
             'model' => $model,
 		));
 	}
-    
+    /*
     public function actionCompose() 
     {
 		$message = new Message();        
@@ -60,6 +60,8 @@ class MessagesController extends Controller
 		} 
 		$this->render('compose', array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));
 	}
+     * 
+     */
     
     public function actionComposeWithId($id)
     {       

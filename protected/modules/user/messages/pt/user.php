@@ -162,5 +162,13 @@ return array(
     'Sectors of interest'=>'Setores de interesse',
 	'See All'=>'Ver Todos',
 	'Joined'=>'Cadastro',
-    
+    'Subject'=>'Assunto',
+    'Body'=>'Texto',
+    'Send'=>'Enviar',
+    'Reply'=>'Responder',
+    'Created at'=>'Criado em',
+    'From'=>'De',
+    'To'=>'Para',
+    'Inbox'=>'Caixa de entrada',
+    'Sent'=>'Enviadas',
 );

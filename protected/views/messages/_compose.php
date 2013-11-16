@@ -1,4 +1,3 @@
-<h2><?php echo 'Message '.$receiverName ?></h2>
 
 <div class="form">
     <?php $form = $this->beginWidget('CActiveForm', array(
@@ -8,8 +7,6 @@
             'validateOnSubmit'=>true,
         ),
     )); ?>
-
-    <p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
     <?php echo $form->errorSummary($model, null, null, array('class' => 'alert-message block-message error')); ?>
 
@@ -21,7 +18,7 @@
 
     <?php echo $form->labelEx($model,'body'); ?>
     <div class="input">
-        <?php echo $form->textArea($model,'body'); ?>
+        <?php echo $form->textArea($model,'body', array('style' => 'width:300px; height:100px')); ?>
         <?php echo $form->error($model,'body'); ?>
     </div>
 

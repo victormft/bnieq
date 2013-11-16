@@ -11,6 +11,7 @@
                 <?php $this->widget('bootstrap.widgets.TbGridView', array(
                     'id'=>'message-grid',
                     'type' => 'striped bordered condensed',
+                    'htmlOptions'=>array('style'=>'padding-top: 0px;'),
                     'dataProvider'=>$model->search(),
                     'filter'=>$model,
                     'rowCssClassExpression'=>'$data->is_read ? "read" : "unread"',

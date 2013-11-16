@@ -13,6 +13,7 @@
                     'id'=>'message-grid',
                     'type' => 'striped bordered condensed',
                     'dataProvider'=>$model->searchForSent(),
+                    'htmlOptions'=>array('style'=>'padding-top: 0px;'),
                     'filter'=>$model,
                     'columns'=>array(
                         array(

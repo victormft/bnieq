@@ -152,11 +152,11 @@ function getUrlVars()
                     array(
                         'controllerRoute' => 'messages/composewithid', //'member/view'
                         'actionParams' => array('id'=>$model->id), //array('id'=>$model->member->id),
-                        //'dialogTitle' => 'Detailview',
+                        'dialogTitle' => 'Enviar mensagem para ' . $model->getFullName(),
                         'dialogWidth' => 450,
-                        'dialogHeight' => 500,
+                        'dialogHeight' => 350,
                         'openButtonText' => UserModule::t('Message'),
-                        'closeButtonText' => 'Close',
+                        //'closeButtonText' => 'Close',
                         'openButtonHtmlOptions' => array(
                             'style' => 'width:70px; padding:12px 5px; margin-left: 10px', 
                             'class' => 'btn btn-warning',
