@@ -285,7 +285,7 @@ $('.arrow-container').mouseover(function(event){
             
             <legend style="line-height: 20px;">Adicionar Startup &nbsp&nbsp&nbsp<div class="team-loading" style="display:inline; font-size: 15px;"></div></legend>
              
-            <?php echo CHtml::activeDropDownList(new Startup,'user_role', array_merge(array(''=>'Papel...'), Startup::model()->getCompanyPositionOptions() + Startup::model()->getCompanyMembersPositionOptions()), array('name'=>'position', 'style'=>'width: 200px;'));
+            <?php echo CHtml::activeDropDownList(new Startup,'user_role', array_merge(array(''=>'Papel...'), Startup::model()->getCompanyPositionOptions()), array('name'=>'position', 'style'=>'width: 200px;'));
 			?>
             
             <input type="text" id="my_ac" size="30" placeholder="Startup"/>

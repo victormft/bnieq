@@ -33,15 +33,11 @@ class DefaultController extends Controller
         
         if(isset($_GET['sec']))
 			$model->sectors=$_GET['sec'];
-		/*		
+			
         if(isset($_GET['g']))
 		{   
-            $model->group=$_GET['g'];
-			if($_GET['g']=='Empreendedores')
-                $model->roles = isset($model->roles) ? array_merge($model->roles, array(5)) : array(5);
-		}	
-         * 
-         */
+            $model->group=1;
+		}
         
 		$this->render('/user/index',array(
             'dataProvider'=>$model,
