@@ -193,10 +193,7 @@ class Profile extends CActiveRecord
         
         if($this->group){
             if($this->group=='Empreendedores'){
-                $criteria->addCondition('user_id = :roleId');
-                $criteria->params = array(
-                    'roleId' => 5,
-                );                
+                $criteria->addCondition('user_id IN (SELECT user_id FROM user_startup WHERE position="Founder")');  
             }
         }
         
@@ -218,7 +215,7 @@ class Profile extends CActiveRecord
 			$criteria->compare('sectors.sector_id', $this->sectors,true);
 		}
         
-		return new CActiveDataProvider($this, array(
+		$datas = new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,       
             'sort'=>array(
                 'attributes'=>array(
@@ -237,14 +234,13 @@ class Profile extends CActiveRecord
                 )
             ),
 		));
+        
+        
+        
+        return $datas;
 	}
     
-    public function searchFounders()
-    {
-        
-    }
-
-        public function getGenderOptions() {
+    public function getGenderOptions() {
 		return array (
 		self::MALE => 'Male',
 		self::FEMALE => 'Female',
