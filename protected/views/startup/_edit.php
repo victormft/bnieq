@@ -948,7 +948,7 @@ function getUrlVars()
 			return false;
       }
     }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
-        var inner_html = '<a><div class="list_item_container"><div class="image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div><div class="description">' + item.description + '</div></div></a>';
+        var inner_html = '<a><div class="list_item_container"><div class="search-image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div><div class="description">' + item.description + '</div></div></a>';
         return $( "<li></li>" )
             .data( "item.autocomplete", item )
             .append(inner_html)
