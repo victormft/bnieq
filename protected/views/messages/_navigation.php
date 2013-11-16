@@ -7,7 +7,6 @@
         'items'=>array(
             array('label'=>'Inbox', 'url'=>'inbox', 'active'=>($active==='inbox') ? true:false),
             array('label'=>'Sent', 'url'=>'sent', 'active'=>($active==='sent') ? true:false),
-            array('label'=>'Compose', 'url'=>'compose', 'active'=>($active==='compose') ? true:false),
         ),
     )); ?>
 

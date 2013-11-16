@@ -100,14 +100,14 @@ $('.remove-search').click(function(event){
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li class="name-hover">
-                            <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><?php echo UserModule::t('Profile'); ?></a>
+                            <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><i class="icon-user" style="margin:0 6px 0 0;"></i><?php echo UserModule::t('Profile'); ?></a>
                         </li>
-						<li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><?php echo UserModule::t('Messages'); ?> <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
+						<li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><i class="icon-comment" style="margin:0 5px 0 0;"></i><?php echo UserModule::t('Messages'); ?> <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
                         ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>
 						</li>
                         <li class="divider"></li>
                         <li class="name-hover">
-                            <a href=<?php echo Yii::app()->homeUrl . '/user/settings/general' ?>><?php echo UserModule::t('Settings'); ?></a>
+                            <a href=<?php echo Yii::app()->homeUrl . '/user/settings/general' ?>><i class="icon-cog" style="margin:0 5px 0 0;"></i><?php echo UserModule::t('Settings'); ?></a>
                         </li>
                     </ul>                    
                 </li>

@@ -388,6 +388,7 @@ $('.arrow-container').mouseover(function(event){
                             'type' => 'text',
                             'url' => array('updatestartuprelational'),
                             'mode'=>'popup',
+                            'emptytext'=>UserModule::t('Vazio'),
                         )
                     ),
                     array(
