@@ -1899,7 +1899,7 @@ body input[type="file"]{
 	border:none;
 }
 
-.column .sec-label
+.column .sec-label, .rol-label, .ski-label
 {
 	border-bottom:1px solid #ccc;
 	margin-bottom:0px;

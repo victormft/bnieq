@@ -263,7 +263,7 @@ $(document.body).on('click','.follow-press',function(event){
 	<div class="form-vertical">
         <?php echo CHtml::beginForm('user', 'get', array('id'=>'searchform')); ?>
 
-        <div class="row">
+        <div class="column">
             <?php echo CHtml::label('Nome', false); ?>
 
             <div id="search-name" style="margin-bottom:20px;">
@@ -272,7 +272,8 @@ $(document.body).on('click','.follow-press',function(event){
                 <?php	
                 $this->widget('bootstrap.widgets.TbButton',array(
                     'label' => 'Buscar',
-                    'size' => 'small'
+                    'size' => 'small',
+                    'id' => 'search-btn'
                 ));
                 ?>
                 
