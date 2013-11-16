@@ -164,9 +164,13 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 <div class="carousel-index-wrap">
 	<div class="carousel-background car-back-white"></div>
 	<div class="arrow-all"></div>
-	<h1>Selecionadas</h1>
-	<span class="carousel-header-span">As preferidas da equipe do NextBlue</span> 
-	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Selecionadas'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-25px;'));?>
+	<i class="icon-thumbs-up-alt" style="position:absolute; margin: 85px 0 0 5px; font-size: 40px;"></i>
+	<div style="position:absolute; width:1px; height:100px; margin:40px 0 0 50px; border-right:1px solid #ccc"></div>
+	<div style="overflow:auto; margin-left:60px;">
+		<h1>Selecionadas</h1>
+		<span class="carousel-header-span">As preferidas da equipe do NextBlue</span> 
+	</div>
+	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Selecionadas'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
 	<!--<a><span style="display:inline; float:right;">lala</span></a>-->
 	<div class="carousel-wrap-items">
 
@@ -187,9 +191,13 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 <div class="carousel-index-wrap">
 	<div class="carousel-background car-back-gray"></div>
 	<div class="arrow-sel"></div>
-	<h1>Populares</h1>
-	<span class="carousel-header-span">As mais procuradas pelos usuários</span>
-	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Populares'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-25px;'));?>
+	<i class="icon-group" style="position:absolute; margin: 85px 0 0 5px; font-size: 35px;"></i>
+	<div style="position:absolute; width:1px; height:100px; margin:40px 0 0 50px; border-right:1px solid #ccc"></div>
+	<div style="overflow:auto; margin-left:60px;">
+		<h1>Populares</h1>
+		<span class="carousel-header-span">As mais procuradas pelos usuários</span>
+	</div>
+	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Populares'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
 	<div class="carousel-wrap-items">
 
 
@@ -209,11 +217,15 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 
 
 <div class="carousel-index-wrap">
-	<div class="carousel-background car-back-white"></div>
+	<div class="carousel-background car-back-white" style="height:670px;"></div>
 	<div class="arrow-rec"></div>
-	<h1>Recentes</h1>
-	<span class="carousel-header-span">Cadastradas recentemente</span>
-	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Novidades'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-25px;'));?>
+	<i class="icon-calendar" style="position:absolute; margin: 85px 0 0 5px; font-size: 35px;"></i>
+	<div style="position:absolute; width:1px; height:100px; margin:40px 0 0 50px; border-right:1px solid #ccc"></div>
+	<div style="overflow:auto; margin-left:60px;">
+		<h1>Recentes</h1>
+		<span class="carousel-header-span">Cadastradas recentemente</span>
+	</div>
+	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Novidades'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
 	<div class="carousel-wrap-items">
 
 
