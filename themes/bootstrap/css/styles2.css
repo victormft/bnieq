@@ -560,8 +560,9 @@
 {
     vertical-align: middle;
     margin: 0 auto 5px;  
-	border: 1px solid #aaa; 
-	background:#fff;
+	box-shadow: inset 0px 0px 4px 1px #ddd; 
+	background: #fafafa;
+    padding: 3px;
 	width:80px; 
 	height:80px;
 	border-radius: 5px;
@@ -574,6 +575,7 @@
 {
     max-width:80px; 
 	max-height:80px;
+    border-radius: 3px;
 }
 
 .startup-card .startup-name a
