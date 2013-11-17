@@ -852,18 +852,21 @@ function getUrlVars()
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
 			
-		<div class="content-info edit">
+		<div class="content-info edit" style="overflow:visible;">
 			<div class="editable-wrap">
 				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'date',
-						'model'     => $model,
-						'attribute' => 'foundation',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'format'      => 'yyyy-mm-dd', //format in which date is expected from model and submitted to server
-						'viewformat'  => 'dd/mm/yyyy', //format in which date is displayed
-						'emptytext' => 'Vazio',
-						'mode'=>'inline',
+						'type'      => 'combodate',
+                        'model'     => $model,
+                        'attribute' => 'foundation',
+                        'url'       => array('update'),  
+                        'mode'      => 'popup',
+                        'placement' => 'left',
+                        'format'      => 'YYYY-MM-DD', //format in which date is expected from model and submitted to server
+                        'viewformat'  => 'DD/MM/YYYY', //format in which date is displayed
+                        'template'    => 'D / MMM / YYYY',
+                        'options'   => array(
+                            'defaultValue'   => date('Y-m-d'),
+                        )
 					 )); ?>  
 									
 				</p>

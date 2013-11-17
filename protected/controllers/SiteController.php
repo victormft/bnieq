@@ -131,7 +131,7 @@ class SiteController extends Controller
 			//!!!!!!!!!!!! for startups
 			
 			$qry_s = new CDbCriteria( array(
-				'condition' => "name LIKE :param",         // no quotes around :match
+				'condition' => "name LIKE :param AND published=1",         // no quotes around :match
 				'params'    => array(':param' => "%$param%"),  // Aha! Wildcards go here
 				'limit'=> 5
 			) );

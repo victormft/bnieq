@@ -333,7 +333,6 @@ $('.video-images-items').carouFredSel({
 	</div>
 	<?php endif;?>
 	
-	
 
 </div>
 
@@ -498,6 +497,24 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 	</div>	
+	<?php endif;?>
+	
+	
+	<?php if($model->foundation):?>
+	<div class="content-wrap">
+
+		<div class="content-head">
+			<i class="icon-calendar profile-icon"></i> Início da Empresa
+			<span class="tip">Data em que a empresa foi criada</span>
+		</div>
+		
+		<div class="content-info">
+			
+			<?php echo date('d/m/y', strtotime($model->foundation)); ?>
+			
+		</div>
+		
+	</div>
 	<?php endif;?>
 
 	
