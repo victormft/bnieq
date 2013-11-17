@@ -12,6 +12,11 @@
         <div class="profile-view-pitch" >
             <?php echo CHtml::encode($data->resume); ?>
         </div>
+        <?php if (isset($data->city)): ?>
+        <div class="startup-view-location">
+			<i class="icon-map-marker"></i><a href="<?php echo Yii::app()->baseUrl.'/user?g=&c='.$data->city->id; ?>"><?php echo $data->city->nome; ?></a> 		
+		</div>
+        <?php endif; ?>
 
         <div class="profile-view-role">	
             <?php echo $data->user->getRolesForPrint() ?>

@@ -39,6 +39,11 @@ class DefaultController extends Controller
             $model->group=$_GET['g'];
 		}
         
+        if(isset($_GET['c']))
+		{
+			$model->location=$_GET['c'];
+		}
+        
 		$this->render('/user/index',array(
             'dataProvider'=>$model,
         ));
