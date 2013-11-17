@@ -170,6 +170,8 @@ class Profile extends CActiveRecord
          * 
          */
         
+        $criteria->addCondition('t.user_id <> 1');
+        
         $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('firstname',$this->firstname,true);

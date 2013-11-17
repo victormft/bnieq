@@ -12,7 +12,7 @@ class DefaultController extends Controller
             $user = Yii::app()->getComponent('user');
             $user->setFlash(
                 'error',
-                '<strong>Ops!</strong> Você precisa estar conectado apra acessar essa área.'
+                '<strong>Ops!</strong> Você precisa estar conectado para acessar essa área.'
             );
             $this->redirect(Yii::app()->controller->module->loginUrl);
         }
