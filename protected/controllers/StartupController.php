@@ -157,7 +157,14 @@ class StartupController extends Controller
 					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
 					
 					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
-					$image->resize(400, 300)->quality(75)->sharpen(20);
+					
+					if($image->width>=$image->height)
+					{
+						$image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
+					}
+					else
+						$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
+					
 					$image->save(); // or $image->save('images/small.jpg');
 					
 					$model_img=new Image;
@@ -209,7 +216,14 @@ class StartupController extends Controller
 					$model->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
 					
 					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
-					$image->resize(400, 300)->quality(75)->sharpen(20);
+					
+					if($image->width>=$image->height)
+					{
+						$image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
+					}
+					else
+						$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
+					
 					$image->save(); // or $image->save('images/small.jpg');
 					
 					$this->refresh();
@@ -353,10 +367,10 @@ class StartupController extends Controller
 				//!!!!!!!!!! finishing the ratio !!!!!!!!!!!!!!
 				if($image->width>=$image->height)
 				{
-					$image->resize(120, 120, ImageExt::WIDTH)->quality(75)->sharpen(20);
+					$image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
 				}
 				else
-					$image->resize(120, 120, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+					$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
 				
 				$image->save(); // or $image->save('images/small.jpg');
 				
