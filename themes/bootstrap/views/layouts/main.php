@@ -4,6 +4,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
+    
+    <link rel="shortcut icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/aviaozinho-20131117-favicon.ico">
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/font-awesome/css/font-awesome.min.css" />	
 
