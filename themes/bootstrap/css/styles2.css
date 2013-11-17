@@ -343,14 +343,21 @@
 
 #userslistview .sorter ul
 {
+    width: 100%;
 	float:left;
-	margin-left: 107px;
 }
 
 #userslistview .sorter ul li
 {
+    float:left;
 	text-align:center;
-	margin-right:20px;
+	margin-left:113px;
+}
+
+#userslistview .sorter ul li:last-child
+{
+	float:right;
+	margin-right:80px;
 }
 
 #userslistview .sorter ul li a
