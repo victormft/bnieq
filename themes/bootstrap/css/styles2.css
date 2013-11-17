@@ -766,3 +766,13 @@ div.language ul li a img:hover{
     max-height: 40px;
     vertical-align: middle;
 }
+
+.view-list .founder
+{
+    position: absolute;
+    right: 24px;
+    bottom: 10px;
+    width: 27px;
+    height: 27px;
+    cursor: pointer;
+}

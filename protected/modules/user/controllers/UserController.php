@@ -25,7 +25,7 @@ class UserController extends Controller
 	{
 		return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('followpop'),
+				'actions'=>array('followpop', 'founderpop'),
 				'users'=>array('*'),
 			),
 			array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -134,6 +134,15 @@ class UserController extends Controller
                 break;
         }
         EQuickDlgs::render('_followpop',array('provider'=>$provider, 'attr'=>$attr));
+    }
+    
+    public function actionFounderPop($id)
+    {
+        $model = $this->loadUser($id);
+        
+        $provider = $model->getStartupsByRole("Founder");
+        
+        EQuickDlgs::render('_founderpop',array('provider'=>$provider));
     }
     
     /*
