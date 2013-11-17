@@ -24,10 +24,10 @@
     </div>
        
         
-    <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$data->user_id))): ?>
+    
     
     <div class="follow-count" data-name="<?php echo $data->user->username; ?>"><?php echo count($data->user->followers); ?></div>   
-    
+    <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$data->user_id))): ?>
     <span class="follow-btn">    
         <?php 
         if(!$data->user->hasUserFollowing(Yii::app()->user->id))
