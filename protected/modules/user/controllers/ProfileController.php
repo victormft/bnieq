@@ -88,7 +88,7 @@ class ProfileController extends Controller
 			if($profile->pic !== null && $profile->validate())
 			{
 			
-				if($profile->profile_picture==1)
+				if($profile->profile_picture==2)
 				{
 					$fileName=$profile->pic;
 					$rnd = rand(0,99999999);  // generate random number between 0-99999999
@@ -102,10 +102,10 @@ class ProfileController extends Controller
                     
                     if($image->width>=$image->height)
                     {
-                        $image->resize(120, 120, ImageExt::WIDTH)->quality(75)->sharpen(20);
+                        $image->resize(120, 120, ImageExt::WIDTH)->sharpen(20);
                     }
                     else
-                        $image->resize(120, 120, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+                        $image->resize(120, 120, ImageExt::HEIGHT)->sharpen(20);
 
                     $image->save(); // or $image->save('images/small.jpg');
                     
@@ -113,7 +113,7 @@ class ProfileController extends Controller
                     $model_img=new Image;
 					$model_img->name=$newFileName;
 					$model_img->extension=$profile->pic->type;
-					$model_img->size=$profile->pic->size;	
+					$model_img->size=0;//$profile->pic->size;	
 				
 				
 					if($model_img->save()){
@@ -130,7 +130,7 @@ class ProfileController extends Controller
 				}
 				else
 				{
-					//unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
+					unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
 					
 					$img=Image::model()->findByPk($profile->profile_picture);
 					$ext_arr = explode('.', $img->name);
@@ -144,7 +144,12 @@ class ProfileController extends Controller
                     $profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
 					                    
 					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
-					$image->resize(400, 300)->quality(75)->sharpen(20);
+					if($image->width>=$image->height)
+					{
+						$image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
+					}
+					else
+						$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
 					$image->save(); // or $image->save('images/small.jpg');
                     
 					$this->refresh();
