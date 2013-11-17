@@ -249,7 +249,7 @@ $(document.body).on('click','.follow-press',function(event){
     'fullname',
     'followers_count',
 ),
-'template'=>'{sorter} {items} {pager}',
+'template'=>'{summary} {sorter} {items} {pager}',
 )); ?>
 
 <div class="user-search-form">
