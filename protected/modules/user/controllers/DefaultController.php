@@ -33,10 +33,15 @@ class DefaultController extends Controller
         
         if(isset($_GET['sec']))
 			$model->sectors=$_GET['sec'];
-			
+				
         if(isset($_GET['g']))
 		{   
-            $model->group=1;
+            $model->group=$_GET['g'];
+		}
+        
+        if(isset($_GET['c']))
+		{
+			$model->location=$_GET['c'];
 		}
         
 		$this->render('/user/index',array(

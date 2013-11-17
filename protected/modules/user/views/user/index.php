@@ -23,6 +23,7 @@ $('#searchform').change(function(event) {
     var g = (getUrlVars()['g'] == null) ? '' : getUrlVars()['g'];
 
     var n = ($('#n').val()=='') ? '' : '&n='+encodeURIComponent($('#n').val());
+    var c = ($('#c').val()=='0') ? '' : '&c='+encodeURIComponent($('#c').val());
 
     var rol=[]; 
     $('input:checkbox[name=\'rol[]\']:checked').each(function(){
@@ -60,12 +61,13 @@ $('#searchform').change(function(event) {
 
     };
 
-    location.href = 'user?g='+g+n+rols+skis+secs;
+    location.href = 'user?g='+g+n+c+rols+skis+secs;
 });
 
 $('.g').click(function(event) {
     var g = $(this).text();
     var n = (getUrlVars()['n'] == null) ? '' : '&n='+getUrlVars()['n'];
+    var c = (getUrlVars()['c'] == null || getUrlVars()['c']==0) ? '' : '&c='+getUrlVars()['c'];
 
     var rol=[]; 
     $('input:checkbox[name=\'rol[]\']:checked').each(function(){
@@ -103,7 +105,7 @@ $('.g').click(function(event) {
 
     };
 
-    location.href = 'user?g='+g+n+rols+skis+secs;
+    location.href = 'user?g='+g+n+c+rols+skis+secs;
 			
 });
 
@@ -304,6 +306,30 @@ $(document.body).on('click','.follow-press',function(event){
                     <?php echo CHtml::activeCheckBoxList($dataProvider,'sectors', CHtml::listData(Sector::model()->findAll(), 'sector_id', 'name'), array('name'=>'sec', 'labelOptions'=>array('style'=>'display:inline'))) 
                     ?>
                 </div>
+            </div>
+            
+            <div style="margin-bottom:20px;">
+                <?php echo CHtml::label('Cidade', false); ?>
+
+                <?php
+                    $this->widget(
+                        'bootstrap.widgets.TbSelect2',
+                        array(
+                            'attribute' => 'location',
+                            'model'=>$dataProvider,
+                            'data' =>array_merge(array('0'=>'Digite o nome da cidade...'),Cidade::model()->getCities()),
+                            'options'=>array(
+                                'allowClear'=> true,   
+                                'dropdownAutoWidth'=> true,
+                                'minimumInputLength'=> 3,
+                                'width'=>'240px',
+                            ),
+                            'htmlOptions'=>array(
+                                'name'=>'c',
+                            ),
+                        )
+                    );
+                ?>
             </div>
 
             <div class="spacing-1"></div>
