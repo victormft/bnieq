@@ -860,6 +860,7 @@ function getUrlVars()
                         'attribute' => 'foundation',
                         'url'       => array('update'),  
                         'mode'      => 'popup',
+						'emptytext' => 'Vazio',
                         'placement' => 'left',
                         'format'      => 'YYYY-MM-DD', //format in which date is expected from model and submitted to server
                         'viewformat'  => 'DD/MM/YYYY', //format in which date is displayed
