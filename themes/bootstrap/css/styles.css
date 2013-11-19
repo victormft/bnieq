@@ -203,7 +203,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	height:120px;
 	padding:7px;
 	border-radius: 5px;
-	line-height:115px;
+	line-height:116px;
 	text-align:center;
 	box-shadow: inset 0px 0px 4px 1px #ddd;
 }
@@ -390,6 +390,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	
 }
 
+.profile-header-right .follow-btn .follow-info a
+{
+	text-decoration:none;
+	color: #333;
+}
+
+.profile-header-right .follow-btn .follow-info a:hover
+{
+	color:#009cd7;
+}
 .profile-header-right .follow-btn .follow-info:hover
 {
 	-webkit-box-shadow: none;
@@ -955,7 +965,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	height:80px;
 	border-radius: 5px;
 	overflow:hidden;
-	line-height:75px;
+	line-height:76px;
 	text-align:center;
 	box-shadow: 0px 0px 3px 0px #ddd;
 	-webkit-box-shadow: 0px 0px 3px 0px #ddd;

@@ -544,7 +544,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			<div class="editable-wrap">
 				<p> <i class="icon-globe web"></i>    
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'website',
@@ -552,12 +552,15 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'http://www.'
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
 				
 				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/>     
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'facebook',
@@ -565,12 +568,15 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'https://www.facebook.com/',
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
 				
 				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/>
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'twitter',
@@ -578,12 +584,15 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'https://www.twitter.com/',
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
 				
 				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/>   
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'linkedin',
@@ -591,6 +600,9 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'http://www.linkedin.com/pub/'
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>

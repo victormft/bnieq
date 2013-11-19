@@ -111,6 +111,7 @@ class Startup extends CActiveRecord
 			array('email, skype', 'length', 'max'=>99),
 			array('product_description, tech, client_segment, revenue_generation, competitors, competitive_advantage, history', 'length', 'max'=>1000, 'tooLong' => 'Texto muito longo (máximo de 1000 caracteres).'),
 			array('logo, location', 'length', 'max'=>20),
+			array('facebook, linkedin, twitter, website, video', 'url'),
             array('selecionada', 'in', 'range'=>array(0,1)),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
 			array('facebook, twitter, linkedin, website, video', 'length', 'max'=>150),
