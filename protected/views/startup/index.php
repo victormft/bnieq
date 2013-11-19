@@ -23,7 +23,7 @@ $(document.body).on('click','.follow-press',function(event){
 		var startup_name = encodeURIComponent($(this).parent().prev().attr('data-name'));
 		var elem = $(this);
 		
-		if(elem.text()=='Follow')
+		if(elem.hasClass('btn-follow'))
 		{	
 			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
@@ -35,13 +35,13 @@ $(document.body).on('click','.follow-press',function(event){
 					elem.removeClass('btn-success');
 					elem.removeClass('btn-follow');
 					elem.addClass('btn-unfollow');
-					elem.text('Unfollow');	
+					elem.text('".UserModule::t('Unfollow')."');	
 					elem.parent().prev().html(data.res);
 				}
 			});
 		}
 		
-		else if(elem.text()=='Unfollow')
+		else if(elem.hasClass('btn-unfollow'))
 		{
 			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
@@ -53,7 +53,7 @@ $(document.body).on('click','.follow-press',function(event){
 					elem.addClass('btn-success');
 					elem.removeClass('btn-unfollow');
 					elem.addClass('btn-follow');
-					elem.text('Follow');
+					elem.text('".UserModule::t('Follow')."');
 					elem.parent().prev().html(data.res);					
 				}
 			});

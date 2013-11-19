@@ -182,6 +182,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	color:#333;
 }
 
+.items .view-list .follow-btn .follow-press
+{
+	width:52px;	
+}
+
 #Startup-list-img
 {
 	float:left; 

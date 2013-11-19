@@ -147,6 +147,7 @@ return array(
     'Logout'=>'Sair',
     'Followers'=>'Seguidores',
     'Follow'=>'Seguir',
+	'Unfollow'=>'Não Seguir',
     'Edit'=>'Editar',
     'Following'=>'Seguindo',
     'Followers'=>'Seguidores',
