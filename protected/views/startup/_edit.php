@@ -36,22 +36,36 @@ Yii::app()->clientScript->registerScript('loading-img',
 		//$('.header-label').html('aaa');
 		
 		setTimeout(function(){
+			if(!$('.start-name').find('a').hasClass('editable-open'))
+			{
+				$('.container').css({'opacity':'0.6'});
+				$('.container').prepend('<div class=\"mask\" style=\"position:absolute; left:0; height:100%; width:100%; background-color:transparent; z-index:999;\"></div>')
+				$('.profile-header').prepend('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" />')
+			}
+		}, 500);
+		
+		setTimeout(function(){
 			if(!$('.start-name').find('a').hasClass('editable-open') && !$('.start-name').find('a').hasClass('editable-bg-transition'))
 			{
 			
 				var new_name = $('.start-name').find('a').text();
 				
 				$.ajax({
-				url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
-				dataType: 'json',
-				type: 'POST',
-				success: function(data){
-					location.href = data.res;
-					
-				}
-			});
+					url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					success: function(data){
+						location.href = data.res;
+						
+					}
+				});
 			}
-		}, 2000);
+			else
+			{
+				$('.container').css({'opacity':'1'});
+				$('.mask').hide();
+			}
+		}, 4000);
 		
 		
 			
