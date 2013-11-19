@@ -1585,6 +1585,14 @@ body input[type="file"]{
 	padding-top:7px;	
 	border-right:1px solid #ccc;
 	color: #999;
+	width:55px;
+}
+
+.navbar .nav-inner .nav.primary li.search a
+{
+	width:110px;
+	border:none; 
+	padding:20px 5px 20px 10px;
 }
 
 .navbar .nav-inner .nav.primary li a:hover

@@ -72,12 +72,11 @@ $('.remove-search').click(function(event){
      
         <ul class="nav primary">
             <li><a href= <?php echo Yii::app()->homeUrl . '/startup' ?> ><i class="icon-suitcase" style="display:block; margin:5px auto;"></i>Startups</a></li>
-			<li><a href= <?php echo Yii::app()->homeUrl . '/user' ?> ><i class="icon-group" style="display:block; margin:5px auto;"></i><?php echo UserModule::t("Users") ?></a></li>       
-            <li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("Understand") ?></a></li>   
-			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-info-sign" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("About Us") ?></a></li>
-			<li><a href= "http://euanjo.com.br/dep" ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("Our Blog") ?></a></li>
+			<li><a href= <?php echo Yii::app()->homeUrl . '/user' ?> ><i class="icon-group" style="display:block; margin:5px auto;"></i><?php echo UserModule::t("Users") ?></a></li>        
+			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-question-sign" style="display:block; margin:5px auto; font-size:17px;"></i><?php echo UserModule::t("About") ?></a></li>
+			<li><a href= "http://euanjo.com.br/dep" ><i class="icon-comments" style="display:block; margin:5px auto; font-size:17px;"></i>Blog</a></li>
 			<li><a href= <?php echo Yii::app()->homeUrl; ?> ><i class="icon-money" style="display:block; margin:5px auto; font-size:15px;"></i><?php echo UserModule::t("Invest") ?></a></li>
-			<li class="search"><a href="javascript:void(0);" style="border:none; padding:20px 5px 20px 25px;"><i class="icon-search" style="font-size:24px;"></i><span style="font-size:18px; margin-left:10px; line-height:18px;">Procurar</span></a></li>
+			<li class="search"><a href="javascript:void(0);"><i class="icon-search" style="font-size:24px;"></i><span style="font-size:18px; margin-left:10px; line-height:18px;"><?php echo UserModule::t("Search") ?></span></a></li>
         </ul>
 		
 		
