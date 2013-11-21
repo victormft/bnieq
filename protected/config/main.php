@@ -110,6 +110,7 @@ return array(
 	// application components
 	'components'=>array(
 	
+		/*
 		'clientScript'=>array(
             'class'=>'ext.extendedclientscript.ExtendedClientScript',
             'combineCss'=>false,
@@ -117,7 +118,7 @@ return array(
             'combineJs'=>true,
             'compressJs'=>false,
         ),
-			
+		*/
 			
 		'image'=>array(
           'class'=>'application.extensions.image.CImageComponent',

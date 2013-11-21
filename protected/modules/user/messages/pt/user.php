@@ -174,5 +174,7 @@ return array(
     'To'=>'Para',
     'Inbox'=>'Caixa de entrada',
     'Sent'=>'Enviadas',
-	'Incorrect Symbols'=>'Caracteres Incorretos'
+	'Incorrect Symbols'=>'Caracteres Incorretos',
+	'Load More'=>'Carregar Mais',
+	'Loading...'=>'Carregando...',
 );

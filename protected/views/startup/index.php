@@ -237,14 +237,20 @@ function SearchFunc()   {
 'dataProvider'=>$dataProvider->search(),
 'itemView'=>'_view',
 'id'=>'startupslistview',       // must have id corresponding to js above
-'pagerCssClass'=>'pagination',
-'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
+'pager'=> array(
+		'class' => 'ext.infiniteScroll.IasPager', 
+		'rowSelector'=>'.view-list', 
+		'listViewId' => 'startupslistview', 
+		'header' => '',
+		'loaderText'=>UserModule::t('Loading...'),
+		'options' => array('history' => false, 'triggerPageTreshold' => 2, 'trigger'=>UserModule::t('Load More')),
+    ),
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
         'create_time',
 		'followers_num'
     ),
-'template'=>'{summary} {sorter} {items} {pager}',
+'template'=>'{sorter} {items} {pager}',
 )); ?>
 
 
