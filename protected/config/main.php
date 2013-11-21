@@ -111,6 +111,7 @@ return array(
 	'components'=>array(
 	
 		'request'=>array(
+			'class' => 'application.components.HttpRequest',
             'enableCsrfValidation'=>true,
         ),
 			

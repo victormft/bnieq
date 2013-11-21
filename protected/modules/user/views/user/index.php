@@ -198,6 +198,9 @@ $(document.body).on('click','.follow-press',function(event){
         $.ajax({
             url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+user_name,
             type: 'POST',
+			data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
             dataType: 'json',
             success: function(data){
                 elem.removeClass('btn-success');
@@ -216,6 +219,9 @@ $(document.body).on('click','.follow-press',function(event){
         $.ajax({
             url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+user_name,
             type: 'POST',
+			data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
             dataType: 'json',
             success: function(data){
                 elem.addClass('btn-success');
