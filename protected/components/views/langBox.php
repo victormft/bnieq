@@ -1,4 +1,4 @@
-<form id="langForm" action="" method="post" style="margin: 0px;">    
+<?php echo CHtml::beginForm(null, 'post', array('id'=>'langForm', 'style'=>'margin: 0px;')); ?>
     <div class="language">
         <ul>
             <li>                
@@ -16,4 +16,4 @@
     </div>
     
     <input type="hidden" id="lang" name="lang" value="pt" />
-</form>
+<?php echo CHtml::endForm(); ?>

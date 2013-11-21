@@ -61,7 +61,7 @@ class StartupController extends Controller
 		
 		if($model->published==1)
 		{
-			$this->render('view',array(
+			$this->render('profile',array(
 			'model'=>$model,
 			));
 		}
@@ -108,7 +108,7 @@ class StartupController extends Controller
 			
 			
 			
-			$this->redirect(array('edit','name'=>$model->startupname));
+			$this->redirect(array('/edit/'.$model->startupname));
 		}
 
 		else
@@ -116,7 +116,7 @@ class StartupController extends Controller
 			$model->published=1;
 			
 			if($model->save())
-				$this->redirect(array('view','name'=>$model->startupname));
+				$this->redirect(array('/'.$model->startupname));
 			
 			else
 			{
@@ -125,7 +125,7 @@ class StartupController extends Controller
 					'error',
 					'<strong>Ops!</strong> Ocorreu algum erro. Tente novamente.'
 				);
-				$this->redirect(array('edit','name'=>$model->startupname));		
+				$this->redirect(array('/edit/'.$model->startupname));	
 			}
 		}	 
 
@@ -406,7 +406,7 @@ class StartupController extends Controller
                 {		
                     $auth = Yii::app()->authManager;
                     $auth->assign("StartupOwner",Yii::app()->user->id);
-                    $this->redirect(array('edit','name'=>$model->startupname));
+                    $this->redirect(array('/edit/'.$model->startupname));
                 }				
 			}
 		}

@@ -1,12 +1,12 @@
 <div class="view-list">
 	
 	<div class="startup-view-img">
-		<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" />', array('/'.$data->startupname));?>	
+		<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'" />', array('/'.CHtml::encode($data->startupname)));?>	
 	</div>
 	
 	<div class="view-list-text" style="overflow:hidden; max-width:280px;">
 		
-		<?php echo CHtml::link(CHtml::encode($data->name),array('/'.$data->startupname), array('class'=>'startup-view-name'));?>
+		<?php echo CHtml::link(CHtml::encode($data->name),array('/'.CHtml::encode($data->startupname)), array('class'=>'startup-view-name'));?>
 		
 		<div class="startup-view-pitch">
 			<?php echo CHtml::encode($data->one_line_pitch); ?>
@@ -24,13 +24,13 @@
 		</div>
 		
 		<div class="startup-view-location">
-			<i class="icon-map-marker"></i><?php if (isset($data->city)): ?><a href="<?php echo Yii::app()->baseUrl.'/startup?g=&c='.$data->city->id; ?>"><?php echo $data->city->nome; ?></a> <?php endif; ?>		
+			<i class="icon-map-marker"></i><?php if (isset($data->city)): ?><a href="<?php echo Yii::app()->baseUrl.'/startup?g=&c='.CHtml::encode($data->city->id); ?>"><?php echo CHtml::encode($data->city->nome); ?></a> <?php endif; ?>		
 		</div>
 	
 	</div>
 	
-		<div class="joined-date"><?php echo date('d/m/y', strtotime($data->create_time)); ?></div> 
-		<div class="follow-count" data-name="<?php echo $data->startupname; ?>"><?php echo count($data->users); ?></div>   
+		<div class="joined-date"><?php echo date('d/m/y', strtotime(CHtml::encode($data->create_time))); ?></div> 
+		<div class="follow-count" data-name="<?php echo CHtml::encode($data->startupname); ?>"><?php echo count($data->users); ?></div>   
 	
 	<?php if(!Yii::App()->user->isGuest): ?>	
 		<span class="follow-btn">    

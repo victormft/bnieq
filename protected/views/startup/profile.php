@@ -1,4 +1,8 @@
 <?php
+$this->layout='column1';
+?>
+
+<?php
 Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.carouFredSel-6.2.1.js');
 
 Yii::app()->clientScript->registerScript('follow',
@@ -15,6 +19,9 @@ $('#follow').click(function(event) {
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/follow?name=".$model->startupname."',
 				type: 'POST',
+				data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+				},
 				dataType: 'json',
 				success: function(data){
 					$('#follow').removeClass('btn-info');
@@ -33,6 +40,9 @@ $('#follow').click(function(event) {
 			$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/unfollow?name=".$model->startupname."',
 				type: 'POST',
+				data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+				},
 				dataType: 'json',
 				success: function(data){
 					$('#follow').addClass('btn-info');
@@ -84,11 +94,11 @@ $('.video-images-items').carouFredSel({
 	<div class="profile-header-info">
 		
 		<div class="profile-name">
-			<span><?php echo $model->name; ?></span>
+			<span><?php echo CHtml::encode($model->name); ?></span>
 		</div>
 		
 		<div class="profile-onelinepitch">
-			<span style="font-style:italic;"><?php echo $model->one_line_pitch; ?></span>
+			<span style="font-style:italic;"><?php echo CHtml::encode($model->one_line_pitch); ?></span>
 		</div>
 		
 		<div class="profile-sectors">
@@ -96,7 +106,7 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 		<div class="profile-location">
-			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo $model->city->nome; ?>
+			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo CHtml::encode($model->city->nome); ?>
 		</div>
 		
 		<!--
@@ -217,7 +227,7 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 		<div class="content-info">
-			<?php echo $model->product_description;?> 		
+			<?php echo CHtml::encode($model->product_description);?> 		
 		</div>
 		
 	</div>	
@@ -232,7 +242,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info video-images">
 			<div class="video-images-items">
-				<?php if($model->video){$this->widget('ext.Yiitube', array('size' => 'small', 'v' => $model->video));} ?>	
+				<?php if($model->video){$this->widget('ext.Yiitube', array('size' => 'small', 'v' => CHtml::encode($model->video)));} ?>	
 				<?php foreach($model->images as $img) :?>
 					<div style="float:left; width: 500px; height:312px; line-height:300px; text-align:center;">
 						<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$img->name ?>" id="generic-img" alt="asdasd" style="vertical-align:middle; max-width:500px; max-height:312px;"/>
@@ -256,7 +266,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php echo $model->tech;?> 
+			<?php echo CHtml::encode($model->tech);?> 
 			
 		</div>
 		
@@ -273,7 +283,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php echo $model->client_segment;?> 
+			<?php echo CHtml::encode($model->client_segment);?> 
 			
 		</div>
 		
@@ -290,7 +300,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php echo $model->revenue_generation;?> 
+			<?php echo CHtml::encode($model->revenue_generation);?> 
 			
 		</div>
 		
@@ -307,7 +317,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php echo $model->competitors;?> 
+			<?php echo CHtml::encode($model->competitors);?> 
 			
 		</div>
 		
@@ -324,7 +334,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php echo $model->competitive_advantage;?> 
+			<?php echo CHtml::encode($model->competitive_advantage);?> 
 			
 		</div>
 		
@@ -341,7 +351,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php echo $model->history;?> 
+			<?php echo CHtml::encode($model->history);?> 
 			
 		</div>
 		
@@ -360,22 +370,22 @@ $('.video-images-items').carouFredSel({
 			<div class="profile-links">
 				<div class="profile-link">
 					<?php if($model->facebook): ?>
-						<a href="<?php if(strpos($model->facebook, 'http')!==false){ echo $model->facebook;} else {echo 'http://'.$model->facebook;} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
+						<a href="<?php if(strpos($model->facebook, 'http')!==false){ echo CHtml::encode($model->facebook);} else {echo 'http://'.CHtml::encode($model->facebook);} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
 					<?php endif; ?>
 				</div>
 				<div class="profile-link">
 					<?php if($model->twitter): ?>
-						<a href="<?php if(strpos($model->twitter, 'http')!==false){ echo $model->twitter;} else {echo 'http://'.$model->twitter;} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
+						<a href="<?php if(strpos($model->twitter, 'http')!==false){ echo CHtml::encode($model->twitter);} else {echo 'http://'.CHtml::encode($model->twitter);} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
 					<?php endif; ?>
 				</div>
 				<div class="profile-link">
 					<?php if($model->linkedin): ?>
-						<a href="<?php if(strpos($model->linkedin, 'http')!==false){ echo $model->linkedin;} else {echo 'http://'.$model->linkedin;} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
+						<a href="<?php if(strpos($model->linkedin, 'http')!==false){ echo CHtml::encode($model->linkedin);} else {echo 'http://'.CHtml::encode($model->linkedin);} ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
 					<?php endif; ?>
 				</div>
 				<div class="profile-website">
 					<?php if($model->website): ?>
-						<i class="icon-globe"></i><a class="web-link" href="<?php if(strpos($model->website, 'http')!==false){ echo $model->website;} else {echo 'http://'.$model->website;} ?>" target="_blank"><?php echo $model->website; ?></a>
+						<i class="icon-globe"></i><a class="web-link" href="<?php if(strpos($model->website, 'http')!==false){ echo CHtml::encode($model->website);} else {echo 'http://'.CHtml::encode($model->website);} ?>" target="_blank"><?php echo CHtml::encode($model->website); ?></a>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -525,7 +535,7 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php echo date('d/m/y', strtotime($model->foundation)); ?>
+			<?php echo date('d/m/y', strtotime(CHtml::encode($model->foundation))); ?>
 			
 		</div>
 		
@@ -546,9 +556,9 @@ $('.video-images-items').carouFredSel({
 				<div class="team-item">		
 					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 					<div class="team-text">
-						<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.$usr_startup->username));?></span></div>
-						<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
-						<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+						<div class="team-name"><span data-id="<?php echo CHtml::encode($usr_startup->id); ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.CHtml::encode($usr_startup->username)));?></span></div>
+						<div class="team-position"><?php echo CHtml::encode(UserModule::t($rel->position));?></div>
+						<div class="team-resume"><?php echo CHtml::encode($usr_startup->profile->resume);?></div>
 					</div>
 				</div>
 				<?php endforeach;?>
@@ -570,9 +580,9 @@ $('.video-images-items').carouFredSel({
 				<div class="team-item">		
 					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 					<div class="team-text">
-						<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.$usr_startup->username));?></span></div>
-						<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
-						<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+						<div class="team-name"><span data-id="<?php echo CHtml::encode($usr_startup->id); ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.CHtml::encode($usr_startup->username)));?></span></div>
+						<div class="team-position"><?php echo CHtml::encode(UserModule::t($rel->position));?></div>
+						<div class="team-resume"><?php echo CHtml::encode($usr_startup->profile->resume);?></div>
 					</div>
 				</div>
 				<?php endforeach;?>
@@ -595,9 +605,9 @@ $('.video-images-items').carouFredSel({
 				<div class="team-item">		
 					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 					<div class="team-text">
-						<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.$usr_startup->username));?></span></div>
-						<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
-						<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+						<div class="team-name"><span data-id="<?php echo CHtml::encode($usr_startup->id); ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.CHtml::encode($usr_startup->username)));?></span></div>
+						<div class="team-position"><?php echo CHtml::encode(UserModule::t($rel->position));?></div>
+						<div class="team-resume"><?php echo CHtml::encode($usr_startup->profile->resume);?></div>
 					</div>
 				</div>
 				<?php endforeach;?>
@@ -619,9 +629,9 @@ $('.video-images-items').carouFredSel({
 				<div class="team-item">		
 					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 					<div class="team-text">
-						<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.$usr_startup->username));?></span></div>
-						<div class="team-position"><?php echo UserModule::t($rel->position);?></div>
-						<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+						<div class="team-name"><span data-id="<?php echo CHtml::encode($usr_startup->id); ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.CHtml::encode($usr_startup->username)));?></span></div>
+						<div class="team-position"><?php echo CHtml::encode(UserModule::t($rel->position));?></div>
+						<div class="team-resume"><?php echo CHtml::encode($usr_startup->profile->resume);?></div>
 					</div>
 				</div>
 				<?php endforeach;?>

@@ -12,6 +12,10 @@ Yii::app()->clientScript->registerScript('loading-img',
 		
 		$('#formulario').ajaxForm({ 
 			dataType: 'json',		
+			type: 'POST',
+			data: {
+				YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
 			success: function(data){
 				if(data.res=='no')
 				{
@@ -54,6 +58,9 @@ Yii::app()->clientScript->registerScript('loading-img',
 					url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
 					dataType: 'json',
 					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
 					success: function(data){
 						location.href = data.res;	
 					}
@@ -78,6 +85,9 @@ Yii::app()->clientScript->registerScript('loading-img',
 				url: '".Yii::app()->request->baseUrl."/startup/multDel?name=".$model->startupname."&imgname='+imgname+'',
 				dataType: 'json',
 				type: 'POST',
+				data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+				},
 				success: function(data){
 					$('.mult-img-loading').empty();
 					elem.animate({opacity: 0}, 500, function(){
@@ -182,6 +192,9 @@ Yii::app()->clientScript->registerScript('loading-img',
 				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name=".$model->startupname."',
 				dataType: 'json',
 				type: 'POST',
+				data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+				},
 				success: function(data){
 					$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
 					
@@ -250,6 +263,7 @@ function getUrlVars()
 							'placement' => 'right',
 							'inputclass'=> 'input-large',
 							'mode'=>'inline',
+							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 							'options'    => array(
 								'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="40">'
 							)
@@ -269,6 +283,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-large',
 						'mode'=>'inline',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'options'    => array(
 							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="80">'
 						)
@@ -300,6 +315,7 @@ function getUrlVars()
 							'maximumSelectionSize'=> 3,
 						),
 						'mode'=>'inline',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'onHidden' => 'js: function(e, reason) {
 							$("#select2-drop-mask").css("display","none");
 							$("#select2-drop").css("display","none");
@@ -328,6 +344,7 @@ function getUrlVars()
 							'minimumInputLength'=> 3,
 						),
 						'mode'=>'inline',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'onHidden' => 'js: function(e, reason) {
 							$("#select2-drop-mask").css("display","none");
 							$("#select2-drop").css("display","none");
@@ -392,7 +409,7 @@ function getUrlVars()
 					'label'=>'Voltar',
 					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 					'size'=>'normal', // null, 'large', 'small' or 'mini'
-					'url'=>array('/'.$model->startupname),
+					'url'=>array('/'.CHtml::encode($model->startupname)),
 					)); 
 				?>
 			<?php else:?>
@@ -400,7 +417,7 @@ function getUrlVars()
 					'label'=>'Publicar',
 					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 					'size'=>'normal', // null, 'large', 'small' or 'mini'
-					'url'=>array('publish','name'=>$model->startupname),
+					'url'=>array('publish','name'=>CHtml::encode($model->startupname)),
 					)); 
 				?>	
 			<?php endif;?>
@@ -438,6 +455,7 @@ function getUrlVars()
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
 						'mode'=>'inline',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 					 )); ?>  
 					 			
 				</p>
@@ -466,7 +484,8 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
-						'mode'=>'inline'
+						'mode'=>'inline',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 					 )); ?>  
 				</p>
 			</div>
@@ -644,6 +663,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -673,6 +693,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -702,6 +723,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -731,6 +753,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -760,6 +783,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -789,6 +813,7 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
 					 )); ?>  
 					 			
@@ -829,6 +854,7 @@ function getUrlVars()
 						'source'    => $model->getCompanyStageOptions(), 
 						'placement' => 'right',
 						'emptytext' => 'Vazio',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline',
 					 )); ?>  
 									
@@ -890,6 +916,7 @@ function getUrlVars()
                         'format'      => 'YYYY-MM-DD', //format in which date is expected from model and submitted to server
                         'viewformat'  => 'DD/MM/YYYY', //format in which date is displayed
                         'template'    => 'D / MMM / YYYY',
+						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
                         'options'   => array(
                             'defaultValue'   => date('Y-m-d'),
                         )
@@ -1032,6 +1059,9 @@ function getUrlVars()
                         'url'=>Yii::app()->createUrl('/startup/approve', array('uid'=>$ar->user->id, 'sid'=>$model->id)),                        
                         'ajaxOptions'=>array(
                             'type'=>'POST',
+							'data'=>array(
+								'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+							),
                             'context'=>'this',
                             'success'=> '$.proxy(function(response) { 
                                 alert("Usuário adicionado com sucesso.");
@@ -1056,9 +1086,9 @@ function getUrlVars()
 		<div class="team-item">		
 			<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
 			<div class="team-text">
-				<div class="team-name"><span data-id="<?php echo $usr_startup->id; ?>"><?php echo $usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname; ?></span></div>
-				<div class="team-position"><?php echo UserModule::t($relational_tbl->position);?></div>
-				<div class="team-resume"><?php echo $usr_startup->profile->resume;?></div>
+				<div class="team-name"><span data-id="<?php echo CHtml::encode($usr_startup->id); ?>"><?php echo CHtml::encode($usr_startup->profile->firstname . ' ' . $usr_startup->profile->lastname); ?></span></div>
+				<div class="team-position"><?php echo CHtml::encode(UserModule::t($relational_tbl->position));?></div>
+				<div class="team-resume"><?php echo CHtml::encode($usr_startup->profile->resume);?></div>
 			</div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
 		</div>

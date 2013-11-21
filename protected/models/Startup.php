@@ -336,7 +336,7 @@ class Startup extends CActiveRecord
         $lastElement = end($array);
         foreach ($array as $sector)
         {
-            $string = $string .'<span class="label">'. $sector->name . '</span>';
+            $string = $string .'<span class="label">'. CHtml::encode($sector->name) . '</span>';
             if($sector !== $lastElement) $string = $string . ' ';
         }
         
@@ -349,7 +349,7 @@ class Startup extends CActiveRecord
         $sectors=$this->sectors;
         $lastElement = end($sectors);
         foreach($sectors as $sector) {
-            $string = $string.'<a href="'. Yii::app()->baseUrl.'/startup?g=&sec[0]='.$sector->sector_id .'">'.$sector->name.'</a>' ;
+            $string = $string.'<a href="'. Yii::app()->baseUrl.'/startup?g=&sec[0]='.CHtml::encode($sector->sector_id) .'">'.CHtml::encode($sector->name).'</a>' ;
             if ($sector!==$lastElement) $string = $string.' · ';
         } 
         
@@ -364,7 +364,7 @@ class Startup extends CActiveRecord
         $lastElement = end($array);
         foreach ($array as $sector)
         {
-            $string = $string . $sector->name;
+            $string = $string . CHtml::encode($sector->name);
             if($sector !== $lastElement) $string = $string . ', ';
         }
         
@@ -379,7 +379,7 @@ class Startup extends CActiveRecord
         $lastElement = end($array);
         foreach ($array as $sector)
         {
-            $string = $string . $sector->sector_id;
+            $string = $string . CHtml::encode($sector->sector_id);
             if($sector !== $lastElement) $string = $string . ',';
         }
         
@@ -396,7 +396,7 @@ class Startup extends CActiveRecord
         $i=0;
         foreach ($sectors as $sector)
         {
-            $arr[$i] = $sector->sector_id;
+            $arr[$i] = CHtml::encode($sector->sector_id);
             $i++;
         }
         
