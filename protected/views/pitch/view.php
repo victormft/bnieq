@@ -13,6 +13,12 @@ $this->menu=array(
 );*/
 ?>
 
+<?php 
+
+$this->renderPartial('_detail',array(
+	'model'=>$model,
+	)); 
+?>
 <!--<h1>View Pitch #<?php //echo $model->id; ?></h1>-->
 
 <?php /*$this->widget('zii.widgets.CDetailView', array(

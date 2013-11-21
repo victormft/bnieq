@@ -24,3 +24,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 
 
 }
+
+.pitch-funded-value
+{
+	font-size: 30px;
+	color: #0088cc;/*#66b6fc;*/
+	font-weight: bold;
+	margin-bottom: 5px;
+	margin-top:2px;
+}
