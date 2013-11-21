@@ -143,7 +143,22 @@ $('.video-images-items').carouFredSel({
 			
 			
 				<div class="follow-info">
-					<div class="follow-count"><?php echo count($model->users); ?></div><div class="follow-status">Followers</div>
+					
+					
+					<?php EQuickDlgs::ajaxLink(
+                    array(
+                        'controllerRoute' => 'startup/followpop',
+                        'actionParams' => array('id'=>$model->id),
+                        'dialogTitle' => UserModule::t('Followers'),
+                        'dialogWidth' => 600,
+                        'dialogHeight' => 500,
+                        'openButtonText' => '<div class="follow-count">'.count($model->users).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
+                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                    )
+					);?>
+					
+					
+					
 				</div>
 
 				<?php 

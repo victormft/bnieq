@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'updateStartupName'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'updateStartupName', 'followPop'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1066,7 +1066,12 @@ class StartupController extends Controller
 		));
 	}
 				
-					
+	public function actionFollowPop($id)
+	{
+		$model = $this->loadModelId($id);
+		EQuickDlgs::render('_followpop',array('provider'=>$model->users));
+	
+	}
 					
 	
 }

@@ -36,22 +36,36 @@ Yii::app()->clientScript->registerScript('loading-img',
 		//$('.header-label').html('aaa');
 		
 		setTimeout(function(){
+			if(!$('.start-name').find('a').hasClass('editable-open'))
+			{
+				$('.container').css({'opacity':'0.6'});
+				$('.container').prepend('<div class=\"mask\" style=\"position:absolute; left:0; height:100%; width:100%; background-color:transparent; z-index:999;\"></div>')
+				$('.profile-header').prepend('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" />')
+			}
+		}, 500);
+		
+		setTimeout(function(){
 			if(!$('.start-name').find('a').hasClass('editable-open') && !$('.start-name').find('a').hasClass('editable-bg-transition'))
 			{
 			
 				var new_name = $('.start-name').find('a').text();
 				
 				$.ajax({
-				url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
-				dataType: 'json',
-				type: 'POST',
-				success: function(data){
-					location.href = data.res;
-					
-				}
-			});
+					url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					success: function(data){
+						location.href = data.res;
+						
+					}
+				});
 			}
-		}, 2000);
+			else
+			{
+				$('.container').css({'opacity':'1'});
+				$('.mask').hide();
+			}
+		}, 4000);
 		
 		
 			
@@ -544,7 +558,7 @@ function getUrlVars()
 		<div class="content-info edit">
 			<div class="editable-wrap">
 				<p> <i class="icon-globe web"></i>    
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'website',
@@ -552,12 +566,15 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'http://www.'
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
 				
 				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/>     
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'facebook',
@@ -565,12 +582,15 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'https://www.facebook.com/',
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
 				
 				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/>
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'twitter',
@@ -578,12 +598,15 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'https://www.twitter.com/',
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
 				
 				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/>   
-					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+					<?php $this->widget('editable.EditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
 						'attribute' => 'linkedin',
@@ -591,6 +614,9 @@ function getUrlVars()
 						'placement' => 'right',
 						'inputclass'=> 'input-xlarge',
 						'emptytext' => 'Vazio',
+						'options'=>array(
+                            'defaultValue'=>'http://www.linkedin.com/pub/'
+                        ),
 						'mode'=>'inline'
 					 )); ?>  
 				</p>

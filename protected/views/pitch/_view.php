@@ -7,36 +7,38 @@
 
 	<?php /*<b><?php echo CHtml::encode($data->getAttributeLabel('startup_id')); ?>:</b>*/ ?>
 	
-	<b><?php 
+	<?php 
 	$startup = Startup::model()->findByPk($data->startup_id);
 	
 	echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'" id="Startup-list-img"/>', array('startup/view', 'name'=>$startup->name)); 
-	?></b>
-	<br />
-	<?php 
-	echo CHtml::link(CHtml::encode($startup->name),array('startup/view','name'=>$startup->name) );
 	?>
+	<br />
+	<b>
+	<?php 
+	echo CHtml::link(CHtml::encode($startup->name),array('startup/view','name'=>$startup->startupname) );
+	?>
+	</b>
 	<br />
 	
 	<div>
-	
-	<?php echo CHtml::encode($data->pitch_text); ?>
+	<p>
+	<?php echo substr($data->pitch_text ,0,150) . '...' . CHtml::link('Continuar Lendo',array('pitch/view','id'=>$data->id) ); ?>
 	
 	</div>
 	<br />
 	
+	<div>
+	<b><span style="color: rgb(150, 150, 150);"><?php echo 'Meta: ' ?></b>
 	
-	<b><?php echo 'Meta de investimento: ' ?></b>
-	
-	<?php echo 'R$ '. CHtml::encode($data->investment_required); ?>
+	<?php echo 'R$ '. CHtml::encode($data->investment_required); ?></span>
 	<br />
 	
-	<b><?php echo 'Meta alcançada: ' ?></b>
+	<b><span style="color: rgb(150, 150, 150);"><?php echo 'Alcançado: ' ?></b>
 	
-	<?php echo 'R$ '. CHtml::encode($data->funded); ?>
+	<?php echo 'R$ '. CHtml::encode($data->funded); ?></span>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('equity')); ?>:</b>
+	<b><span style="color: rgb(150, 150, 150);"><?php echo CHtml::encode($data->getAttributeLabel('equity')); ?>:</b></span>
 	<?php echo CHtml::encode($data->equity); ?>
 	<?php echo '%';?>
 	<br />
@@ -52,9 +54,13 @@
 	<br /> -->
 	
 	<div style="background: rgb(200,200,200);  width: 500px; height: 12px; border-radius: 5px 5px 5px 5px;">
-		<div style="background: rgb(255,180, 0);  width: 
-		<?php echo (($data->funded/$data->investment_required)  * 500) . 'px;'; ?> height: 12px; border-radius: 5px 5px 5px 5px;">
-		
+		<div style="background: rgb(50,150, 244);  width: 
+		<?php $bar_size = ($data->funded/$data->investment_required)  * 500;
+		if($bar_size > 500)
+			{$bar_size = 500;}
+		echo $bar_size . 'px;'; 
+		?> height: 12px; border-radius: 5px 5px 5px 5px;">
+	</div>
 	</div>
 	</div>
 	<br/ >
@@ -66,7 +72,7 @@
 	
 
 	*/ ?>
-
+</p>
 </div>
 <div style="height: 20px;">
 

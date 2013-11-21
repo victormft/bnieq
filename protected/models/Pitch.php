@@ -21,6 +21,10 @@ class Pitch extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	 
+	public $sort_funded = 0;
+	public $c_stage_sort;
+	
 	public function tableName()
 	{
 		return 'pitch';
@@ -89,11 +93,12 @@ class Pitch extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($pageSize=null, $group = null)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		$criteria->with = array( 'startup' );
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('startup_id',$this->startup_id,true);
@@ -104,9 +109,22 @@ class Pitch extends CActiveRecord
 		$criteria->compare('pitch_text',$this->pitch_text,true);
 		$criteria->compare('exit_strategy',$this->exit_strategy,true);
 		$criteria->compare('create_time',$this->create_time,true);
+		
+		$criteria->order="t.funded ASC";
+		if($this->sort_funded == 1) {
+			$criteria->condition='funded >= investment_required';
+			$this->sort_funded = 0;
+		}
+		if(isset($this->c_stage_sort)) {
+			$criteria->compare( 'startup.company_stage', $this->c_stage_sort, true );
+			$this->c_stage_sort = NULL;
+		}
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'pagination'=>array(
+				'pageSize' =>$pageSize,
+				),
 		));
 	}
 

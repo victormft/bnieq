@@ -150,9 +150,29 @@ class PitchController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Pitch');
+		//$dataProvider=new CActiveDataProvider('Pitch');
+		$model=new Pitch('search');
+		$model->unsetAttributes();
+		
+		if(isset($_GET['g']))
+		{
+			//if($_GET['g']=='Selecionadas')
+				//$model->selecionada=1;
+			
+			/*else if($_GET['g']=='Populares')
+				$model->group=$_GET['g'];
+				
+			else if($_GET['g']=='Novidades')
+				$model->group=$_GET['g'];*/
+				if($_GET['g']=='Financiada')
+				$model->sort_funded = 1;
+		}
+		
+		if(isset($_GET['c_stage']))
+			$model->c_stage_sort=$_GET['c_stage'];	
+		
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$model,
 		));
 	}
 
