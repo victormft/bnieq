@@ -55,8 +55,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 					dataType: 'json',
 					type: 'POST',
 					success: function(data){
-						location.href = data.res;
-						
+						location.href = data.res;	
 					}
 				});
 			}

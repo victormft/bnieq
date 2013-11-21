@@ -323,11 +323,13 @@ class StartupController extends Controller
 			$model->attributes=$_POST['Startup'];
 			$model->name = preg_replace('/[\/%><=#\$]/', '', $model->name);
 			
-			// !!!!!!!!!!!! formatting startup name !!!!!!!!!!!!!!!!!!
+			// !!!!!!!!!!!! formatting startupname !!!!!!!!!!!!!!!!!!
 			$startupname = $_POST['Startup']['name'];
 			$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
 			$startupname = preg_replace('/[\"\']/', '', $startupname);
-			$startupname = preg_replace('/\s+/', '-', strtolower($startupname));			
+			$startupname = preg_replace('/\s+/', '-', $startupname);
+			$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
+			$startupname = strtolower($startupname);
 			
 			$model->startupname = $startupname; 
 			
@@ -1055,8 +1057,10 @@ class StartupController extends Controller
 		$startupname = $startname;
 		$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
 		$startupname = preg_replace('/[\"\']/', '', $startupname);
-		$startupname = preg_replace('/\s+/', '-', strtolower($startupname));			
-			
+		$startupname = preg_replace('/\s+/', '-', $startupname);
+		$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
+		$startupname = strtolower($startupname);
+		
 		$model->startupname = $startupname; 
 		
 		$model->save();
