@@ -396,7 +396,7 @@ $('.arrow-container').mouseover(function(event){
                     array(
                         'header' => 'Startup',
                         'type'=>'raw',
-                        'value'=>'CHtml::link($data->startup->name, array("/startup/view", "name"=>$data->startup->startupname))',                        
+                        'value'=>'CHtml::link($data->startup->name, array("/".$data->startup->startupname))',                        
                     ),
                     array(
                         'name'=>'position',

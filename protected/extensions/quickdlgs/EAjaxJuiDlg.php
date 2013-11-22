@@ -122,9 +122,31 @@ class EAjaxJuiDlg extends EBaseJuiDlg
             if(!empty($url))
                 $ajax['url'] = $url;
 
-            $ajax['update'] = '#' . $this->getContentWrapperId();
-            $ajaxScript = "function {$this->getAjaxFunction()}{" . CHtml::ajax($ajax) . '}';
+            //$ajax['update'] = '#' . $this->getContentWrapperId();
+            $ajax['success'] = 'function(html){jQuery("#'.$this->getContentWrapperId().'").html(html); $(".loading-gif").hide();}';
+
+            
+            $ajaxScript = "function {$this->getAjaxFunction()}{
+                $('#".$this->getDialogId()."').append('<img class=\"loading-gif\" src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">'); " . CHtml::ajax($ajax) . '
+                    }';
             Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id,$ajaxScript,CClientScript::POS_BEGIN);
+            /*
+                        else if($('#followBtn').text()==='Unfollow')
+                    {
+                        $('#followBtn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+
+                        $.ajax({
+                            url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username=".$model->username."',
+                            dataType: 'json',
+                            success: function(data){
+                                $('#followBtn').addClass('btn-success');
+                                $('#followBtn').text('Follow');
+                                $('.follow-count').html(data.res);
+                            }
+                        });
+                    }
+             * 
+             */	
         }
     }
 
