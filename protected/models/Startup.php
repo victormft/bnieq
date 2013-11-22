@@ -466,7 +466,7 @@ class Startup extends CActiveRecord
     
     public function hasUserRelation()
     {
-		if(UserModule::isAdmin()) return 1;
+		//if(UserModule::isAdmin()) return 1;
         $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue(":startupId", $this->id, PDO::PARAM_INT);
