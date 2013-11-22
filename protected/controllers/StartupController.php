@@ -320,7 +320,10 @@ class StartupController extends Controller
 
 		if(isset($_POST['Startup']))
 		{
-			$model->attributes=$_POST['Startup'];
+			$model->name=$_POST['Startup']['name'];
+			$model->one_line_pitch=$_POST['Startup']['one_line_pitch'];
+			$model->location=$_POST['Startup']['location'];
+			
 			$model->name = preg_replace('/[\/%><=#\$]/', '', $model->name);
 			
 			// !!!!!!!!!!!! formatting startupname !!!!!!!!!!!!!!!!!!
