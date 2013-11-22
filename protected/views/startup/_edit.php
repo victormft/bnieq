@@ -1,6 +1,6 @@
 <?php
 
-Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_END);
 
 
 Yii::app()->clientScript->registerScript('loading-img',
