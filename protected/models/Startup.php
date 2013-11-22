@@ -57,6 +57,8 @@ class Startup extends CActiveRecord
 	
 	//to groups in listing
 	public $group;
+    
+    public $followers_count;
 	
 	public $user_role;
 	
@@ -118,7 +120,7 @@ class Startup extends CActiveRecord
 			array('product_description, foundation, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, create_time, sec', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, video, create_time, selecionada, followers_num', 'safe', 'on'=>'search'),
+			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, video, create_time, selecionada, followers_num, followers_count', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -256,7 +258,11 @@ class Startup extends CActiveRecord
 		$criteria->compare('t.video',$this->video,true);
 		$criteria->compare('t.t.create_time',$this->create_time,true);
 		$criteria->compare('t.selecionada',$this->selecionada,true);
-		
+		$criteria->compare('(SELECT COUNT(startup_follow.user_id) FROM startup_follow WHERE t.id=startup_follow.startup_id)',$this->followers_count);//making the filters work
+        
+        $criteria->select="t.*,(SELECT COUNT(startup_follow.user_id) FROM startup_follow WHERE t.id=startup_follow.startup_id) AS followers_count";                
+      
+        
 		if($this->group)
 		{
 			if($this->group=='Populares')
@@ -277,6 +283,17 @@ class Startup extends CActiveRecord
 			'pagination'=>array(
 				'pageSize'=>$pageSize,
 			),
+            'sort'=>array(
+                'attributes'=>array(
+                    'followers_count'=>array(                        
+                        'asc' => 'followers_count',
+                        'desc' => 'followers_count DESC', 
+                        'label' => 'Seguidores',
+                        'default'=>'desc',
+                    ),
+                    '*',
+                )
+            ),
 		));
 	}
 
@@ -466,7 +483,7 @@ class Startup extends CActiveRecord
     
     public function hasUserRelation()
     {
-		if(UserModule::isAdmin()) return 1;
+		//if(UserModule::isAdmin()) return 1;
         $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue(":startupId", $this->id, PDO::PARAM_INT);

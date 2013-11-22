@@ -254,7 +254,7 @@ function SearchFunc()   {
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
         'create_time',
-		'followers_num'
+		'followers_count'
     ),
 'template'=>'{sorter} {items} {pager}',
 )); ?>
