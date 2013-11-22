@@ -390,7 +390,7 @@ function getUrlVars()
                         'dialogWidth' => 600,
                         'dialogHeight' => 500,
                         'openButtonText' => UserModule::t('Following'),
-                        'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
                 );?>
                 </div>
@@ -403,7 +403,7 @@ function getUrlVars()
                         'dialogWidth' => 600,
                         'dialogHeight' => 500,
                         'openButtonText' => 'Startups',
-                        'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
                 );?>
                 </div>
@@ -416,7 +416,7 @@ function getUrlVars()
                         'dialogWidth' => 600,
                         'dialogHeight' => 500,
                         'openButtonText' => UserModule::t('Followers'),
-                        'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
                 );?>
                 </div>                		 
