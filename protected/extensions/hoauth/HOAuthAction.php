@@ -549,11 +549,16 @@ class HOAuthAction extends CAction
         if(!$profile->profile_picture || $profile->profile_picture==1)
         {
             $content = $this->getSslPage($userProfile->photoURL);
-            $filename = Yii::getPathOfAlias('webroot').'/images/'.$provider.$user->primaryKey.'.jpg';        
+            
+            $rnd = rand(0,99999999);  // generate random number between 0-99999999
+
+            $newFileName = md5("{$rnd}-{$userProfile->photoURL}").'.jpg';  // random number + file name
+            
+            $filename = Yii::getPathOfAlias('webroot').'/images/'.$newFileName;        
             file_put_contents($filename, $content);
 
             $model_img=new Image;
-            $model_img->name=$provider.$user->primaryKey.'.jpg';
+            $model_img->name=$newFileName;
             $model_img->extension='image/jpeg';
             //$model_img->size=$profile->pic->size;	
 
