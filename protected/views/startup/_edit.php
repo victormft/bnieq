@@ -268,7 +268,7 @@ function getUrlVars()
 								'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="40">'
 							)
 						 )); ?>  
-					 </span>
+					</span>
 			</div>
 			
 			<div class="content-info-unit">			
@@ -294,6 +294,7 @@ function getUrlVars()
 				<div class="header-label">
 					<b>Setor(es):</b> 
 				</div>
+				<span class="start-sector">
 					<?php           
 					$this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'select2',
@@ -321,7 +322,8 @@ function getUrlVars()
 							$("#select2-drop").css("display","none");
 						}',
 					)); ?>
-					<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48;"><?php if(!$model->sectors) echo UserModule::t("Required"); ?></div>
+					<div class="err-publish err-sector" style="display:none; margin-left:30px; color:#b94a48;"><?php if(!$model->sectors) echo UserModule::t("Required"); ?></div>
+				</span>	
 			</div>
 				
 			<div class="content-info-unit">			
@@ -439,7 +441,7 @@ function getUrlVars()
 
 		<div class="content-head rounded">
 			<i class="icon-lightbulb profile-icon"></i>O Produto 
-			<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->product_description) echo UserModule::t("Required"); ?></div>
+			<div class="err-publish err-product" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->product_description) echo UserModule::t("Required"); ?></div>
 			<span class="tip">Descreva o produto detalhadamente</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
@@ -839,7 +841,7 @@ function getUrlVars()
 
 		<div class="content-head rounded">
 			<i class="icon-signal profile-icon"></i> Estágio
-			<div class="err-publish" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->company_stage) echo UserModule::t("Required"); ?></div>
+			<div class="err-publish err-stage" style="display:none; margin-left:30px; color:#b94a48; font-size:15px; font-weight:normal; letter-spacing:0;"><?php if(!$model->company_stage) echo UserModule::t("Required"); ?></div>
 			<span class="tip">Indique o Estágio de Desenvolvimento do Produto</span>
 			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
 		</div>
