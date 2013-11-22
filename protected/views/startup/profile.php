@@ -3,7 +3,7 @@ $this->layout='column1';
 ?>
 
 <?php
-Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.carouFredSel-6.2.1.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.carouFredSel-6.2.1.js', CClientScript::POS_END);
 
 Yii::app()->clientScript->registerScript('follow',
 "

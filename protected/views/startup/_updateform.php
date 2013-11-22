@@ -1,7 +1,7 @@
 <?php 
 
 Yii::app()->clientScript->registerCoreScript('jquery'); 
-Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/charCount.js');
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/charCount.js', CClientScript::POS_END);
 
 
 ?>
