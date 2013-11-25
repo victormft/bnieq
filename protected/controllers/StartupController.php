@@ -429,7 +429,7 @@ class StartupController extends Controller
         $model=$this->loadModelId($_POST['pk']);
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
             throw new CHttpException(403,'Você não pode editar esse projeto!');
-        
+			
 		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
         $es->update();
 	
@@ -488,13 +488,17 @@ class StartupController extends Controller
             {
                 $vals[] = Sector::model()->find('sector_id=:id', array(':id'=>$val));
             }
-        }
-		
-		if(count($vals)>3)
-			exit;
 			
-        $model->sectors = $vals;
-        $model->saveWithRelated(array('sectors'));            
+			if(count($vals)>3)
+				exit;
+			
+			$model->sectors = $vals;
+			$model->saveWithRelated(array('sectors'));
+			exit;
+        }
+		     			
+		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
+        $es->update();
     }
 	
 	

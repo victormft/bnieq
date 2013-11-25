@@ -106,6 +106,8 @@ class Startup extends CActiveRecord
 			array('pic, mult_pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
 			array('name, one_line_pitch, location', 'required', 'message'=>UserModule::t("Required")),
 			array('product_description, company_stage, sec', 'required', 'message'=>UserModule::t("Required"), 'on'=>'publish'),
+			array('product_description, company_stage, sec', 'required', 'message'=>UserModule::t("Required"), 'on'=>'editable'),
+			//array('sectors', 'required', 'message'=>UserModule::t("Required"), 'on'=>'updateSectors'),
 			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),
 			array('name', 'length', 'max'=>40),
 			array('name', 'match', 'pattern' => '/^[\w\.\_\&\'\"\-\ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç\ ]+$/u','message' =>UserModule::t("Incorrect Symbols")),

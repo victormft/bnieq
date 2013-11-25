@@ -76,6 +76,15 @@ Yii::app()->clientScript->registerScript('loading-img',
 		
 			
 	});
+	
+	$('.start-sector').on('click','.editable-submit', function(event){
+		setTimeout(function(){
+			if(!$('.start-sector').find('a').hasClass('editable-open') && !$('.start-sector').find('a').hasClass('editable-bg-transition'))
+			{
+				$('.err-sector').hide('slow');
+			}
+		}, 2000);
+	});
 
 	$('#visualizar').on('click','.mult-list-img-wrap',function(event){
 		$('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>')
