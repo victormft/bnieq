@@ -113,6 +113,7 @@ return array(
 		'request'=>array(
 			'class' => 'application.components.HttpRequest',
             'enableCsrfValidation'=>true,
+			'enableCookieValidation'=>true,
         ),
 			
 		'image'=>array(
