@@ -1046,49 +1046,92 @@ function getUrlVars()
 
 
 <div class="content-wrap" style="margin-top:0px;">
-		<!--
-		<div class="content-head" style="border-radius: 0; border-top: none;">
-			<i class="icon-group profile-icon"></i> Equipe
-			<span class="tip">Equipe da Startup (edite na aba acima)</span>
-		</div>
-		-->
         
         <?php $array=UserStartup::model()->findAll('startup_id=:s_id AND approved=0', array(':s_id'=>$model->id)); ?>
         <?php if(count($array)>0): ?>
+        
+        <div class="content-info team-ready">
+            <?php foreach($array as $ar):  ?>	
+
+            <div class="team-item">		
+                <div class="team-image"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$ar->user->profile->logo->name.'" id="team-img" />', array('/' . $ar->user->username)); ?></div>
+                <div class="team-text">
+                    <div class="team-name">
+                        <?php echo CHtml::link(CHtml::encode($ar->user->getFullName()),array('/' . $ar->user->username), array('class'=>'startup-view-name'));?>                        
+                    </div>
+                    <div class="team-position"><?php echo CHtml::encode(UserModule::t($ar->position));?></div>
+                </div>
+                    <?php                
+                    $this->widget(
+                        'bootstrap.widgets.TbButton',
+                        array(
+                            'label' => 'Delete',
+                            'buttonType'=>'ajaxButton',
+                            'size' => 'small',
+                            'type'=>'danger',
+                            'url'=>Yii::app()->createUrl('/user/user/deleterelation', array('uid'=>$ar->user->id, 'sid'=>$model->id)), 
+                            'htmlOptions'=>array('style'=>'float: right;'),
+                            'ajaxOptions'=>array(
+                                'type'=>'POST',
+                                'data'=>array(
+                                    'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                ),
+                                'context'=>'this',
+                                'success'=> '$.proxy(function(response) { 
+                                    $(this).parent().animate({opacity: 0}, 100).hide("slow");
+                                    }, $(this)
+                                )',
+                            )
+                        )
+                    );
+                    ?>
+                    <?php                
+                    $this->widget(
+                        'bootstrap.widgets.TbButton',
+                        array(
+                            'label' => 'Approve',
+                            'buttonType'=>'ajaxButton',
+                            'size' => 'small',
+                            'type'=>'primary',
+                            'url'=>Yii::app()->createUrl('/startup/approve', array('uid'=>$ar->user->id, 'sid'=>$model->id)), 
+                            'htmlOptions'=>array('style'=>'float: right; margin-right: 10px;'),
+                            'ajaxOptions'=>array(
+                                'type'=>'POST',
+                                'dataType'=> 'json',
+                                'data'=>array(
+                                    'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
+                                ),
+                                'context'=>'this',
+                                'success'=> '$.proxy(function(data) { 
+                                    alert("Usuário adicionado com sucesso.");
+                                    $("#team-approve").append(data.res);
+                                    $("#team-approve .team-item").show("slow").animate({opacity: 1}, 250);	
+						
+                                    $(this).parent().animate({opacity: 0}, 100).hide("slow");
+                                    }, $(this)
+                                )',
+                            )
+                        )
+                    );
+                    ?>
+                    
+            </div>   
+            <?php endforeach;?>
+            
+        </div>
+        
+        <!--
         <div class="content-info team-ready2" style="border-radius: 0;">            
             <?php foreach($array as $ar):  ?>	
             <div class="team-item" id="some">	
                 <div class="team-name" style="display: inline;"><?php echo $ar->user->getFullName(); ?></div>
-                <?php                
-                $this->widget(
-                    'bootstrap.widgets.TbButton',
-                    array(
-                        'label' => 'Approve',
-                        'buttonType'=>'ajaxButton',
-                        'size' => 'small',
-                        'type'=>'primary',
-                        'url'=>Yii::app()->createUrl('/startup/approve', array('uid'=>$ar->user->id, 'sid'=>$model->id)),                        
-                        'ajaxOptions'=>array(
-                            'type'=>'POST',
-							'data'=>array(
-								'YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken,
-							),
-                            'context'=>'this',
-                            'success'=> '$.proxy(function(response) { 
-                                alert("Usuário adicionado com sucesso.");
-                                $(this).parent().animate({opacity: 0}, 100).hide("slow");
-                                }, $(this)
-                            )',
-                        )
-                    )
-                );
-                ?>
+                
             </div>
             <?php endforeach;?>
-        </div>
+        </div> -->
         <?php endif ?>
         
-		<div class="content-info team-ready">
+		<div class="content-info team-ready" id="team-approve">
 		
 		<?php foreach($model->users1 as $usr_startup):  ?>
 		

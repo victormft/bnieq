@@ -47,14 +47,14 @@ $('.arrow-container').mouseover(function(event){
                 dataType: 'json',
 				data: $('#inlineForm').serialize(),
 				success: function(data){
-					$('.team-btn').text('Save');
+					$('.team-btn').text('Add');
                     
                     $.fn.yiiGridView.update('portfolio-grid');
 				},
                 error: function(){
 					$('.team-loading').html('<span style=\"color:red;\"> Nenhum campo pode ficar vazio! </span>').find('span').delay(1000).fadeOut(600);
-                    
-                    $('.team-btn').text('Save');
+                    $('.team-btn').text('Add');
+
 				}
 			});
 	});
@@ -396,7 +396,7 @@ $('.arrow-container').mouseover(function(event){
                     array(
                         'header' => 'Startup',
                         'type'=>'raw',
-                        'value'=>'CHtml::link($data->startup->name, array("/startup/view", "name"=>$data->startup->startupname))',                        
+                        'value'=>'CHtml::link($data->startup->name, array("/".$data->startup->startupname))',                        
                     ),
                     array(
                         'name'=>'position',

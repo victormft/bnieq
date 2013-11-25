@@ -123,7 +123,17 @@ function getUrlVars()
 		<span class="follow-btn">
             
             <div class="follow-info">
-                <div class="follow-count"><?php echo count($model->followers); ?></div><div class="follow-status"><?php echo UserModule::t('Followers'); ?></div>
+                <?php EQuickDlgs::ajaxLink(
+                    array(
+                        'controllerRoute' => 'user/user/followpop',
+                        'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
+                        'dialogTitle' => UserModule::t('Followers'),
+                        'dialogWidth' => 600,
+                        'dialogHeight' => 500,
+                        'openButtonText' => '<div class="follow-count">'.count($model->followers).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
+                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                    )
+					);?>
             </div>
             
             <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
