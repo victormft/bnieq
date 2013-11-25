@@ -910,6 +910,25 @@ class StartupController extends Controller
         {		
             $auth = Yii::app()->authManager;
             $auth->assign("StartupMember",$user_startup->user_id);
+            
+            $html='
+		
+            <div class="team-item" style="display:none; opacity:0;">
+                <div class="team-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user_startup->user->profile->logo->name .'" id="team-img"/></div>
+                <div class="team-text">
+                    <div class="team-name"><span data-id="'. $user_startup->user_id .'">'. $user_startup->user->getFullName() .'</span></div>
+                    <div class="team-position">'. UserModule::t($user_startup->position) . '</div>
+                    <div class="team-resume">'. $user_startup->user->profile->resume . '</div>
+                </div>
+                <div class="team-delete"><i class="icon-remove-sign"></i></div>
+            </div>
+
+            ';
+
+            echo CJSON::encode(array(
+                    'res'=>$html
+                ));
+            exit;
         }	
     }
 	
