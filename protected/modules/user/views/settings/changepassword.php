@@ -23,7 +23,7 @@
                         'dialogWidth' => 400,
                         'dialogHeight' => 400,
                         'openButtonText' => 'clique aqui.',
-                        'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                     )
                 ); ?>
         </div>

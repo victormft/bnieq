@@ -35,7 +35,7 @@
             if(!$data->user->hasUserFollowing(Yii::app()->user->id))
             {
                 $this->widget('bootstrap.widgets.TbButton', array(
-                'label'=>'Follow',
+                'label'=>UserModule::t('Follow'),
                 'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                 'size'=>'mini', // null, 'large', 'small' or 'mini'
                 'url'=>'',//array('follow','name'=>$model->name),
@@ -45,10 +45,10 @@
             else
             {
                 $this->widget('bootstrap.widgets.TbButton', array(
-                'label'=>'Unfollow',
+                'label'=>UserModule::t('Unfollow'),
                 'size'=>'mini', // null, 'large', 'small' or 'mini'
                 'url'=>'',//array('unfollow','name'=>$model->name),
-                'htmlOptions'=>array('class'=>'btn-follow follow-press'),
+                'htmlOptions'=>array('class'=>'btn-unfollow follow-press'),
                 )); 
             }
             ?>        

@@ -191,7 +191,7 @@ $(document.body).on('click','.follow-press',function(event){
     var user_name = encodeURIComponent($(this).parent().prev().attr('data-name'));
     var elem = $(this);
 
-    if(elem.text()=='Follow')
+    if(elem.hasClass('btn-follow'))
     {	
         elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 
@@ -206,13 +206,13 @@ $(document.body).on('click','.follow-press',function(event){
                 elem.removeClass('btn-success');
                 elem.removeClass('btn-follow');
                 elem.addClass('btn-unfollow');
-                elem.text('Unfollow');	
+                elem.text('".UserModule::t('Unfollow')."');	
                 elem.parent().prev().html(data.res);
             }
         });
     }
 
-    else if(elem.text()=='Unfollow')
+    else if(elem.hasClass('btn-unfollow'))
     {
         elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 
@@ -227,7 +227,7 @@ $(document.body).on('click','.follow-press',function(event){
                 elem.addClass('btn-success');
                 elem.removeClass('btn-unfollow');
                 elem.addClass('btn-follow');
-                elem.text('Follow');
+                elem.text('".UserModule::t('Follow')."');
                 elem.parent().prev().html(data.res);					
             }
         });
@@ -248,14 +248,20 @@ $(document.body).on('click','.follow-press',function(event){
 'dataProvider'=>$dataProvider->search(),
 'itemView'=>'/user/_view',
 'id'=>'userslistview',       // must have id corresponding to js above
-'pagerCssClass'=>'pagination',
-'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
+'pager'=> array(
+    'class' => 'ext.infiniteScroll.IasPager', 
+    'rowSelector'=>'.view-list', 
+    'listViewId' => 'userslistview', 
+    'header' => '',
+    'loaderText'=>UserModule::t('Loading...'),
+    'options' => array('history' => false, 'triggerPageTreshold' => 2, 'trigger'=>UserModule::t('Load More')),
+),
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
     'fullname',
     'followers_count',
 ),
-'template'=>'{summary} {sorter} {items} {pager}',
+'template'=>'{sorter} {items} {pager}',
 )); ?>
 
 <div class="user-search-form">
