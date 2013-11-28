@@ -8,8 +8,9 @@ $this->layout='//layouts/column1';
 Yii::app()->clientScript->registerScript('follow',
 "
 $('#followBtn').click(function(event) {
-
-		if($('#followBtn').text()==='Follow')
+        var elem = $(this);
+        
+		if(elem.hasClass('follow'))
 		{	
 			$('#followBtn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');			
 			
@@ -18,13 +19,15 @@ $('#followBtn').click(function(event) {
 				dataType: 'json',
 				success: function(data){
 					$('#followBtn').removeClass('btn-success');
-					$('#followBtn').text('Unfollow');	
+                    $('#followBtn').removeClass('follow');
+                    $('#followBtn').addClass('unfollow');
+					$('#followBtn').text('".UserModule::t('Unfollow')."');	
                     $('.follow-count').html(data.res);
 				}
 			});
 		}
 		
-		else if($('#followBtn').text()==='Unfollow')
+		else if(elem.hasClass('unfollow'))
 		{
 			$('#followBtn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 			
@@ -33,7 +36,9 @@ $('#followBtn').click(function(event) {
                 dataType: 'json',
 				success: function(data){
 					$('#followBtn').addClass('btn-success');
-					$('#followBtn').text('Follow');
+                    $('#followBtn').removeClass('unfollow');
+                    $('#followBtn').addClass('follow');
+					$('#followBtn').text('".UserModule::t('Follow')."');
                     $('.follow-count').html(data.res);
 				}
 			});
@@ -141,22 +146,22 @@ function getUrlVars()
                 if(!$model->hasUserFollowing(Yii::app()->user->id))
                 {
                     $this->widget('bootstrap.widgets.TbButton', array(
-                    'label'=>'Follow',
+                    'label'=>UserModule::t('Follow'),
                     'id'=>'followBtn', 
                     'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
                     'url'=>'',//array('follow','name'=>$model->name),
-                    'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
+                    'htmlOptions'=>array('style'=>'width:60px; padding-top:12px; padding-bottom:12px; font-size:13px', 'class'=>'follow'),
                     )); 
                 }
                 else
                 {
                     $this->widget('bootstrap.widgets.TbButton', array(
-                    'label'=>'Unfollow',
+                    'label'=>UserModule::t('Unfollow'),
                     'id'=>'followBtn', 
                     'size'=>'normal', // null, 'large', 'small' or 'mini'
                     'url'=>'',//array('unfollow','name'=>$model->name),
-                    'htmlOptions'=>array('style'=>'width:50px; padding-top:12px; padding-bottom:12px;'),
+                    'htmlOptions'=>array('style'=>'width:60px; padding-top:12px; padding-bottom:12px; font-size:13px', 'class'=>'unfollow'),
                     )); 
                 }
                 //echo "<button class='btn-msg-wrap' type='button'>";
@@ -170,7 +175,7 @@ function getUrlVars()
                         'openButtonText' => UserModule::t('Message'),
                         //'closeButtonText' => 'Close',
                         'openButtonHtmlOptions' => array(
-                            'style' => 'width:70px; padding:12px 5px; margin-left: 10px', 
+                            'style' => 'width:70px; padding:12px 5px; margin-left: 10px; font-size:13px', 
                             'class' => 'btn btn-warning',
                         )
                     )
