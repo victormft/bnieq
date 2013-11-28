@@ -293,6 +293,7 @@ $('.remove-search').click(function(event){
 					}));
 					$(".team-loading").empty();
 					$(".ui-autocomplete").css({'width':'300px'});
+                    $(".ui-autocomplete").css({'z-index':'1000'});
 				},
 				error: function(){
 					$(".team-loading").empty();
