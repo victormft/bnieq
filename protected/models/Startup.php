@@ -220,7 +220,7 @@ class Startup extends CActiveRecord
                     $this->selecionada=1;
                     break;
                 case 2:
-                    $criteria->order="t.followers_num DESC";
+                    $criteria->order="t.followers_count DESC";
                     break;
                 case 3:
                     $criteria->order="t.create_time DESC";
@@ -268,7 +268,7 @@ class Startup extends CActiveRecord
 		if($this->group)
 		{
 			if($this->group=='Populares')
-				$criteria->order="t.followers_num DESC";
+				$criteria->order="t.followers_count DESC";
 				
 			else if($this->group=='Novidades')
 				$criteria->order="t.id DESC";
