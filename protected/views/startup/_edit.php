@@ -55,7 +55,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 				var new_name = $('.start-name').find('a').text();
 				
 				$.ajax({
-					url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
+					url: '".Yii::app()->request->baseUrl."/startup/refreshStartupName?id=".$model->id."',
 					dataType: 'json',
 					type: 'POST',
 					data: {
@@ -71,7 +71,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 				$('.container').css({'opacity':'1'});
 				$('.mask').hide();
 			}
-		}, 4000);
+		}, 3000);
 		
 		
 			
@@ -268,7 +268,7 @@ function getUrlVars()
 							'type'      => 'text',
 							'model'     => $model,
 							'attribute' => 'name',
-							'url'       => array('update'),  
+							'url'       => array('updateName'),  
 							'placement' => 'right',
 							'inputclass'=> 'input-large',
 							'mode'=>'inline',

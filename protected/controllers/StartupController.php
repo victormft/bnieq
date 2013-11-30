@@ -33,11 +33,11 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'updateStartupName', 'followPop'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'followPop'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updatelocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'deleteTeam'),
+				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'deleteTeam', 'RefreshStartupName'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
@@ -328,8 +328,9 @@ class StartupController extends Controller
 			
 			// !!!!!!!!!!!! formatting startupname !!!!!!!!!!!!!!!!!!
 			$startupname = $_POST['Startup']['name'];
-			$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
+			$startupname = preg_replace('/[\/\&%><=#.\$]/', '', $startupname);
 			$startupname = preg_replace('/[\"\']/', '', $startupname);
+			$startupname = preg_replace('/[-_]/', ' ', $startupname);
 			$startupname = preg_replace('/\s+/', '-', $startupname);
 			$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
 			$startupname = strtolower($startupname);
@@ -451,6 +452,31 @@ class StartupController extends Controller
 		));
 		
 	*/	
+	}
+	
+	public function actionUpdateName()
+	{
+        $model=$this->loadModelId($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,'Você não pode editar esse projeto!');
+			
+		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
+        $es->update();
+		
+		$startupname = $_POST['value'];
+		$startupname = preg_replace('/[\/\&%><=#.\$]/', '', $startupname);
+		$startupname = preg_replace('/[\"\']/', '', $startupname);
+		$startupname = preg_replace('/[-_]/', ' ', $startupname);
+		$startupname = preg_replace('/\s+/', '-', $startupname);
+		$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
+		$startupname = strtolower($startupname);
+		
+		//it is necesary to reload the model after update
+		$model=$this->loadModelId($_POST['pk']);
+		
+		$model->startupname = $startupname; 
+		
+		$model->save();
 	}
 /*
 	public function actionUpdateName()
@@ -1076,23 +1102,12 @@ class StartupController extends Controller
 			
 	}
 	
-	public function actionUpdateStartupName($startname, $name)
+	public function actionRefreshStartupName($id)
 	{
-		$model=$this->loadModel($name);
-		
-		$startupname = $startname;
-		$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
-		$startupname = preg_replace('/[\"\']/', '', $startupname);
-		$startupname = preg_replace('/\s+/', '-', $startupname);
-		$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
-		$startupname = strtolower($startupname);
-		
-		$model->startupname = $startupname; 
-		
-		$model->save();
+		$model=$this->loadModelId($id);
 		
 		echo CJSON::encode(array(
-			'res'=>$startupname
+			'res'=>$model->startupname
 		));
 	}
 				
