@@ -328,6 +328,7 @@ class StartupController extends Controller
 			
 			// !!!!!!!!!!!! formatting startupname !!!!!!!!!!!!!!!!!!
 			$startupname = $_POST['Startup']['name'];
+			$startupname = trim($startupname);
 			$startupname = preg_replace('/[\/\&%><=#.\$]/', '', $startupname);
 			$startupname = preg_replace('/[\"\']/', '', $startupname);
 			$startupname = preg_replace('/[-_]/', ' ', $startupname);
@@ -464,6 +465,7 @@ class StartupController extends Controller
         $es->update();
 		
 		$startupname = $_POST['value'];
+		$startupname = trim($startupname);
 		$startupname = preg_replace('/[\/\&%><=#.\$]/', '', $startupname);
 		$startupname = preg_replace('/[\"\']/', '', $startupname);
 		$startupname = preg_replace('/[-_]/', ' ', $startupname);

@@ -49,7 +49,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 		}, 500);
 		
 		setTimeout(function(){
-			if(!$('.start-name').find('a').hasClass('editable-open') && !$('.start-name').find('a').hasClass('editable-bg-transition'))
+			if(!$('.start-name').find('a').hasClass('editable-open'))
 			{
 			
 				var new_name = $('.start-name').find('a').text();
@@ -71,7 +71,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 				$('.container').css({'opacity':'1'});
 				$('.mask').hide();
 			}
-		}, 3000);
+		}, 2000);
 		
 		
 			
