@@ -72,7 +72,7 @@ class StartupController extends Controller
 				throw new CHttpException(404, 'Page not found.');
 			
 			else
-				$this->redirect(array('publish','name'=>$model->startupname));
+				$this->redirect(array('/edit/'.$model->startupname));
 		}
 	}
 	

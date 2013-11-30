@@ -79,11 +79,29 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	$('.start-sector').on('click','.editable-submit', function(event){
 		setTimeout(function(){
-			if(!$('.start-sector').find('a').hasClass('editable-open') && !$('.start-sector').find('a').hasClass('editable-bg-transition'))
+			if(!$('.start-sector').find('a').hasClass('editable-open'))
 			{
-				$('.err-sector').hide('slow');
+				$('.err-sector').animate({opacity: 0}, 500);
 			}
-		}, 2000);
+		}, 1000);
+	});
+	
+	$('.start-product').on('click','.editable-submit', function(event){
+		setTimeout(function(){
+			if(!$('.start-product').find('a').hasClass('editable-open'))
+			{
+				$('.err-product').animate({opacity: 0}, 500);
+			}
+		}, 1000);
+	});
+	
+	$('.start-stage').on('click','.editable-submit', function(event){
+		setTimeout(function(){
+			if(!$('.start-stage').find('a').hasClass('editable-open'))
+			{
+				$('.err-stage').animate({opacity: 0}, 500);
+			}
+		}, 1000);
 	});
 
 	$('#visualizar').on('click','.mult-list-img-wrap',function(event){
@@ -457,19 +475,21 @@ function getUrlVars()
 		
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'textarea',
-						'model'     => $model,
-						'attribute' => 'product_description',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'inputclass'=> 'input-xlarge',
-						'emptytext' => 'Vazio',
-						'mode'=>'inline',
-						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
-					 )); ?>  
-					 			
-				</p>
+				<span class="start-product">
+					<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+							'type'      => 'textarea',
+							'model'     => $model,
+							'attribute' => 'product_description',
+							'url'       => array('update'),  
+							'placement' => 'right',
+							'inputclass'=> 'input-xlarge',
+							'emptytext' => 'Vazio',
+							'mode'=>'inline',
+							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
+						 )); ?>  
+									
+					</p>
+				</span>
 			</div>
 			
 		</div>
@@ -857,19 +877,21 @@ function getUrlVars()
 			
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'select',
-						'model'     => $model,
-						'attribute' => 'company_stage',
-						'url'       => array('update'),  
-						'source'    => $model->getCompanyStageOptions(), 
-						'placement' => 'right',
-						'emptytext' => 'Vazio',
-						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
-						'mode'=>'inline',
-					 )); ?>  
-									
-				</p>
+				<span class="start-stage">
+					<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+							'type'      => 'select',
+							'model'     => $model,
+							'attribute' => 'company_stage',
+							'url'       => array('update'),  
+							'source'    => $model->getCompanyStageOptions(), 
+							'placement' => 'right',
+							'emptytext' => 'Vazio',
+							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
+							'mode'=>'inline',
+						 )); ?>  
+										
+					</p>
+				</span>
 			</div>
 				
 		</div>
