@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h2>Error <?php echo $code; ?></h2>
+<h2 style="margin-top:60px; text-decoration:underline;"><?php echo UserModule::t("Error");?> <?php echo $code; ?></h2>
 
-<div class="error">
+<div class="error" style="margin-bottom:40px; font-size:18px;">
 <?php echo CHtml::encode($message); ?>
 </div>

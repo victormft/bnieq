@@ -1175,6 +1175,20 @@ function getUrlVars()
 		
 		</div>	
 	</div>	
+	
+	<?php echo CHtml::beginForm(Yii::app()->request->baseUrl.'/startup/delete/id/'.CHtml::encode($model->id), 'post'); ?>
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+				'buttonType'=>'submit',
+				'label'=>'Delete',
+				'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+				'size'=>'mini', // null, 'large', 'small' or 'mini'
+				'url'=>array('/startup/delete/id/'.CHtml::encode($model->id)),
+				'htmlOptions'=>array('onClick'=>'return confirm("'.UserModule::t("Are you sure?").'\n'.UserModule::t("This action has no return!").'");'),
+				
+				
+				)); 
+		?>
+	<?php echo CHtml::endForm(); ?>
 
 </div>
 

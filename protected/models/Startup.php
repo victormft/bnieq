@@ -220,7 +220,7 @@ class Startup extends CActiveRecord
                     $this->selecionada=1;
                     break;
                 case 2:
-                    $criteria->order="t.followers_count DESC";
+                    $criteria->order="t.followers_num DESC";
                     break;
                 case 3:
                     $criteria->order="t.create_time DESC";
