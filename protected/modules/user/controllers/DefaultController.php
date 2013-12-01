@@ -43,6 +43,11 @@ class DefaultController extends Controller
 		{
 			$model->location=$_GET['c'];
 		}
+		
+		if(isset($_GET['Profile_sort']))
+		{
+			$model->rand=false;
+		}
         
 		$this->render('/user/index',array(
             'dataProvider'=>$model,

@@ -595,6 +595,11 @@ class StartupController extends Controller
 			$model->location=$_GET['c'];
 		}
 		
+		if(isset($_GET['Startup_sort']))
+		{
+			$model->rand=false;
+		}
+		
 			
 		//if(isset($_GET['Startup']))
 		//	$model->attributes=$_GET['Startup'];
