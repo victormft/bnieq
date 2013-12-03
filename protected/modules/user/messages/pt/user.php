@@ -126,7 +126,7 @@ return array(
     'The value of the default field (database).' => 'O valor padrão do campo (base de dados)',
     'Display order of fields.' => 'Mostrar ordenação dos campos',
 	'Not visited' => 'Não visitou',
-
+	'Error' => 'Erro',
     'Welcome to NextBlue!' => 'Bem vindo ao NextBlue!',
     'Login or create an account to continue.' => 'Login ou crie uma conta para continuar.',
     'Verify Password' => 'Confirmar Password',
@@ -177,4 +177,9 @@ return array(
 	'Incorrect Symbols'=>'Caracteres Incorretos',
 	'Load More'=>'Carregar Mais',
 	'Loading...'=>'Carregando...',
+	'You cannot edit this Startup!' => 'Você não pode editar essa Startup!',
+	'It was not possible to resolve the request.' => 'Não foi possível resolver a requisição.',
+	'Page not found.' => 'Página não encontrada.',
+	'Are you sure?' => 'Você tem certeza?',
+	'This action has no return!' => 'Essa ação não tem retorno!',
 );

@@ -49,13 +49,13 @@ Yii::app()->clientScript->registerScript('loading-img',
 		}, 500);
 		
 		setTimeout(function(){
-			if(!$('.start-name').find('a').hasClass('editable-open') && !$('.start-name').find('a').hasClass('editable-bg-transition'))
+			if(!$('.start-name').find('a').hasClass('editable-open'))
 			{
 			
 				var new_name = $('.start-name').find('a').text();
 				
 				$.ajax({
-					url: '".Yii::app()->request->baseUrl."/startup/updateStartupName?startname='+new_name+'&name=".$model->startupname."',
+					url: '".Yii::app()->request->baseUrl."/startup/refreshStartupName?id=".$model->id."',
 					dataType: 'json',
 					type: 'POST',
 					data: {
@@ -71,7 +71,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 				$('.container').css({'opacity':'1'});
 				$('.mask').hide();
 			}
-		}, 4000);
+		}, 2000);
 		
 		
 			
@@ -79,11 +79,29 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	$('.start-sector').on('click','.editable-submit', function(event){
 		setTimeout(function(){
-			if(!$('.start-sector').find('a').hasClass('editable-open') && !$('.start-sector').find('a').hasClass('editable-bg-transition'))
+			if(!$('.start-sector').find('a').hasClass('editable-open'))
 			{
-				$('.err-sector').hide('slow');
+				$('.err-sector').animate({opacity: 0}, 500);
 			}
-		}, 2000);
+		}, 1000);
+	});
+	
+	$('.start-product').on('click','.editable-submit', function(event){
+		setTimeout(function(){
+			if(!$('.start-product').find('a').hasClass('editable-open'))
+			{
+				$('.err-product').animate({opacity: 0}, 500);
+			}
+		}, 1000);
+	});
+	
+	$('.start-stage').on('click','.editable-submit', function(event){
+		setTimeout(function(){
+			if(!$('.start-stage').find('a').hasClass('editable-open'))
+			{
+				$('.err-stage').animate({opacity: 0}, 500);
+			}
+		}, 1000);
 	});
 
 	$('#visualizar').on('click','.mult-list-img-wrap',function(event){
@@ -268,7 +286,7 @@ function getUrlVars()
 							'type'      => 'text',
 							'model'     => $model,
 							'attribute' => 'name',
-							'url'       => array('update'),  
+							'url'       => array('updateName'),  
 							'placement' => 'right',
 							'inputclass'=> 'input-large',
 							'mode'=>'inline',
@@ -457,19 +475,21 @@ function getUrlVars()
 		
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'textarea',
-						'model'     => $model,
-						'attribute' => 'product_description',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'inputclass'=> 'input-xlarge',
-						'emptytext' => 'Vazio',
-						'mode'=>'inline',
-						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
-					 )); ?>  
-					 			
-				</p>
+				<span class="start-product">
+					<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+							'type'      => 'textarea',
+							'model'     => $model,
+							'attribute' => 'product_description',
+							'url'       => array('update'),  
+							'placement' => 'right',
+							'inputclass'=> 'input-xlarge',
+							'emptytext' => 'Vazio',
+							'mode'=>'inline',
+							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
+						 )); ?>  
+									
+					</p>
+				</span>
 			</div>
 			
 		</div>
@@ -857,19 +877,21 @@ function getUrlVars()
 			
 		<div class="content-info edit">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'select',
-						'model'     => $model,
-						'attribute' => 'company_stage',
-						'url'       => array('update'),  
-						'source'    => $model->getCompanyStageOptions(), 
-						'placement' => 'right',
-						'emptytext' => 'Vazio',
-						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
-						'mode'=>'inline',
-					 )); ?>  
-									
-				</p>
+				<span class="start-stage">
+					<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+							'type'      => 'select',
+							'model'     => $model,
+							'attribute' => 'company_stage',
+							'url'       => array('update'),  
+							'source'    => $model->getCompanyStageOptions(), 
+							'placement' => 'right',
+							'emptytext' => 'Vazio',
+							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
+							'mode'=>'inline',
+						 )); ?>  
+										
+					</p>
+				</span>
 			</div>
 				
 		</div>
@@ -1153,6 +1175,20 @@ function getUrlVars()
 		
 		</div>	
 	</div>	
+	
+	<?php echo CHtml::beginForm(Yii::app()->request->baseUrl.'/startup/delete/id/'.CHtml::encode($model->id), 'post'); ?>
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+				'buttonType'=>'submit',
+				'label'=>'Delete',
+				'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+				'size'=>'mini', // null, 'large', 'small' or 'mini'
+				'url'=>array('/startup/delete/id/'.CHtml::encode($model->id)),
+				'htmlOptions'=>array('onClick'=>'return confirm("'.UserModule::t("Are you sure?").'\n'.UserModule::t("This action has no return!").'");'),
+				
+				
+				)); 
+		?>
+	<?php echo CHtml::endForm(); ?>
 
 </div>
 

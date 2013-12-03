@@ -149,7 +149,8 @@ class SiteController extends Controller
 		
 		
 		$list = array();        
-		foreach($query as $q){
+		foreach($query as $q)
+		{
 			$data['value'] = $q->user_id;
 			
 			if(isset($q->user->roles) && isset($q->city))
@@ -166,7 +167,8 @@ class SiteController extends Controller
 			unset($data);
 		}
 		
-		foreach($query_s as $q){
+		foreach($query_s as $q)
+		{
 			$data['value'] = $q->id;		
 
 			$data['description'] = 'Company';
@@ -183,7 +185,7 @@ class SiteController extends Controller
 			echo json_encode($list);
 		
 		else 
-			throw new CHttpException(403,'Você não pode editar essa startup!');
+			throw new CHttpException(404,UserModule::t('It was not possible to resolve the request.'));
 			
 	}
 }

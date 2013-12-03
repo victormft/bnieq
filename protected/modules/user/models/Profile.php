@@ -46,6 +46,9 @@ class Profile extends CActiveRecord
     public $roles; //required for booster x-editable
     public $skills; //required for booster x-editable
     public $sectors; //required for booster x-editable
+	
+	//to rand() in 'search' method
+	public $rand = true;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -192,7 +195,11 @@ class Profile extends CActiveRecord
         
         $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";                
       
-        
+        if($this->rand)
+		{
+			$criteria->order="rand()";
+		}
+		
         if($this->group){
             if($this->group=='Empreendedores'){
                 $criteria->addCondition('user_id IN (SELECT user_id FROM user_startup WHERE position="Founder")');  

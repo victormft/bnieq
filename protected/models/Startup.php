@@ -67,6 +67,9 @@ class Startup extends CActiveRecord
 	//para os erros no publish/edit
 	public $err;
 	
+	//to rand() in 'search' method
+	public $rand = true;
+	
 	//company size
 	const SIZE_1="1-5";
 	const SIZE_2="6-10";
@@ -264,7 +267,12 @@ class Startup extends CActiveRecord
         
         $criteria->select="t.*,(SELECT COUNT(startup_follow.user_id) FROM startup_follow WHERE t.id=startup_follow.startup_id) AS followers_count";                
       
-        
+        if($this->rand)
+		{
+			$criteria->order="rand()";
+		}
+		
+		
 		if($this->group)
 		{
 			if($this->group=='Populares')
@@ -290,7 +298,7 @@ class Startup extends CActiveRecord
                     'followers_count'=>array(                        
                         'asc' => 'followers_count',
                         'desc' => 'followers_count DESC', 
-                        'label' => 'Seguidores',
+                        'label' => UserModule::t('Followers'),
                         'default'=>'desc',
                     ),
                     '*',

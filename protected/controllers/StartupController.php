@@ -33,16 +33,16 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'updateStartupName', 'followPop'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'followPop'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updatelocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'deleteTeam'),
+				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'deleteTeam', 'RefreshStartupName', 'delete'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -69,10 +69,10 @@ class StartupController extends Controller
 		else
 		{
 			 if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-				throw new CHttpException(404, 'Page not found.');
+				throw new CHttpException(404,UserModule::t('Page not found.'));
 			
 			else
-				$this->redirect(array('publish','name'=>$model->startupname));
+				$this->redirect(array('/edit/'.$model->startupname));
 		}
 	}
 	
@@ -85,7 +85,7 @@ class StartupController extends Controller
 		$model->sec=$model->sectors;
 		
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar essa startup!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 		
 		if(!$model->sectors || !$model->product_description || !$model->company_stage)
 		{
@@ -136,7 +136,7 @@ class StartupController extends Controller
         $model=$this->loadModel($name);
        
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar essa startup!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 		
 		if(isset($_POST['Startup']['pic']))
 		{
@@ -328,8 +328,10 @@ class StartupController extends Controller
 			
 			// !!!!!!!!!!!! formatting startupname !!!!!!!!!!!!!!!!!!
 			$startupname = $_POST['Startup']['name'];
-			$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
+			$startupname = trim($startupname);
+			$startupname = preg_replace('/[\/\&%><=#.\$]/', '', $startupname);
 			$startupname = preg_replace('/[\"\']/', '', $startupname);
+			$startupname = preg_replace('/[-_]/', ' ', $startupname);
 			$startupname = preg_replace('/\s+/', '-', $startupname);
 			$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
 			$startupname = strtolower($startupname);
@@ -428,7 +430,7 @@ class StartupController extends Controller
 	{
         $model=$this->loadModelId($_POST['pk']);
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar esse projeto!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 			
 		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
         $es->update();
@@ -452,6 +454,32 @@ class StartupController extends Controller
 		
 	*/	
 	}
+	
+	public function actionUpdateName()
+	{
+        $model=$this->loadModelId($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+			
+		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
+        $es->update();
+		
+		$startupname = $_POST['value'];
+		$startupname = trim($startupname);
+		$startupname = preg_replace('/[\/\&%><=#.\$]/', '', $startupname);
+		$startupname = preg_replace('/[\"\']/', '', $startupname);
+		$startupname = preg_replace('/[-_]/', ' ', $startupname);
+		$startupname = preg_replace('/\s+/', '-', $startupname);
+		$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
+		$startupname = strtolower($startupname);
+		
+		//it is necesary to reload the model after update
+		$model=$this->loadModelId($_POST['pk']);
+		
+		$model->startupname = $startupname; 
+		
+		$model->save();
+	}
 /*
 	public function actionUpdateName()
     {
@@ -467,7 +495,7 @@ class StartupController extends Controller
     {
         $model = $this->loadModelId($_POST['pk']);
 		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar esse projeto!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 			
         if($_POST['value']==0) $model->location=NULL;
         else $model->location = $_POST['value'];
@@ -479,7 +507,7 @@ class StartupController extends Controller
     {
         $model = $this->loadModelId($_POST['pk']);
 		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar esse projeto!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 			
         $vals = array();
         if(isset($_POST['value']))
@@ -509,17 +537,26 @@ class StartupController extends Controller
 	*/
 	public function actionDelete($id)
 	{
+		$model = $this->loadModelId($id);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+		
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
 			$this->loadModelId($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			if(Yii::app()->user->isSuperuser)
+			{
+				// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+				if(!isset($_GET['ajax']))
+					$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			}
+			else
+				$this->redirect(Yii::app()->request->baseUrl.'/'.Yii::app()->user->username);
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(404,UserModule::t('It was not possible to resolve the request.'));
 	}
 
 	/**
@@ -556,6 +593,11 @@ class StartupController extends Controller
 		if(isset($_GET['c']))
 		{
 			$model->location=$_GET['c'];
+		}
+		
+		if(isset($_GET['Startup_sort']))
+		{
+			$model->rand=false;
 		}
 		
 			
@@ -612,7 +654,7 @@ class StartupController extends Controller
 										  ':name'=>$name,
 										));
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404,UserModule::t('Page not found.'));
 		return $model;
 	}
 	
@@ -623,7 +665,7 @@ class StartupController extends Controller
 										  ':id'=>$id,
 										));
 		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404,UserModule::t('Page not found.'));
 		return $model;
 	}
 	
@@ -645,7 +687,7 @@ class StartupController extends Controller
     {	
 		$model = $this->loadModel($_GET['name']);
 		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar esse projeto!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
          
         if(isset($_POST['sectors']))
         {                    
@@ -703,7 +745,7 @@ class StartupController extends Controller
 		}
 		
 		else
-			throw new CHttpException(404, 'Page not found.');
+			throw new CHttpException(404,UserModule::t('Page not found.'));
 	}
 	
 	public function actionUnfollow()
@@ -734,7 +776,7 @@ class StartupController extends Controller
 		}
 		
 		else
-			throw new CHttpException(404, 'Page not found.');	
+			throw new CHttpException(404,UserModule::t('Page not found.'));	
 	}
 	
 	public function actionMultPic($name)
@@ -745,7 +787,7 @@ class StartupController extends Controller
 		
 			$model=$this->loadModel($name);
 			if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-				throw new CHttpException(403,'Você não pode editar esse projeto!');
+				throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 			
 			$img_list=CUploadedFile::getInstancesByName('mult_pic');
 			
@@ -802,7 +844,7 @@ class StartupController extends Controller
 		$model=$this->loadModel($name);
 		
 		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar essa startup!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 		
 		$user_startup = new UserStartup;
 		
@@ -892,7 +934,7 @@ class StartupController extends Controller
 	{
 		$model=$this->loadModel($name);
 		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,'Você não pode editar esse projeto!');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 		$user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$id, ':s_id'=>$model->id));
 		$user_startup->delete();
 			
@@ -906,7 +948,7 @@ class StartupController extends Controller
     {
         $startup = Startup::model()->findByPk($sid);
         if(!$startup->hasUserRelation())
-            throw new CHttpException(403,'Você não pode fazer isso.');
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
         
         $user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$uid, ':s_id'=>$sid));
 		$user_startup->approved=1;
@@ -1072,27 +1114,16 @@ class StartupController extends Controller
 			echo json_encode($list);
 		
 		else 
-			throw new CHttpException(403,'Você não pode editar essa startup!');
+			throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 			
 	}
 	
-	public function actionUpdateStartupName($startname, $name)
+	public function actionRefreshStartupName($id)
 	{
-		$model=$this->loadModel($name);
-		
-		$startupname = $startname;
-		$startupname = preg_replace('/[\/\&%><=#\$]/', '', $startupname);
-		$startupname = preg_replace('/[\"\']/', '', $startupname);
-		$startupname = preg_replace('/\s+/', '-', $startupname);
-		$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
-		$startupname = strtolower($startupname);
-		
-		$model->startupname = $startupname; 
-		
-		$model->save();
+		$model=$this->loadModelId($id);
 		
 		echo CJSON::encode(array(
-			'res'=>$startupname
+			'res'=>$model->startupname
 		));
 	}
 				
