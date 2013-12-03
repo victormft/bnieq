@@ -370,7 +370,9 @@ $('.arrow-container').mouseover(function(event){
             );        
             $criteria->select="t.*,(SELECT startup.name FROM startup WHERE t.startup_id=startup.id) AS startup_name";                
 
-            $startupProvider = new CActiveDataProvider('UserStartup', array('criteria' => $criteria,));            
+            $startupProvider = new CActiveDataProvider('UserStartup', array('criteria' => $criteria,'pagination'=>array(
+                        'pageSize'=>50,
+                ),));            
             ?>
             
             <?php $this->widget('bootstrap.widgets.TbExtendedGridView', array(
@@ -383,7 +385,7 @@ $('.arrow-container').mouseover(function(event){
                 //'sortableAction' => 'user/profile/sortable',
                 //'afterSortableUpdate' => 'js:function(id, position){ console.log("id: "+id+", position:"+position);}',
                 'dataProvider' => $startupProvider,
-                'template' => "{items}",
+                'template' => "{items} {pager}",
                 'rowCssClassExpression'=>'$data->startup->published ? $data->approved ? "" : "approved" : "published";',
                 'columns' => array(
                     array(

@@ -64,8 +64,21 @@ function getUrlVars()
 
 ?>
 
-<?php if(Yii::app()->user->hasFlash('messageModule')): ?>
-    <?php 
+    <?php $this->widget('bootstrap.widgets.TbAlert', array(
+        'block' => true,
+        'fade' => true,
+        'closeText' => '&times;', // false equals no close link
+        'events' => array(),
+        'htmlOptions' => array('style'=>'margin: 10px 0;'),
+        'userComponentId' => 'user',
+        'alerts' => array( // configurations per alert type
+            // success, info, warning, error or danger
+            'success' => array('block' => false, 'closeText' => '&times;'),
+            'error' => array('block' => false, 'closeText' => '&times;')
+        ),
+    ));?>
+
+    <?php /*
     $this->widget(
         'bootstrap.widgets.TbBadge',
         array(
@@ -73,9 +86,8 @@ function getUrlVars()
             // 'success', 'warning', 'important', 'info' or 'inverse'
             'label' => Yii::app()->user->getFlash('messageModule'),
         )
-    ); ?>
+    ); */ ?>
 
-<?php endif; ?>
 
 
 
@@ -165,13 +177,14 @@ function getUrlVars()
                     )); 
                 }
                 //echo "<button class='btn-msg-wrap' type='button'>";
+                                
                 EQuickDlgs::ajaxLink(
                     array(
                         'controllerRoute' => 'messages/composewithid', //'member/view'
                         'actionParams' => array('id'=>$model->id), //array('id'=>$model->member->id),
                         'dialogTitle' => 'Enviar mensagem para ' . $model->getFullName(),
                         'dialogWidth' => 450,
-                        'dialogHeight' => 350,
+                        'dialogHeight' => 400,
                         'openButtonText' => UserModule::t('Message'),
                         //'closeButtonText' => 'Close',
                         'openButtonHtmlOptions' => array(
