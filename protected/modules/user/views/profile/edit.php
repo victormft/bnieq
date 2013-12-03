@@ -385,7 +385,7 @@ $('.arrow-container').mouseover(function(event){
                 //'sortableAction' => 'user/profile/sortable',
                 //'afterSortableUpdate' => 'js:function(id, position){ console.log("id: "+id+", position:"+position);}',
                 'dataProvider' => $startupProvider,
-                'template' => "{items}",
+                'template' => "{items} {pager}",
                 'rowCssClassExpression'=>'$data->startup->published ? $data->approved ? "" : "approved" : "published";',
                 'columns' => array(
                     array(
