@@ -162,7 +162,12 @@ class AdminController extends Controller
         $model->unsetAttributes();  // clear any default values
         if(isset($_GET['Startup']))
             $model->attributes=$_GET['Startup'];
-
+		
+		if(isset($_GET['Startup_sort']))
+		{
+			$model->rand=false;
+		}
+			
         $this->render('index_startup',array(
             'model'=>$model,
         ));
