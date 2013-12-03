@@ -478,6 +478,11 @@ class StartupController extends Controller
 		$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
 		$startupname = strtolower($startupname);
 		
+		if($name_num = Startup::model()->findAll('startupname REGEXP CONCAT("^",:startupname,"[0-9]*","$")', array(':startupname'=>$startupname)))
+		{
+			$startupname=$startupname.count($name_num);
+		}
+		
 		//it is necesary to reload the model after update
 		$model=$this->loadModelId($_POST['pk']);
 		
