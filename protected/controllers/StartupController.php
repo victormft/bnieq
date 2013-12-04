@@ -934,6 +934,7 @@ class StartupController extends Controller
 				<div class="team-resume">'. $usr->profile->resume . '</div>
 			</div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
+			<div class="team-error"></div>
 		</div>
 		
 		';
@@ -951,6 +952,16 @@ class StartupController extends Controller
 		$model=$this->loadModel($name);
 		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
             throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+			
+		if(UserStartup::model()->find('startup_id=:s_id AND user_id=:u_id', array(':s_id'=>$model->id, ':u_id'=>$id))->position=="Founder" && count(UserStartup::model()->findAll('startup_id=:s_id AND position="Founder"', array(':s_id'=>$model->id)))<=1)	
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>UserModule::t("You cannot delete this Founder!")
+			));
+			exit;
+		}
+		
 		$user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$id, ':s_id'=>$model->id));
 		$user_startup->delete();
 			

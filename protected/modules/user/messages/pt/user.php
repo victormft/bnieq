@@ -189,4 +189,5 @@ return array(
 	'Invalid User!' => 'Usuário Inválido!',
 	'Define Role!' => 'Defina o Papel!',
 	'User already exists!' => 'Usuário já existe!',
+	'You cannot delete this Founder!' => 'Você não pode deletar esse Fundador!',
 );

@@ -212,8 +212,9 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	
 	$('.team-ready').on('click','.team-delete',function(event){
-		var id = $(this).parent().find('span').attr('data-id');
-		$(this).parent().addClass('deletable');
+		var parent = $(this).parent();
+		var id = parent.find('span').attr('data-id');
+		parent.addClass('deletable');
 		
 		$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name=".$model->startupname."',
@@ -223,7 +224,15 @@ Yii::app()->clientScript->registerScript('loading-img',
 					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
 				},
 				success: function(data){
-					$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+					
+					if(data.res=='OK')
+						$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+					
+					else
+					{
+						$('.deletable').removeClass('deletable');	
+						parent.find('.team-error').html(data.msg);
+					}					
 					
 				},
 				error: function(){
@@ -1167,6 +1176,7 @@ function getUrlVars()
 				<div class="team-resume"><?php echo CHtml::encode($usr_startup->profile->resume);?></div>
 			</div>
 			<div class="team-delete"><i class="icon-remove-sign"></i></div>
+			<div class="team-error"></div>
 		</div>
 		<?php endif; ?>
 		<?php endforeach;?>
