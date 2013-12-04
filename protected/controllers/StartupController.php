@@ -509,7 +509,13 @@ class StartupController extends Controller
 			
         if($_POST['value']==0) $model->location=NULL;
         else $model->location = $_POST['value'];
-        $model->save();         
+        
+		if($model->save())
+			exit;
+			
+		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
+        $es->update();
+		
     }
 	
 	
@@ -867,7 +873,7 @@ class StartupController extends Controller
 		{
 			echo CJSON::encode(array(
 				'res'=>'no',
-				'msg'=>'Usuário não existe!'
+				'msg'=>UserModule::t('Invalid User!')
 			));
 			exit;
 		}
@@ -876,7 +882,7 @@ class StartupController extends Controller
 		{
 			echo CJSON::encode(array(
 				'res'=>'no',
-				'msg'=>'Defina o papel!'
+				'msg'=>UserModule::t('Define Role!'),
 			));
 			exit;
 		}
@@ -885,7 +891,7 @@ class StartupController extends Controller
 		{
 			echo CJSON::encode(array(
 				'res'=>'no',
-				'msg'=>'Usuário já existe!'
+				'msg'=>UserModule::t('User already exists!'),
 			));
 			exit;
 		}

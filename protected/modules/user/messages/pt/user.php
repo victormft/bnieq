@@ -182,4 +182,11 @@ return array(
 	'Page not found.' => 'Página não encontrada.',
 	'Are you sure?' => 'Você tem certeza?',
 	'This action has no return!' => 'Essa ação não tem retorno!',
+	'Concept' => 'Conceito',
+	'Development' => 'Desenvolvimento',
+	'Prototype' => 'Protótipo',
+	'Final Product' => 'Produto Final',
+	'Invalid User!' => 'Usuário Inválido!',
+	'Define Role!' => 'Defina o Papel!',
+	'User already exists!' => 'Usuário já existe!',
 );

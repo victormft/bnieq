@@ -76,10 +76,10 @@ class Startup extends CActiveRecord
 	const SIZE_3="10+";
 	
 	//company stage
-	const STAGE_1="Conceito";
-	const STAGE_2="Desenvolvimento";
-	const STAGE_3="Protótipo";
-	const STAGE_4="Produto Final";
+	const STAGE_1="Concept";
+	const STAGE_2="Development";
+	const STAGE_3="Prototype";
+	const STAGE_4="Final Product";
 	
 	//company position (role that user has towards startup)
 	const POS_1="Founder";
@@ -109,7 +109,8 @@ class Startup extends CActiveRecord
 			array('pic, mult_pic', 'length', 'max' => 255, 'tooLong' => '{attribute} is too long (max {max} chars).'),
 			array('name, one_line_pitch, location', 'required', 'message'=>UserModule::t("Required")),
 			array('product_description, company_stage, sec', 'required', 'message'=>UserModule::t("Required"), 'on'=>'publish'),
-			array('product_description, company_stage, sec', 'required', 'message'=>UserModule::t("Required"), 'on'=>'editable'),
+			array('product_description, company_stage, sec, location', 'required', 'message'=>UserModule::t("Required"), 'on'=>'editable'),
+			array('company_stage','in','range'=>array('Concept','Development','Prototype','Final Product'), 'message' => 'Invalid Value!'),
 			//array('sectors', 'required', 'message'=>UserModule::t("Required"), 'on'=>'updateSectors'),
 			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),
 			array('name', 'length', 'max'=>40),
@@ -330,10 +331,10 @@ class Startup extends CActiveRecord
 	public function getCompanyStageOptions()
 	{
 		return array(
-			self::STAGE_1=>'Conceito',
-			self::STAGE_2=>'Desenvolvimento',
-			self::STAGE_3=>'Protótipo',
-			self::STAGE_4=>'Produto Final',
+			self::STAGE_1=>UserModule::t("Concept"),
+			self::STAGE_2=>UserModule::t("Development"),
+			self::STAGE_3=>UserModule::t("Prototype"),
+			self::STAGE_4=>UserModule::t("Final Product"),
 		);
 	}
 	

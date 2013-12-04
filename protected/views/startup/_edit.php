@@ -883,7 +883,7 @@ function getUrlVars()
 							'model'     => $model,
 							'attribute' => 'company_stage',
 							'url'       => array('update'),  
-							'source'    => $model->getCompanyStageOptions(), 
+							'source'    => array_merge(array(''=>UserModule::t("Select...")), $model->getCompanyStageOptions()), 
 							'placement' => 'right',
 							'emptytext' => 'Vazio',
 							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
