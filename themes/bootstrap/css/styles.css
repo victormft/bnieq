@@ -926,6 +926,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	color: #ccc;
 }
 
+.team-ready .team-item .team-error
+{
+	color: #b94a48;
+	float:left;
+}
+
 .content-wrap .video-images
 {
 	overflow:auto;

@@ -184,4 +184,12 @@ return array(
 	'This action has no return!' => 'Essa ação não tem retorno!',
     'followed you.' => 'seguiu você.',
     'See all' => 'Ver todas',
+	'Concept' => 'Conceito',
+	'Development' => 'Desenvolvimento',
+	'Prototype' => 'Protótipo',
+	'Final Product' => 'Produto Final',
+	'Invalid User!' => 'Usuário Inválido!',
+	'Define Role!' => 'Defina o Papel!',
+	'User already exists!' => 'Usuário já existe!',
+	'You cannot delete this Founder!' => 'Você não pode deletar esse Fundador!',
 );
