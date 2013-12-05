@@ -460,5 +460,15 @@ class User extends CActiveRecord
         }
         return false;
     }
+    
+    public function isUserInRoleForStartup($position, $startup_id)
+    {
+        $sql = "SELECT * FROM user_startup WHERE startup_id=:startupId AND user_id=:userId AND position=:position AND approved=1";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":startupId", $startup_id, PDO::PARAM_INT);
+        $command->bindValue(":userId", $this->id, PDO::PARAM_INT);
+        $command->bindValue(":position", $position, PDO::PARAM_STR);
+        return $command->execute()==1;
+    }
         
 }

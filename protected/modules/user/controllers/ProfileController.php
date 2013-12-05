@@ -254,16 +254,27 @@ class ProfileController extends Controller
     }
     
     public function actionAddStartupRelation()
-    {		
-        
+    {		        
 		$user_startup = new UserStartup;
 		
 		$user_startup->user_id = Yii::app()->user->id;
 		$user_startup->startup_id = $_POST['startup'];
 		$user_startup->position = $_POST['position'];    
-        if($user_startup->save()){}
+        if($user_startup->save())
+        {
+            $founders = Startup::model()->findbypk($_POST['startup'])->getUsersByRole("Founder");
+            foreach ($founders as $founder)
+            {
+                $note = new Notification;
+                $note->user_id = $founder->id;
+                $note->notification_type = Notification::ASK_MEMBERSHIP_STARTUP;
+                $note->source_id = Yii::app()->user->id;
+                $note->target_id = $_POST['startup'];
+                $note->save();
+            }
+        }
         else{
-            throw new CHttpException(403, 'pode naaaaao');
+            throw new CHttpException(403, 'Você não pode realizar essa ação.');
             exit;
         }
         

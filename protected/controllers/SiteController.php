@@ -213,7 +213,43 @@ class SiteController extends Controller
 		foreach($query as $q)
 		{
             $source = User::model()->findbypk($q->source_id);
-            $html .= '
+            switch ($q->notification_type) 
+            {
+                case Notification::FOLLOW_USER :
+                    $html .= '		
+                    <a href="'. Yii::app()->request->baseUrl .'/' . $source->username . '"> 
+                    <div style="overflow: auto; padding:0 10px 0 10px">
+                        <div class="team-item">
+                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="team-text">
+                                <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('followed you.') . '</div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    <li class="divider"></li>
+                    ';
+                    break;
+                case Notification::ASK_MEMBERSHIP_STARTUP :
+                    $startup = Startup::model()->findbypk($q->target_id);
+                    $html .= '		
+                    <a href="'. Yii::app()->request->baseUrl .'/' . $startup->startupname . '"> 
+                    <div style="overflow: auto; padding:0 10px 0 10px">
+                        <div class="team-item">
+                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="team-text">
+                                <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('asked for membership in') . ' <b>' . $startup->name . '</b>.</div>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                    <li class="divider"></li>
+                    ';
+                    break;
+            }
+            
+            
+            /*$html .= '
 		
             <a href="'. Yii::app()->request->baseUrl .'/' . $source->username . '"> 
             <div style="overflow: auto; padding:0 10px 0 10px">
@@ -234,9 +270,12 @@ class SiteController extends Controller
                 $data['description'] = $source->getFullName().' followed you.';
             
             $data['image'] = $source->profile->logo->name;
+             * 
+             * 
+             */
             
-			$list['myData'][] = $data;
-			unset($data);
+			//$list['myData'][] = $data;
+			//unset($data);
 		}
 		
 		if(!empty($query)){

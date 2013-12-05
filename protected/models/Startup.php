@@ -567,4 +567,19 @@ class Startup extends CActiveRecord
     public function setCreatetime($value) {
         $this->create_time=date('Y-m-d H:i:s',$value);
     }
+    
+    public function getUsersByRole($role)
+    {
+        $array=array();
+        $i=0;
+        foreach ($this->users1 as $u)
+        {
+            if($u->isUserInRoleForStartup($role, $this->id)){
+                $array[$i] = $u;
+                $i++;                
+            }
+        }
+        
+        return $array;
+    }
 }

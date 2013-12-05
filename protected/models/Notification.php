@@ -17,7 +17,7 @@
 class Notification extends CActiveRecord
 {
     const FOLLOW_USER=1;
-	const STATUS_ACTIVE=1;
+	const ASK_MEMBERSHIP_STARTUP=2;
 	const STATUS_BANNED=-1;
     
     
