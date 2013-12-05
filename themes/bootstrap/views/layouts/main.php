@@ -99,10 +99,11 @@ $('.remove-search').click(function(event){
             <?php else: ?>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu hov">
                         <li class="name-hover">
                             <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><i class="icon-user" style="margin:0 7px 0 1px; line-height:17px;"></i><?php echo UserModule::t('Profile'); ?></a>
                         </li>
+                        
 						<li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><i class="icon-comment" style="margin:0 5px 0 0; line-height:17px;"></i><?php echo UserModule::t('Messages'); ?> <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
                         ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>
 						</li>
@@ -112,6 +113,14 @@ $('.remove-search').click(function(event){
                         </li>
                     </ul>                    
                 </li>
+                
+                <li class="dropdown" id="notifications">
+                    <a class="dropdown-toggle" data-toggle="dropdown" style="display:inline-block;" href='#'><i class="icon-globe" style="display:inline; font-size:20px; line-height:20px;"></i></a>
+                    <ul class="dropdown-menu notifications" style="width: 300px">
+                        
+                    </ul>
+                </li>
+
                 <li><a style="display:inline-block;" href= <?php echo Yii::app()->homeUrl . '/user/logout' ?> ><i class="icon-power-off" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i><?php echo UserModule::t("Logout") ?></a></li>
             <?php endif?>
 		</ul>
@@ -266,7 +275,7 @@ $('.remove-search').click(function(event){
 </div>
 
 <script>
-				$(function() {
+$(function() {
 	
 	var img_path = "<?php echo Yii::app()->request->baseUrl.'/images/'?>";
 	
@@ -287,9 +296,8 @@ $('.remove-search').click(function(event){
 							label: _highlight(item.label, request.term),
 							label_form: item.label,
 							image: item.image,
-							uname: item.uname
-							
-						}
+							uname: item.uname							
+						};
 					}));
 					$(".team-loading").empty();
 					$(".ui-autocomplete").css({'width':'300px'});
@@ -318,8 +326,33 @@ $('.remove-search').click(function(event){
 	function _highlight(s, t) {
 		var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
 		return s.replace(matcher, "<strong>$1</strong>");
-	}
+	};
+    
+    
+    
+    
 });
+
+$(document.body).on('click','#notifications',function(){ 
+    //adicionar um if has class closed
+        //alert('hahahahah');
+    $.ajax({
+        url: "<?php echo Yii::app()->request->baseUrl.'/site/getnotifications'?>",
+        type: 'POST',
+        data: {
+            YII_CSRF_TOKEN: "<?php echo Yii::app()->request->csrfToken ?>"
+        },
+        dataType: 'json',
+        success: function(data){
+            $('.notifications').html(data.res);
+            //$(".ui-notifications").css({'width':'300px'});
+            //$(".ui-notifications").css({'z-index':'1000'});
+        }
+    });
+});
+
+
+
 			</script>
 		
 

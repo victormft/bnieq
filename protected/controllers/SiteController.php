@@ -188,4 +188,70 @@ class SiteController extends Controller
 			throw new CHttpException(404,UserModule::t('It was not possible to resolve the request.'));
 			
 	}
+    
+    public function actionGetNotifications()
+	{       
+		if(1/*have notifications*/)
+		{
+			$qry = new CDbCriteria( array(
+				'condition' => "user_id LIKE :param",
+                'order' => "time DESC",
+				'params'    => array(':param' => Yii::app()->user->id),  
+				'limit'=> 6
+			) );
+			
+			$query = Notification::model()->findAll($qry);    
+			
+		}
+		else
+		{
+			/* escrever mensagem de vazio */
+		}
+        
+		$list = array();   
+        $html='';
+		foreach($query as $q)
+		{
+            $source = User::model()->findbypk($q->source_id);
+            $html .= '
+		
+            <a href="'. Yii::app()->request->baseUrl .'/' . $source->username . '"> 
+            <div style="overflow: auto; padding:0 10px 0 10px">
+                <div class="team-item">
+                    <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                    <div class="team-text">
+                        <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('followed you.') . '</div>
+                    </div>
+                </div>
+            </div>
+            </a>
+            <li class="divider"></li>
+
+            ';
+            
+			//$data['srcname'] = $source->getFullName();
+            if($q->notification_type == Notification::FOLLOW_USER)
+                $data['description'] = $source->getFullName().' followed you.';
+            
+            $data['image'] = $source->profile->logo->name;
+            
+			$list['myData'][] = $data;
+			unset($data);
+		}
+		
+		if(!empty($query)){
+			echo CJSON::encode(array(
+				'res'=>$html . '
+                    <li class="name-hover" style="text-align:center">
+                        <a href="#" >' . UserModule::t('See all') . '</a>
+                    </li>
+                '
+			));
+            exit;
+        }
+		
+		else 
+			throw new CHttpException(404,UserModule::t('It was not possible to resolve the request.'));
+			
+	}
 }

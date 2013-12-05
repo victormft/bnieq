@@ -182,4 +182,6 @@ return array(
 	'Page not found.' => 'Página não encontrada.',
 	'Are you sure?' => 'Você tem certeza?',
 	'This action has no return!' => 'Essa ação não tem retorno!',
+    'followed you.' => 'seguiu você.',
+    'See all' => 'Ver todas',
 );

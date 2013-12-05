@@ -58,6 +58,13 @@ class UserController extends Controller
                 $model->followers->follower_id = Yii::app()->user->id;
                 $model->followers->followed_id = $model->id;                
 				$model->followers->save();
+                
+                $note = new Notification;
+                $note->user_id = $model->id;
+                $note->notification_type = Notification::FOLLOW_USER;
+                $note->source_id = Yii::app()->user->id;
+                $note->save(); 
+                
                 echo CJSON::encode(array(
 					'res'=>count($model->followers)
 				));
@@ -76,6 +83,13 @@ class UserController extends Controller
                 $model->followers->follower_id = Yii::app()->user->id;
                 $model->followers->followed_id = $model->id;
 				$model->followers->save();
+                
+                $note = new Notification;
+                $note->user_id = $model->id;
+                $note->notification_type = Notification::FOLLOW_USER;
+                $note->source_id = Yii::app()->user->id;
+                $note->save(); 
+                
                 $model = $this->loadModel($_GET['username']);
 				echo CJSON::encode(array(
 					'res'=>count($model->followers)
