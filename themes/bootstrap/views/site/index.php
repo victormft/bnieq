@@ -170,7 +170,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 		<h1>Selecionadas</h1>
 		<span class="carousel-header-span">As preferidas da equipe do NextBlue</span> 
 	</div>
-	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Selecionadas'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
+	<?php echo CHtml::link(UserModule::t('See all'),array('/startup?g=Selecionadas'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
 	<!--<a><span style="display:inline; float:right;">lala</span></a>-->
 	<div class="carousel-wrap-items">
 
@@ -197,7 +197,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 		<h1>Populares</h1>
 		<span class="carousel-header-span">As mais procuradas pelos usuários</span>
 	</div>
-	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Populares'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
+	<?php echo CHtml::link(UserModule::t('See all'),array('/startup?g=Populares'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
 	<div class="carousel-wrap-items">
 
 
@@ -225,7 +225,7 @@ $this->widget('bootstrap.widgets.TbCarousel', array(
 		<h1>Recentes</h1>
 		<span class="carousel-header-span">Cadastradas recentemente</span>
 	</div>
-	<?php echo CHtml::link(UserModule::t('See All'),array('/startup?g=Novidades'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
+	<?php echo CHtml::link(UserModule::t('See all'),array('/startup?g=Novidades'), array('style'=>'font-size:18px; display:inline; float:right; margin-top:-40px;'));?>
 	<div class="carousel-wrap-items">
 
 
