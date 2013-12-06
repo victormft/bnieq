@@ -246,51 +246,30 @@ class SiteController extends Controller
                     <li class="divider"></li>
                     ';
                     break;
-            }
-            
-            
-            /*$html .= '
-		
-            <a href="'. Yii::app()->request->baseUrl .'/' . $source->username . '"> 
-            <div style="overflow: auto; padding:0 10px 0 10px">
-                <div class="team-item">
-                    <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
-                    <div class="team-text">
-                        <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('followed you.') . '</div>
+                
+                case Notification::ADDED_TO_STARTUP :
+                    $startup = Startup::model()->findbypk($q->target_id);
+                    $html .= '		
+                    <a href="'. Yii::app()->request->baseUrl .'/' . $startup->startupname . '"> 
+                    <div style="overflow: auto; padding:0 10px 0 10px">
+                        <div class="team-item">
+                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="team-text">
+                                <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('added you to') . ' <b>' . $startup->name . '</b>.</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            </a>
-            <li class="divider"></li>
-
-            ';
-            
-			//$data['srcname'] = $source->getFullName();
-            if($q->notification_type == Notification::FOLLOW_USER)
-                $data['description'] = $source->getFullName().' followed you.';
-            
-            $data['image'] = $source->profile->logo->name;
-             * 
-             * 
-             */
-            
-			//$list['myData'][] = $data;
-			//unset($data);
+                    </a>
+                    <li class="divider"></li>
+                    ';
+                    break;
+            }
 		}
 		
-		if(!empty($query)){
-			echo CJSON::encode(array(
-				'res'=>$html . '
-                    <li class="name-hover" style="text-align:center">
-                        <a href="#" >' . UserModule::t('See all') . '</a>
-                    </li>
-                '
-			));
-            exit;
-        }
-		
-		else 
-			throw new CHttpException(404,UserModule::t('It was not possible to resolve the request.'));
+        echo CJSON::encode(array(
+            'res'=>$html 
+        ));
+        exit;
 			
 	}
 }

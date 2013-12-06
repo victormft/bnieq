@@ -938,6 +938,13 @@ class StartupController extends Controller
 		</div>
 		
 		';
+        
+        $note = new Notification;
+        $note->user_id = $usr->id;
+        $note->notification_type = Notification::ADDED_TO_STARTUP;
+        $note->source_id = Yii::app()->user->id;
+        $note->target_id = $model->id;
+        $note->save();
 	
 		
 		echo CJSON::encode(array(

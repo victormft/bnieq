@@ -115,9 +115,18 @@ $('.remove-search').click(function(event){
                 </li>
                 
                 <li class="dropdown" id="notifications">
-                    <a class="dropdown-toggle" data-toggle="dropdown" style="display:inline-block;" href='#'><i class="icon-globe" style="display:inline; font-size:20px; line-height:20px;"></i></a>
-                    <ul class="dropdown-menu notifications" style="width: 300px">
+                    <a class="dropdown-toggle" data-toggle="dropdown" style="display:inline-block;" href='#'><i class="icon-bell" style="display:inline; font-size:20px; line-height:20px;"></i></a>
+                    <ul class="dropdown-menu" style="width: 300px">
+                        <div style="margin-left:10px; margin-bottom:-5px;">
+                            <b>Notifications</b>
+                        </div>
+                        <li class="divider"></li>
                         
+                        <div class="notifications"></div>
+                        
+                        <li class="name-hover" style="text-align:center">
+                            <a href="#" ><?php echo UserModule::t('See all'); ?></a>
+                        </li>
                     </ul>
                 </li>
 
@@ -337,6 +346,9 @@ $(document.body).on('click','#notifications',function(){
     //adicionar um if has class closed
         //alert('hahahahah');
     $.ajax({
+        //beforeSend: function(){
+          //  $(".notifications").html("<img src='<?php echo Yii::app()->request->baseUrl; ?>/images/loading.gif'/>");
+        //},
         url: "<?php echo Yii::app()->request->baseUrl.'/site/getnotifications'?>",
         type: 'POST',
         data: {
