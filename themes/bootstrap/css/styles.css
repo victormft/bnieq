@@ -875,15 +875,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	float:left;
 	margin-right: 10px;
+    
+	background:#fafafa;
+	width:60px; 
+	height:60px;
+	padding:4px;
+	border-radius: 5px;
+	line-height:55px;
+	text-align:center;
+	box-shadow: inset 0px 0px 4px 1px #ddd;
 }
 
 #team-img
 {
-	width: 60px;
-	height: 60px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	border: 1px solid #aaa;	
+    max-width:60px;
+	max-height:60px;    
 }
 
 .team-ready .team-item .team-text
