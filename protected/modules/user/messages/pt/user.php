@@ -194,4 +194,5 @@ return array(
 	'You cannot delete this Founder!' => 'Você não pode deletar esse Fundador!',
     'asked for membership in' => 'pediu para ser membro na startup',
     'added you to' => 'te adicionou na startup',
+    'Notifications' => 'Notificações',
 );

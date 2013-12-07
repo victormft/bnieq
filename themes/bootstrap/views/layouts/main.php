@@ -118,14 +118,14 @@ $('.remove-search').click(function(event){
                     <a class="dropdown-toggle" data-toggle="dropdown" style="display:inline-block;" href='#'><i class="icon-bell" style="display:inline; font-size:20px; line-height:20px;"></i></a>
                     <ul class="dropdown-menu" style="width: 300px">
                         <div style="margin-left:10px; margin-bottom:-5px;">
-                            <b>Notifications</b>
+                            <b><?php echo UserModule::t('Notifications'); ?></b>
                         </div>
                         <li class="divider"></li>
                         
                         <div class="notifications"></div>
                         
                         <li class="name-hover" style="text-align:center">
-                            <a href="#" ><?php echo UserModule::t('See all'); ?></a>
+                            <?php echo CHtml::link(UserModule::t('See all'), array('/notifications'));?>
                         </li>
                     </ul>
                 </li>
