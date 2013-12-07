@@ -195,4 +195,5 @@ return array(
     'asked for membership in' => 'pediu para ser membro na startup',
     'added you to' => 'te adicionou na startup',
     'Notifications' => 'Notificações',
+    'Your most recent notifications.' => 'Suas notificações mais recentes.',
 );
