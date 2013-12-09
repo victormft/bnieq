@@ -56,6 +56,26 @@ $('#follow').click(function(event) {
 			
 });
 
+$('.chooser').click(function(event){
+	var elem = $(this);
+	
+	if(!elem.hasClass('clicked'))
+	{
+		$('.profile-column-l-chooser').find('.clicked').removeClass('clicked');
+		elem.addClass('clicked');
+		
+		if(elem.hasClass('activity'))
+		{
+			$('.profile-column-l').css({'display':'none'});
+		}
+		else if(elem.hasClass('info'))
+		{
+			$('.profile-column-l').css({'display':'block'});
+		}
+	}
+	
+});
+
 
 function getUrlVars()
 {
@@ -86,134 +106,148 @@ $('.video-images-items').carouFredSel({
 
 ?>
 
-
-<div class="profile-header">	
-	<div id="startup-profile-img">
-		<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
-	</div>
-	<div class="profile-header-info">
-		
-		<div class="profile-name">
-			<span><?php echo CHtml::encode($model->name); ?></span>
+<div class="profile-header-wrap">
+	<div class="profile-header">	
+		<div id="startup-profile-img">
+			<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
 		</div>
-		
-		<div class="profile-onelinepitch">
-			<span style="font-style:italic;"><?php echo CHtml::encode($model->one_line_pitch); ?></span>
-		</div>
-		
-		<div class="profile-sectors">
-			<span><?php echo $model->getSectorNames(); ?></span>
-		</div>
-		
-		<div class="profile-location">
-			<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo CHtml::encode($model->city->nome); ?>
-		</div>
-		
-		<!--
-		<div class="profile-links">
-			<div class="profile-link">
-				<?php if($model->facebook): ?>
-					<a href="<?php echo $model->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
-				<?php endif; ?>
-			</div>
-			<div class="profile-link">
-				<?php if($model->twitter): ?>
-					<a href="<?php echo $model->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
-				<?php endif; ?>
-			</div>
-			<div class="profile-link">
-				<?php if($model->linkedin): ?>
-					<a href="<?php echo $model->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
-				<?php endif; ?>
-			</div>
-			<div class="profile-website">
-				<i class="icon-globe profile-icon"></i><?php echo $model->website; ?>
-			</div>
-		</div>
-		-->
-	</div>
-	
-	
-	<div class="profile-header-right">
-		
-            <?php if(Yii::app()->user->checkAccess('editStartup', array('startup'=>$model))): ?>
-			<span class="edit-btn">			
-				<?php $this->widget('bootstrap.widgets.TbButton', array(
-				'label'=>'Editar',
-				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array('edit/'.$model->startupname),
-				'htmlOptions'=>array('style'=>'text-shadow: 1px 1px 1px #555;', /*'class'=>'profile-btn'*/),
-					)); 
-				?>
-			</span>
-            <?php endif; ?>
+		<div class="profile-header-info">
 			
-			<span class="follow-btn">
+			<div class="profile-name">
+				<span><?php echo CHtml::encode($model->name); ?></span>
+			</div>
 			
+			<div class="profile-onelinepitch">
+				<span style="font-style:italic;"><?php echo CHtml::encode($model->one_line_pitch); ?></span>
+			</div>
 			
-				<div class="follow-info">
-					
-					
-					<?php EQuickDlgs::ajaxLink(
-                    array(
-                        'controllerRoute' => 'startup/followpop',
-                        'actionParams' => array('id'=>$model->id),
-                        'dialogTitle' => UserModule::t('Followers'),
-                        'dialogWidth' => 600,
-                        'dialogHeight' => 500,
-                        'openButtonText' => '<div class="follow-count">'.count($model->users).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
-                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-                    )
-					);?>
-					
-					
-					
+			<div class="profile-sectors">
+				<span><?php echo $model->getSectorNames(); ?></span>
+			</div>
+			
+			<div class="profile-location">
+				<i class="icon-map-marker profile-icon"></i><?php if (isset($model->city)) echo CHtml::encode($model->city->nome); ?>
+			</div>
+			
+			<!--
+			<div class="profile-links">
+				<div class="profile-link">
+					<?php if($model->facebook): ?>
+						<a href="<?php echo $model->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/></a>
+					<?php endif; ?>
 				</div>
-
-				<?php 
-					
-					if(!$model->hasUserFollowing(Yii::app()->user->id))
-					{
-						$this->widget('bootstrap.widgets.TbButton', array(
-						'label'=>'Follow',
-                        'id'=>'follow',
-						'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-						'size'=>'normal', // null, 'large', 'small' or 'mini'
-						'url'=>'',//array('follow','name'=>$model->name),
-						'htmlOptions'=>array('class'=>'btn-follow'),
-						)); 
-					}
-					
-					else
-					{
-						$this->widget('bootstrap.widgets.TbButton', array(
-						'label'=>'Unfollow',
-						'id'=>'follow',
-						'size'=>'normal', // null, 'large', 'small' or 'mini'
-						'url'=>'',//array('unfollow','name'=>$model->name),
-						'htmlOptions'=>array('class'=>'btn-unfollow'),
-						)); 
-					}
-					/*
-					echo "<button class='btn-msg-wrap' type='button' data-toggle='modal' data-target='#myModal'>";
-					$this->widget('bootstrap.widgets.TbButton', array(
-						'label'=>'Message',
-						'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-						'size'=>'normal', // null, 'large', 'small' or 'mini'
-						'url'=>'',//array('follow','name'=>$model->name),
-						'htmlOptions'=>array('style'=>'width:70px; padding:12px 5px;'),
-						)); 
-					echo "</button>";
-					*/
-				?>
-				
-			</span>
+				<div class="profile-link">
+					<?php if($model->twitter): ?>
+						<a href="<?php echo $model->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/></a>
+					<?php endif; ?>
+				</div>
+				<div class="profile-link">
+					<?php if($model->linkedin): ?>
+						<a href="<?php echo $model->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/></a>
+					<?php endif; ?>
+				</div>
+				<div class="profile-website">
+					<i class="icon-globe profile-icon"></i><?php echo $model->website; ?>
+				</div>
+			</div>
+			-->
+		</div>
+		
+		
+		<div class="profile-header-right">
 			
+				<?php if(Yii::app()->user->checkAccess('editStartup', array('startup'=>$model))): ?>
+				<span class="edit-btn">			
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Editar',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('edit/'.$model->startupname),
+					'htmlOptions'=>array('style'=>'text-shadow: 1px 1px 1px #555;', /*'class'=>'profile-btn'*/),
+						)); 
+					?>
+				</span>
+				<?php endif; ?>
+				
+				<span class="follow-btn">
+				
+				
+					<div class="follow-info">
+						
+						
+						<?php EQuickDlgs::ajaxLink(
+						array(
+							'controllerRoute' => 'startup/followpop',
+							'actionParams' => array('id'=>$model->id),
+							'dialogTitle' => UserModule::t('Followers'),
+							'dialogWidth' => 600,
+							'dialogHeight' => 500,
+							'openButtonText' => '<div class="follow-count">'.count($model->users).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
+							//'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+						)
+						);?>
+						
+						
+						
+					</div>
+
+					<?php 
+						
+						if(!$model->hasUserFollowing(Yii::app()->user->id))
+						{
+							$this->widget('bootstrap.widgets.TbButton', array(
+							'label'=>'Follow',
+							'id'=>'follow',
+							'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+							'size'=>'normal', // null, 'large', 'small' or 'mini'
+							'url'=>'',//array('follow','name'=>$model->name),
+							'htmlOptions'=>array('class'=>'btn-follow'),
+							)); 
+						}
+						
+						else
+						{
+							$this->widget('bootstrap.widgets.TbButton', array(
+							'label'=>'Unfollow',
+							'id'=>'follow',
+							'size'=>'normal', // null, 'large', 'small' or 'mini'
+							'url'=>'',//array('unfollow','name'=>$model->name),
+							'htmlOptions'=>array('class'=>'btn-unfollow'),
+							)); 
+						}
+						/*
+						echo "<button class='btn-msg-wrap' type='button' data-toggle='modal' data-target='#myModal'>";
+						$this->widget('bootstrap.widgets.TbButton', array(
+							'label'=>'Message',
+							'type'=>'warning', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+							'size'=>'normal', // null, 'large', 'small' or 'mini'
+							'url'=>'',//array('follow','name'=>$model->name),
+							'htmlOptions'=>array('style'=>'width:70px; padding:12px 5px;'),
+							)); 
+						echo "</button>";
+						*/
+					?>
+					
+				</span>
+				
+			
+		</div>
+		
+
+	</div>
+	
+	<div class="profile-column-l-chooser">
+		<ul>
+			<li class="chooser info clicked">
+				<a href="javascript:void(0)"><?php echo UserModule::t('Informations');?></a>
+			</li>
+			<li class="chooser activity">
+				<a href="javascript:void(0)"><?php echo UserModule::t('Activities');?></a>
+			</li>
+		</ul>
 		
 	</div>
 	
-
 </div>
 	
 
@@ -462,7 +496,7 @@ $('.video-images-items').carouFredSel({
 		
 			<?php
 			
-				if($model->company_stage=='Conceito')
+				if($model->company_stage=='Concept')
 				{
 					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true data-original-title='<b>Estágio 1:</b> Conceito'>";
 					$this->widget('bootstrap.widgets.TbProgress', array(
@@ -476,7 +510,7 @@ $('.video-images-items').carouFredSel({
 					//echo '<br /><b>Stage 1:</b> Conceito';
 				}
 				
-				else if($model->company_stage=='Desenvolvimento')
+				else if($model->company_stage=='Development')
 				{
 					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true data-original-title='<b>Estágio 2:</b> Desenvolvimento'>";
 					$this->widget('bootstrap.widgets.TbProgress', array(
@@ -490,7 +524,7 @@ $('.video-images-items').carouFredSel({
 					//echo '<br /><b>Stage 2:</b> Desenvolvimento';
 				}
 				
-				else if($model->company_stage=='Protótipo')
+				else if($model->company_stage=='Prototype')
 				{	
 					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true title='<b>Estágio 3:</b> Protótipo'>";
 					$this->widget('bootstrap.widgets.TbProgress', array(
@@ -503,7 +537,7 @@ $('.video-images-items').carouFredSel({
 					//echo '<br /><b>Stage 3:</b> Protótipo';
 				}
 				
-				else if($model->company_stage=='Produto Final')
+				else if($model->company_stage=='Final Product')
 				{	
 					echo "<div style='padding:15px; background:#ccc; border-radius:5px;' data-toggle='tooltip' data-html=true data-original-title='<b>Estágio 4:</b> Produto Final'>";
 					$this->widget('bootstrap.widgets.TbProgress', array(

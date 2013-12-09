@@ -163,7 +163,7 @@ class AdminController extends Controller
         if(isset($_GET['Startup']))
             $model->attributes=$_GET['Startup'];
 		
-		if(isset($_GET['Startup_sort']))
+		if(isset($_GET['Startup_sort']) || isset($_GET['ajax']))
 		{
 			$model->rand=false;
 		}
@@ -188,7 +188,10 @@ class AdminController extends Controller
 		$this->performAjaxValidation($model);
 		if(isset($_POST['Startup']))
 		{
-			$model->attributes=$_POST['Startup'];
+			$model->name=$_POST['Startup']['name'];
+			$model->one_line_pitch=$_POST['Startup']['one_line_pitch'];
+			$model->selecionada=$_POST['Startup']['selecionada'];
+			
 			
 			if($model->validate()) {
 				$model->save();

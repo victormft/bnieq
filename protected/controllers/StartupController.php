@@ -596,6 +596,9 @@ class StartupController extends Controller
 			
 		if(isset($_GET['g']))
 		{
+		
+			$model->default_sort=false;
+			
 			if($_GET['g']=='Selecionadas')
 				$model->selecionada=1;
 			
@@ -611,9 +614,10 @@ class StartupController extends Controller
 			$model->location=$_GET['c'];
 		}
 		
-		if(isset($_GET['Startup_sort']))
+		if(isset($_GET['Startup_sort'])/*|| isset($_GET['ajax'])*/)
 		{
-			$model->rand=false;
+			//$model->rand=false;
+			$model->default_sort=false;
 		}
 		
 			

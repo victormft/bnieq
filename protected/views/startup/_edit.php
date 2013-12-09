@@ -44,7 +44,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 			{
 				$('.container').css({'opacity':'0.6'});
 				$('.container').prepend('<div class=\"mask\" style=\"position:absolute; left:0; height:100%; width:100%; background-color:transparent; z-index:999;\"></div>')
-				$('.profile-header').prepend('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" />')
+				$('.profile-header-edit').prepend('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" />')
 			}
 		}, 500);
 		
@@ -276,7 +276,7 @@ function getUrlVars()
     ),
 ));?>
 
-<div class="profile-header">	
+<div class="profile-header-edit">	
 
 	<div id="startup-profile-img">
 		<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
