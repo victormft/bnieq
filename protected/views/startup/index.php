@@ -249,12 +249,12 @@ function SearchFunc()   {
 		'listViewId' => 'startupslistview', 
 		'header' => '',
 		'loaderText'=>UserModule::t('Loading...'),
-		'options' => array('history' => false, 'triggerPageTreshold' => 2, 'trigger'=>UserModule::t('Load More')),
+		'options' => array('history' => false, 'triggerPageTreshold' => 0, 'trigger'=>UserModule::t('Load More')),
     ),
 'afterAjaxUpdate'=>"function(id, data) {
         $.ias({
             'history': false,
-            'triggerPageTreshold': 2,
+            'triggerPageTreshold': 0,
             'trigger': 'Carregar Mais',
             'container': '#startupslistview > .items',
             'item': '.view-list',

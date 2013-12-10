@@ -226,6 +226,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	width: 600px;
 }
 
+.profile-column-l-activity
+{
+	float:left;
+	height:auto;
+	width: 600px;
+	display:none;
+}
+
 .profile-column-r
 {
 	float:right;

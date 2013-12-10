@@ -737,6 +737,13 @@ class StartupController extends Controller
 				$model->users=User::model()->findbyPk(Yii::app()->user->id);
 				$model->followers_num=$model->followers_num+1;
 				$model->saveWithRelated(array('users'));
+				
+				$activity = new ActivityStartup;
+                $activity->user_id = Yii::app()->user->id;
+                $activity->activity_type = ActivityStartup::FOLLOW_STARTUP;
+                $activity->startup_id = $model->id;
+                $activity->save(); 
+				
 				echo CJSON::encode(array(
 					'res'=>count($model->users)
 				));
@@ -755,8 +762,16 @@ class StartupController extends Controller
 				}
 				
 				$model->users=User::model()->findbyPk(Yii::app()->user->id);
-				$model->followers_num=$model->followers_num+1;
 				$model->saveWithRelated( array('users' => array('append' => true)));
+				
+				$activity = new ActivityStartup;
+                $activity->user_id = Yii::app()->user->id;
+                $activity->activity_type = ActivityStartup::FOLLOW_STARTUP;
+                $activity->startup_id = $model->id;
+                $activity->save(); 
+				
+				$model = $this->loadModel($_GET['name']);
+				
 				echo CJSON::encode(array(
 					'res'=>count($model->users)
 				));

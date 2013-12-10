@@ -66,10 +66,34 @@ $('.chooser').click(function(event){
 		
 		if(elem.hasClass('activity'))
 		{
-			$('.profile-column-l').css({'display':'none'});
+			if(!elem.hasClass('already-loaded'))
+			{
+				$('.profile-column-l').css({'opacity':'0.5'});
+				$.ajax({
+					url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					dataType: 'json',
+					success: function(data){
+						$('.profile-column-l').css({'display':'none'});
+						$('.profile-column-l').css({'opacity':'1'});
+						$('.content-info-activity').html(data.res);
+						$('.profile-column-l-activity').css({'display':'block'});
+						elem.addClass('already-loaded');
+					}
+				});
+			}
+			else
+			{
+				$('.profile-column-l').css({'display':'none'});
+				$('.profile-column-l-activity').css({'display':'block'});
+			}
 		}
 		else if(elem.hasClass('info'))
 		{
+			$('.profile-column-l-activity').css({'display':'none'});
 			$('.profile-column-l').css({'display':'block'});
 		}
 	}
@@ -98,9 +122,6 @@ $('.video-images-items').carouFredSel({
 		auto:false,
 		pagination: '#video-images-pagination'
 	});	
-
-
-
 
 ");
 
@@ -392,6 +413,23 @@ $('.video-images-items').carouFredSel({
 	</div>
 	<?php endif;?>
 	
+
+</div>
+
+<div class="profile-column-l-activity">
+
+	<div class="content-wrap">
+
+		<div class="content-head">
+			<span class="txt"><i class="icon-lightbulb profile-icon"></i>Activities</span>
+			<span class="tip">Atividades recentes da Empresa</span>
+		</div>
+		
+		<div class="content-info">
+			<div class="content-info-activity"></div>
+		</div>
+		
+	</div>	
 
 </div>
 
