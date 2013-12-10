@@ -22,6 +22,9 @@ $query = Notification::model()->findAll($qry);
 $html='';
 foreach ($query as $q)
 {
+    $q->seen = 1;
+    $q->save();
+    
     $source = User::model()->findbypk($q->source_id);
     switch ($q->notification_type) 
     {        

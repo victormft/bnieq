@@ -20,6 +20,8 @@ class Notification extends CActiveRecord
 	const ASK_MEMBERSHIP_STARTUP=2;
 	const ADDED_TO_STARTUP=3;
     
+    public $unseenNotificationsCount;
+    
     
 	/**
 	 * @return string the associated database table name
@@ -115,5 +117,20 @@ class Notification extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+    
+    public function getCountUnreaded($userId) {
+		if (!$this->unseenNotificationsCount) {
+			$c = new CDbCriteria();
+			$c->addCondition('t.user_id = :uId');
+			$c->addCondition('t.seen = "0"');
+			$c->params = array(
+				'uId' => $userId,
+			);
+			$count = self::model()->count($c);
+			$this->unseenNotificationsCount = $count;
+		}
+
+		return $this->unseenNotificationsCount;
 	}
 }
