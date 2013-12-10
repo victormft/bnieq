@@ -42,6 +42,7 @@ $(document).ready(function() {
 	$('.startup_carousel_main').carouFredSel({
 		items : 1,
 		scroll: {
+			fx		  : 'fade',
 			duration  : 600
 		},
 		circular: true,
@@ -80,10 +81,14 @@ $(document).ready(function() {
 <div style="margin-bottom:20px; margin-top:-20px; position:relative;">
 	
 	<div class="startup_carousel_main">
-		
-			<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>Paulista.jpg" alt="">
-			<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>edicios-sp-gray.jpg" alt="">
-			<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>edicios-sp.jpg" alt="">
+				
+				<div style="position:relative;">
+					<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner3.jpg" alt="">
+					<span style="position:absolute; top:200px; left:30px; font-size:40px; color:#fff; text-shadow:3px 3px black;">NextBlue Equity Crowdfunding no Brasil</span>
+				</div>
+			
+				<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner1.jpg" alt="">
+			
 		
 	</div>
 	

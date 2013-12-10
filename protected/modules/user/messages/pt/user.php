@@ -196,4 +196,7 @@ return array(
     'added you to' => 'te adicionou na startup',
     'Notifications' => 'Notificações',
     'Your most recent notifications.' => 'Suas notificações mais recentes.',
+	'Invalid Value!' => 'Valor Inválido!',
+	'Informations' => 'Informações',
+	'Activities' => 'Atividades',
 );

@@ -70,6 +70,9 @@ class Startup extends CActiveRecord
 	//to rand() in 'search' method
 	public $rand = true;
 	
+	//to set default sort in 'search' method
+	public $default_sort = true;
+	
 	//company size
 	const SIZE_1="1-5";
 	const SIZE_2="6-10";
@@ -110,7 +113,7 @@ class Startup extends CActiveRecord
 			array('name, one_line_pitch, location', 'required', 'message'=>UserModule::t("Required")),
 			array('product_description, company_stage, sec', 'required', 'message'=>UserModule::t("Required"), 'on'=>'publish'),
 			array('product_description, company_stage, sec, location', 'required', 'message'=>UserModule::t("Required"), 'on'=>'editable'),
-			array('company_stage','in','range'=>array('Concept','Development','Prototype','Final Product'), 'message' => 'Invalid Value!'),
+			array('company_stage','in','range'=>array('Concept','Development','Prototype','Final Product'), 'message' => UserModule::t('Invalid Value!'), 'on'=>'editable'),
 			//array('sectors', 'required', 'message'=>UserModule::t("Required"), 'on'=>'updateSectors'),
 			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),
 			array('name', 'length', 'max'=>40),
@@ -216,9 +219,11 @@ class Startup extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+		
 		if($group)
 		{
+			$this->default_sort=false;
+			
 			switch ($group) {
                 case 1:
                     $this->selecionada=1;
@@ -268,9 +273,15 @@ class Startup extends CActiveRecord
         
         $criteria->select="t.*,(SELECT COUNT(startup_follow.user_id) FROM startup_follow WHERE t.id=startup_follow.startup_id) AS followers_count";                
       
-        if($this->rand)
+        /*if($this->rand)
 		{
 			$criteria->order="rand()";
+		}
+		*/
+		
+		if($this->default_sort)
+		{
+			$criteria->order="t.create_time DESC";
 		}
 		
 		

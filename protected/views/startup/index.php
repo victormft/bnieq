@@ -251,6 +251,18 @@ function SearchFunc()   {
 		'loaderText'=>UserModule::t('Loading...'),
 		'options' => array('history' => false, 'triggerPageTreshold' => 2, 'trigger'=>UserModule::t('Load More')),
     ),
+'afterAjaxUpdate'=>"function(id, data) {
+        $.ias({
+            'history': false,
+            'triggerPageTreshold': 2,
+            'trigger': 'Carregar Mais',
+            'container': '#startupslistview > .items',
+            'item': '.view-list',
+            'pagination': '#startupslistview .pager',
+            'next': '#startupslistview .next:not(.disabled):not(.hidden) a',
+            'loader': 'Carregando...'
+        });
+    }",
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
         'create_time',
