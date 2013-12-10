@@ -212,6 +212,9 @@ class SiteController extends Controller
         $html='';
 		foreach($query as $q)
 		{
+            $q->seen = 1;
+            $q->save();
+            
             $source = User::model()->findbypk($q->source_id);
             switch ($q->notification_type) 
             {
@@ -266,8 +269,10 @@ class SiteController extends Controller
             }
 		}
 		
+        $c=Notification::model()->getCountUnreaded(Yii::app()->user->getId());
         echo CJSON::encode(array(
-            'res'=>$html 
+            'res'=>$html,
+            'c'=>$c>0 ? $c : ''
         ));
         exit;
 			

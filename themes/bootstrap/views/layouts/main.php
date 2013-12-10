@@ -115,7 +115,10 @@ $('.remove-search').click(function(event){
                 </li>
                 
                 <li class="dropdown" id="notifications">
-                    <a class="dropdown-toggle" data-toggle="dropdown" style="display:inline-block;" href='#'><i class="icon-bell" style="display:inline; font-size:20px; line-height:20px;"></i></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" style="display:inline-block; position:relative;" href='#'>
+                        <i class="icon-bell" style="display:inline; font-size:20px; line-height:20px;"></i>
+                        <div class="noticount" style="font-size: 13px; position: absolute; top:5px; right:2px;"><?php $c=Notification::model()->getCountUnreaded(Yii::app()->user->getId()); echo $c>0 ? $c : '' ?></div>
+                    </a>
                     <ul class="dropdown-menu" style="width: 300px">
                         <div style="margin-left:10px; margin-bottom:-5px;">
                             <b><?php echo UserModule::t('Notifications'); ?></b>
@@ -357,6 +360,7 @@ $(document.body).on('click','#notifications',function(){
         dataType: 'json',
         success: function(data){
             $('.notifications').html(data.res);
+            $('.noticount').html(data.c);
             //$(".ui-notifications").css({'width':'300px'});
             //$(".ui-notifications").css({'z-index':'1000'});
         }
