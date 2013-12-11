@@ -70,7 +70,7 @@ $('.chooser').click(function(event){
 			{
 				$('.profile-column-l').css({'opacity':'0.5'});
 				$.ajax({
-					url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."',
+					url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
 					data: {
 						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
@@ -98,6 +98,27 @@ $('.chooser').click(function(event){
 		}
 	}
 	
+});
+
+$('.profile-column-l-activity').on('click','.more-activities',function(event){
+	var elem = $(this);
+	var offset = elem.attr('data-offset');
+	$.ajax({
+		url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."&offset='+offset,
+		type: 'POST',
+		data: {
+			YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+		},
+		dataType: 'json',
+		success: function(data){
+			elem.remove();
+			$('.content-info-activity').append(data.res);
+		},
+		error: function(data){
+			$('.content-info-activity').append('asd');
+		}
+	});
+
 });
 
 
