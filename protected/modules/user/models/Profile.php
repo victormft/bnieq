@@ -49,6 +49,9 @@ class Profile extends CActiveRecord
 	
 	//to rand() in 'search' method
 	public $rand = true;
+    
+    //to set default sort in 'search' method
+	public $default_sort = true;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -173,6 +176,7 @@ class Profile extends CActiveRecord
          * 
          */
         
+        
         $criteria->addCondition('t.user_id <> 1');
         
         $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
@@ -195,12 +199,13 @@ class Profile extends CActiveRecord
         
         $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";                
       
-        if($this->rand)
-		{
-			$criteria->order="rand()";
-		}
+			
 		
-        if($this->group){
+		
+        if($this->group)
+        {
+            $this->default_sort=false;
+            
             if($this->group=='Empreendedores'){
                 $criteria->addCondition('user_id IN (SELECT user_id FROM user_startup WHERE position="Founder")');  
             }
@@ -222,6 +227,11 @@ class Profile extends CActiveRecord
 			$criteria->with = isset($criteria->with) ? array_merge($criteria->with, array('sectors')) : array('sectors');
 			$criteria->together = true;
 			$criteria->compare('sectors.sector_id', $this->sectors,true);
+		}
+        
+        if($this->default_sort)
+		{
+			$criteria->order="t.user_id DESC";
 		}
         
 		$datas = new CActiveDataProvider($this, array(

@@ -36,6 +36,7 @@ class DefaultController extends Controller
 				
         if(isset($_GET['g']))
 		{   
+            $model->default_sort=false;
             $model->group=$_GET['g'];
 		}
         
@@ -46,7 +47,7 @@ class DefaultController extends Controller
 		
 		if(isset($_GET['Profile_sort']))
 		{
-			$model->rand=false;
+			$model->default_sort=false;
 		}
         
 		$this->render('/user/index',array(

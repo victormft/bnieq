@@ -254,8 +254,20 @@ $(document.body).on('click','.follow-press',function(event){
     'listViewId' => 'userslistview', 
     'header' => '',
     'loaderText'=>UserModule::t('Loading...'),
-    'options' => array('history' => false, 'triggerPageTreshold' => 2, 'trigger'=>UserModule::t('Load More')),
+    'options' => array('history' => false, 'triggerPageTreshold' => 0, 'trigger'=>UserModule::t('Load More')),
 ),
+'afterAjaxUpdate'=>"function(id, data) {
+    $.ias({
+        'history': false,
+        'triggerPageTreshold': 0,
+        'trigger': 'Carregar Mais',
+        'container': '#userslistview > .items',
+        'item': '.view-list',
+        'pagination': '#userslistview .pager',
+        'next': '#userslistview .next:not(.disabled):not(.hidden) a',
+        'loader': 'Carregando...'
+    });
+}",
 'sorterHeader'=>'',
 'sortableAttributes'=>array(
     'fullname',
