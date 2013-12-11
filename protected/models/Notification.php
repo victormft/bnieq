@@ -107,6 +107,8 @@ class Notification extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
+    
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -133,4 +135,13 @@ class Notification extends CActiveRecord
 
 		return $this->unseenNotificationsCount;
 	}
+    
+    public function saveFollow()
+    {
+        $sql = "SELECT id FROM notification WHERE user_id=:uId AND source_id=:sId";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":uId", $this->user_id, PDO::PARAM_INT);
+        $command->bindValue(":sId", $this->source_id, PDO::PARAM_INT);
+        if($command->execute()!==1) $this->save(); 
+    }
 }

@@ -63,7 +63,7 @@ class UserController extends Controller
                 $note->user_id = $model->id;
                 $note->notification_type = Notification::FOLLOW_USER;
                 $note->source_id = Yii::app()->user->id;
-                $note->save(); 
+                $note->saveFollow(); 
                 
                 echo CJSON::encode(array(
 					'res'=>count($model->followers)
