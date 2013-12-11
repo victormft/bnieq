@@ -6,7 +6,7 @@ class ActivityStartupController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex($startupname)
+	public function actionIndex($startupname, $offset)
 	{
 		if(Yii::app()->user->isGuest){
             $user = Yii::app()->getComponent('user');
@@ -23,33 +23,45 @@ class ActivityStartupController extends Controller
 			'condition' => "startup_id LIKE :param",
 			'order' => "time DESC",
 			'params'    => array(':param' => $model->id),  
-			'limit'=> 20
 		) );
 
 		$query = ActivityStartup::model()->findAll($qry); 
 		
 		$html='';
-		foreach ($query as $q)
+		
+		foreach ($query as $k => $q)
 		{
-			$user = User::model()->findbypk($q->user_id);
-			switch ($q->activity_type) 
-			{        
-				case ActivityStartup::FOLLOW_STARTUP :
-					$html .= '		
-					<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
-						<div class="team-item">
-							<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
-							<div class="team-text">
-								<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
+			if($offset <= $k && $k < $offset+2)
+			{
+			
+				$user = User::model()->findbypk($q->user_id);
+				switch ($q->activity_type) 
+				{        
+					case ActivityStartup::FOLLOW_STARTUP :
+						$html .= '		
+						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+							<div class="team-item">
+								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+								<div class="team-text">
+									<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="spacing-1"></div>
-					';
-					break;
-			   
+						<div class="spacing-1"></div>
+						';
+						break;
+				   
+				}
 			}
 		}
+		
+		$new_offset=$offset+2;
+		
+		if($new_offset < count($query))
+			$html .= '<div class="more-activities" data-offset='.$new_offset.' style="display:inline;"><a href="javascript:void(0)">More</a></div>';	
+
+		else 
+			$html .= '<div>No More</div>';
 		
 		echo CJSON::encode(array(
             'res'=>$html 
