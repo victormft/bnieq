@@ -63,7 +63,7 @@ $('.arrow-container').mouseover(function(event){
     
 ?>
 
-<div class="profile-header" style="padding-bottom: 15px;">
+<div class="profile-header-edit" style="padding-bottom: 15px;">
     
     <div id="startup-profile-img">
         <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>">    

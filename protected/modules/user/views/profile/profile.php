@@ -45,6 +45,72 @@ $('#followBtn').click(function(event) {
 		}			
 });
 
+$('.chooser').click(function(event){
+	var elem = $(this);
+	
+	if(!elem.hasClass('clicked'))
+	{
+		$('.profile-column-l-chooser').find('.clicked').removeClass('clicked');
+		elem.addClass('clicked');
+		
+		if(elem.hasClass('activity'))
+		{
+			if(!elem.hasClass('already-loaded'))
+			{
+				$('.profile-column-l').css({'opacity':'0.5'});
+				$.ajax({
+					url: '".Yii::app()->request->baseUrl."/activityuser/index?username=".$model->username."&offset=0',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					dataType: 'json',
+					success: function(data){
+						$('.profile-column-l').css({'display':'none'});
+						$('.profile-column-l').css({'opacity':'1'});
+						$('.content-info-activity').html(data.res);
+						$('.profile-column-l-activity').css({'display':'block'});
+						elem.addClass('already-loaded');
+					}
+				});
+			}
+			else
+			{
+				$('.profile-column-l').css({'display':'none'});
+				$('.profile-column-l-activity').css({'display':'block'});
+			}
+		}
+		else if(elem.hasClass('info'))
+		{
+			$('.profile-column-l-activity').css({'display':'none'});
+			$('.profile-column-l').css({'display':'block'});
+		}
+	}
+	
+});
+
+$('.profile-column-l-activity').on('click','.more-activities',function(event){
+	var elem = $(this);
+	var offset = elem.attr('data-offset');
+	$.ajax({
+		url: '".Yii::app()->request->baseUrl."/activityuser/index?username=".$model->username."&offset='+offset,
+		type: 'POST',
+		data: {
+			YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+		},
+		dataType: 'json',
+		success: function(data){
+			elem.remove();
+			$('.content-info-activity').append(data.res);
+		},
+		error: function(data){
+			$('.content-info-activity').append('asd');
+		}
+	});
+
+});
+
+
 
 function getUrlVars()
 {
@@ -89,149 +155,160 @@ function getUrlVars()
     ); */ ?>
 
 
+<div class="profile-header-wrap">
+    <div class="profile-header">	
 
-
-<div class="profile-header">	
-    
-    <div id="startup-profile-img">
-        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>">
-	</div>
-    
-	<div class="user-profile-header-info">     
-
-        <div class="profile-name">
-            <span><?php echo $model->getFullName(); ?></span>
+        <div id="startup-profile-img">
+            <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>">
         </div>
 
-        <div class="user-profile-onelinepitch">
-            <span><?php echo $profile->resume; ?></span>
-        </div>
+        <div class="user-profile-header-info">     
 
-        <?php if (isset($profile->city)): ?>
-        <div class="user-profile-location">
-            <i class="icon-map-marker profile-icon"></i><a href="#"><?php if (isset($profile->city)) echo $profile->city->nome; ?></a>
-        </div>
-        <?php endif; ?>        
-
-        <div class="user-profile-sectors">
-            <?php echo $model->getRolesForPrint(); ?>
-        </div>
-
-        <?php if($profile->facebook): ?>
-            <a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
-        <?php endif; ?>
-
-        <?php if($profile->twitter): ?>
-            <a href="<?php echo $profile->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>" style="margin-right:3px;"/></a>
-        <?php endif; ?>
-
-        <?php if($profile->linkedin): ?>
-            <a href="<?php echo $profile->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
-        <?php endif; ?>
-		
-        <?php if($profile->website): ?>            
-            <a href="<?php echo $profile->website; ?>" target="_blank" style="margin-left: 0.1px;"><div class="user-website"><i class="icon-globe"></i></div></a>
-        <?php endif; ?>    
-	</div>
-	
-	<div class="profile-header-right">
-			
-        
-		<span class="follow-btn">
-            
-            <div class="follow-info">
-                <?php EQuickDlgs::ajaxLink(
-                    array(
-                        'controllerRoute' => 'user/user/followpop',
-                        'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
-                        'dialogTitle' => UserModule::t('Followers'),
-                        'dialogWidth' => 600,
-                        'dialogHeight' => 500,
-                        'openButtonText' => '<div class="follow-count">'.count($model->followers).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
-                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-                    )
-					);?>
+            <div class="profile-name">
+                <span><?php echo $model->getFullName(); ?></span>
             </div>
-            
-            <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
-            <?php 
-                if(!$model->hasUserFollowing(Yii::app()->user->id))
-                {
-                    $this->widget('bootstrap.widgets.TbButton', array(
-                    'label'=>UserModule::t('Follow'),
-                    'id'=>'followBtn', 
-                    'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                    'size'=>'normal', // null, 'large', 'small' or 'mini'
-                    'url'=>'',//array('follow','name'=>$model->name),
-                    'htmlOptions'=>array('style'=>'width:60px; padding-top:12px; padding-bottom:12px; font-size:13px', 'class'=>'follow'),
-                    )); 
-                }
-                else
-                {
-                    $this->widget('bootstrap.widgets.TbButton', array(
-                    'label'=>UserModule::t('Unfollow'),
-                    'id'=>'followBtn', 
-                    'size'=>'normal', // null, 'large', 'small' or 'mini'
-                    'url'=>'',//array('unfollow','name'=>$model->name),
-                    'htmlOptions'=>array('style'=>'width:60px; padding-top:12px; padding-bottom:12px; font-size:13px', 'class'=>'unfollow'),
-                    )); 
-                }
-                //echo "<button class='btn-msg-wrap' type='button'>";
-                                
-                EQuickDlgs::ajaxLink(
-                    array(
-                        'controllerRoute' => 'messages/composewithid', //'member/view'
-                        'actionParams' => array('id'=>$model->id), //array('id'=>$model->member->id),
-                        'dialogTitle' => 'Enviar mensagem para ' . $model->getFullName(),
-                        'dialogWidth' => 450,
-                        'dialogHeight' => 400,
-                        'openButtonText' => UserModule::t('Message'),
-                        //'closeButtonText' => 'Close',
-                        'openButtonHtmlOptions' => array(
-                            'style' => 'width:70px; padding:12px 5px; margin-left: 10px; font-size:13px', 
-                            'class' => 'btn btn-warning',
-                        )
-                    )
-                );
-                //echo "</button>";
-                //if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model));
-            ?>
+
+            <div class="user-profile-onelinepitch">
+                <span><?php echo $profile->resume; ?></span>
+            </div>
+
+            <?php if (isset($profile->city)): ?>
+            <div class="user-profile-location">
+                <i class="icon-map-marker profile-icon"></i><a href="#"><?php if (isset($profile->city)) echo $profile->city->nome; ?></a>
+            </div>
+            <?php endif; ?>        
+
+            <div class="user-profile-sectors">
+                <?php echo $model->getRolesForPrint(); ?>
+            </div>
+
+            <?php if($profile->facebook): ?>
+                <a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
             <?php endif; ?>
-        </span>
-        
-        
-        <?php if(Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id))): ?>
-			<span class="edit-btn-user">
-			
-				<?php $this->widget('bootstrap.widgets.TbButton', array(
-                    'label'=>UserModule::t('Edit'),
-                    'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                    'size'=>'normal', // null, 'large', 'small' or 'mini'
-                    'url'=>array('edit','username'=>$model->username),
-                )); 
-				?>
-                
-			</span>
-        
-        <?php endif; ?>
-        
-        <?php //if($model->id !== Yii::app()->user->id): ?>
-        <?php //$this->widget('bootstrap.widgets.TbButton', array(
-            //'label'=>'Message',
-            //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-            //'size'=>'normal', // null, 'large', 'small' or 'mini'
-            //'url'=>array('/messages/compose','id'=>$model->id),
-            //'htmlOptions'=>array('style'=>'width:50px;'),
-           //     )); 
-            ?>
-        <?php //endif; ?>
-        
+
+            <?php if($profile->twitter): ?>
+                <a href="<?php echo $profile->twitter; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>" style="margin-right:3px;"/></a>
+            <?php endif; ?>
+
+            <?php if($profile->linkedin): ?>
+                <a href="<?php echo $profile->linkedin; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>" style="margin-right:3px;"/></a>
+            <?php endif; ?>
+
+            <?php if($profile->website): ?>            
+                <a href="<?php echo $profile->website; ?>" target="_blank" style="margin-left: 0.1px;"><div class="user-website"><i class="icon-globe"></i></div></a>
+            <?php endif; ?>    
+        </div>
+
+        <div class="profile-header-right">
+
+
+            <span class="follow-btn">
+
+                <div class="follow-info">
+                    <?php EQuickDlgs::ajaxLink(
+                        array(
+                            'controllerRoute' => 'user/user/followpop',
+                            'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
+                            'dialogTitle' => UserModule::t('Followers'),
+                            'dialogWidth' => 600,
+                            'dialogHeight' => 500,
+                            'openButtonText' => '<div class="follow-count">'.count($model->followers).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
+                            //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
+                        )
+                        );?>
+                </div>
+
+                <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
+                <?php 
+                    if(!$model->hasUserFollowing(Yii::app()->user->id))
+                    {
+                        $this->widget('bootstrap.widgets.TbButton', array(
+                        'label'=>UserModule::t('Follow'),
+                        'id'=>'followBtn', 
+                        'type'=>'success', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                        'size'=>'normal', // null, 'large', 'small' or 'mini'
+                        'url'=>'',//array('follow','name'=>$model->name),
+                        'htmlOptions'=>array('style'=>'width:60px; padding-top:12px; padding-bottom:12px; font-size:13px', 'class'=>'follow'),
+                        )); 
+                    }
+                    else
+                    {
+                        $this->widget('bootstrap.widgets.TbButton', array(
+                        'label'=>UserModule::t('Unfollow'),
+                        'id'=>'followBtn', 
+                        'size'=>'normal', // null, 'large', 'small' or 'mini'
+                        'url'=>'',//array('unfollow','name'=>$model->name),
+                        'htmlOptions'=>array('style'=>'width:60px; padding-top:12px; padding-bottom:12px; font-size:13px', 'class'=>'unfollow'),
+                        )); 
+                    }
+                    //echo "<button class='btn-msg-wrap' type='button'>";
+
+                    EQuickDlgs::ajaxLink(
+                        array(
+                            'controllerRoute' => 'messages/composewithid', //'member/view'
+                            'actionParams' => array('id'=>$model->id), //array('id'=>$model->member->id),
+                            'dialogTitle' => 'Enviar mensagem para ' . $model->getFullName(),
+                            'dialogWidth' => 450,
+                            'dialogHeight' => 400,
+                            'openButtonText' => UserModule::t('Message'),
+                            //'closeButtonText' => 'Close',
+                            'openButtonHtmlOptions' => array(
+                                'style' => 'width:70px; padding:12px 5px; margin-left: 10px; font-size:13px', 
+                                'class' => 'btn btn-warning',
+                            )
+                        )
+                    );
+                    //echo "</button>";
+                    //if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model));
+                ?>
+                <?php endif; ?>
+            </span>
+
+
+            <?php if(Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id))): ?>
+                <span class="edit-btn-user">
+
+                    <?php $this->widget('bootstrap.widgets.TbButton', array(
+                        'label'=>UserModule::t('Edit'),
+                        'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                        'size'=>'normal', // null, 'large', 'small' or 'mini'
+                        'url'=>array('edit','username'=>$model->username),
+                    )); 
+                    ?>
+
+                </span>
+
+            <?php endif; ?>
+
+            <?php //if($model->id !== Yii::app()->user->id): ?>
+            <?php //$this->widget('bootstrap.widgets.TbButton', array(
+                //'label'=>'Message',
+                //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                //'size'=>'normal', // null, 'large', 'small' or 'mini'
+                //'url'=>array('/messages/compose','id'=>$model->id),
+                //'htmlOptions'=>array('style'=>'width:50px;'),
+               //     )); 
+                ?>
+            <?php //endif; ?>
+
+        </div>
+    </div>
+    
+    <div class="profile-column-l-chooser">
+		<ul>
+			<li class="chooser info clicked">
+				<a href="javascript:void(0)"><?php echo UserModule::t('Informations');?></a>
+			</li>
+			<li class="chooser activity">
+				<a href="javascript:void(0)"><?php echo UserModule::t('Activities');?></a>
+			</li>
+		</ul>
+		
 	</div>
 </div>
 	
 
-<div class="profile-column-l">
-	
+<div class="profile-column-l">	
     
     <div class="content-wrap">
         
@@ -369,6 +446,23 @@ function getUrlVars()
 		
 	</div>	
     <?php endif; ?>
+</div>
+
+<div class="profile-column-l-activity">
+
+	<div class="content-wrap">
+
+		<div class="content-head">
+			<span class="txt"><i class="icon-lightbulb profile-icon"></i><?php echo UserModule::t('Activities') ?></span>
+			<span class="tip">Atividades recentes do usuário</span>
+		</div>
+		
+		<div class="content-info">
+			<div class="content-info-activity"></div>
+		</div>
+		
+	</div>	
+
 </div>
     
 <div class="profile-column-r">
