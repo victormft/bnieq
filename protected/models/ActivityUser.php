@@ -97,4 +97,13 @@ class ActivityUser extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    
+    public function saveFollow()
+    {
+        $sql = "SELECT id FROM activity_user WHERE user_id=:uId AND target_id=:tId";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":uId", $this->user_id, PDO::PARAM_INT);
+        $command->bindValue(":tId", $this->target_id, PDO::PARAM_INT);
+        if($command->execute()!==1) $this->save(); 
+    }
 }

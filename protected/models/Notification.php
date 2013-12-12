@@ -138,7 +138,7 @@ class Notification extends CActiveRecord
     
     public function saveFollow()
     {
-        $sql = "SELECT id FROM notification WHERE user_id=:uId AND source_id=:sId";
+        $sql = "SELECT * FROM notification WHERE user_id=:uId AND source_id=:sId";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue(":uId", $this->user_id, PDO::PARAM_INT);
         $command->bindValue(":sId", $this->source_id, PDO::PARAM_INT);

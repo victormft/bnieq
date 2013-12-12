@@ -2,57 +2,72 @@
 
 class ActivityUserController extends Controller
 {
-	
+
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex($startupname, $offset)
+	public function actionIndex($username, $offset)
 	{
-		if(Yii::app()->user->isGuest){
+            if(Yii::app()->user->isGuest){
             $user = Yii::app()->getComponent('user');
             $user->setFlash(
                 'error',
-                '<strong>Ops!</strong> VocÃª precisa estar conectado para acessar essa Ã¡rea.'
+                '<strong>Ops!</strong> Você precisa estar conectado para acessar essa área.'
             );
             $this->redirect(Yii::app()->controller->module->loginUrl);
         }
 	
-		$model=Startup::model()->find('startupname=:s_name',array(':s_name'=>$startupname));
+		$model=User::model()->find('username=:u_name',array(':u_name'=>$username));
 		
 		$qry = new CDbCriteria( array(
-			'condition' => "startup_id LIKE :param",
+			'condition' => "user_id LIKE :param",
 			'order' => "time DESC",
 			'params'    => array(':param' => $model->id),  
 		) );
 
-		$query = ActivityStartup::model()->findAll($qry); 
+		$query = ActivityUser::model()->findAll($qry); 
 		
 		$html='';
 		
 		foreach ($query as $k => $q)
 		{
-			if($offset <= $k && $k < $offset+2)
-			{
-			
-				$user = User::model()->findbypk($q->user_id);
-				switch ($q->activity_type) 
-				{        
-					case ActivityStartup::FOLLOW_STARTUP :
-						$html .= '		
-						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
-							<div class="team-item">
-								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
-								<div class="team-text">
-									<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
-								</div>
-							</div>
-						</div>
-						<div class="spacing-1"></div>
-						';
-						break;
-				   
-				}
-			}
+                    if($offset <= $k && $k < $offset+2)
+                    {
+
+                        $user = User::model()->findbypk(Yii::app()->user->id);
+                        switch ($q->type) 
+                        {        
+                            case ActivityUser::FOLLOW_USER :
+                                $target = User::model()->findbypk($q->target_id);
+                                $html .= '		
+                                <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+                                    <div class="team-item">
+                                        <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+                                        <div class="team-text">
+                                                <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed') . ' ' . CHtml::link($target->getFullName(), array('/'.$target->username)) . '</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="spacing-1"></div>
+                                ';
+                                break;
+                            
+                            case ActivityUser::FOLLOW_STARTUP :
+                                $html .= '		
+                                <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+                                    <div class="team-item">
+                                        <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+                                        <div class="team-text">
+                                                <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="spacing-1"></div>
+                                ';
+                                break;
+
+                        }
+                    }
 		}
 		
 		$new_offset=$offset+2;
