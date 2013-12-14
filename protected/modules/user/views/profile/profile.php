@@ -498,7 +498,7 @@ function getUrlVars()
     <div class="content-wrap">
         
         <div class="content-head clicked">
-            <i class="icon-circle-arrow-up profile-icon"></i> <?php echo UserModule::t('References & Follows'); ?>
+            <i class="icon-circle-arrow-up profile-icon"></i> <?php echo UserModule::t('References'); ?>
         </div>
 		
 		<div class="content-info" style="padding: 0;">            

@@ -155,6 +155,7 @@ return array(
     'Followers'=>'Seguidores',
     'Message'=>'Mensagem',
     'References & Follows'=>'Referências & Seguidos',
+    'References'=>'Referências',
     'Skills'=>'Habilidades',
     'Male'=>'Masculino',
     'Female'=>'Feminino',

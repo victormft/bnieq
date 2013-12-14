@@ -168,7 +168,26 @@ class UserController extends Controller
         
         $provider = $model->getStartupsByRole("Founder");
         
-        EQuickDlgs::render('_founderpop',array('provider'=>$provider));
+        $html='<div class="cards-wrap">';
+        
+        
+        foreach($provider as $arr)
+        {
+            $html.='
+            <div class="startup-card">
+                <div class="startup-pic" style="overflow: auto;">' . CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$arr->logo0->name.'"/>', array('/'.$arr->startupname)) . ' </div>
+                <div class="startup-name">' . CHtml::link(CHtml::encode($arr->name), array('/'.$arr->startupname)) . '</div>
+            </div>';
+        }
+        
+        $html.='</div>';
+        
+        echo CJSON::encode(array(
+            'res'=>$html 
+        ));
+        exit;
+        
+        //EQuickDlgs::render('_founderpop',array('provider'=>$provider));
     }
     
     /*

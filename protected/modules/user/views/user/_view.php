@@ -58,8 +58,28 @@
     <?php endif ?>
     
     <?php if($data->user->isUserInRole("Founder")): ?>
-        <div class="founder" data-toggle='tooltip' data-html=true data-original-title='FUNDADOR'>
-            <?php EQuickDlgs::ajaxIcon(
+        <div class="founder" data-id="<?php echo $data->user_id; ?>" data-toggle='tooltip' data-html=true data-original-title='FUNDADOR'>
+            <img src="<?php echo Yii::app()->request->baseUrl.'/images/founder-icon-small.png'; ?>" data-toggle="modal" data-target="#modal-<?php echo $data->user_id ?>">
+            
+            <!-- Modal -->
+            <div class="modal fade" id="modal-<?php echo $data->user_id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Startups do <?php echo $data->firstname .' '. $data->lastname ?></h4>
+                  </div>
+                  <div class="modal-body">
+                    
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            
+            <?php /*EQuickDlgs::ajaxIcon(
                 Yii::app()->request->baseUrl.'/images/founder-icon-small.png',
                 array(
                     'controllerRoute' => 'user/user/founderpop',
@@ -70,7 +90,9 @@
                     //'openButtonText' => '',
                     //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                 )
-            );?>
+            );
+             * */?>
+             
         </div>
     <?php endif ?>
     
