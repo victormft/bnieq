@@ -58,10 +58,10 @@ class ActivityStartupController extends Controller
 		$new_offset=$offset+2;
 		
 		if($new_offset < count($query))
-			$html .= '<div class="more-activities" data-offset='.$new_offset.' style="display:inline;"><a href="javascript:void(0)">More</a></div>';	
+			$html .= '<div class="more-activities" data-offset='.$new_offset.' style="text-align:center;"><a href="javascript:void(0)">More</a></div>';	
 
 		else 
-			$html .= '<div>No More</div>';
+			$html .= '<div style="text-align:center;">No More</div>';
 		
 		echo CJSON::encode(array(
             'res'=>$html 
