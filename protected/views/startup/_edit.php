@@ -1,5 +1,9 @@
 <?php
 
+$p_product = empty($model->product_description) ? 1 : 0;
+
+$p_stage = empty($model->company_stage) ? 1 : 0;
+
 Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_END);
 
 
@@ -82,6 +86,23 @@ Yii::app()->clientScript->registerScript('loading-img',
 			if(!$('.start-sector').find('a').hasClass('editable-open'))
 			{
 				$('.err-sector').animate({opacity: 0}, 500);
+				
+				if(".count($model->sectors)."==0 && !$('.bar').parent().hasClass('p-sec'))
+				{
+					var width = $('.bar').width();
+					var parentWidth = $('.bar').parent().width();
+					var percent = width/parentWidth;
+					percent=percent+0.1;
+					var new_width=parentWidth*percent;
+
+					$('.bar').css({'width':new_width});
+				
+					checkCompletionBar(percent*100);
+					$('.bar').parent().addClass('p-sec');
+					
+				}
+				
+				
 			}
 		}, 1000);
 	});
@@ -91,6 +112,21 @@ Yii::app()->clientScript->registerScript('loading-img',
 			if(!$('.start-product').find('a').hasClass('editable-open'))
 			{
 				$('.err-product').animate({opacity: 0}, 500);
+
+				if(".$p_product." && !$('.bar').parent().hasClass('p-product'))
+				{
+					var width = $('.bar').width();
+					var parentWidth = $('.bar').parent().width();
+					var percent = width/parentWidth;
+					percent=percent+0.1;
+					var new_width=parentWidth*percent;
+
+					$('.bar').css({'width':new_width});
+				
+					checkCompletionBar(percent*100);
+					$('.bar').parent().addClass('p-product');
+					
+				}
 			}
 		}, 1000);
 	});
@@ -100,6 +136,21 @@ Yii::app()->clientScript->registerScript('loading-img',
 			if(!$('.start-stage').find('a').hasClass('editable-open'))
 			{
 				$('.err-stage').animate({opacity: 0}, 500);
+				
+				if(".$p_stage." && !$('.bar').parent().hasClass('p-stage'))
+				{
+					var width = $('.bar').width();
+					var parentWidth = $('.bar').parent().width();
+					var percent = width/parentWidth;
+					percent=percent+0.1;
+					var new_width=parentWidth*percent;
+
+					$('.bar').css({'width':new_width});
+				
+					checkCompletionBar(percent*100);
+					$('.bar').parent().addClass('p-stage');
+					
+				}
 			}
 		}, 1000);
 	});
@@ -255,6 +306,19 @@ function getUrlVars()
     return vars;
 }
 
+function checkCompletionBar(percent)
+{
+	var bar_parent = $('.bar').parent();
+	bar_parent.removeClass('progress-danger').removeClass('progress-warning').removeClass('progress-success');
+	
+	if(percent<=40)
+			bar_parent.addClass('progress-danger');
+		else if(percent>40 && percent<75)
+			bar_parent.addClass('progress-warning');
+		else
+			bar_parent.addClass('progress-success');
+}
+
 ");
 
 ?>
@@ -275,6 +339,29 @@ function getUrlVars()
 		'warning' => array('block' => false, 'closeText' => false),
     ),
 ));?>
+
+<div class="completion-bar" style="margin-bottom: 30px; overflow:auto;">
+	<span style="float:left; margin-right: 20px;">Completion:</span>
+	<?php
+		
+		if($model->completion<=40)
+			$type="danger";
+		else if($model->completion>40 && $model->completion<75)
+			$type="warning";
+		else
+			$type="success";
+		
+		echo "<div style='float:left; width: 300px; border:2px solid #ccc; border-radius:5px;'>";
+		$this->widget('bootstrap.widgets.TbProgress', array(
+			'percent'=>$model->completion, // the progress
+			'striped'=>true,
+			'animated'=>true,
+			'type'=>$type,
+			'htmlOptions'=>array('style'=>'margin:0;'),
+		));
+		echo "</div>";
+	?>
+</div>
 
 <div class="profile-header-edit">	
 

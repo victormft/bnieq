@@ -342,13 +342,15 @@ class StartupController extends Controller
 			}
 			
 			$model->startupname = $startupname; 
+	
+			// !!!!!!!!!!!! end formatting startupname !!!!!!!!!!!!!!!
 			
 			$model->published=0;
             
             $model->setCreateTime(time());
 			
-			// !!!!!!!!!!!! end formatting startupname !!!!!!!!!!!!!!!
-			
+			$model->completion=30;
+	
 			
 			//treating the image
 			$model->pic=CUploadedFile::getInstance($model,'pic');
@@ -394,10 +396,11 @@ class StartupController extends Controller
 			
 				if($model_img->save()){
 					$model->logo=$model_img->id;
+					$model->completion=$model->completion + 10;
 				}
 				
 				else 
-					$model->logo=null;
+					$model->logo=1;
 			}
 			
 			else
@@ -435,10 +438,26 @@ class StartupController extends Controller
 	{
         $model=$this->loadModelId($_POST['pk']);
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
-            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));	
 			
+		
 		$es = new TbEditableSaver('Startup');  //'Startup' is name of model to be updated
         $es->update();
+		
+		
+		$n_model=$this->loadModelId($_POST['pk']);
+		
+		if($_POST['name']=='product_description' && empty($model->product_description))
+		{
+			$n_model->completion=$model->completion+10;
+			$n_model->save();
+		}
+
+		else if($_POST['name']=='company_stage' && empty($model->company_stage))
+		{
+			$n_model->completion=$model->completion+10;
+			$n_model->save();
+		}	
 	
 	/*
 		$model=$this->loadModel($name);
@@ -535,6 +554,9 @@ class StartupController extends Controller
 			
 			if(count($vals)>3)
 				exit;
+			
+			if(count($model->sectors)==0)
+				$model->completion=$model->completion+10;
 			
 			$model->sectors = $vals;
 			$model->saveWithRelated(array('sectors'));

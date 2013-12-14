@@ -34,6 +34,7 @@
  * @property string $create_time
  * @property string $selecionada
  * @property string $followers_num
+  * @property string $completion
  *
  * The followings are the available model relations:
  * @property File[] $files
@@ -129,7 +130,7 @@ class Startup extends CActiveRecord
 			array('product_description, foundation, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, create_time, sec', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, video, create_time, selecionada, followers_num, followers_count', 'safe', 'on'=>'search'),
+			array('id, name, logo, one_line_pitch, product_description, company_size, company_stage, foundation, email, telephone, skype, company_number, facebook, twitter, linkedin, location, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, video, create_time, selecionada, followers_num, followers_count, completion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -189,6 +190,7 @@ class Startup extends CActiveRecord
 			'create_time' => UserModule::t('Joined'),
 			'selecionada' => 'Selecionada',
 			'followers_num' => UserModule::t('Followers'),
+			'completion' => 'Completion',
 		);
 	}
 	
