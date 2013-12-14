@@ -103,6 +103,7 @@ $('.chooser').click(function(event){
 $('.profile-column-l-activity').on('click','.more-activities',function(event){
 	var elem = $(this);
 	var offset = elem.attr('data-offset');
+	elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 	$.ajax({
 		url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."&offset='+offset,
 		type: 'POST',
@@ -115,7 +116,8 @@ $('.profile-column-l-activity').on('click','.more-activities',function(event){
 			$('.content-info-activity').append(data.res);
 		},
 		error: function(data){
-			$('.content-info-activity').append('asd');
+			elem.remove();
+			$('.content-info-activity').append('Error');
 		}
 	});
 
