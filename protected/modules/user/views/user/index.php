@@ -235,7 +235,29 @@ $(document.body).on('click','.follow-press',function(event){
 			
 });
 
+$(document.body).on('click','.founder',function(event){
 
+    var elem = $(this);
+    var user_id = encodeURIComponent(elem.attr('data-id'));
+    
+    var body = elem.find('.modal-body');
+    
+
+
+    $.ajax({
+        url: '".Yii::app()->request->baseUrl."/user/user/founderpop?id='+user_id,
+        type: 'POST',
+        data: {
+                YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+        },
+        dataType: 'json',
+        success: function(data){
+            body.html(data.res);
+        }
+    });
+
+			
+});
 
 ");
 ?>
