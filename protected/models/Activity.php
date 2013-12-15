@@ -1,8 +1,13 @@
 <?php
 
 
-class ActivityUser extends CActiveRecord
+class Activity extends CActiveRecord
 {
+    //parent types
+    const USER=1;
+	const STARTUP=2;
+    
+    //types
 	const FOLLOW_USER=1;
 	const FOLLOW_STARTUP=2;
     
@@ -11,7 +16,7 @@ class ActivityUser extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'activity_user';
+		return 'activity';
 	}
 
 	/**
@@ -22,14 +27,14 @@ class ActivityUser extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, type, target_id', 'required'),
-			array('user_id, type, target_id', 'numerical', 'integerOnly'=>true),
-			array('user_id, target_id', 'length', 'max'=>20),
+			array('parent_id, parent_type, activity_type, target_id', 'required'),
+			array('parent_id, parent_type, activity_type, target_id', 'numerical', 'integerOnly'=>true),
+			array('parent_id, target_id', 'length', 'max'=>20),
 			array('time', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
 			
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, type, target_id, time', 'safe', 'on'=>'search'),
+			array('id, parent_id, parent_type, activity_type, target_id, time', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -41,7 +46,6 @@ class ActivityUser extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
 		);
 	}
 
@@ -52,9 +56,11 @@ class ActivityUser extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'user_id' => 'User',
-			'type' => 'Activity Type',
-			'time' => 'Time',
+			'parent_id' => 'Parent',
+			'parent_type' => 'Parent type',
+            'activity_type' => 'Activity Type',
+			'target_id' => 'Target Id',
+            'time' => 'Time',
 		);
 	}
 
@@ -77,7 +83,7 @@ class ActivityUser extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('parent_id',$this->parent_id,true);
 		$criteria->compare('type',$this->type);
         $criteria->compare('target_id',$this->target_id,true);
 		$criteria->compare('time',$this->time,true);
@@ -100,9 +106,9 @@ class ActivityUser extends CActiveRecord
     
     public function saveFollow()
     {
-        $sql = "SELECT id FROM activity_user WHERE user_id=:uId AND target_id=:tId";
+        $sql = "SELECT id FROM activity WHERE parent_id=:pId AND target_id=:tId";
         $command = Yii::app()->db->createCommand($sql);
-        $command->bindValue(":uId", $this->user_id, PDO::PARAM_INT);
+        $command->bindValue(":pId", $this->parent_id, PDO::PARAM_INT);
         $command->bindValue(":tId", $this->target_id, PDO::PARAM_INT);
         if($command->execute()!==1) $this->save(); 
     }

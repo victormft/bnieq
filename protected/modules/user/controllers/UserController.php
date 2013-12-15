@@ -54,20 +54,31 @@ class UserController extends Controller
 		{	
 			if(!$model->followers)
 			{
+                //salvar follow no BD
 				$model->followers=new UserFollow;                
                 $model->followers->follower_id = Yii::app()->user->id;
                 $model->followers->followed_id = $model->id;                
 				$model->followers->save();
                 
+                //salvar notification no BD
                 $note = new Notification;
                 $note->user_id = $model->id;
                 $note->notification_type = Notification::FOLLOW_USER;
                 $note->source_id = Yii::app()->user->id;
                 $note->saveFollow(); 
                 
+                //salvar activity do cara no BD
                 $act = new ActivityUser;
                 $act->user_id = Yii::app()->user->id;
                 $act->type = ActivityUser::FOLLOW_USER;
+                $act->target_id = $model->id;
+                $act->saveFollow(); 
+                
+                //salvar activity stream no BD
+                $act = new Activity;
+                $act->parent_type = Activity::USER;
+                $act->parent_id = Yii::app()->user->id;
+                $act->activity_type = Activity::FOLLOW_USER;
                 $act->target_id = $model->id;
                 $act->saveFollow(); 
                 
@@ -84,21 +95,32 @@ class UserController extends Controller
 						'res'=>count($model->followers)
 					));
 					exit;
-				}				
+				}			
+                //salvar follow no BD
 				$model->followers=new UserFollow;                
                 $model->followers->follower_id = Yii::app()->user->id;
                 $model->followers->followed_id = $model->id;
 				$model->followers->save();
                 
+                //salvar notification no BD
                 $note = new Notification;
                 $note->user_id = $model->id;
                 $note->notification_type = Notification::FOLLOW_USER;
                 $note->source_id = Yii::app()->user->id;
                 $note->saveFollow(); 
                 
+                //salvar activity do cara no BD
                 $act = new ActivityUser;
                 $act->user_id = Yii::app()->user->id;
                 $act->type = ActivityUser::FOLLOW_USER;
+                $act->target_id = $model->id;
+                $act->saveFollow();
+                
+                //salvar activity stream no BD
+                $act = new Activity;
+                $act->parent_type = Activity::USER;
+                $act->parent_id = Yii::app()->user->id;
+                $act->activity_type = Activity::FOLLOW_USER;
                 $act->target_id = $model->id;
                 $act->saveFollow();
                 

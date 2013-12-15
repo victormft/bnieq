@@ -12,7 +12,7 @@ class ActivityUserController extends Controller
             $user = Yii::app()->getComponent('user');
             $user->setFlash(
                 'error',
-                '<strong>Ops!</strong> Você precisa estar conectado para acessar essa área.'
+                '<strong>Ops!</strong> VocÃª precisa estar conectado para acessar essa Ã¡rea.'
             );
             $this->redirect(Yii::app()->controller->module->loginUrl);
         }
@@ -34,7 +34,7 @@ class ActivityUserController extends Controller
                     if($offset <= $k && $k < $offset+2)
                     {
 
-                        $user = User::model()->findbypk(Yii::app()->user->id);
+                        $user = User::model()->findbypk($model->id);
                         switch ($q->type) 
                         {        
                             case ActivityUser::FOLLOW_USER :
