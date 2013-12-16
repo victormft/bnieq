@@ -74,14 +74,6 @@ class UserController extends Controller
                 $act->target_id = $model->id;
                 $act->saveFollow(); 
                 
-                //salvar activity stream no BD
-                $act = new Activity;
-                $act->parent_type = Activity::USER;
-                $act->parent_id = Yii::app()->user->id;
-                $act->activity_type = Activity::FOLLOW_USER;
-                $act->target_id = $model->id;
-                $act->saveFollow(); 
-                
                 echo CJSON::encode(array(
 					'res'=>count($model->followers)
 				));
@@ -115,15 +107,7 @@ class UserController extends Controller
                 $act->type = ActivityUser::FOLLOW_USER;
                 $act->target_id = $model->id;
                 $act->saveFollow();
-                
-                //salvar activity stream no BD
-                $act = new Activity;
-                $act->parent_type = Activity::USER;
-                $act->parent_id = Yii::app()->user->id;
-                $act->activity_type = Activity::FOLLOW_USER;
-                $act->target_id = $model->id;
-                $act->saveFollow();
-                
+                                
                 $model = $this->loadModel($_GET['username']);
 				echo CJSON::encode(array(
 					'res'=>count($model->followers)

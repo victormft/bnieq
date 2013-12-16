@@ -545,6 +545,12 @@ function getUrlVars()
             </div>            
 		</div>
     </div>
+    
+    <?php if(!$model->isReallyYou()): ?> 
+    
+    <?php endif; ?>     
+
+
 		
     
 <?php if($model->isReallyYou()): ?>    

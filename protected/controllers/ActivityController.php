@@ -8,7 +8,7 @@ class ActivityController extends Controller
 	 */
 	public function actionIndex()
 	{
-            if(Yii::app()->user->isGuest){
+        if(Yii::app()->user->isGuest){
             $user = Yii::app()->getComponent('user');
             $user->setFlash(
                 'error',
@@ -18,32 +18,32 @@ class ActivityController extends Controller
         }
 			
 		$qryU = new CDbCriteria( array(
-			'condition' => "parent_type=:pType AND parent_id IN (SELECT followed_id FROM user_follow WHERE follower_id=:uId) AND DAY(time) >= DAY(NOW())-30",
+			'condition' => "user_id IN (SELECT followed_id FROM user_follow WHERE follower_id=:uId) AND DAY(time) >= DAY(NOW())-30",
 			'order' => "time DESC",
-			'params'    => array(':uId' => Yii::app()->user->id, ':pType' => Activity::USER),  
+			'params'    => array(':uId' => Yii::app()->user->id),  
 		) );
 
-		$queryU = Activity::model()->findAll($qryU); 
+		$queryU = ActivityUser::model()->findAll($qryU); 
 		
         $qryS = new CDbCriteria( array(
-			'condition' => "parent_type=:pType AND parent_id IN (SELECT startup_id FROM startup_follow WHERE user_id=:uId) AND DAY(time) >= DAY(NOW())-30",
+			'condition' => "startup_id IN (SELECT startup_id FROM startup_follow WHERE user_id=:uId) AND DAY(time) >= DAY(NOW())-30",
 			'order' => "time DESC",
-			'params'    => array(':uId' => Yii::app()->user->id, ':pType' => Activity::STARTUP),  
+			'params'    => array(':uId' => Yii::app()->user->id),  
 		) );
 
-		$queryS = Activity::model()->findAll($qryS); 
+		$queryS = ActivityStartup::model()->findAll($qryS); 
         
 		$html='';
 		
 		foreach ($queryU as $q)
 		{
-            $user = User::model()->findbypk($q->parent_id);
-            switch ($q->activity_type) 
+            $user = User::model()->findbypk($q->user_id);
+            switch ($q->type) 
             {        
-                case Activity::FOLLOW_USER :
+                case ActivityUser::FOLLOW_USER :
                     $target = User::model()->findbypk($q->target_id);
                     $html .= '		
-                    <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+                    <div class="activity-wrap">
                         <div class="team-item">
                             <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
                             <div class="team-text">
@@ -78,6 +78,7 @@ class ActivityController extends Controller
 				
 		$this->render('index',array(
 			'html'=>$html,
+            'active'=>'index',
 		));
 	}
 
