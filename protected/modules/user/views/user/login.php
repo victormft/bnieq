@@ -55,6 +55,8 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 				),
 			)); ?>
 			
+            <?php echo CHtml::errorSummary($login); ?>
+            
 			<?php echo $form->textFieldRow($login,'username'); ?>
 			
 			<?php echo $form->passwordFieldRow($login,'password'); ?>     
