@@ -547,7 +547,75 @@ function getUrlVars()
     </div>
     
     <?php if(!$model->isReallyYou()): ?> 
+        <span class="edit-btn-user">
+     
+            <?php $this->widget('bootstrap.widgets.TbButton', array(
+                'label'=>UserModule::t('Report'),
+                'type'=>'danger', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                'size'=>'normal', // null, 'large', 'small' or 'mini'
+                'htmlOptions'=>array('data-toggle'=>'modal', 'data-target'=>'#report-modal'),
+            )); 
+            ?>
+
+        </span>
     
+        <?php $this->beginWidget('bootstrap.widgets.TbModal',
+            array('id' => 'report-modal')
+        ); ?>
+
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal">&times;</a>
+                <h4>Report <?php echo $model->getfullname() ?></h4>
+            </div>
+
+            <div class="modal-body">
+                <?php 
+                $rep = new Report;
+                
+                $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+                    'id'=>'report-form',
+                    'type'=>'horizontal',
+                    'action'=>Yii::app()->request->baseUrl.'/user/profile/report',
+                    'clientOptions'=>array(
+                        'validateOnSubmit'=>true,
+                    ),
+                    'enableClientValidation'=>true,
+                    'htmlOptions' => array(
+                        'enctype' => 'multipart/form-data',
+                    ),
+                    'inlineErrors'=>false,
+                )); 
+                                                
+                ?>
+                
+                <div class="group-wrap" style="border-bottom:1px dashed #aaa; padding-bottom:30px; overflow:auto; margin-bottom:40px;">
+                    <div style="float:left;">
+                    <?php echo $form->textAreaRow($rep,'text',array('labelOptions' => array('label' => 'Acusação', 'class'=>'custom-label'), 'class'=>'span3','maxlength'=>100)); ?>
+                    <?php echo $form->error($rep,'text', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>
+                    <?php echo $form->hiddenField($rep,'target_id',array('value' => $model->id)); ?>
+                    <div class="tip" style="margin-left:180px; margin-top:5px; color:#646464; width:300px; font-style:italic;">
+                    O que esse usuário fez? Seja específico.
+                    </div>
+                    </div>
+                </div>	
+                
+            </div>
+
+            <div class="modal-footer">
+                <?php $this->widget('bootstrap.widgets.TbButton',
+                    array(
+                        'buttonType' => 'submit',
+                        'type'=>'primary',
+                        'label' => 'Report',
+                        //'htmlOptions' => array('data-dismiss' => 'modal'),
+                    )
+                ); ?>
+            </div>
+            <?php $this->endWidget(); ?>
+
+
+        <?php $this->endWidget(); ?>
+
     <?php endif; ?>     
 
 
