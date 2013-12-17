@@ -1,13 +1,46 @@
 <?php
+Yii::app()->clientScript->registerScript('reports',
+"
+$(document.body).on('click','.report-modal',function(event){
+
+    var elem = $(this);
+    var user_id = encodeURIComponent(elem.attr('data-id'));
+    
+    var body = elem.find('.modal-body');
+
+    $.ajax({
+        url: '".Yii::app()->request->baseUrl."/user/admin/reportpop?id='+user_id,
+        type: 'POST',
+        data: {
+                YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+        },
+        dataType: 'json',
+        success: function(data){
+            body.html(data.res);
+        }
+    });
+
+			
+});
+");
 
 $this->menu=array(
-    array('label'=>UserModule::t('Create User'), 'url'=>array('create')),
+    array(
+        'label' => 'User',
+        'itemOptions' => array('class' => 'nav-header')
+    ),
+    array('label'=>'New User', 'url'=>array('create')),
     //array('label'=>UserModule::t('List User'), 'url'=>array('/user/user')),
     array(
         'label' => 'Startup',
         'itemOptions' => array('class' => 'nav-header')
     ),
-    array('label'=>UserModule::t('Manage Stup'), 'url'=>array('startups')),
+    array('label'=>'Manage Stups', 'url'=>array('startups')),
+    array(
+        'label' => 'Reports',
+        'itemOptions' => array('class' => 'nav-header')
+    ),
+    array('label'=>'REPORTS', 'url'=>array('reports')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -44,13 +77,13 @@ $('.search-form-admin form').submit(function(){
 		array(
 			'name' => 'id',
 			'type'=>'raw',
-			'value' => 'CHtml::link(CHtml::encode($data->id),array("admin/update","id"=>$data->id))',
+			//'value' => 'CHtml::link(CHtml::encode($data->id),array("admin/update","id"=>$data->id))',
             'htmlOptions'=>array('style'=>'width: 50px'),
 		),
 		array(
 			'name' => 'username',
 			'type'=>'raw',
-			'value' => 'CHtml::link(UHtml::markSearch($data,"username"),array("admin/view","id"=>$data->id))',
+			'value' => 'CHtml::link(UHtml::markSearch($data,"username"),array("/" . $data->username))',
 		),
 		array(
 			'name'=>'email',
@@ -69,6 +102,40 @@ $('.search-form-admin form').submit(function(){
 			'value'=>'User::itemAlias("UserStatus",$data->status)',
 			'filter' => User::itemAlias("UserStatus"),
 		),
+        
+        
+        array(
+			'name' => 'reports_count',
+			'type'=>'raw',
+			'value' => function($data){
+                return '
+                    <div class="report-modal" data-id="'. $data->id .'">
+                        <a href="#" data-toggle="modal" data-target="#modal-'. $data->id .'">'. $data->reports_count . ' reports.</a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal-'. $data->id .'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Reports do(a) '. $data->getfullname() .'</h4>
+                              </div>
+                              <div class="modal-body">
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
+                            </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                    </div>
+                ';                    
+            },
+            'htmlOptions'=>array('style'=>'width: 75px'),
+		),
+        
+        //CHtml::link($data->reports_count . " reports",array("/" . $data->username))
 		array(
 			'class'=>'CButtonColumn',
             'htmlOptions'=>array('style'=>'width: 55px'),

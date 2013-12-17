@@ -2,7 +2,10 @@
 
 class User extends CActiveRecord
 {
-	const STATUS_NOACTIVE=0;
+    //search do admin
+    public $reports_count;
+
+    const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
 	
@@ -64,7 +67,7 @@ class User extends CActiveRecord
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
 			array('superuser, status, investor, founder', 'numerical', 'integerOnly'=>true),
-			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status', 'safe', 'on'=>'search'),            
+			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status, reports_count', 'safe', 'on'=>'search'),            
             ):((Yii::app()->user->id==$this->id)?array(
 			array('username, email', 'required'),
             array('username','in','range'=>array('user','messages','pitch','site','startup','message','rights'),'allowEmpty'=>false, 'not'=>true, 'message' => 'Username inválido'),
@@ -193,11 +196,24 @@ class User extends CActiveRecord
         $criteria->compare('superuser',$this->superuser);
         $criteria->compare('status',$this->status);
 
+        $criteria->select="t.*,(SELECT COUNT(report.id) FROM report WHERE report.target_type=1 AND report.target_id=user.id) AS reports_count";
+        
         return new CActiveDataProvider(get_class($this), array(
             'criteria'=>$criteria,
         	'pagination'=>array(
 				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
 			),
+            'sort'=>array(
+                'attributes'=>array(
+                    'reports_count'=>array(                        
+                        'asc' => 'reports_count',
+                        'desc' => 'reports_count DESC', 
+                        'label' => 'Reports',
+                        'default'=>'desc',
+                    ),
+                    '*',
+                )
+            ),
         ));
     }
 
@@ -469,6 +485,14 @@ class User extends CActiveRecord
         $command->bindValue(":userId", $this->id, PDO::PARAM_INT);
         $command->bindValue(":position", $position, PDO::PARAM_STR);
         return $command->execute()==1;
+    }
+    
+    public function getReports()
+    {
+        $criteria = new CDbCriteria;
+        $criteria->addCondition('target_type=1');
+        $criteria->addCondition('target_id='. $this->id);
+        return Report::model()->findAll($criteria);
     }
         
 }

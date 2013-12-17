@@ -175,8 +175,6 @@ class Profile extends CActiveRecord
 		);
          * 
          */
-        
-        
         $criteria->addCondition('t.user_id <> 1');
         
         $criteria->compare('CONCAT(firstname," ",lastname)',$this->fullname,true);
@@ -197,10 +195,7 @@ class Profile extends CActiveRecord
 		$criteria->compare('interests',$this->interests,true);
         $criteria->compare('(SELECT COUNT(user_follow.follower_id) FROM user_follow WHERE t.user_id=user_follow.followed_id)',$this->followers_count);//making the filters work
         
-        $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";                
-      
-			
-		
+        $criteria->select="t.*,(SELECT COUNT(user_follow.followed_id) FROM user_follow WHERE t.user_id=user_follow.followed_id) AS followers_count";   		
 		
         if($this->group)
         {

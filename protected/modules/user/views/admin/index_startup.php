@@ -7,7 +7,7 @@ $this->menu=array(
         'label' => 'User',
         'itemOptions' => array('class' => 'nav-header')
     ),
-    array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin')),
+    array('label'=>'Manage Users', 'url'=>array('/user/admin')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -47,7 +47,7 @@ $('.search-form-admin form').submit(function(){
 		array(
 			'name' => 'name',
 			'type'=>'raw',
-            'value' => 'CHtml::link(CHtml::encode($data->name),array("updatestartup","id"=>$data->id))',
+            'value' => 'CHtml::link(CHtml::encode($data->name),array("/" . $data->startupname))',
 			'htmlOptions'=>array('style'=>'width: 150px'),
 		),
         'one_line_pitch',
@@ -60,9 +60,12 @@ $('.search-form-admin form').submit(function(){
 		array(
             'htmlOptions' => array('nowrap'=>'nowrap'),
             'class'=>'bootstrap.widgets.TbButtonColumn',
-            'viewButtonUrl'=>'Yii::app()->createUrl("/user/admin/viewstartup", array("id"=>$data->id))',
+            'template' => '{update} {delete}',
+            //'viewButtonUrl'=>'Yii::app()->createUrl("/user/admin/viewstartup", array("id"=>$data->id))',
             'updateButtonUrl'=>'Yii::app()->createUrl("/user/admin/updatestartup", array("id"=>$data->id))',
+            'updateButtonOptions'=>array('style'=>'margin-left:8px;'),
             'deleteButtonUrl'=>'Yii::app()->createUrl("/user/admin/deletestartup", array("id"=>$data->id))',
+            'deleteButtonOptions'=>array('style'=>'margin-left:8px;'),
         )
 	),
 )); ?>

@@ -1,14 +1,18 @@
 <?php
 
 $this->menu=array(
-    array('label'=>UserModule::t('Create User'), 'url'=>array('create')),
-    array('label'=>UserModule::t('View User'), 'url'=>array('view','id'=>$model->id)),
-    array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin')),
+    array(
+        'label' => 'User',
+        'itemOptions' => array('class' => 'nav-header')
+    ),
+    array('label'=>'New User', 'url'=>array('create')),
+    array('label'=>'View User', 'url'=>array('view','id'=>$model->id)),
+    array('label'=>'Manage Users', 'url'=>array('/user/admin')),
     array(
         'label' => 'Startup',
         'itemOptions' => array('class' => 'nav-header')
     ),
-    array('label'=>UserModule::t('Manage Stup'), 'url'=>array('startups')),
+    array('label'=>UserModule::t('Manage Stups'), 'url'=>array('startups')),
 );
 ?>
 
