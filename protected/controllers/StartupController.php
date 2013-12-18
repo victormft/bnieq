@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'followPop'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'pressUrl', 'followPop'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1266,6 +1266,25 @@ class StartupController extends Controller
 		else 
 			throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
 			
+	}
+	
+	public function actionPressUrl()
+	{
+		$url=$_GET['term'];
+		include_once("inc/simple_html_dom.php");
+			
+		//get URL content
+		$get_content = file_get_html($url); 
+			
+		//Get Page Title 
+        foreach($get_content->find('title') as $element) 
+        {
+            $page_title = $element->plaintext;
+        }
+		
+		//prepare for JSON 
+        $output = array('title'=>$page_title);
+        echo json_encode($output); //output JSON data
 	}
 	
 	public function actionRefreshStartupName($id)

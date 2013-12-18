@@ -1362,11 +1362,11 @@ function checkCompletionBar(percent)
 					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
 				)); ?>
 		
-					<?php echo CHtml::label('URL', false, array('style'=>'display:inline-block; margin-right:30px;')); ?>
-					<?php echo CHtml::urlField('url'); ?>
+					<?php echo CHtml::label('URL', false, array('style'=>'display:inline-block; margin-right:30px;')); ?><div class="press-loading" style="display:inline;"></div>
+					<?php echo CHtml::urlField('url', '', array('id' => 'url')); ?>
 					
 					<?php echo CHtml::label('Titulo', false, array('style'=>'display:inline-block; margin-right:30px;')); ?>
-					<?php echo CHtml::textField('title'); ?>
+					<?php echo CHtml::textField('title', '', array('id' => 'title')); ?>
 					
 					<?php echo CHtml::label('Descrição', false, array('style'=>'display:inline-block; margin-right:30px;')); ?>
 					<?php echo CHtml::textArea('description'); ?>
@@ -1397,6 +1397,37 @@ function checkCompletionBar(percent)
 				<?php $this->endWidget(); ?>
 				
 			</div>
+			
+<script>
+				$(function() {
+	
+    $("#url").autocomplete({
+        source: function( request, response ) {
+			$.ajax({
+				beforeSend: function(){
+					 $(".press-loading").html("<img src='<?php echo Yii::app()->request->baseUrl; ?>/images/loading.gif'/>");
+				},
+				url: "<?php echo Yii::app()->request->baseUrl.'/startup/pressurl'?>",
+				data: {term: request.term},
+				dataType: "json",
+				success: function( data ) {
+					$("#title").val(data.title);
+					$(".press-loading").empty();
+					$(".ui-autocomplete").css({'display':'none'});
+				},
+				error: function(){
+					$(".press-loading").html('<span style="color:#b94a48;"> Não encontrado! </span>').find('span').delay(1000).fadeOut(600);
+					$(".ui-autocomplete").css({'display':'none'});
+				}
+			});
+		},
+        minLength: 1,
+		delay: 1000
+    });
+	
+});
+			</script>		
+			
 		</div>	
 	
 	<div class="content-info press-ready" id="press-approve">
@@ -1417,10 +1448,9 @@ function checkCompletionBar(percent)
 				<div class="press-date"><?php echo date('d/m/y', strtotime(CHtml::encode($press->time))); ?></div>
 			</div>
 			<div class="press-delete"><i class="icon-remove-sign"></i></div>
-			<div class="team-error"></div>
+			<div class="press-error"></div>
 		</div>
 		<?php endforeach;?>
-			
 		
 		
 		</div>	
