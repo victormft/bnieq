@@ -7,6 +7,8 @@
  */
 class UserIdentity extends CUserIdentity
 {
+    public $status;
+    
 	private $_id;
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_NOTACTIV=4;
@@ -40,8 +42,12 @@ class UserIdentity extends CUserIdentity
 			$this->errorCode=self::ERROR_STATUS_BAN;
 		else {
 			$this->_id=$user->id;
+            
+            //setando coisas que eu quero chamar mais facil: vem do RWebUser
 			$this->username=$user->username;
-			$this->errorCode=self::ERROR_NONE;
+            $this->status=$user->status;
+			
+            $this->errorCode=self::ERROR_NONE;
 		}
 		return !$this->errorCode;
 	}

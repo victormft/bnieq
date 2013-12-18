@@ -36,7 +36,7 @@ class ProfileController extends Controller
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors', 'updatestartuprelational', 'addstartuprelation', 'toggle'),
+				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors', 'updatestartuprelational', 'addstartuprelation', 'toggle', 'report'),
                 'verbs'=>array('POST'),
 				'users'=>array('@'),
 			),
@@ -315,6 +315,29 @@ class ProfileController extends Controller
 		else 
 			throw new CHttpException(403,'Você não pode editar essa startup!');
 	}
+    
+    public function actionReport()
+    {
+        $rep=new Report;
+        if(isset($_POST['Report']))
+        {            
+            $rep->target_type=Report::USER;
+            $rep->target_id=$_POST['Report']['target_id'];
+            $rep->user_id=Yii::app()->user->id;
+            $rep->text=$_POST['Report']['text'];
+            if($rep->save())
+            {
+                $user = Yii::app()->getComponent('user');
+                $user->setFlash(
+                    'success',
+                    '<strong>Obrigado!</strong> Seu report foi salvo com sucesso.'
+                );                
+                $this->redirect(Yii::app()->request->urlReferrer);
+            }
+        }
+        
+        
+    }
 
     /**
 	 * Returns the data model based on the primary key given in the GET variable.

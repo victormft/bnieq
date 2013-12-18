@@ -36,9 +36,17 @@ class Controller extends RController
         }
     }
     
-    /*
+    
     protected function beforeAction($action)
     {
+        if(!Yii::app()->user->isGuest)
+            if(Yii::app()->user->status==-1)
+            {                
+                Yii::app()->user->logout();
+                $this->redirect(Yii::app()->homeUrl . '/user/login');
+            }
+                
+        /*
         $_uri = false;
         if (Yii::app()->urlManager->showScriptName == false){
             if (strpos(Yii::app()->request->requestUri, '/index.php') !== false){
@@ -60,6 +68,10 @@ class Controller extends RController
         if ($_uri !== false){
             $this->redirect($_uri);
         }
+         * * */
+         
         return parent::beforeAction($action);
-    }*/
+         
+         
+    }
 }

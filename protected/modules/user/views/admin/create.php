@@ -1,7 +1,11 @@
 <?php
 
 $this->menu=array(
-    array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin')),
+    array(
+        'label' => 'User',
+        'itemOptions' => array('class' => 'nav-header')
+    ),
+    array('label'=>'Manage Users', 'url'=>array('/user/admin')),
     //array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
 );
 ?>

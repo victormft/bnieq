@@ -26,7 +26,7 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view','startups', 'updatestartup', 'viewstartup', 'deletestartup'),
+				'actions'=>array('admin','delete','create','update','view','startups', 'updatestartup', 'viewstartup', 'deletestartup', 'reportpop'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -226,8 +226,30 @@ class AdminController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
-	
-	/**
+    
+    public function actionReportPop($id)
+    {
+        $model = User::model()->findbypk($id);
+       
+        $provider = $model->getReports();
+        
+        $html='<div>';
+        
+        
+        foreach($provider as $arr)
+        {
+            $html.=$arr->text . ' ';
+        }
+        
+        $html.='</div>';
+        
+        echo CJSON::encode(array(
+            'res'=>$html,
+        ));
+        exit;
+    }
+
+        /**
      * Performs the AJAX validation.
      * @param CModel the model to be validated
      */

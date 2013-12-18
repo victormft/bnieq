@@ -92,6 +92,11 @@ class RWebUser extends CWebUser
         return $user->username;
     }
     
+    function getStatus(){
+        $user = $this->loadUser(Yii::app()->user->id);
+        return $user->status;
+    }
+    
     // Load user model.
     protected function loadUser($id=null)
     {
