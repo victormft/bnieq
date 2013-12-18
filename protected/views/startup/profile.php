@@ -69,6 +69,7 @@ $('.chooser').click(function(event){
 			if(!elem.hasClass('already-loaded'))
 			{
 				$('.profile-column-l').css({'opacity':'0.5'});
+				$('.profile-column-l-press').css({'opacity':'0.5'});
 				$.ajax({
 					url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
@@ -78,7 +79,9 @@ $('.chooser').click(function(event){
 					dataType: 'json',
 					success: function(data){
 						$('.profile-column-l').css({'display':'none'});
+						$('.profile-column-l-press').css({'display':'none'});
 						$('.profile-column-l').css({'opacity':'1'});
+						$('.profile-column-l-press').css({'opacity':'1'});
 						$('.content-info-activity').html(data.res);
 						$('.profile-column-l-activity').css({'display':'block'});
 						elem.addClass('already-loaded');
@@ -88,12 +91,45 @@ $('.chooser').click(function(event){
 			else
 			{
 				$('.profile-column-l').css({'display':'none'});
+				$('.profile-column-l-press').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'block'});
+			}
+		}
+		else if(elem.hasClass('press'))
+		{
+			if(!elem.hasClass('already-loaded'))
+			{
+				$('.profile-column-l').css({'opacity':'0.5'});
+				$('.profile-column-l-activity').css({'opacity':'0.5'});
+				$.ajax({
+					url: '".Yii::app()->request->baseUrl."/press/index?startupname=".$model->startupname."&offset=0',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					dataType: 'json',
+					success: function(data){
+						$('.profile-column-l').css({'display':'none'});
+						$('.profile-column-l-activity').css({'display':'none'});
+						$('.profile-column-l').css({'opacity':'1'});
+						$('.profile-column-l-activity').css({'opacity':'1'});
+						$('.content-info-press').html(data.res);
+						$('.profile-column-l-press').css({'display':'block'});
+						elem.addClass('already-loaded');
+					}
+				});
+			}
+			else
+			{
+				$('.profile-column-l').css({'display':'none'});
+				$('.profile-column-l-activity').css({'display':'none'});
+				$('.profile-column-l-press').css({'display':'block'});
 			}
 		}
 		else if(elem.hasClass('info'))
 		{
 			$('.profile-column-l-activity').css({'display':'none'});
+			$('.profile-column-l-press').css({'display':'none'});
 			$('.profile-column-l').css({'display':'block'});
 		}
 	}
@@ -118,6 +154,29 @@ $('.profile-column-l-activity').on('click','.more-activities',function(event){
 		error: function(data){
 			elem.remove();
 			$('.content-info-activity').append('Error');
+		}
+	});
+
+});
+
+$('.profile-column-l-press').on('click','.more-press',function(event){
+	var elem = $(this);
+	var offset = elem.attr('data-offset');
+	elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+	$.ajax({
+		url: '".Yii::app()->request->baseUrl."/press/index?startupname=".$model->startupname."&offset='+offset,
+		type: 'POST',
+		data: {
+			YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+		},
+		dataType: 'json',
+		success: function(data){
+			elem.remove();
+			$('.content-info-press').append(data.res);
+		},
+		error: function(data){
+			elem.remove();
+			$('.content-info-press').append('Error');
 		}
 	});
 
@@ -288,6 +347,9 @@ $('.video-images-items').carouFredSel({
 			<li class="chooser activity">
 				<a href="javascript:void(0)"><?php echo UserModule::t('Activities');?></a>
 			</li>
+			<li class="chooser press">
+				<a href="javascript:void(0)"><?php echo UserModule::t('Press');?></a>
+			</li>
 		</ul>
 		
 	</div>
@@ -450,6 +512,23 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			<div class="content-info-activity"></div>
+		</div>
+		
+	</div>	
+
+</div>
+
+<div class="profile-column-l-press">
+
+	<div class="content-wrap">
+
+		<div class="content-head">
+			<span class="txt"><i class="icon-lightbulb profile-icon"></i>Press</span>
+			<span class="tip">Notícias da Empresa</span>
+		</div>
+		
+		<div class="content-info">
+			<div class="content-info-press"></div>
 		</div>
 		
 	</div>	

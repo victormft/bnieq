@@ -37,7 +37,7 @@ class StartupController extends Controller
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'deleteTeam', 'RefreshStartupName', 'delete'),
+				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'addPress', 'deleteTeam', 'deletePress', 'RefreshStartupName', 'delete'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
@@ -995,6 +995,66 @@ class StartupController extends Controller
 	}
 	
 	
+		public function actionAddPress($name)
+	{
+		$model=$this->loadModel($name);
+		
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+		
+		$press = new Press;
+		
+		$press->startup_id = $model->id;
+		$press->url = $_POST['url'];
+		$press->title = $_POST['title'];
+		$press->description = $_POST['description'];    
+        $press->time = $_POST['date']; 
+		
+		if(empty($_POST['url']) || empty($_POST['title']) || empty($_POST['description']) || empty($_POST['date']))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Preencha todos os campos!'
+			));
+			exit;
+		}
+		
+		else
+		{	
+		
+			$press->save();
+			
+			/* manipulate url */ 
+			$url=preg_replace('/http:\/\//', '', $press->url);
+			$url=preg_replace('/https:\/\//', '', $url);
+			if(strpos($url, '/'))
+				$url=strstr($url, '/', true);
+		
+			$html='
+		
+			<div class="press-item" style="display:none; opacity:0;">
+				<div class="press-text">
+					<div class="press-url"><span data-id="'. $press->id .'">'. CHtml::encode($url) .'</span></div>
+					<div class="press-title">'. CHtml::link(CHtml::encode($press->title), CHtml::encode($press->url), array('target'=>'_blank')) . '</div>
+					<div class="press-description">'. CHtml::encode($press->description) . '</div>
+					<div class="press-date">'. date('d/m/y', strtotime(CHtml::encode($press->time))) . '</div>
+				</div>
+				<div class="press-delete"><i class="icon-remove-sign"></i></div>
+				<div class="press-error"></div>
+			</div>
+			
+			';
+			
+			
+			echo CJSON::encode(array(
+				'res'=>$html
+			));
+			exit;
+		}
+		
+	}
+	
+	
 	public function actionDeleteTeam($id, $name)
 	{
 		$model=$this->loadModel($name);
@@ -1012,6 +1072,21 @@ class StartupController extends Controller
 		
 		$user_startup=UserStartup::model()->find('user_id=:u_id AND startup_id=:s_id', array(':u_id'=>$id, ':s_id'=>$model->id));
 		$user_startup->delete();
+			
+		echo CJSON::encode(array(
+				'res'=>'OK'
+			));
+		exit;
+	}
+	
+		public function actionDeletePress($id, $name)
+	{
+		$model=$this->loadModel($name);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+		
+		$press=Press::model()->find('id=:p_id AND startup_id=:s_id', array(':p_id'=>$id, ':s_id'=>$model->id));
+		$press->delete();
 			
 		echo CJSON::encode(array(
 				'res'=>'OK'

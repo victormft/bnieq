@@ -189,6 +189,14 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$(this).find('.team-delete').css({'color':'#ccc', 'font-size':'15px'});	
 	});
 	
+	$('.press-ready').on('mouseover','.press-item',function(event){
+		$(this).find('.press-delete').css({'color':'red', 'font-size':'22px'});	
+	});
+	
+	$('.press-ready').on('mouseout','.press-item',function(event){
+		$(this).find('.press-delete').css({'color':'#ccc', 'font-size':'15px'});	
+	});
+	
 	$('.nav li:contains(\"Home\")').addClass('xuxu');
 	
 	$('.profile-editable-content').mouseover(function(event) {
@@ -245,13 +253,13 @@ Yii::app()->clientScript->registerScript('loading-img',
 				success: function(data){
 					if(data.res=='no')
 					{
-						$('.team-error').html(data.msg);
+						$('#form-team').find('.team-error').html(data.msg);
 						$('.team-btn').text('Save')
 					}
 					else
 					{
 						$('.team-error').html('');
-						$('.team-ready').append(data.res);
+						$('.team-ready').prepend(data.res);
 						$('.team-item').show('slow').animate({opacity: 1}, 250);	
 						$('.team-btn').text('Save')
 					}
@@ -261,35 +269,99 @@ Yii::app()->clientScript->registerScript('loading-img',
 		
 	});
 	
-	
-	$('.team-ready').on('click','.team-delete',function(event){
-		var parent = $(this).parent();
-		var id = parent.find('span').attr('data-id');
-		parent.addClass('deletable');
+		$('#form-press').submit(function(event) {
+		
+		event.preventDefault(); 
+		$('.press-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 		
 		$.ajax({
-				url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name=".$model->startupname."',
+				url: '".Yii::app()->request->baseUrl."/startup/addPress?name=".$model->startupname."',
 				dataType: 'json',
 				type: 'POST',
-				data: {
-					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
-				},
+				data: $('#form-press').serialize(),
 				success: function(data){
-					
-					if(data.res=='OK')
-						$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
-					
+					if(data.res=='no')
+					{
+						$('#form-press').find('.press-error').html(data.msg);
+						$('.press-btn').text('Save');
+					}
 					else
 					{
-						$('.deletable').removeClass('deletable');	
-						parent.find('.team-error').html(data.msg);
-					}					
-					
-				},
-				error: function(){
-					$('.deletable').removeClass('deletable');	
+						$('.press-error').html('');	
+						$('.press-ready').prepend(data.res);
+						$('.press-item').show('slow').animate({opacity: 1}, 250);
+						$('.press-btn').text('Save');
+					}
 				}
 			});
+		
+		
+	});
+	
+	
+	$('.team-ready').on('click','.team-delete',function(event){
+		if(confirm('Are you sure?'))
+		{
+			var parent = $(this).parent();
+			var id = parent.find('span').attr('data-id');
+			parent.addClass('deletable');
+			$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startup/deleteTeam?id='+id+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					success: function(data){
+						
+						if(data.res=='OK')
+							$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+						
+						else
+						{
+							$('.deletable').removeClass('deletable');	
+							parent.find('.team-error').html(data.msg);
+						}					
+						
+					},
+					error: function(){
+						$('.deletable').removeClass('deletable');	
+					}
+				});
+		}
+	
+	});
+	
+	$('.press-ready').on('click','.press-delete',function(event){
+		if(confirm('Are you sure?'))
+		{
+			var parent = $(this).parent();
+			var id = parent.find('span').attr('data-id');
+			parent.addClass('deletable');
+			$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startup/deletePress?id='+id+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					success: function(data){
+						
+						if(data.res=='OK')
+							$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+						
+						else
+						{
+							$('.deletable').removeClass('deletable');	
+							parent.find('.press-error').html(data.msg);
+						}					
+						
+					},
+					error: function(){
+						$('.deletable').removeClass('deletable');	
+					}
+				});
+		}
 	
 	});
 	
@@ -1056,8 +1128,8 @@ function checkCompletionBar(percent)
 				
 		</div>
 		
-	</div>	
-	
+	</div>		
+			
 	
 	<div class="content-wrap">
 
@@ -1159,8 +1231,6 @@ function checkCompletionBar(percent)
 		
 		</div>	
 	</div>
-
-
 
 
 <div class="content-wrap" style="margin-top:0px;">
@@ -1272,6 +1342,92 @@ function checkCompletionBar(percent)
 		
 		</div>	
 	</div>	
+	
+
+	<div class="content-wrap">
+
+		<div class="content-head" style="border-radius: 5px 5px 0 0;">
+			<i class="icon-book profile-icon"></i> Press
+			<span class="tip">Notícias na mídia</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit" style="border-radius: 0;">
+			
+			<div class="editable-wrap-team">
+		
+				<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'form-press',
+					'action'=>'',
+					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+				)); ?>
+		
+					<?php echo CHtml::label('URL', false, array('style'=>'display:inline-block; margin-right:30px;')); ?>
+					<?php echo CHtml::urlField('url'); ?>
+					
+					<?php echo CHtml::label('Titulo', false, array('style'=>'display:inline-block; margin-right:30px;')); ?>
+					<?php echo CHtml::textField('title'); ?>
+					
+					<?php echo CHtml::label('Descrição', false, array('style'=>'display:inline-block; margin-right:30px;')); ?>
+					<?php echo CHtml::textArea('description'); ?>
+					
+					<?php echo CHtml::label('Data', false, array('style'=>'display:inline-block; margin-right:30px;')); ?>
+					<?php $this->widget('bootstrap.widgets.TbDatePicker', array(
+							'name' => 'date',
+							'options' => array(
+								'format' => 'yyyy-mm-dd',
+							),
+						)); 
+					?>
+					
+					
+			
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Save',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'style'=>'display:inline-block',
+							'class'=>'press-btn btn-primary',
+							),
+						)); 
+					?>
+					<div class="press-error" style="display:inline; margin-left:10px; color:#b94a48;"></div>
+			
+				<?php $this->endWidget(); ?>
+				
+			</div>
+		</div>	
+	
+	<div class="content-info press-ready" id="press-approve">
+		
+		<?php foreach($model->press as $press):  ?>		
+		<div class="press-item">		
+			<div class="press-text">
+				<?php 
+				/* manipulate url */ 
+				$url=preg_replace('/http:\/\//', '', $press->url);
+				$url=preg_replace('/https:\/\//', '', $url);
+				if(strpos($url, '/'))
+					$url=strstr($url, '/', true);
+				?>
+				<div class="press-url"><span data-id="<?php echo CHtml::encode($press->id); ?>"><?php echo CHtml::encode($url); ?></div>
+				<div class="press-title"><?php echo CHtml::link(CHtml::encode($press->title), CHtml::encode($press->url), array('target'=>'_blank'));?></div>
+				<div class="press-description"><?php echo CHtml::encode($press->description);?></div>
+				<div class="press-date"><?php echo date('d/m/y', strtotime(CHtml::encode($press->time))); ?></div>
+			</div>
+			<div class="press-delete"><i class="icon-remove-sign"></i></div>
+			<div class="team-error"></div>
+		</div>
+		<?php endforeach;?>
+			
+		
+		
+		</div>	
+	
+	</div>	
+	
+	
 	
 	<?php echo CHtml::beginForm(Yii::app()->request->baseUrl.'/startup/delete/id/'.CHtml::encode($model->id), 'post'); ?>
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
