@@ -498,6 +498,32 @@ $('.video-images-items').carouFredSel({
 	</div>
 	<?php endif;?>
 	
+	<?php if($model->traction):?>
+	<div class="content-wrap">
+
+		<div class="content-head">
+			<i class="icon-book profile-icon"></i> Traction
+			<span class="tip">Metas de desempenho da empresa</span>
+		</div>
+		
+		<div class="content-info">
+			
+			<?php foreach($model->traction as $traction):  ?>		
+			<div class="traction-item" style="margin-bottom:20px;">		
+				<div class="traction-text">
+					<div class="tracion-metric"><span data-id="<?php echo CHtml::encode($traction->id); ?>"><?php echo CHtml::encode($traction->metric); ?></div>
+					<div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div>
+					<div class="traction-period"><?php echo CHtml::encode($traction->period);?></div>
+					<div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div>
+				</div>
+			</div>
+			<?php endforeach;?>
+			
+		</div>
+		
+	</div>
+	<?php endif;?>
+	
 
 </div>
 

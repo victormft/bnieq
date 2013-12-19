@@ -90,6 +90,12 @@ class Startup extends CActiveRecord
 	const POS_2="Member";
 	const POS_3="Investor";
 	const POS_4="Advisor";
+	
+	//traction period
+	const TRA_1="Total";
+	const TRA_2="Daily";
+	const TRA_3="Monthly";
+	const TRA_4="Yearly";
 		
 	/**
 	 * @return string the associated database table name
@@ -146,6 +152,7 @@ class Startup extends CActiveRecord
 			'investments' => array(self::HAS_MANY, 'Investment', 'startup_id'),
 			'pitches' => array(self::HAS_MANY, 'Pitch', 'startup_id'),
 			'press' => array(self::HAS_MANY, 'Press', 'startup_id'),
+			'traction' => array(self::HAS_MANY, 'Traction', 'startup_id'),
 			'logo0' => array(self::BELONGS_TO, 'Image', 'logo'),
 			'users' => array(self::MANY_MANY, 'User', 'startup_follow(startup_id, user_id)'),
 			'images' => array(self::MANY_MANY, 'Image', 'startup_image(startup_id, image_id)'),
@@ -359,6 +366,16 @@ class Startup extends CActiveRecord
 			self::POS_2=>UserModule::t("Member"),
 			self::POS_3=>UserModule::t("Investor"),
 			self::POS_4=>UserModule::t("Advisor"),
+		);
+	}
+	
+	public function getTractionPeriodOptions()
+	{
+		return array(
+			self::TRA_1=>"Total",
+			self::TRA_2=>"Diário",
+			self::TRA_3=>"Mensal",
+			self::TRA_4=>"Anual",
 		);
 	}
 /*

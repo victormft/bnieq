@@ -905,13 +905,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	margin-top:3px;
 }
 
-.content-wrap .team-ready, .content-wrap .press-ready
+.content-wrap .team-ready, .content-wrap .press-ready, .content-wrap .traction-ready
 {
 	overflow:auto;
 	padding: 0px;
 }
 
-.team-ready .team-item, .press-ready .press-item
+.team-ready .team-item, .press-ready .press-item, .traction-ready .traction-item
 {
 	overflow:auto;
 	border-bottom: 1px solid #ccc;

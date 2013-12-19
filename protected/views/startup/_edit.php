@@ -197,6 +197,14 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$(this).find('.press-delete').css({'color':'#ccc', 'font-size':'15px'});	
 	});
 	
+	$('.traction-ready').on('mouseover','.traction-item',function(event){
+		$(this).find('.traction-delete').css({'color':'red', 'font-size':'22px'});	
+	});
+	
+	$('.traction-ready').on('mouseout','.traction-item',function(event){
+		$(this).find('.traction-delete').css({'color':'#ccc', 'font-size':'15px'});	
+	});
+	
 	$('.nav li:contains(\"Home\")').addClass('xuxu');
 	
 	$('.profile-editable-content').mouseover(function(event) {
@@ -298,6 +306,35 @@ Yii::app()->clientScript->registerScript('loading-img',
 		
 	});
 	
+	$('#form-traction').submit(function(event) {
+		
+		event.preventDefault(); 
+		$('.press-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+		
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/addTraction?name=".$model->startupname."',
+				dataType: 'json',
+				type: 'POST',
+				data: $('#form-traction').serialize(),
+				success: function(data){
+					if(data.res=='no')
+					{
+						$('#form-traction').find('.traction-error').html(data.msg);
+						$('.traction-btn').text('Save');
+					}
+					else
+					{
+						$('.traction-error').html('');	
+						$('.traction-ready').prepend(data.res);
+						$('.traction-item').show('slow').animate({opacity: 1}, 250);
+						$('.traction-btn').text('Save');
+					}
+				}
+			});
+		
+		
+	});
+	
 	
 	$('.team-ready').on('click','.team-delete',function(event){
 		if(confirm('Are you sure?'))
@@ -354,6 +391,39 @@ Yii::app()->clientScript->registerScript('loading-img',
 						{
 							$('.deletable').removeClass('deletable');	
 							parent.find('.press-error').html(data.msg);
+						}					
+						
+					},
+					error: function(){
+						$('.deletable').removeClass('deletable');	
+					}
+				});
+		}
+	
+	});
+	
+	$('.traction-ready').on('click','.traction-delete',function(event){
+		if(confirm('Are you sure?'))
+		{
+			var parent = $(this).parent();
+			var id = parent.find('span').attr('data-id');
+			parent.addClass('deletable');
+			$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startup/deleteTraction?id='+id+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					success: function(data){
+						
+						if(data.res=='OK')
+							$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+						
+						else
+						{
+							$('.deletable').removeClass('deletable');	
+							parent.find('.traction-error').html(data.msg);
 						}					
 						
 					},
@@ -1023,11 +1093,82 @@ function checkCompletionBar(percent)
 		
 	</div>	
 	
-	<!--
-	<div class="sectors_wrap">
-		<?php //$this->renderPartial('_sectors', array('model'=>$model)); ?>
-	</div>
-	-->
+	<div class="content-wrap">
+
+		<div class="content-head" style="border-radius: 5px 5px 0 0;">
+			<i class="icon-book profile-icon"></i> Traction
+			<span class="tip">Métricas do desenvolvimento da empresa</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit" style="border-radius: 0;">
+			
+			<div class="editable-wrap-team">
+		
+				<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'form-traction',
+					'action'=>'',
+					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+				)); ?>
+		
+					<?php echo CHtml::label('Metric', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php echo CHtml::textField('metric'); ?>
+					
+					<?php echo CHtml::label('Value', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php echo CHtml::textField('value'); ?>
+					
+					<?php echo CHtml::label('Period', false); ?>
+					<?php echo CHtml::dropDownList('period', '', array_merge(array(''=>UserModule::t("Select...")), $model->getTractionPeriodOptions())) ?>
+			
+					
+					<?php echo CHtml::label('Data', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php $this->widget('bootstrap.widgets.TbDatePicker', array(
+							'name' => 'date-traction',
+							'options' => array(
+								'format' => 'yyyy-mm-dd',
+							),
+						)); 
+					?>
+					
+					
+			
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Save',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'style'=>'display:block',
+							'class'=>'traction-btn btn-primary',
+							),
+						)); 
+					?>
+					<div class="traction-error" style="display:inline; margin-left:10px; color:#b94a48;"></div>
+			
+				<?php $this->endWidget(); ?>
+				
+			</div>
+			
+		</div>	
+	
+	<div class="content-info traction-ready" id="traction-approve">
+		
+		<?php foreach($model->traction as $traction):  ?>		
+		<div class="traction-item">		
+			<div class="traction-text">
+				<div class="tracion-metric"><span data-id="<?php echo CHtml::encode($traction->id); ?>"><?php echo CHtml::encode($traction->metric); ?></div>
+				<div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div>
+				<div class="traction-period"><?php echo CHtml::encode($traction->period);?></div>
+				<div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div>
+			</div>
+			<div class="traction-delete"><i class="icon-remove-sign"></i></div>
+			<div class="traction-error"></div>
+		</div>
+		<?php endforeach;?>
+		
+		
+		</div>	
+	
+	</div>	
 
 </div>
 

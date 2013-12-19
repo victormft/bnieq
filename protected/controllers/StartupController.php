@@ -37,7 +37,7 @@ class StartupController extends Controller
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'addPress', 'deleteTeam', 'deletePress', 'RefreshStartupName', 'delete'),
+				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'addPress', 'addTraction', 'deleteTeam', 'deletePress', 'deleteTraction', 'RefreshStartupName', 'delete'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
@@ -995,7 +995,7 @@ class StartupController extends Controller
 	}
 	
 	
-		public function actionAddPress($name)
+	public function actionAddPress($name)
 	{
 		$model=$this->loadModel($name);
 		
@@ -1054,6 +1054,60 @@ class StartupController extends Controller
 		
 	}
 	
+	public function actionAddTraction($name)
+	{
+		$model=$this->loadModel($name);
+		
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+		
+		$traction = new Traction;
+		
+		$traction->startup_id = $model->id;
+		$traction->metric = $_POST['metric'];
+		$traction->value = $_POST['value'];
+		$traction->period = $_POST['period'];    
+        $traction->date = $_POST['date-traction']; 
+		
+		if(empty($_POST['metric']) || empty($_POST['value']) || empty($_POST['period']) || empty($_POST['date-traction']))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Preencha todos os campos!'
+			));
+			exit;
+		}
+		
+		else
+		{	
+		
+			$traction->save();
+			
+		
+			$html='
+		
+			<div class="traction-item" style="display:none; opacity:0;">
+				<div class="traction-text">
+					<div class="tracion-metric"><span data-id="'. $traction->id .'">'. CHtml::encode($traction->metric) .'</span></div>
+					<div class="traction-value">'. CHtml::encode($traction->value) .'</div>
+					<div class="traction-period">'. CHtml::encode($traction->period) . '</div>
+					<div class="traction-date">'. date('d/m/y', strtotime(CHtml::encode($traction->date))) . '</div>
+				</div>
+				<div class="traction-delete"><i class="icon-remove-sign"></i></div>
+				<div class="traction-error"></div>
+			</div>
+			
+			';
+			
+			
+			echo CJSON::encode(array(
+				'res'=>$html
+			));
+			exit;
+		}
+		
+	}
+	
 	
 	public function actionDeleteTeam($id, $name)
 	{
@@ -1079,7 +1133,7 @@ class StartupController extends Controller
 		exit;
 	}
 	
-		public function actionDeletePress($id, $name)
+	public function actionDeletePress($id, $name)
 	{
 		$model=$this->loadModel($name);
 		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
@@ -1087,6 +1141,21 @@ class StartupController extends Controller
 		
 		$press=Press::model()->find('id=:p_id AND startup_id=:s_id', array(':p_id'=>$id, ':s_id'=>$model->id));
 		$press->delete();
+			
+		echo CJSON::encode(array(
+				'res'=>'OK'
+			));
+		exit;
+	}
+	
+	public function actionDeleteTraction($id, $name)
+	{
+		$model=$this->loadModel($name);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+		
+		$traction=Traction::model()->find('id=:t_id AND startup_id=:s_id', array(':t_id'=>$id, ':s_id'=>$model->id));
+		$traction->delete();
 			
 		echo CJSON::encode(array(
 				'res'=>'OK'
