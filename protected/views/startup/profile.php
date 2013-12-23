@@ -508,16 +508,32 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<?php foreach($model->traction as $traction):  ?>		
-			<div class="traction-item" style="margin-bottom:20px;">		
-				<div class="traction-text">
-					<div class="tracion-metric"><span data-id="<?php echo CHtml::encode($traction->id); ?>"><?php echo CHtml::encode($traction->metric); ?></div>
-					<div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div>
-					<div class="traction-period"><?php echo CHtml::encode($traction->period);?></div>
-					<div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div>
-				</div>
-			</div>
+			<table>
+			<tr class="table-header" style="font-weight:bold;">
+				<td>Métrica</td>
+				<td>Valor</td>
+				<td>Período</td>
+				<td>Data</td>
+			</tr>
+			<?php 
+				$qry = new CDbCriteria(array(
+					'condition' => "startup_id=:param",
+					'order' => "date DESC",
+					'params' => array(':param' => $model->id),  
+				));
+
+				$query = Traction::model()->findAll($qry); 
+				
+				foreach($query as $traction):  
+			?>		
+			<tr>		
+				<td><div class="tracion-metric"><span data-id="<?php echo CHtml::encode($traction->id); ?>"><?php echo CHtml::encode($traction->metric); ?></div></td>
+				<td><div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div></td>
+				<td><div class="traction-period"><?php echo CHtml::encode($traction->period);?></div></td>
+				<td><div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div></td>
+			</tr>
 			<?php endforeach;?>
+			</table>
 			
 		</div>
 		

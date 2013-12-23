@@ -20,7 +20,7 @@ class PressController extends Controller
 		$model=Startup::model()->find('startupname=:s_name',array(':s_name'=>$startupname));
 		
 		$qry = new CDbCriteria( array(
-			'condition' => "startup_id LIKE :param",
+			'condition' => "startup_id=:param",
 			'order' => "time DESC",
 			'params'    => array(':param' => $model->id),  
 		) );

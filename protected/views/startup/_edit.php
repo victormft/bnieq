@@ -205,6 +205,14 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$(this).find('.traction-delete').css({'color':'#ccc', 'font-size':'15px'});	
 	});
 	
+	$('.past-ready').on('mouseover','.past-item',function(event){
+		$(this).find('.past-delete').css({'color':'red', 'font-size':'22px'});	
+	});
+	
+	$('.past-ready').on('mouseout','.past-item',function(event){
+		$(this).find('.past-delete').css({'color':'#ccc', 'font-size':'15px'});	
+	});
+	
 	$('.nav li:contains(\"Home\")').addClass('xuxu');
 	
 	$('.profile-editable-content').mouseover(function(event) {
@@ -309,7 +317,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 	$('#form-traction').submit(function(event) {
 		
 		event.preventDefault(); 
-		$('.press-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+		$('.traction-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 		
 		$.ajax({
 				url: '".Yii::app()->request->baseUrl."/startup/addTraction?name=".$model->startupname."',
@@ -329,6 +337,36 @@ Yii::app()->clientScript->registerScript('loading-img',
 						$('.traction-item').show('slow').animate({opacity: 1}, 250);
 						$('.traction-btn').text('Save');
 					}
+				}
+			});
+		
+		
+	});
+	
+	$('#form-past').submit(function(event) {
+		
+		event.preventDefault(); 
+		$('.past-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+		
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/addPast?name=".$model->startupname."',
+				dataType: 'json',
+				type: 'POST',
+				data: $('#form-past').serialize(),
+				success: function(data){
+					if(data.res=='no')
+					{
+						$('#form-past').find('.past-error').html(data.msg);
+						$('.past-btn').text('Save');
+					}
+					else
+					{
+						$('.past-error').html('');	
+						$('.past-ready').prepend(data.res);
+						$('.past-item').show('slow').animate({opacity: 1}, 250);
+						$('.past-btn').text('Save');
+					}
+					$('#investor_id').val('');
 				}
 			});
 		
@@ -424,6 +462,40 @@ Yii::app()->clientScript->registerScript('loading-img',
 						{
 							$('.deletable').removeClass('deletable');	
 							parent.find('.traction-error').html(data.msg);
+						}					
+						
+					},
+					error: function(){
+						$('.deletable').removeClass('deletable');	
+					}
+				});
+		}
+	
+	});
+	
+	
+	$('.past-ready').on('click','.past-delete',function(event){
+		if(confirm('Are you sure?'))
+		{
+			var parent = $(this).parent();
+			var id = parent.find('span').attr('data-id');
+			parent.addClass('deletable');
+			$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startup/deletePast?id='+id+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					success: function(data){
+						
+						if(data.res=='OK')
+							$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+						
+						else
+						{
+							$('.deletable').removeClass('deletable');	
+							parent.find('.past-error').html(data.msg);
 						}					
 						
 					},
@@ -1152,16 +1224,184 @@ function checkCompletionBar(percent)
 	
 	<div class="content-info traction-ready" id="traction-approve">
 		
-		<?php foreach($model->traction as $traction):  ?>		
+		<?php 
+			$qry = new CDbCriteria(array(
+				'condition' => "startup_id=:param",
+				'order' => "date DESC",
+				'params' => array(':param' => $model->id),  
+			));
+
+			$query = Traction::model()->findAll($qry); 
+				
+			foreach($query as $traction):  
+		?>		
 		<div class="traction-item">		
 			<div class="traction-text">
-				<div class="tracion-metric"><span data-id="<?php echo CHtml::encode($traction->id); ?>"><?php echo CHtml::encode($traction->metric); ?></div>
-				<div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div>
-				<div class="traction-period"><?php echo CHtml::encode($traction->period);?></div>
-				<div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div>
+				<table>
+					<tr>
+						<td><div class="tracion-metric"><span data-id="<?php echo CHtml::encode($traction->id); ?>"><?php echo CHtml::encode($traction->metric); ?></div></td>
+						<td><div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div></td>
+						<td><div class="traction-period"><?php echo CHtml::encode($traction->period);?></div></td>
+						<td><div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div></td>
+					<tr>
+				</table>
 			</div>
 			<div class="traction-delete"><i class="icon-remove-sign"></i></div>
 			<div class="traction-error"></div>
+		</div>
+		<?php endforeach;?>
+		
+		
+		</div>	
+	
+	</div>	
+	
+	<div class="content-wrap">
+
+		<div class="content-head" style="border-radius: 5px 5px 0 0;">
+			<i class="icon-book profile-icon"></i> Past Investments
+			<span class="tip">Investimentos do passado</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit" style="border-radius: 0;">
+			
+			<div class="editable-wrap-team">
+		
+				<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'form-past',
+					'action'=>'',
+					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+				)); ?>
+		
+					<?php echo CHtml::label('Investidor', false, array('style'=>'display:inline-block; margin-right:30px;')); ?><div class="past-loading" style="display:inline;"></div>
+					<input type="text" id="investor" size="40" name="past_investor_name" style="display:block;"/>
+					<input type="hidden" id="investor_id" name="past_investor_id"/>
+					
+					<?php echo CHtml::label('Value', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php echo CHtml::textField('value'); ?>
+							
+					
+					<?php echo CHtml::label('Data', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php $this->widget('bootstrap.widgets.TbDatePicker', array(
+							'name' => 'date-past',
+							'options' => array(
+								'format' => 'yyyy-mm-dd',
+							),
+						)); 
+					?>
+					
+					
+			
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Save',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'style'=>'display:block',
+							'class'=>'past-btn btn-primary',
+							),
+						)); 
+					?>
+					<div class="past-error" style="display:inline; margin-left:10px; color:#b94a48;"></div>
+			
+				<?php $this->endWidget(); ?>
+				
+			</div>
+
+			<script>
+				$(function() {
+	
+	var img_path = "<?php echo Yii::app()->request->baseUrl.'/images/'?>";
+	
+    $("#investor").autocomplete({
+        source: function( request, response ) {
+			$.ajax({
+				beforeSend: function(){
+					 $(".past-loading").html("<img src='<?php echo Yii::app()->request->baseUrl; ?>/images/loading.gif'/>");
+				},
+				url: "<?php echo Yii::app()->request->baseUrl.'/startup/autotest'?>",
+				data: {term: request.term},
+				dataType: "json",
+				success: function( data ) {
+					response( $.map( data.myData, function( item ) {
+						return {
+							value: item.label,
+							id: item.value,
+							description: item.description,
+							label: _highlight(item.label, request.term),
+							label_form: item.label,
+							image: item.image
+							
+						}
+					}));
+					$(".past-loading").empty();
+					$(".ui-autocomplete").css({'width':'300px'});
+				},
+				error: function(){
+					$(".past-loading").html('<span style="color:#b94a48;"> Registro não encontrado! </span>').find('span').delay(1000).fadeOut(600);
+					$(".ui-autocomplete").css({'display':'none'});
+				}
+			});
+		},
+        minLength: 1,
+		delay: 300,
+		select: function( event, ui ) {
+			$( "#investor" ).val( ui.item.label_form);
+			$( "#investor_id" ).val( ui.item.id );
+			return false;
+      }
+    }).data( "uiAutocomplete" )._renderItem = function( ul, item ) {
+        var inner_html = '<a><div class="list_item_container"><div class="search-image"><img src="' + img_path + item.image + '"></div><div class="aa">' + item.label + '</div><div class="description">' + item.description + '</div></div></a>';
+        return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append(inner_html)
+            .appendTo( ul );
+    };
+	
+	function _highlight(s, t) {
+		var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
+		return s.replace(matcher, "<strong>$1</strong>");
+	}
+});
+			
+	</script>		
+		</div>	
+	
+	<div class="content-info past-ready" id="past-approve">
+		
+		<?php 
+			$qry = new CDbCriteria(array(
+				'condition' => "startup_id=:param",
+				'order' => "date DESC",
+				'params' => array(':param' => $model->id),  
+			));
+
+			$query = PastInvestment::model()->findAll($qry); 
+				
+			foreach($query as $past):  
+		?>		
+		<div class="past-item">		
+				<table>
+					<tr>
+						<?php if(empty($past->user_id)):?>
+						<td>
+							<div class="past-image"><?php echo '<img src="'.Yii::app()->request->baseUrl.'/images/default-user.png" id="past-img" />'; ?></div>
+							<div class="past-investor"><span data-id="<?php echo CHtml::encode($past->id); ?>"><?php echo CHtml::encode($past->investor_name); ?></div></td>
+						</td>
+						<?php else:?>
+						<?php $usr=User::model()->find('user_id=:u_id', array(':u_id'=>$past->user_id)); ?>
+						<td>
+							<div class="past-image"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$usr->profile->logo->name.'" id="past-img" />', array('/' . $usr->username)); ?></div>
+							<div class="past-investor"><span data-id="<?php echo CHtml::encode($past->id); ?>"><?php echo CHtml::link(CHtml::encode($usr->getFullName()), array('/' . $usr->username)); ?></div></td>
+						</td>
+						<?php endif;?>
+						<td><div class="past-value"><?php echo CHtml::encode($past->value); ?></div></td>
+						<td><div class="past-date"><?php echo date('d/m/y', strtotime(CHtml::encode($past->date))); ?></div></td>
+					</tr>
+				</table>
+			<div class="past-delete"><i class="icon-remove-sign"></i></div>
+			<div class="past-error"></div>
 		</div>
 		<?php endforeach;?>
 		

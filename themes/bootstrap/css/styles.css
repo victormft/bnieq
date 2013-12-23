@@ -905,13 +905,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	margin-top:3px;
 }
 
-.content-wrap .team-ready, .content-wrap .press-ready, .content-wrap .traction-ready
+.content-wrap .team-ready, .content-wrap .press-ready, .content-wrap .traction-ready , .content-wrap .past-ready
 {
 	overflow:auto;
 	padding: 0px;
 }
 
-.team-ready .team-item, .press-ready .press-item, .traction-ready .traction-item
+.team-ready .team-item, .press-ready .press-item, .traction-ready .traction-item, .past-ready .past-item
 {
 	overflow:auto;
 	border-bottom: 1px solid #ccc;
@@ -937,6 +937,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	float:left;
 	margin-right: 10px;
     
+	background:#fafafa;
+	width:60px; 
+	height:60px;
+	padding:4px;
+	border-radius: 5px;
+	line-height:55px;
+	text-align:center;
+	box-shadow: inset 0px 0px 4px 1px #ddd;
+}
+
+.past-ready .past-item .past-image
+{ 
+	margin: 0 auto;
 	background:#fafafa;
 	width:60px; 
 	height:60px;
@@ -1002,6 +1015,24 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 .press-ready .press-item .press-delete
+{
+	position: absolute;
+	top:0;
+	right:0;
+	margin:15px 20px 0 0;
+	color: #ccc;
+}
+
+.traction-ready .traction-item .traction-delete
+{
+	position: absolute;
+	top:0;
+	right:0;
+	margin:15px 20px 0 0;
+	color: #ccc;
+}
+
+.past-ready .past-item .past-delete
 {
 	position: absolute;
 	top:0;
@@ -2061,3 +2092,9 @@ body input[type="file"]{
 	padding-bottom: 5px;
 }
 
+.content-info td
+{
+	width:100px;
+	text-align:center;
+	
+}
