@@ -1,10 +1,7 @@
 <?php
 
-class PitchController extends Controller
+class ThreadController extends Controller
 {
-
-
-	private $_startup;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -14,13 +11,11 @@ class PitchController extends Controller
 	/**
 	 * @return array action filters
 	 */
-	
 	public function filters()
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
-			'startup + create',
 		);
 	}
 
@@ -55,9 +50,14 @@ class PitchController extends Controller
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionView($id)
+	
 	{
+		$model = $this->loadModel($id);
+		$model->views++;
+		$model->save();
+	
 		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model ,
 		));
 	}
 
@@ -67,43 +67,47 @@ class PitchController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Pitch;
+		$model=new Thread;
+		$model_post = new Post;
+		
 		$user = User::model()->findByPk(Yii::app()->user->id);
-		$profile = $user->profile;
-		$model->startup_id = $this->_startup->id;
-		$startup = $this->_startup;
+		
+		$model->user_id = $user->id;
+		$model_post->user_id = $user->id;
+		
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Pitch']))
+		if(isset($_POST['Thread']))
 		{
+			
 			$valid = true;
 			
-			if(isset($_POST['Profile'])) {
-				$profile->attributes=$_POST['Profile'];
-				$valid = $profile->validate();
-			}
-			if(isset($_POST['Startup'])) {
-				$startup->attributes = $_POST['Startup'];
-				$valid = ($startup->validate() && $valid);
+			if(isset($_POST['Post'])) {
+			
+				$model_post->attributes=$_POST['Post'];
+				$model_post->setCreateTime(time());
 			}
 			
+			$model->attributes=$_POST['Thread'];
+			$model->setCreateTime(time());
+			$model->last_post = $model->create_time;
+			$valid = ($model->validate());
 			
-			$model->attributes=$_POST['Pitch'];
-			$valid = ($model->validate() && $valid);
+			$model_post->thread_id = $model->id;
+			$valid = $model_post->validate() && $valid;
 			
 			if($valid) {
-			$startup->save(false);
-			$model->save(false);
-			$profile->save(false);
-			
-			
-			$this->redirect(array('view','id'=>$model->id));
+				if($model->save(false)) 
+					$model_post->thread_id = $model->id;
+					if($model_post->save(false))
+						$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
 		$this->render('create',array(
-			'model'=>$model, 'profile'=>$profile , 'startup'=>$startup, 
+			'model'=>$model, 'model_post'=>$model_post
 		));
 	}
 
@@ -119,18 +123,18 @@ class PitchController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Pitch']))
+		if(isset($_POST['Thread']))
 		{
-			$model->attributes=$_POST['Pitch'];
+			$model->attributes=$_POST['Thread'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
-
+		
 		$this->render('update',array(
 			'model'=>$model,
 		));
 	}
-
+	
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -150,29 +154,12 @@ class PitchController extends Controller
 	 */
 	public function actionIndex()
 	{
-		//$dataProvider=new CActiveDataProvider('Pitch');
-		$model=new Pitch('search');
-		$model->unsetAttributes();
-		
-		if(isset($_GET['g']))
-		{
-			//if($_GET['g']=='Selecionadas')
-				//$model->selecionada=1;
-			
-			/*else if($_GET['g']=='Populares')
-				$model->group=$_GET['g'];
-				
-			else if($_GET['g']=='Novidades')
-				$model->group=$_GET['g'];*/
-				if($_GET['g']=='Financiada')
-				$model->sort_funded = 1;
-		}
-		
-		if(isset($_GET['c_stage']))
-			$model->c_stage_sort=$_GET['c_stage'];	
-		
+		$dataProvider=new CActiveDataProvider('Thread', array(
+			'criteria'=>array(
+			'order'=>'last_post DESC',
+    ),));
 		$this->render('index',array(
-			'dataProvider'=>$model,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
@@ -181,10 +168,10 @@ class PitchController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Pitch('search');
+		$model=new Thread('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Pitch']))
-			$model->attributes=$_GET['Pitch'];
+		if(isset($_GET['Thread']))
+			$model->attributes=$_GET['Thread'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -195,56 +182,27 @@ class PitchController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Pitch the loaded model
+	 * @return Thread the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Pitch::model()->findByPk($id);
+		$model=Thread::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
 
-
 	/**
 	 * Performs the AJAX validation.
-	 * @param Pitch $model the model to be validated
+	 * @param Thread $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='pitch-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='thread-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
-	}
-	
-	//need to put some secure to filter, loading the startup only if it's user is the same of current logged user
-	public function filterStartup($filterchain) {
-		if(isset($_GET['startupId'])) {
-			$this->_startup = Startup::model()->findByPk($_GET['startupId']);
-			if($this->_startup === null)
-				throw new CHttpException(404,'A página requisitada não existe');
-			
-			if($this->_startup->pitches != NULL)
-				throw new CHttpException(403, 'Somente um pitch por vez.');
-			//verifies if startupId matchs with one of the startups that belongs to user
-			$authorization = false;
-			$user = User::model()->findByPk(Yii::app()->user->id);
-			
-			foreach($user->startups as $startup) {
-			
-			if($startup->id == $_GET['startupId'])
-				$authorization = true;	
-			}
-			
-			if(!$authorization)
-				throw new CHttpException(403,' Operação não permitida');
-		}	
-			else
-			throw new CHttpException(403, 'Preciso do StartupId');
-		$filterchain->run();
-			
 	}
 }
