@@ -15,10 +15,12 @@ $(document).ready(function() {
 	$('.startup_carousel_main').carouFredSel({
 		items : 1,
 		scroll: {
-			fx		  : 'fade',
-			duration  : 600
+			fx		  : 'crossfade',
 		},
 		circular: true,
+		items		: {
+		visible		: 1,
+		},
 		prev : '#startup_carousel_main_prev',
 		next : '#startup_carousel_main_next',
 		pagination: '#startup_carousel_main_pagination'
@@ -80,16 +82,13 @@ $(document).ready(function() {
 </div>
 -->
 
-<div style="margin-bottom:20px; margin-top:-20px; position:absolute; width:100%; left:0;">
+<div style="margin-bottom:20px; margin-top:-20px; position:absolute; width:100%; left:0; height:500px; overflow:hidden;">
 	
 	<div class="startup_carousel_main" style="width:100%;">
+				<img style="width:100%; height: 500px; float:left; display:block;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner3.jpg" alt="">		
+				<img style="width:100%; height: 500px; float:left; display:block;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner1.jpg" alt="">
+				<img style="width:100%; height: 500px; float:left; display:block;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner2.jpg" alt="">
 				
-				<div style="position:relative;">
-					<img style="width:100%; height: 500px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner3.jpg" alt="">
-					<span style="position:absolute; top:200px; left:30px; font-size:40px; color:#fff; text-shadow:3px 3px black;">NextBlue Equity Crowdfunding no Brasil</span>
-				</div>
-			
-				<img style="width:100%; height: 500px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner1.jpg" alt="">
 			
 		
 	</div>
