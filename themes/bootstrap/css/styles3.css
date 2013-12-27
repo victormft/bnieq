@@ -33,3 +33,110 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	margin-bottom: 5px;
 	margin-top:2px;
 }
+
+
+ .thread-table
+    {
+        display: table;
+    }
+    .thread-title
+    {
+        display: table-caption;
+        text-align: center;
+        font-weight: bold;
+        font-size: larger;
+    }
+    .thread-heading
+    {
+        display: table-row;
+        font-weight: bold;
+        text-align: center;
+    }
+    .thread-row
+    {
+        display: table-row;
+    }
+    .thread-cell
+    {
+        display: table-cell;
+        border: solid;
+        border-width: thin;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+	
+	.thread-post-list{
+	padding: 15px 0 15px 20px;
+	width: 800px;
+	overflow:hidden;
+	/*overflow: auto;*/
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	/*margin:10px;*/
+	
+	
+	background: rgb(248,248,248); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y4ZjhmOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjcwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmOGY4ZjgiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top,  rgba(248,248,248,1) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,1) 70%, rgba(248,248,248,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(248,248,248,1)), color-stop(30%,rgba(255,255,255,1)), color-stop(70%,rgba(255,255,255,1)), color-stop(100%,rgba(248,248,248,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#f8f8f8',GradientType=0 ); /* IE6-8 */
+	
+	}
+	
+	.thread-post-list:nth-child(odd) {
+	background:#EAEAEA;
+	
+	}
+	
+	.thread-post-list:nth-child(even) {
+	background:#FBFBFB;
+	
+	}
+	
+	.post-content{
+	
+		display:inline-block;
+		width:650px;
+		border: 0px solid #ccc;
+	}
+	
+	.user-post-info{
+		word-break:break-all;
+		display:inline-block;
+		width:130px;
+		border: 0px solid #ccc;
+		vertical-align:top; 
+		text-align: center;
+	}
+	
+
+	
+	
+	.thread-title {
+	width:400px;
+		height: 30px;
+		text-align:left;
+	}
+	
+	.thread-reply-button {
+	margin-top:  10px;
+	display: inline-block;
+	background-color: #5FB2F5;
+	color: #FFFFFF;
+	padding: 10px 20px;
+	/*text-decoration: none;
+	box-sizing: border-box;*/
+	font-family: Helvetica, Arial, sans-serif;
+	font-weight:bolder;
+	font-size: 14px;
+	border: 2px;
+}
+
+	
