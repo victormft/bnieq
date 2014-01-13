@@ -616,7 +616,7 @@ class StartupController extends Controller
 		if(isset($_GET['sec']))
 			$model->sectors=$_GET['sec'];	
 			
-		if(isset($_GET['g']))
+		if(!empty($_GET['g']))
 		{
 		
 			$model->default_sort=false;
