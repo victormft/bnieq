@@ -367,6 +367,9 @@ Yii::app()->clientScript->registerScript('loading-img',
 						$('.past-btn').text('Save');
 					}
 					$('#investor_id').val('');
+					$('#investor').val('');
+					$('#value-past').val('');
+					$('#date-past').val('');
 				}
 			});
 		
@@ -1279,7 +1282,7 @@ function checkCompletionBar(percent)
 					<input type="hidden" id="investor_id" name="past_investor_id"/>
 					
 					<?php echo CHtml::label('Value', false, array('style'=>'display:block; margin-right:30px;')); ?>
-					<?php echo CHtml::textField('value'); ?>
+					<?php echo CHtml::textField('value-past'); ?>
 							
 					
 					<?php echo CHtml::label('Data', false, array('style'=>'display:block; margin-right:30px;')); ?>
@@ -1803,7 +1806,7 @@ function checkCompletionBar(percent)
 			});
 		},
         minLength: 1,
-		delay: 1000
+		delay: 500
     });
 	
 });

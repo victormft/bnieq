@@ -527,10 +527,62 @@ $('.video-images-items').carouFredSel({
 				foreach($query as $traction):  
 			?>		
 			<tr>		
-				<td><div class="tracion-metric"><span data-id="<?php echo CHtml::encode($traction->id); ?>"><?php echo CHtml::encode($traction->metric); ?></div></td>
+				<td><div class="tracion-metric"><?php echo CHtml::encode($traction->metric); ?></div></td>
 				<td><div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div></td>
 				<td><div class="traction-period"><?php echo CHtml::encode($traction->period);?></div></td>
 				<td><div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div></td>
+			</tr>
+			<?php endforeach;?>
+			</table>
+			
+		</div>
+		
+	</div>
+	<?php endif;?>
+	
+	
+	<?php if($model->past):?>
+	<div class="content-wrap">
+
+		<div class="content-head">
+			<i class="icon-book profile-icon"></i> Past Investments
+			<span class="tip">Investimentos anteriores na empresa</span>
+		</div>
+		
+		<div class="content-info">
+			
+			<table>
+			<tr class="table-header" style="font-weight:bold;">
+				<td>Investidor</td>
+				<td>Valor</td>
+				<td>Data</td>
+			</tr>
+			<?php 
+				$qry = new CDbCriteria(array(
+					'condition' => "startup_id=:param",
+					'order' => "date DESC",
+					'params' => array(':param' => $model->id),  
+				));
+
+				$query = PastInvestment::model()->findAll($qry); 
+				
+				foreach($query as $past):  
+			?>		
+			<tr>		
+				<?php if(empty($past->user_id)):?>
+					<td>
+						<div class="past-image"><?php echo '<img src="'.Yii::app()->request->baseUrl.'/images/default-user.png" id="past-img" />'; ?></div>
+						<div class="past-investor"><span data-id="<?php echo CHtml::encode($past->id); ?>"><?php echo CHtml::encode($past->investor_name); ?></div></td>
+					</td>
+				<?php else:?>
+					<?php $usr=User::model()->find('user_id=:u_id', array(':u_id'=>$past->user_id)); ?>
+					<td>
+						<div class="past-image"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$usr->profile->logo->name.'" id="past-img" />', array('/' . $usr->username)); ?></div>
+						<div class="past-investor"><span data-id="<?php echo CHtml::encode($past->id); ?>"><?php echo CHtml::link(CHtml::encode($usr->getFullName()), array('/' . $usr->username)); ?></div></td>
+					</td>
+				<?php endif;?>
+				<td><div class="past-value"><?php echo CHtml::encode($past->value); ?></div></td>
+				<td><div class="past-date"><?php echo date('d/m/y', strtotime(CHtml::encode($past->date))); ?></div></td>
 			</tr>
 			<?php endforeach;?>
 			</table>

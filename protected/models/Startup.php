@@ -153,6 +153,7 @@ class Startup extends CActiveRecord
 			'pitches' => array(self::HAS_MANY, 'Pitch', 'startup_id'),
 			'press' => array(self::HAS_MANY, 'Press', 'startup_id'),
 			'traction' => array(self::HAS_MANY, 'Traction', 'startup_id'),
+			'past' => array(self::HAS_MANY, 'PastInvestment', 'startup_id'),
 			'logo0' => array(self::BELONGS_TO, 'Image', 'logo'),
 			'users' => array(self::MANY_MANY, 'User', 'startup_follow(startup_id, user_id)'),
 			'images' => array(self::MANY_MANY, 'Image', 'startup_image(startup_id, image_id)'),

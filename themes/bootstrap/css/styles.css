@@ -947,7 +947,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	box-shadow: inset 0px 0px 4px 1px #ddd;
 }
 
-.past-ready .past-item .past-image
+.past-ready .past-item .past-image, .content-info .past-image
 { 
 	margin: 0 auto;
 	background:#fafafa;

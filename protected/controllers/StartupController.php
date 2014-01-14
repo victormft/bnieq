@@ -1128,10 +1128,10 @@ class StartupController extends Controller
 		else
 			$past->investor_name = $_POST['past_investor_name'];
 			
-		$past->value = $_POST['value'];  
+		$past->value = $_POST['value-past'];  
         $past->date = $_POST['date-past']; 
 		
-		if((empty($_POST['past_investor_id']) && empty($_POST['past_investor_name'])) || empty($_POST['value']) || empty($_POST['date-past']))
+		if((empty($_POST['past_investor_id']) && empty($_POST['past_investor_name'])) || empty($_POST['value-past']) || empty($_POST['date-past']))
 		{
 			echo CJSON::encode(array(
 				'res'=>'no',
