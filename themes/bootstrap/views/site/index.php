@@ -12,6 +12,22 @@ Yii::app()->clientScript->registerScript('script',
 $(document).ready(function() {
 
 	
+	$('.startup_carousel_main').carouFredSel({
+		items : 1,
+		scroll: {
+			fx		  : 'crossfade',
+		},
+		circular: true,
+		items		: {
+		visible		: 1,
+		},
+		prev : '#startup_carousel_main_prev',
+		next : '#startup_carousel_main_next',
+		pagination: '#startup_carousel_main_pagination'
+	});	
+	
+	$('.startup_carousel_main').css({'width':'100%'});
+	
 	$('#startup_carousel_all .items').carouFredSel({
 		items : 4,
 		auto : false,
@@ -37,18 +53,6 @@ $(document).ready(function() {
 		prev : '#startup_carousel_rec_prev',
 		next : '#startup_carousel_rec_next',
 		pagination: '#startup_carousel_rec_pagination'
-	});	
-	
-	$('.startup_carousel_main').carouFredSel({
-		items : 1,
-		scroll: {
-			fx		  : 'fade',
-			duration  : 600
-		},
-		circular: true,
-		prev : '#startup_carousel_main_prev',
-		next : '#startup_carousel_main_next',
-		pagination: '#startup_carousel_main_pagination'
 	});	
 	
 		
@@ -78,16 +82,13 @@ $(document).ready(function() {
 </div>
 -->
 
-<div style="margin-bottom:20px; margin-top:-20px; position:relative;">
+<div style="margin-bottom:20px; margin-top:-20px; position:absolute; width:100%; left:0; height:500px; overflow:hidden;">
 	
-	<div class="startup_carousel_main">
+	<div class="startup_carousel_main" style="width:100%;">
+				<img style="width:100%; height: 500px; float:left; display:block;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner3.jpg" alt="">		
+				<img style="width:100%; height: 500px; float:left; display:block;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner1.jpg" alt="">
+				<img style="width:100%; height: 500px; float:left; display:block;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner2.jpg" alt="">
 				
-				<div style="position:relative;">
-					<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner3.jpg" alt="">
-					<span style="position:absolute; top:200px; left:30px; font-size:40px; color:#fff; text-shadow:3px 3px black;">NextBlue Equity Crowdfunding no Brasil</span>
-				</div>
-			
-				<img style="width:1000px; height: 400px;" src="<?php echo Yii::app()->request->baseUrl.'/images/'?>banner1.jpg" alt="">
 			
 		
 	</div>
@@ -98,61 +99,7 @@ $(document).ready(function() {
 	<div class="pagination carousel-pag" id="startup_carousel_main_pagination"></div>
 </div>
 
-
-<?php
-
-
-/*
-$this->widget('bootstrap.widgets.TbCarousel', array(
-  'items'=>array(
-      array(
-		'image'=>Yii::app()->request->baseUrl.'/images/edicios-sp-gray.jpg',
-		'label'=>'First Thumbnail label',
-		'caption'=>'Cras justo odio, dapibus ac facilisis in, egestas eget quam. ' .
-			'Donec id elit non mi porta gravida at eget metus. ' .
-			'Nullam id dolor id nibh ultricies vehicula ut id elit.',
-		'imageOptions'=>array(
-			'style'=>'width:100%; height: 400px;',
-			),
-		),	
-      array(
-		'image'=>'http://placehold.it/830x400&text=Second+thumbnail',
-		'label'=>'Second Thumbnail label',
-		'caption'=>'Cras justo odio, dapibus ac facilisis in, egestas eget quam. ' .
-			'Donec id elit non mi porta gravida at eget metus. ' .
-			'Nullam id dolor id nibh ultricies vehicula ut id elit.',
-		
-		'imageOptions'=>array(
-			'style'=>'width:100%; height: 400px;',
-			),
-		
-		),
-      array(
-		'image'=>'http://placehold.it/830x400&text=Third+thumbnail',
-		'label'=>'Third Thumbnail label',
-		'caption'=>'Cras justo odio, dapibus ac facilisis in, egestas eget quam. ' .
-			'Donec id elit non mi porta gravida at eget metus. ' .
-			'Nullam id dolor id nibh ultricies vehicula ut id elit.',
-			
-		'imageOptions'=>array(
-			'style'=>'width:100%; height: 400px;',
-			),	
-			
-		),
-  ),
-  
-  
-  //'htmlOptions'=>array(
-//	'style'=>'width:500px;'
-		
-  
- // ),
-  
-  
-));
-*/
-
-?>
+<div class="clearfix" style="margin-bottom:550px;"></div>
 
 <hr style="border-top: 1px solid #ddd;">
 
