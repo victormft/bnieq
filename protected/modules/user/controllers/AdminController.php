@@ -238,7 +238,19 @@ class AdminController extends Controller
         
         foreach($provider as $arr)
         {
-            $html.=$arr->text . ' ';
+            $user=User::model()->findbypk($arr->user_id);
+            $html.='
+                <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+                    <div class="team-item">
+                        <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+                        <div class="team-text" >
+                                <div class="team-resume" style="width:70%; float:left;"><b>'. $arr->text .'</div>
+                                <div style="float:right;">'. date("d-m-Y", strtotime($arr->time)) .'</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spacing-1"></div>
+                ';
         }
         
         $html.='</div>';

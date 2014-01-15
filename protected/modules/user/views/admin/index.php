@@ -18,9 +18,7 @@ $(document.body).on('click','.report-modal',function(event){
         success: function(data){
             body.html(data.res);
         }
-    });
-
-			
+    });	
 });
 ");
 
@@ -36,11 +34,7 @@ $this->menu=array(
         'itemOptions' => array('class' => 'nav-header')
     ),
     array('label'=>'Manage Stups', 'url'=>array('startups')),
-    array(
-        'label' => 'Reports',
-        'itemOptions' => array('class' => 'nav-header')
-    ),
-    array('label'=>'REPORTS', 'url'=>array('reports')),
+    
 );
 
 Yii::app()->clientScript->registerScript('search', "

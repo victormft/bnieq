@@ -703,6 +703,12 @@ div.language ul li a img:hover{
     vertical-align: middle;
 }
 
+#portfolio-grid img
+{
+    max-height: 40px;
+    max-width: 40px;
+}
+
 .profile-header-right .edit-btn-user
 {
     /*width:50px;*/

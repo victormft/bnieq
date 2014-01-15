@@ -393,7 +393,7 @@ $('.arrow-container').mouseover(function(event){
                         'imagePathExpression'=>'Yii::app()->request->baseUrl."/images/".$data->startup->logo0->name',
                         'link'=>'$data->startup->startupname',
                         'usePlaceKitten'=>FALSE,
-                        'htmlOptions'=>array('style'=>'width: 30px; height: 30px;')
+                        'htmlOptions'=>array('style'=>'width: 40px; height: 40px; padding: 5px; text-align: center;')
                     ),
                     array(
                         'header' => 'Startup',
