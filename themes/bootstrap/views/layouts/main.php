@@ -85,11 +85,6 @@ $('.remove-search').click(function(event){
 			<a href="javascript:void(0);" style="margin-top: 5px; text-decoration:none;"><i class="icon-remove-sign remove-search" style="color:#333; line-height:20px;"></i></a>
 			<div class="team-loading" style="display:inline;"></div>
         </form>
-	
-
-	
-		
-		
 		
 		
 		<ul class="nav pull-right secondary">
@@ -100,6 +95,16 @@ $('.remove-search').click(function(event){
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
                     <ul class="dropdown-menu hov">
+                        <?php if($user->isUserInRole("Founder")): ?>
+                        <li class="name-hover">
+                            <a href="#"><i class="icon-arrow-left" style="margin:0 7px 0 1px; line-height:17px;"></i>Startups</a>
+                            <ul class="dropdown-menu hov sub-menu">
+                                <?php foreach($user->getStartupsByRole("Founder") as $stup): ?>
+                                <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/' . $stup->startupname ?>><?php echo $stup->name ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </li>
+                        <?php endif; ?>
                         <li class="name-hover">
                             <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><i class="icon-user" style="margin:0 7px 0 1px; line-height:17px;"></i><?php echo UserModule::t('Profile'); ?></a>
                         </li>
