@@ -345,9 +345,7 @@ $(function() {
 		var matcher = new RegExp("("+$.ui.autocomplete.escapeRegex(t)+")", "ig" );
 		return s.replace(matcher, "<strong>$1</strong>");
 	};
-    
-    
-    
+        
     
 });
 

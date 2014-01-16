@@ -62,7 +62,7 @@ class User extends CActiveRecord
 			array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
 			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_.]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
 			array('status', 'in', 'range'=>array(self::STATUS_NOACTIVE,self::STATUS_ACTIVE,self::STATUS_BANNED)),
-			array('superuser, investor, founder', 'in', 'range'=>array(0,1)),
+			array('superuser, investor, founder, newsletter', 'in', 'range'=>array(0,1)),
             array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
@@ -125,6 +125,7 @@ class User extends CActiveRecord
 			'status' => UserModule::t("Status"),            
 			'investor' => UserModule::t('Investor'),
             'founder' => UserModule::t('Founder'),
+            'newsletter' => UserModule::t('Keep me updated'),
 		);
 	}
 

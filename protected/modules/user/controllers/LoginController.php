@@ -47,6 +47,29 @@ class LoginController extends Controller
 
                             //profile pic
                             $profile->profile_picture = 2;
+                            
+                            //save the roles in registration
+                            if(isset($_POST['RegistrationForm']['role'])) 
+                            {
+                                switch ($_POST['RegistrationForm']['role']){
+                                    case 1: 
+                                        $vals = Role::model()->find('role_id=6');
+                                        $model->roles = $vals;
+                                        $model->saveWithRelated(array('roles')); 
+                                        break;
+                                    case 2:
+                                        $vals = Role::model()->find('role_id=5');
+                                        $model->roles = $vals;
+                                        $model->saveWithRelated(array('roles')); 
+                                        break;
+                                    case 3:
+                                        $vals[] = Role::model()->find('role_id=5');
+                                        $vals[] = Role::model()->find('role_id=6');
+                                        $model->roles = $vals;
+                                        $model->saveWithRelated(array('roles')); 
+                                        break;                                        
+                                }                                     
+                            }
 
                             $profile->save();
                             if (Yii::app()->controller->module->sendActivationMail) {

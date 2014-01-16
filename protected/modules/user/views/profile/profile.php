@@ -130,30 +130,27 @@ function getUrlVars()
 
 ?>
 
-    <?php $this->widget('bootstrap.widgets.TbAlert', array(
-        'block' => true,
-        'fade' => true,
-        'closeText' => '&times;', // false equals no close link
-        'events' => array(),
-        'htmlOptions' => array('style'=>'margin: 10px 0;'),
-        'userComponentId' => 'user',
-        'alerts' => array( // configurations per alert type
-            // success, info, warning, error or danger
-            'success' => array('block' => false, 'closeText' => '&times;'),
-            'error' => array('block' => false, 'closeText' => '&times;')
-        ),
-    ));?>
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+    'block' => true,
+    'fade' => true,
+    'closeText' => '&times;', // false equals no close link
+    'events' => array(),
+    'htmlOptions' => array('style'=>'margin: 10px 0;'),
+    'userComponentId' => 'user',
+    'alerts' => array( // configurations per alert type
+        // success, info, warning, error or danger
+        'success' => array('block' => false, 'closeText' => '&times;'),
+        'error' => array('block' => false, 'closeText' => '&times;')
+    ),
+));?>
 
-    <?php /*
-    $this->widget(
-        'bootstrap.widgets.TbBadge',
-        array(
-            'type' => 'success',
-            // 'success', 'warning', 'important', 'info' or 'inverse'
-            'label' => Yii::app()->user->getFlash('messageModule'),
-        )
-    ); */ ?>
-
+<?php if($model->lastvisit_at == 0): ?>
+<div class="alert alert-warning alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  Quer ficar por dentro das oportunidades de investimento da NextBlue? Edite suas <a href="/bnieq/user/settings" class="alert-link">configurações</a>.
+</div>
+<?php endif; ?>
+    
 
 <div class="profile-header-wrap">
     <div class="profile-header">	
