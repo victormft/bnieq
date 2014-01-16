@@ -14,7 +14,7 @@ class DefaultController extends Controller
                 'error',
                 '<strong>Ops!</strong> Você precisa estar conectado para acessar essa área.'
             );
-            $this->redirect(Yii::app()->controller->module->loginUrl);
+			$user->loginRequired();
         }
 		$model=new Profile('search');
 		$model->unsetAttributes();  // clear any default values
