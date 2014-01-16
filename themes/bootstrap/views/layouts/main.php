@@ -93,7 +93,8 @@ $('.remove-search').click(function(event){
                 <li><a style="display:inline-block; padding-left:7px;" href= <?php echo Yii::app()->homeUrl . '/user/login'?> ><i class="icon-user" style="display:inline; margin-right:10px; font-size:15px; line-height:20px;"></i><?php echo UserModule::t("Register") ?></a></li>
             <?php else: ?>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo $user->profile->firstname; ?><span class="caret"></span></a>
+                    <?php $m=Message::model()->getCountUnreaded($user->id); ?>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" <?php echo $m ? "style=\"color:#000\"" : ''?> ><?php echo $user->profile->firstname; ?><?php echo $m ? ' (' . $m . ')' : '' ?><span class="caret"></span></a>
                     <ul class="dropdown-menu hov">
                         <?php if($user->isUserInRole("Founder")): ?>
                         <li class="name-hover">
@@ -109,8 +110,7 @@ $('.remove-search').click(function(event){
                             <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><i class="icon-user" style="margin:0 7px 0 1px; line-height:17px;"></i><?php echo UserModule::t('Profile'); ?></a>
                         </li>
                         
-						<li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><i class="icon-comment" style="margin:0 5px 0 0; line-height:17px;"></i><?php echo UserModule::t('Messages'); ?> <?php echo (Message::model()->getCountUnreaded(Yii::app()->user->getId()) ?
-                        ' (' . Message::model()->getCountUnreaded(Yii::app()->user->getId()) . ')' : '') ?></a>
+						<li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/messages/inbox' ?> ><i class="icon-comment" style="margin:0 5px 0 0; line-height:17px;"></i><?php echo UserModule::t('Messages'); ?> <?php echo $m ? ' (' . $m . ')' : '' ?></a>
 						</li>
                         <li class="divider"></li>
                         <li class="name-hover">
@@ -119,10 +119,11 @@ $('.remove-search').click(function(event){
                     </ul>                    
                 </li>
                 
+                <?php $c=Notification::model()->getCountUnreaded($user->id); ?>
                 <li class="dropdown" id="notifications">
-                    <a class="dropdown-toggle" data-toggle="dropdown" style="display:inline-block; position:relative;" href='#'>
+                    <a class="dropdown-toggle bell-wrap" data-toggle="dropdown" style="display:inline-block; position:relative; <?php echo $c>0 ? "color:#000" : ''?>" href='#'>
                         <i class="icon-bell" style="display:inline; font-size:20px; line-height:20px;"></i>
-                        <div class="noticount" style="font-size: 13px; position: absolute; top:5px; right:2px;"><?php $c=Notification::model()->getCountUnreaded(Yii::app()->user->getId()); echo $c>0 ? $c : '' ?></div>
+                        <div class="noticount" style="font-size: 13px; position: absolute; top:5px; right:2px;"><?php echo $c>0 ? $c : '' ?></div>
                     </a>
                     <ul class="dropdown-menu" style="width: 300px">
                         <div style="margin-left:10px; margin-bottom:-5px;">
@@ -366,6 +367,7 @@ $(document.body).on('click','#notifications',function(){
         success: function(data){
             $('.notifications').html(data.res);
             $('.noticount').html(data.c);
+            $('.bell-wrap').css("color", "");
             //$(".ui-notifications").css({'width':'300px'});
             //$(".ui-notifications").css({'z-index':'1000'});
         }
