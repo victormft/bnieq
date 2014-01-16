@@ -96,13 +96,18 @@ $('.remove-search').click(function(event){
                     <?php $m=Message::model()->getCountUnreaded($user->id); ?>
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" <?php echo $m ? "style=\"color:#000\"" : ''?> ><?php echo $user->profile->firstname; ?><?php echo $m ? ' (' . $m . ')' : '' ?><span class="caret"></span></a>
                     <ul class="dropdown-menu hov">
-                        <?php if($user->isUserInRole("Founder")): ?>
+                        <?php if($user->isUserInRoleAll("Founder")): ?>
                         <li class="name-hover">
                             <a href="#"><i class="icon-arrow-left" style="margin:0 7px 0 1px; line-height:17px;"></i>Startups</a>
                             <ul class="dropdown-menu hov sub-menu">
                                 <?php foreach($user->getStartupsByRole("Founder") as $stup): ?>
                                 <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/' . $stup->startupname ?>><?php echo $stup->name ?></a></li>
                                 <?php endforeach; ?>
+                                <li role="presentation" class="divider"></li>
+                                <?php foreach($user->getNonPubStartupsByRole("Founder") as $stup): ?>
+                                <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/' . $stup->startupname ?>><?php echo $stup->name ?></a></li>
+                                <?php endforeach; ?>
+                                
                             </ul>
                         </li>
                         <?php endif; ?>

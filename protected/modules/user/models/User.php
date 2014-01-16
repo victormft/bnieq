@@ -93,6 +93,11 @@ class User extends CActiveRecord
                 'on'=>'startups.published=:p',
                 'params'=>array(':p' => 1)
             ),
+            'startupsNonPub' => array(self::MANY_MANY, 'Startup', 'user_startup(user_id, startup_id)',
+                'together' => true,
+                'on'=>'startupsNonPub.published=:p',
+                'params'=>array(':p' => 0)
+            ),
 			'followers' => array(self::HAS_MANY, 'UserFollow', 'followed_id'),    //o numero de followers eh quantas vezes aparece ele como followed_id
 			'following' => array(self::HAS_MANY, 'UserFollow', 'follower_id'),
 			'roles' => array(self::MANY_MANY, 'Role', 'user_role(user_id, role_id)'),
@@ -456,6 +461,43 @@ class User extends CActiveRecord
         return $array;
     }
     
+    public function getAllStartupsByRole($role)
+    {
+        $array=array();
+        $i=0;
+        foreach ($this->startups as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id)){
+                $array[$i] = $startup;
+                $i++;                
+            }
+        }
+        foreach ($this->startupsNonPub as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id)){
+                $array[$i] = $startup;
+                $i++;                
+            }
+        }
+        
+        return $array;
+    }
+    
+    public function getNonPubStartupsByRole($role)
+    {
+        $array=array();
+        $i=0;
+        foreach ($this->startupsNonPub as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id)){
+                $array[$i] = $startup;
+                $i++;                
+            }
+        }
+        
+        return $array;
+    }
+    
     public function echoWithComma($array)
     {
         $string="";
@@ -473,7 +515,23 @@ class User extends CActiveRecord
         foreach ($this->startups as $startup)
         {
             if($startup->isUserInRole($role, $this->id))
-                return true;           
+            return true;           
+        }
+        return false;
+    }
+    
+    //analisa as startups nao publicadas tbm
+    public function isUserInRoleAll($role)
+    {
+        foreach ($this->startups as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id))
+            return true;           
+        }
+        foreach ($this->startupsNonPub as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id))
+            return true;           
         }
         return false;
     }
