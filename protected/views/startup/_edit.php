@@ -216,11 +216,11 @@ Yii::app()->clientScript->registerScript('loading-img',
 	$('.nav li:contains(\"Home\")').addClass('xuxu');
 	
 	$('.profile-editable-content').mouseover(function(event) {
-		$(this).find('.pic-btn').addClass('btn-primary');	
+		$(this).find('.pic-btn').addClass('btn-primary').removeClass('disabled');	
 	});
 	
 	$('.profile-editable-content').mouseout(function(event) {
-		$(this).find('.pic-btn').removeClass('btn-primary');	
+		$(this).find('.pic-btn').removeClass('btn-primary').addClass('disabled');	
 	});
 	
 	$('.arrow-container').mouseover(function(event){
@@ -727,7 +727,8 @@ function checkCompletionBar(percent)
 							'label'=>'Upload',
 							'size'=>'normal',
 							'htmlOptions'=>array(
-								'class'=>'pic-btn',
+								'class'=>'pic-btn disabled',
+								'style'=>'width:70px;',
 							),
 							)); 
 					?>
@@ -1212,7 +1213,7 @@ function checkCompletionBar(percent)
 						'label'=>'Save',
 						'size'=>'normal',
 						'htmlOptions'=>array(
-							'style'=>'display:block',
+							'style'=>'display:block; width:65px;',
 							'class'=>'traction-btn btn-primary',
 							),
 						)); 
@@ -1301,7 +1302,7 @@ function checkCompletionBar(percent)
 						'label'=>'Save',
 						'size'=>'normal',
 						'htmlOptions'=>array(
-							'style'=>'display:block',
+							'style'=>'display:block; width:65px;',
 							'class'=>'past-btn btn-primary',
 							),
 						)); 
@@ -1545,7 +1546,7 @@ function checkCompletionBar(percent)
 						'label'=>'Save',
 						'size'=>'normal',
 						'htmlOptions'=>array(
-							'style'=>'display:inline-block',
+							'style'=>'display:inline-block; width:65px;',
 							'class'=>'team-btn btn-primary',
 							),
 						)); 
@@ -1771,7 +1772,7 @@ function checkCompletionBar(percent)
 						'label'=>'Save',
 						'size'=>'normal',
 						'htmlOptions'=>array(
-							'style'=>'display:inline-block',
+							'style'=>'display:inline-block; width:65px;',
 							'class'=>'press-btn btn-primary',
 							),
 						)); 

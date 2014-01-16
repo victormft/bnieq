@@ -336,9 +336,12 @@ class StartupController extends Controller
 			$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
 			$startupname = strtolower($startupname);
 			
-			if($name_num = Startup::model()->findAll('startupname REGEXP CONCAT("^",:startupname,"[0-9]*","$")', array(':startupname'=>$startupname)))
+			if($name_num = Startup::model()->findAll('startupname REGEXP CONCAT("^",:startupname, ".*", "[0-9]*","$")', array(':startupname'=>$startupname)))
 			{
-				$startupname=$startupname.count($name_num);
+				$last_elem = end($name_num);
+				$last_num = substr(strrchr($last_elem->startupname, "."), 1);
+				$new_num = $last_num + 1;
+				$startupname=$startupname.".".$new_num;
 			}
 			
 			$model->startupname = $startupname; 
@@ -497,9 +500,12 @@ class StartupController extends Controller
 		$startupname = strtr(utf8_decode($startupname), utf8_decode('ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç'), 'AAAAAEEEEIIIIIOOOOOUUUUUCaaaaaeeeeiiiiiooooouuuuuc');		
 		$startupname = strtolower($startupname);
 		
-		if($name_num = Startup::model()->findAll('startupname REGEXP CONCAT("^",:startupname,"[0-9]*","$")', array(':startupname'=>$startupname)))
+		if($name_num = Startup::model()->findAll('startupname REGEXP CONCAT("^",:startupname,".*","[0-9]*","$")', array(':startupname'=>$startupname)))
 		{
-			$startupname=$startupname.count($name_num);
+			$last_elem = end($name_num);
+			$last_num = substr(strrchr($last_elem->startupname, "."), 1);
+			$new_num = $last_num + 1;
+			$startupname=$startupname.".".$new_num;
 		}
 		
 		//it is necesary to reload the model after update
