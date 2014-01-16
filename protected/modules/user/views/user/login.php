@@ -100,19 +100,23 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 			
 			<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 				'id'=>'registration-form',
-				'enableClientValidation'=>false,
+				'enableClientValidation'=>true,
 				'clientOptions'=>array(
 					'validateOnSubmit'=>true,
 				),
 			)); ?>
 			
+            <?php echo $form->textFieldRow($profile,'firstname'); ?>
+            <?php echo $form->textFieldRow($profile,'lastname'); ?>
+            
+            <!--
 			<div class="controls form-inline">
 				<label>Nome e sobrenome <span class="required">*</span> </label>
 				<input style="width: 94px; margin-bottom: 10px;" name="Profile[firstname]" id="Profile_firstname" type="text" maxlength="50" placeholder="Nome">
 				<input style="width: 94px; margin-bottom: 10px;" name="Profile[lastname]" id="Profile_lastname" type="text" maxlength="50" placeholder="Sobrenome">
-				<?php if($form->error($profile,'firstname') || $form->error($profile,'lastname')) echo '<span class="help-block error">'.UserModule::t('Required').'</span>' //echo $form->error($profile,'firstname', array('style'=>'display: inline')) . ' | ' . $form->error($profile,'lastname', array('style'=>'display: inline')); ?>
-				
+				<?php if($form->error($profile,'firstname') || $form->error($profile,'lastname')) echo '<span class="help-block error">'.UserModule::t('Required').'</span>' //echo $form->error($profile,'firstname', array('style'=>'display: inline')) . ' | ' . $form->error($profile,'lastname', array('style'=>'display: inline')); ?>				
 			</div>
+            -->
 			
 			<?php echo $form->textFieldRow($model,'username'); ?>
 			
@@ -121,7 +125,23 @@ $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login");
 			<?php echo $form->passwordFieldRow($model,'verifyPassword'); ?>   
 			
 			<?php echo $form->textFieldRow($model,'email'); ?> 
-			
+                        
+            <div style="overflow: auto; margin-bottom: 10px;">
+                <label for="RegistrationForm_role" style="display: inline-block">Eu sou</label>
+                <span id="RegistrationForm_role" style="display: inline-block; float: right">
+                    <input id="ytRegistrationForm_role" type="hidden" name="RegistrationForm[role]">
+                    <label class="radio"><input class="form-horizontal" id="RegistrationForm_role_1" value="1" type="radio" name="RegistrationForm[role]">
+                        <label for="RegistrationForm_role_1">Investidor</label>                        
+                    </label>
+                    <label class="radio"><input class="form-horizontal" id="RegistrationForm_role_2" value="2" type="radio" name="RegistrationForm[role]">
+                        <label for="RegistrationForm_role_2">Empreendedor</label>                        
+                    </label>
+                    <label class="radio"><input class="form-horizontal" id="RegistrationForm_role_3" value="3" type="radio" name="RegistrationForm[role]">
+                        <label for="RegistrationForm_role_3">Ambos</label></label>
+                </span>
+            </div>
+            
+            <?php echo $form->checkboxRow($model, 'newsletter'); ?>
 			
 			<?php
 			$this->widget(

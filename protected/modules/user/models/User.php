@@ -62,7 +62,7 @@ class User extends CActiveRecord
 			array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
 			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_.]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
 			array('status', 'in', 'range'=>array(self::STATUS_NOACTIVE,self::STATUS_ACTIVE,self::STATUS_BANNED)),
-			array('superuser, investor, founder', 'in', 'range'=>array(0,1)),
+			array('superuser, investor, founder, newsletter', 'in', 'range'=>array(0,1)),
             array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
 			array('username, email, superuser, status', 'required'),
@@ -92,6 +92,11 @@ class User extends CActiveRecord
                 'together' => true,
                 'on'=>'startups.published=:p',
                 'params'=>array(':p' => 1)
+            ),
+            'startupsNonPub' => array(self::MANY_MANY, 'Startup', 'user_startup(user_id, startup_id)',
+                'together' => true,
+                'on'=>'startupsNonPub.published=:p',
+                'params'=>array(':p' => 0)
             ),
 			'followers' => array(self::HAS_MANY, 'UserFollow', 'followed_id'),    //o numero de followers eh quantas vezes aparece ele como followed_id
 			'following' => array(self::HAS_MANY, 'UserFollow', 'follower_id'),
@@ -125,6 +130,7 @@ class User extends CActiveRecord
 			'status' => UserModule::t("Status"),            
 			'investor' => UserModule::t('Investor'),
             'founder' => UserModule::t('Founder'),
+            'newsletter' => UserModule::t('Keep me updated'),
 		);
 	}
 
@@ -455,6 +461,43 @@ class User extends CActiveRecord
         return $array;
     }
     
+    public function getAllStartupsByRole($role)
+    {
+        $array=array();
+        $i=0;
+        foreach ($this->startups as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id)){
+                $array[$i] = $startup;
+                $i++;                
+            }
+        }
+        foreach ($this->startupsNonPub as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id)){
+                $array[$i] = $startup;
+                $i++;                
+            }
+        }
+        
+        return $array;
+    }
+    
+    public function getNonPubStartupsByRole($role)
+    {
+        $array=array();
+        $i=0;
+        foreach ($this->startupsNonPub as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id)){
+                $array[$i] = $startup;
+                $i++;                
+            }
+        }
+        
+        return $array;
+    }
+    
     public function echoWithComma($array)
     {
         $string="";
@@ -472,7 +515,23 @@ class User extends CActiveRecord
         foreach ($this->startups as $startup)
         {
             if($startup->isUserInRole($role, $this->id))
-                return true;           
+            return true;           
+        }
+        return false;
+    }
+    
+    //analisa as startups nao publicadas tbm
+    public function isUserInRoleAll($role)
+    {
+        foreach ($this->startups as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id))
+            return true;           
+        }
+        foreach ($this->startupsNonPub as $startup)
+        {
+            if($startup->isUserInRole($role, $this->id))
+            return true;           
         }
         return false;
     }
