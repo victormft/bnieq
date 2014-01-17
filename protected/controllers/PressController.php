@@ -8,14 +8,6 @@ class PressController extends Controller
 	 */
 	public function actionIndex($startupname, $offset)
 	{
-		if(Yii::app()->user->isGuest){
-            $user = Yii::app()->getComponent('user');
-            $user->setFlash(
-                'error',
-                '<strong>Ops!</strong> Você precisa estar conectado para acessar essa área.'
-            );
-            $this->redirect(Yii::app()->controller->module->loginUrl);
-        }
 	
 		$model=Startup::model()->find('startupname=:s_name',array(':s_name'=>$startupname));
 		

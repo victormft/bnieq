@@ -9,12 +9,17 @@ class ActivityStartupController extends Controller
 	public function actionIndex($startupname, $offset)
 	{
 		if(Yii::app()->user->isGuest){
-            $user = Yii::app()->getComponent('user');
-            $user->setFlash(
-                'error',
-                '<strong>Ops!</strong> Você precisa estar conectado para acessar essa área.'
-            );
-            $this->redirect(Yii::app()->controller->module->loginUrl);
+            
+			$html='
+				<p style="text-align:center;">VocÃª precisa estar logado para ver essa InformaÃ§Ã£o</p>
+				<p style="text-align:center;">
+					<a class="btn btn-primary" href="'. Yii::app()->request->baseUrl .'/user/login">Login</a>
+				</p>
+			';
+			echo CJSON::encode(array(
+            'res'=>$html 
+			));
+			exit;
         }
 	
 		$model=Startup::model()->find('startupname=:s_name',array(':s_name'=>$startupname));

@@ -57,6 +57,13 @@ class StartupController extends Controller
 	*/
 	public function actionView($name)
 	{
+		//setting returnurl in case user is not logged in - necessary because of closed fields
+		if(Yii::app()->user->isGuest)
+		{
+			$app=Yii::app();
+			$app->user->setReturnUrl($app->request->getUrl());
+		}
+		
 		$model=$this->loadModel($name);
 		
 		if($model->published==1)

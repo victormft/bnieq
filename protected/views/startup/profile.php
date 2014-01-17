@@ -508,33 +508,45 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			
-			<table>
-			<tr class="table-header" style="font-weight:bold;">
-				<td>Métrica</td>
-				<td>Valor</td>
-				<td>Período</td>
-				<td>Data</td>
-			</tr>
-			<?php 
-				$qry = new CDbCriteria(array(
-					'condition' => "startup_id=:param",
-					'order' => "date DESC",
-					'params' => array(':param' => $model->id),  
-				));
+			<?php if(Yii::app()->user->isGuest): ?>
+				<p style="text-align:center;">Você precisa estar logado para ver essa Informação</p>
+				<p style="text-align:center;">
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Login',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('/user/login'),
+					)); 
+				?>
+				</p>
+			<?php else: ?>
+				<table>
+				<tr class="table-header" style="font-weight:bold;">
+					<td>Métrica</td>
+					<td>Valor</td>
+					<td>Período</td>
+					<td>Data</td>
+				</tr>
+				<?php 
+					$qry = new CDbCriteria(array(
+						'condition' => "startup_id=:param",
+						'order' => "date DESC",
+						'params' => array(':param' => $model->id),  
+					));
 
-				$query = Traction::model()->findAll($qry); 
-				
-				foreach($query as $traction):  
-			?>		
-			<tr>		
-				<td><div class="tracion-metric"><?php echo CHtml::encode($traction->metric); ?></div></td>
-				<td><div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div></td>
-				<td><div class="traction-period"><?php echo CHtml::encode($traction->period);?></div></td>
-				<td><div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div></td>
-			</tr>
-			<?php endforeach;?>
-			</table>
-			
+					$query = Traction::model()->findAll($qry); 
+					
+					foreach($query as $traction):  
+				?>		
+				<tr>		
+					<td><div class="tracion-metric"><?php echo CHtml::encode($traction->metric); ?></div></td>
+					<td><div class="traction-value"><?php echo CHtml::encode($traction->value); ?></div></td>
+					<td><div class="traction-period"><?php echo CHtml::encode($traction->period);?></div></td>
+					<td><div class="traction-date"><?php echo date('d/m/y', strtotime(CHtml::encode($traction->date))); ?></div></td>
+				</tr>
+				<?php endforeach;?>
+				</table>
+			<?php endif;?>
 		</div>
 		
 	</div>
@@ -550,7 +562,18 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 		<div class="content-info">
-			
+		<?php if(Yii::app()->user->isGuest): ?>
+			<p style="text-align:center;">Você precisa estar logado para ver essa Informação</p>
+			<p style="text-align:center;">
+			<?php $this->widget('bootstrap.widgets.TbButton', array(
+				'label'=>'Login',
+				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+				'size'=>'normal', // null, 'large', 'small' or 'mini'
+				'url'=>array('/user/login'),
+				)); 
+			?>
+			</p>
+		<?php else: ?>	
 			<table>
 			<tr class="table-header" style="font-weight:bold;">
 				<td>Investidor</td>
@@ -586,7 +609,7 @@ $('.video-images-items').carouFredSel({
 			</tr>
 			<?php endforeach;?>
 			</table>
-			
+		<?php endif; ?>	
 		</div>
 		
 	</div>
@@ -817,7 +840,19 @@ $('.video-images-items').carouFredSel({
 			<div class="content-head"><i class="icon-group profile-icon"></i> Fundadores</div>
 			
 			<div class="content-info team-ready">
-				
+			
+			<?php if(Yii::app()->user->isGuest): ?>
+				<p style="text-align:center;">Você precisa estar logado para ver essa Informação</p>
+				<p style="text-align:center;">
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Login',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('/user/login'),
+					)); 
+				?>
+				</p>
+			<?php else: ?>	
 				
 				<?php foreach($relational_tbl as $rel):?>
 				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
@@ -830,7 +865,7 @@ $('.video-images-items').carouFredSel({
 					</div>
 				</div>
 				<?php endforeach;?>
-																		
+			<?php endif;?>															
 			</div>
 			
 		</div>	
@@ -843,6 +878,19 @@ $('.video-images-items').carouFredSel({
 			
 			<div class="content-info team-ready">
 				
+			<?php if(Yii::app()->user->isGuest): ?>
+				<p style="text-align:center;">Você precisa estar logado para ver essa Informação</p>
+				<p style="text-align:center;">
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Login',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('/user/login'),
+					)); 
+				?>
+				</p>
+			<?php else: ?>
+				
 				<?php foreach($relational_tbl as $rel):?>
 				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
 				<div class="team-item">		
@@ -855,6 +903,7 @@ $('.video-images-items').carouFredSel({
 				</div>
 				<?php endforeach;?>
 			
+			<?php endif;?>
 			</div>
 			
 		</div>	
@@ -868,6 +917,19 @@ $('.video-images-items').carouFredSel({
 			
 			<div class="content-info team-ready">
 				
+			<?php if(Yii::app()->user->isGuest): ?>
+				<p style="text-align:center;">Você precisa estar logado para ver essa Informação</p>
+				<p style="text-align:center;">
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Login',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('/user/login'),
+					)); 
+				?>
+				</p>
+			<?php else: ?>
+			
 				<?php foreach($relational_tbl as $rel):?>
 				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
 				<div class="team-item">		
@@ -880,6 +942,7 @@ $('.video-images-items').carouFredSel({
 				</div>
 				<?php endforeach;?>
 			
+			<?php endif;?>
 			</div>
 			
 		</div>	
@@ -891,6 +954,19 @@ $('.video-images-items').carouFredSel({
 			<div class="content-head"><i class="icon-group profile-icon"></i> Investidores</div>
 			
 			<div class="content-info team-ready">
+				
+			<?php if(Yii::app()->user->isGuest): ?>
+				<p style="text-align:center;">Você precisa estar logado para ver essa Informação</p>
+				<p style="text-align:center;">
+				<?php $this->widget('bootstrap.widgets.TbButton', array(
+					'label'=>'Login',
+					'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+					'size'=>'normal', // null, 'large', 'small' or 'mini'
+					'url'=>array('/user/login'),
+					)); 
+				?>
+				</p>
+			<?php else: ?>
 				
 				<?php foreach($relational_tbl as $rel):?>
 				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
@@ -904,6 +980,7 @@ $('.video-images-items').carouFredSel({
 				</div>
 				<?php endforeach;?>
 			
+			<?php endif;?>
 			</div>
 			
 		</div>	
