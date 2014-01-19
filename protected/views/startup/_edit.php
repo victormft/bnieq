@@ -11,6 +11,8 @@ Yii::app()->clientScript->registerScript('loading-img',
 "	
 	
 	$(document).ready(function(){ 
+	
+		window.addEventListener('scroll',navbar_reset_top,false);
 		
 		$('#imagem').live('change',function(){ $('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>');
 		
@@ -30,6 +32,8 @@ Yii::app()->clientScript->registerScript('loading-img',
 					$('#visualizar').append(data.res);
 					$('.mult-img-loading').empty();
 					$('.mult-list-img').animate({opacity: 1}, 500);
+					if(!data.exist)
+						checkCompletionBar(0.04);
 				}
 			}
 		}).submit(); }); 
@@ -88,16 +92,8 @@ Yii::app()->clientScript->registerScript('loading-img',
 				$('.err-sector').animate({opacity: 0}, 500);
 				
 				if(".count($model->sectors)."==0 && !$('.bar').parent().hasClass('p-sec'))
-				{
-					var width = $('.bar').width();
-					var parentWidth = $('.bar').parent().width();
-					var percent = width/parentWidth;
-					percent=percent+0.1;
-					var new_width=parentWidth*percent;
-
-					$('.bar').css({'width':new_width});
-				
-					checkCompletionBar(percent*100);
+				{			
+					checkCompletionBar(0.05);
 					$('.bar').parent().addClass('p-sec');
 					
 				}
@@ -115,15 +111,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 
 				if(".$p_product." && !$('.bar').parent().hasClass('p-product'))
 				{
-					var width = $('.bar').width();
-					var parentWidth = $('.bar').parent().width();
-					var percent = width/parentWidth;
-					percent=percent+0.1;
-					var new_width=parentWidth*percent;
-
-					$('.bar').css({'width':new_width});
-				
-					checkCompletionBar(percent*100);
+					checkCompletionBar(0.1);
 					$('.bar').parent().addClass('p-product');
 					
 				}
@@ -139,20 +127,52 @@ Yii::app()->clientScript->registerScript('loading-img',
 				
 				if(".$p_stage." && !$('.bar').parent().hasClass('p-stage'))
 				{
-					var width = $('.bar').width();
-					var parentWidth = $('.bar').parent().width();
-					var percent = width/parentWidth;
-					percent=percent+0.1;
-					var new_width=parentWidth*percent;
-
-					$('.bar').css({'width':new_width});
-				
-					checkCompletionBar(percent*100);
+					checkCompletionBar(0.05);
 					$('.bar').parent().addClass('p-stage');
 					
 				}
 			}
 		}, 1000);
+	});
+	
+	$('.start-foundation').on('click','.editable-submit', function(event){
+		var elem=$('.start-foundation').find('a');
+		if(elem.hasClass('editable-empty'))
+			var wasempty = 1;
+		else
+			var wasempty = 0;
+		
+		setTimeout(function(){
+			if(!elem.hasClass('editable-open'))
+				{			
+					if(!elem.hasClass('editable-empty') && wasempty)
+						checkCompletionBar(0.04);
+					else if(elem.hasClass('editable-empty') && !wasempty)
+						checkCompletionBar(-0.04);
+				}
+		}, 1000);
+	});
+	
+	$('.editable-wrap').on('click','.editable-submit', function(event){
+		if($(this).parents().eq(7).hasClass('editable-wrap'))
+		{
+			var elem = $(this).parents().eq(6).find('a');
+			if(elem.hasClass('editable-empty'))
+				var wasempty = 1;
+			else
+				var wasempty = 0;
+			
+			setTimeout(function(){
+				
+				if(!elem.hasClass('editable-open'))
+				{			
+					if(!elem.hasClass('editable-empty') && wasempty)
+						checkCompletionBar(0.04);
+					else if(elem.hasClass('editable-empty') && !wasempty)
+						checkCompletionBar(-0.04);
+				}
+			}, 1000);
+		}
 	});
 
 	$('#visualizar').on('click','.mult-list-img-wrap',function(event){
@@ -171,6 +191,8 @@ Yii::app()->clientScript->registerScript('loading-img',
 					elem.animate({opacity: 0}, 500, function(){
 						elem.hide();
 					});
+					if(data.exist)
+						checkCompletionBar(-0.04);
 					
 				}
 			});
@@ -336,6 +358,8 @@ Yii::app()->clientScript->registerScript('loading-img',
 						$('.traction-ready').prepend(data.res);
 						$('.traction-item').show('slow').animate({opacity: 1}, 250);
 						$('.traction-btn').text('Save');
+						if(!data.exist)
+							checkCompletionBar(0.1);
 					}
 				}
 			});
@@ -460,6 +484,8 @@ Yii::app()->clientScript->registerScript('loading-img',
 						
 						if(data.res=='OK')
 							$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+							if(!data.exist)
+								checkCompletionBar(-0.1);
 						
 						else
 						{
@@ -523,10 +549,20 @@ function getUrlVars()
     return vars;
 }
 
-function checkCompletionBar(percent)
+function checkCompletionBar(adjust)
 {
 	var bar_parent = $('.bar').parent();
 	bar_parent.removeClass('progress-danger').removeClass('progress-warning').removeClass('progress-success');
+	
+	var width = $('.bar').width();
+	var parentWidth = $('.bar').parent().width();
+	var percent = width/parentWidth;
+	percent=percent+adjust;
+	var new_width=parentWidth*percent;
+	percent=Math.round(percent*100);
+	
+	$('.bar').css({'width':new_width});
+	$('.completion-percent').html(percent+'%');
 	
 	if(percent<=40)
 			bar_parent.addClass('progress-danger');
@@ -536,11 +572,49 @@ function checkCompletionBar(percent)
 			bar_parent.addClass('progress-success');
 }
 
+function navbar_reset_top() 
+{
+	var navbar_top=62;
+	var elem=$('.completion-bar');
+	var scrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+	if(scrollTop>navbar_top && elem.hasClass('bar-absolute')) {
+		elem.removeClass('bar-absolute').addClass('bar-fixed');
+	}
+	else if(scrollTop<navbar_top && elem.hasClass('bar-fixed')) {
+		elem.removeClass('bar-fixed').addClass('bar-absolute');
+	}
+}
+
 ");
 
 ?>
 
-<div class="spacing-1"></div>
+<div class="completion-bar bar-absolute" style="z-index:999;">
+	<span style="float:left; margin-right: 20px; margin-left: 30px; font-size:24px;">Status:</span>
+	<?php
+		
+		if($model->completion<=40)
+			$type="danger";
+		else if($model->completion>40 && $model->completion<75)
+			$type="warning";
+		else
+			$type="success";
+		
+		echo "<div style='float:left; width: 200px; border:2px solid #ccc; border-radius:5px;'>";
+		$this->widget('bootstrap.widgets.TbProgress', array(
+			'percent'=>$model->completion, // the progress
+			'striped'=>true,
+			'animated'=>true,
+			'type'=>$type,
+			'htmlOptions'=>array('style'=>'margin:0;'),
+		));
+		echo "</div>";
+	?>
+	<span class="completion-percent" style="float:left; margin-left: 10px; font-size:24px; font-style:italic; font-weight:bold;"><?php echo $model->completion; ?>%</span>
+</div>
+
+
+<div class="spacing-1" style="margin-top:50px;"></div>
 
 <?php $this->widget('bootstrap.widgets.TbAlert', array(
     'block' => true,
@@ -557,28 +631,6 @@ function checkCompletionBar(percent)
     ),
 ));?>
 
-<div class="completion-bar" style="margin-bottom: 30px; overflow:auto;">
-	<span style="float:left; margin-right: 20px;">Completion:</span>
-	<?php
-		
-		if($model->completion<=40)
-			$type="danger";
-		else if($model->completion>40 && $model->completion<75)
-			$type="warning";
-		else
-			$type="success";
-		
-		echo "<div style='float:left; width: 300px; border:2px solid #ccc; border-radius:5px;'>";
-		$this->widget('bootstrap.widgets.TbProgress', array(
-			'percent'=>$model->completion, // the progress
-			'striped'=>true,
-			'animated'=>true,
-			'type'=>$type,
-			'htmlOptions'=>array('style'=>'margin:0;'),
-		));
-		echo "</div>";
-	?>
-</div>
 
 <div class="profile-header-edit">	
 
@@ -935,54 +987,59 @@ function checkCompletionBar(percent)
 						'mode'=>'inline'
 					 )); ?>  
 				</p>
+				<span>
+					<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/>     
+						<?php $this->widget('editable.EditableField', array(
+							'type'      => 'text',
+							'model'     => $model,
+							'attribute' => 'facebook',
+							'url'       => array('update'),  
+							'placement' => 'right',
+							'inputclass'=> 'input-xlarge',
+							'emptytext' => 'Vazio',
+							'options'=>array(
+								'defaultValue'=>'https://www.facebook.com/',
+							),
+							'mode'=>'inline'
+						 )); ?>  
+					</p>
+				</span>
 				
-				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>"/>     
-					<?php $this->widget('editable.EditableField', array(
-						'type'      => 'text',
-						'model'     => $model,
-						'attribute' => 'facebook',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'inputclass'=> 'input-xlarge',
-						'emptytext' => 'Vazio',
-						'options'=>array(
-                            'defaultValue'=>'https://www.facebook.com/',
-                        ),
-						'mode'=>'inline'
-					 )); ?>  
-				</p>
+				<span>
+					<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/>
+						<?php $this->widget('editable.EditableField', array(
+							'type'      => 'text',
+							'model'     => $model,
+							'attribute' => 'twitter',
+							'url'       => array('update'),  
+							'placement' => 'right',
+							'inputclass'=> 'input-xlarge',
+							'emptytext' => 'Vazio',
+							'options'=>array(
+								'defaultValue'=>'https://www.twitter.com/',
+							),
+							'mode'=>'inline'
+						 )); ?>  
+					</p>
+				</span>
 				
-				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/twitter_alt.png'?>"/>
-					<?php $this->widget('editable.EditableField', array(
-						'type'      => 'text',
-						'model'     => $model,
-						'attribute' => 'twitter',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'inputclass'=> 'input-xlarge',
-						'emptytext' => 'Vazio',
-						'options'=>array(
-                            'defaultValue'=>'https://www.twitter.com/',
-                        ),
-						'mode'=>'inline'
-					 )); ?>  
-				</p>
-				
-				<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/>   
-					<?php $this->widget('editable.EditableField', array(
-						'type'      => 'text',
-						'model'     => $model,
-						'attribute' => 'linkedin',
-						'url'       => array('update'),  
-						'placement' => 'right',
-						'inputclass'=> 'input-xlarge',
-						'emptytext' => 'Vazio',
-						'options'=>array(
-                            'defaultValue'=>'http://www.linkedin.com/pub/'
-                        ),
-						'mode'=>'inline'
-					 )); ?>  
-				</p>
+				<span>
+					<p> <img class="social-edit-img" src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/linkedin.png'?>"/>   
+						<?php $this->widget('editable.EditableField', array(
+							'type'      => 'text',
+							'model'     => $model,
+							'attribute' => 'linkedin',
+							'url'       => array('update'),  
+							'placement' => 'right',
+							'inputclass'=> 'input-xlarge',
+							'emptytext' => 'Vazio',
+							'options'=>array(
+								'defaultValue'=>'http://www.linkedin.com/pub/'
+							),
+							'mode'=>'inline'
+						 )); ?>  
+					</p>
+				</span>
 			</div>
 		</div>
 		
@@ -1491,24 +1548,26 @@ function checkCompletionBar(percent)
 			
 		<div class="content-info edit" style="overflow:visible;">
 			<div class="editable-wrap">
-				<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
-						'type'      => 'combodate',
-                        'model'     => $model,
-                        'attribute' => 'foundation',
-                        'url'       => array('update'),  
-                        'mode'      => 'popup',
-						'emptytext' => 'Vazio',
-                        'placement' => 'left',
-                        'format'      => 'YYYY-MM-DD', //format in which date is expected from model and submitted to server
-                        'viewformat'  => 'DD/MM/YYYY', //format in which date is displayed
-                        'template'    => 'D / MMM / YYYY',
-						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
-                        'options'   => array(
-                            'defaultValue'   => date('Y-m-d'),
-                        )
-					 )); ?>  
-									
-				</p>
+				<span class="start-foundation">
+					<p>	<?php $this->widget('bootstrap.widgets.TbEditableField', array(
+							'type'      => 'combodate',
+							'model'     => $model,
+							'attribute' => 'foundation',
+							'url'       => array('update'),  
+							'mode'      => 'popup',
+							'emptytext' => 'Vazio',
+							'placement' => 'left',
+							'format'      => 'YYYY-MM-DD', //format in which date is expected from model and submitted to server
+							'viewformat'  => 'DD/MM/YYYY', //format in which date is displayed
+							'template'    => 'D / MMM / YYYY',
+							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
+							'options'   => array(
+								'defaultValue'   => date('Y-m-d'),
+							)
+						 )); ?>  
+										
+					</p>
+				</span>
 			</div>
 				
 		</div>

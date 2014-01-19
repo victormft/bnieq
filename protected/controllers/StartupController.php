@@ -465,9 +465,26 @@ class StartupController extends Controller
 
 		else if($_POST['name']=='company_stage' && empty($model->company_stage))
 		{
-			$n_model->completion=$model->completion+10;
+			$n_model->completion=$model->completion+5;
 			$n_model->save();
 		}	
+		
+		else
+		{
+			if(!($_POST['name']=='facebook' || $_POST['name']=='linkedin' || $_POST['name']=='twitter'))
+			{
+				if(empty($model->$_POST['name']) && !empty($n_model->$_POST['name']))
+				{
+					$n_model->completion=$model->completion+4;
+					$n_model->save();
+				}
+				else if(!empty($model->$_POST['name']) && empty($n_model->$_POST['name']))
+				{
+					$n_model->completion=$model->completion-4;
+					$n_model->save();
+				}
+			}
+		}
 	
 	/*
 		$model=$this->loadModel($name);
@@ -569,7 +586,7 @@ class StartupController extends Controller
 				exit;
 			
 			if(count($model->sectors)==0)
-				$model->completion=$model->completion+10;
+				$model->completion=$model->completion+5;
 			
 			$model->sectors = $vals;
 			$model->saveWithRelated(array('sectors'));
@@ -1096,7 +1113,14 @@ class StartupController extends Controller
 		
 			$traction->save();
 			
-		
+			if(count($model->traction)>1)
+				$exist=true;
+			else 
+			{
+				$exist=false;
+				$model->completion=$model->completion+10;
+				$model->save();
+			}
 			$html='
 		
 			<div class="traction-item" style="display:none; opacity:0;">
@@ -1116,9 +1140,9 @@ class StartupController extends Controller
 			
 			';
 			
-			
 			echo CJSON::encode(array(
-				'res'=>$html
+				'res'=>$html,
+				'exist'=>$exist
 			));
 			exit;
 		}
@@ -1248,8 +1272,18 @@ class StartupController extends Controller
 		$traction=Traction::model()->find('id=:t_id AND startup_id=:s_id', array(':t_id'=>$id, ':s_id'=>$model->id));
 		$traction->delete();
 			
+		if(count($model->traction)==0)
+		{	
+			$exist=false;
+			$model->completion=$model->completion-10;
+			$model->save();
+		}
+		else 
+			$exist=true;
+		
 		echo CJSON::encode(array(
-				'res'=>'OK'
+				'res'=>'OK',
+				'exist'=>$exist
 			));
 		exit;
 	}
@@ -1379,8 +1413,19 @@ class StartupController extends Controller
 								<img src='".Yii::app()->request->baseUrl.'/images/'.$newFileName."' class='mult-list-img' style='max-width: 100px; max-height:63px;'/>
 						   </div>";
 		
+					
+					if(count($model->images)==1)
+					{
+						$exist=false;
+						$model->completion=$model->completion+4;
+						$model->save();
+					}
+					else
+						$exist=true;
+					
 					echo CJSON::encode(array(
-							'res'=>$html
+							'res'=>$html,
+							'exist'=>$exist
 						));
              
             exit;
@@ -1397,6 +1442,19 @@ class StartupController extends Controller
 		
 		$img=Image::model()->find('name=:name', array(':name'=>$imgname));
 		$img->delete();
+		
+		if(count($model->images)==0)
+		{
+			$exist=true;
+			$model->completion=$model->completion-4;
+			$model->save();
+		}
+		else
+			$exist=false;
+		
+		echo CJSON::encode(array(
+			'exist'=>$exist
+		));
 		
 		exit;
 		

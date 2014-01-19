@@ -2112,3 +2112,27 @@ body input[type="file"]{
 	text-align:center;
 	
 }
+
+.bar-absolute
+{
+	top:62px;
+	overflow:auto; 
+	position:absolute; 
+	left:0;
+	width:100%; 
+	background:#333; 
+	color:#fff; 
+	padding: 15px;
+}
+
+.bar-fixed
+{
+	top:0;
+	overflow:auto; 
+	position:fixed; 
+	left:0;
+	width:100%; 
+	background:#333; 
+	color:#fff; 
+	padding: 15px;
+}
