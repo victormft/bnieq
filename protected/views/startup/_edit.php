@@ -14,35 +14,79 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 		window.addEventListener('scroll',navbar_reset_top,false);
 		
-		$('#imagem').live('change',function(){ $('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>');
+		$('#imagem').live('change',function(){ 
 		
-		$('#formulario').ajaxForm({ 
-			dataType: 'json',		
-			type: 'POST',
-			data: {
-				YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
-			},
-			success: function(data){
-				if(data.res=='no')
-				{
-					$('.mult-img-loading').html(data.msg);
+			$('.mult-img-loading').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>');
+		
+			$('#formulario').ajaxForm({ 
+				dataType: 'json',		
+				type: 'POST',
+				data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+				},
+				success: function(data){
+					if(data.res=='no')
+					{
+						$('.mult-img-loading').html(data.msg);
+					}
+					else
+					{
+						$('#visualizar').append(data.res);
+						$('.mult-img-loading').empty();
+						$('.mult-list-img').animate({opacity: 1}, 500);
+						if(!data.exist)
+							checkCompletionBar(0.04);
+					}
 				}
-				else
-				{
-					$('#visualizar').append(data.res);
-					$('.mult-img-loading').empty();
-					$('.mult-list-img').animate({opacity: 1}, 500);
-					if(!data.exist)
-						checkCompletionBar(0.04);
+			}).submit(); 
+		}); 
+		
+		$('#form-2-btn').click(function(){ 
+		
+			$('#formulario-2').ajaxForm({ 
+				dataType: 'json',		
+				type: 'POST',
+				data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+				},
+				success: function(data){
+		
+					$('#form-2-btn').animate({opacity: 0}, 500, function(){
+						$('#form-2-btn').hide();
+					});	
+					
 				}
-			}
-		}).submit(); }); 
+			}).submit(); 
+		}); 
+		
 		
 		if($('.alert-error').length)
 		{
 			$('.err-publish').css({'display':'inline'});
 		}
 	});
+	
+	
+	$('#imagem-2').change(function(){
+		readURL(this);
+		$('#form-2-btn').show().css({'opacity':'1'});
+		
+	});
+	
+	function readURL(input) {
+
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#startup-profile-img').find('img').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+	
+	
 	
 	$('.start-name').on('click','.editable-submit', function(event){
 		//$('.header-label').html('aaa');
@@ -243,6 +287,14 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	$('.profile-editable-content').mouseout(function(event) {
 		$(this).find('.pic-btn').removeClass('btn-primary').addClass('disabled');	
+	});
+	
+	$('#startup-profile-img').mouseover(function(event) {
+		$(this).find('img').css({'box-shadow': '2px 2px 4px 1px #aaa'});		
+	});
+	
+	$('#startup-profile-img').mouseout(function(event) {
+		$(this).find('img').css({'box-shadow': 'none'});
 	});
 	
 	$('.arrow-container').mouseover(function(event){
@@ -536,6 +588,11 @@ Yii::app()->clientScript->registerScript('loading-img',
 	
 	});
 	
+	$('#startup-profile-img').click(function(event){
+	
+		$('#imagem-2').click();
+	});
+	
 function getUrlVars()
 {
     var vars = [], hash;
@@ -634,9 +691,31 @@ function navbar_reset_top()
 
 <div class="profile-header-edit">	
 
-	<div id="startup-profile-img">
-		<img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
-	</div>
+	
+	<form id="formulario-2" method="post" enctype="multipart/form-data" action="<?php echo Yii::app()->request->baseUrl.'/startup/logoUp?name='.$model->startupname; ?>" style="overflow:auto; float:left; width:134px; margin-right:20px; text-align:center;"> 
+			
+		<input type="file" id="imagem-2" name="imagem-2" style="display:none;"/>
+		<a href="javascript:void(0);" style="overflow:auto; float:left;">
+			<div id="startup-profile-img" style="margin-right:0;">
+				<img data-toggle='tooltip' data-original-title='Substituir Imagem' src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
+			</div>
+		</a>
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'label'=>'Upload',
+			'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			'size'=>'normal', // null, 'large', 'small' or 'mini'
+			'id'=>'form-2-btn',
+			'htmlOptions'=>array(
+				'style'=>'display:none;',
+			),
+			)); 
+		?>
+			
+	</form> 
+	
+	
+	
+	
 	
 	<div class="profile-edit-header">
 	
