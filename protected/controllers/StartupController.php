@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'autoTest', 'pressUrl', 'followPop'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'logoUp', 'autoTest', 'pressUrl', 'followPop'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -1433,6 +1433,94 @@ class StartupController extends Controller
 		}
 	}
 
+	
+	public function actionLogoUp($name)
+	{
+		$model=$this->loadModel($name);
+    
+		if(isset($_POST)){
+			$nome_imagem    = $_FILES['imagem-2']['name'];
+			$tamanho_imagem = $_FILES['imagem-2']['size'];
+			$tmp = $_FILES['imagem-2']['tmp_name'];
+			
+			if($model->logo==1)
+			{	
+		
+				$rnd = rand(0,99999999);  // generate random number between 0-99999999
+				$extension_array = explode('.', $nome_imagem); //extension of the file
+				$extension=end($extension_array);
+				$newFileName = md5("{$rnd}-{$nome_imagem}").'.'.$extension;  // random number + file name 
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
+				
+				$model->pic=CUploadedFile::getInstanceByName('imagem');
+				if(!$model->validate())
+				{
+					echo CJSON::encode(array(
+						'res'=>'no',
+						'msg'=>'<span style="color:red;">'. $model->getErrors('pic')[0] .'</span>'
+					));
+					exit;
+				}
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
+			
+				  
+				move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$newFileName); 
+					
+				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+				
+				if($image->width>=$image->height)
+				{
+					$image->resize(500, 312, ImageExt::WIDTH)->quality(75)->sharpen(20);
+				}
+				else
+					$image->resize(500, 312, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+					
+				$image->save(); // or $image->save('images/small.jpg');
+				
+						
+				$model_img=new Image;
+				$model_img->name=$newFileName;
+				$model_img->extension=$extension;
+				$model_img->size=0;//$model->pic->size;	
+				if($model_img->save()){
+					$model->logo=$model_img->id;
+					$model->save();
+				}
+			}
+			
+			else
+			{
+				unlink(Yii::getPathOfAlias('webroot').'/images/'.$model->logo0->name);
+					
+				$img=Image::model()->findByPk($model->logo);
+				$ext_arr = explode('.', $img->name);
+				$ext = end($ext_arr);
+				$new_name=md5($img->name).'.'.$ext;
+					
+				$img->name=$new_name;
+					
+				$img->save();
+					
+				move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+				if($image->width>=$image->height)
+				{
+					$image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
+				}
+				else
+					$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
+					
+				$image->save(); // or $image->save('images/small.jpg');
+			}
+        
+		}
+		
+	}
+	
 	
 	public function actionMultDel($name, $imgname)
 	{
