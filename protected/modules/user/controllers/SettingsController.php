@@ -23,20 +23,33 @@ class SettingsController extends Controller
 		if (Yii::app()->user->id) {
 			
 			// ajax validator
-			if(isset($_POST['ajax']) && $_POST['ajax']==='general-form')
+            if(isset($_POST['ajax']) && ($_POST['ajax']==='general-form' || $_POST['ajax']==='newsletter-form'))
 			{
 				echo UActiveForm::validate($model);
 				Yii::app()->end();
 			}
 			
-			if(isset($_POST['User'])) {
-					$model->attributes=$_POST['User'];
-					if($model->validate()) {
-						$model->save();
+			if(isset($_POST['User'])) 
+            {
+                if(isset($_POST['User']['newsletter']))
+                {                    
+                    $model->newsletter=$_POST['User']['newsletter'];
+                    if($model->validate()) {
+                        $model->save();
+                        Yii::app()->user->setFlash('success',UserModule::t("Thanks!"));
+                        $this->redirect(array("general"));
+                    }
+                }
+                else
+                {
+                    $model->attributes=$_POST['User'];
+                    if($model->validate()) {
+                        $model->save();
                         Yii::app()->user->name = $model->username;
-						Yii::app()->user->setFlash('success',UserModule::t("Changes saved."));
-						$this->redirect(array("general"));
-					}
+                        Yii::app()->user->setFlash('success',UserModule::t("Changes saved."));
+                        $this->redirect(array("general"));
+                    }
+                }                
 			}
 			$this->render('general',array('model'=>$model));
 	    }

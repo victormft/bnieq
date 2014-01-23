@@ -144,7 +144,7 @@ function getUrlVars()
     ),
 ));?>
 
-<?php if($model->lastvisit_at == 0): ?>
+<?php if(Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id)) && User::model()->findByPk(Yii::app()->user->id)->lastvisit_at == 0): ?>
 <div class="alert alert-warning alert-dismissable">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
   Quer ficar por dentro das oportunidades de investimento da NextBlue? Edite suas <a href="/bnieq/user/settings" class="alert-link">configurações</a>.
