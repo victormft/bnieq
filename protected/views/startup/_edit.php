@@ -42,18 +42,48 @@ Yii::app()->clientScript->registerScript('loading-img',
 		}); 
 		
 		$('#form-2-btn').click(function(){ 
-		
+			
+			var elem = $(this);
+			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>');
+			
+			var mybar = $('.mybar');
+			var mypercent = $('.mypercent');
+			
 			$('#formulario-2').ajaxForm({ 
 				dataType: 'json',		
 				type: 'POST',
 				data: {
 					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
 				},
+				
+				beforeSend: function() {
+					var percentVal = '0%';
+					mybar.width(percentVal);
+					mypercent.html(percentVal);
+				},
+				
+				uploadProgress: function(event, position, total, percentComplete) {
+					var percentVal = percentComplete + '%';
+					mybar.width(percentVal);
+					mypercent.html(percentVal);
+				},
+					
 				success: function(data){
-		
-					$('#form-2-btn').animate({opacity: 0}, 500, function(){
-						$('#form-2-btn').hide();
-					});	
+				
+					if(data.res=='no')
+					{
+						$('.err-logo').html(data.msg);
+						elem.animate({opacity: 0}, 500, function(){
+							elem.hide().html('Confirmar?');
+						});
+					}
+					
+					else
+					{
+						elem.animate({opacity: 0}, 500, function(){
+							elem.hide().html('Confirmar?');
+						});	
+					}
 					
 				}
 			}).submit(); 
@@ -70,6 +100,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 	$('#imagem-2').change(function(){
 		readURL(this);
 		$('#form-2-btn').show().css({'opacity':'1'});
+		$('.err-logo').empty();
 		
 	});
 	
@@ -701,15 +732,21 @@ function navbar_reset_top()
 			</div>
 		</a>
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'label'=>'Upload',
+			'label'=>'Confirmar?',
 			'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			'size'=>'normal', // null, 'large', 'small' or 'mini'
 			'id'=>'form-2-btn',
 			'htmlOptions'=>array(
-				'style'=>'display:none;',
+				'style'=>'display:none; margin-top:5px; width:80px;',
 			),
 			)); 
 		?>
+		<div class="err-logo" style="display:inline-block; margin-top:10px;"></div>
+		
+		<div class="myprogress" style="display:inline-block; margin-top:10px; width:80px;">
+			<div class="mybar" style="height:10px; width:0%; background-color:black;"></div >
+			<div class="mypercent">0%</div >
+		</div>
 			
 	</form> 
 	

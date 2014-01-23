@@ -1453,7 +1453,7 @@ class StartupController extends Controller
 				
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
 				
-				$model->pic=CUploadedFile::getInstanceByName('imagem');
+				$model->pic=CUploadedFile::getInstanceByName('imagem-2');
 				if(!$model->validate())
 				{
 					echo CJSON::encode(array(
@@ -1488,10 +1488,31 @@ class StartupController extends Controller
 					$model->logo=$model_img->id;
 					$model->save();
 				}
+				
+				echo CJSON::encode(array(
+							'res'=>'OK',
+				));
+             
+				exit;
 			}
 			
 			else
 			{
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
+				
+		/*		$model->pic=CUploadedFile::getInstanceByName('imagem-2');
+				if(!$model->validate())
+				{
+					echo CJSON::encode(array(
+						'res'=>'no',
+						'msg'=>'<span style="color:red;">'. $model->getErrors('pic')[0] .'</span>'
+					));
+					exit;
+				}
+		*/		
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
+				
 				unlink(Yii::getPathOfAlias('webroot').'/images/'.$model->logo0->name);
 					
 				$img=Image::model()->findByPk($model->logo);
@@ -1515,6 +1536,12 @@ class StartupController extends Controller
 					$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
 					
 				$image->save(); // or $image->save('images/small.jpg');
+				
+				echo CJSON::encode(array(
+							'res'=>'OK',
+				));
+             
+				exit;
 			}
         
 		}
