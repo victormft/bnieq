@@ -48,6 +48,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 			
 			var mybar = $('.mybar');
 			var mypercent = $('.mypercent');
+			var myprogress = $('.myprogress');
 			
 			$('#formulario-2').ajaxForm({ 
 				dataType: 'json',		
@@ -60,6 +61,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 					var percentVal = '0%';
 					mybar.width(percentVal);
 					mypercent.html(percentVal);
+					myprogress.css({'display':'inline-block', 'opacity':'1'});
 				},
 				
 				uploadProgress: function(event, position, total, percentComplete) {
@@ -76,6 +78,9 @@ Yii::app()->clientScript->registerScript('loading-img',
 						elem.animate({opacity: 0}, 500, function(){
 							elem.hide().html('Confirmar?');
 						});
+						myprogress.animate({opacity: 0}, 500, function(){
+							myprogress.hide();
+						});
 					}
 					
 					else
@@ -83,6 +88,9 @@ Yii::app()->clientScript->registerScript('loading-img',
 						elem.animate({opacity: 0}, 500, function(){
 							elem.hide().html('Confirmar?');
 						});	
+						myprogress.animate({opacity: 0}, 500, function(){
+							myprogress.hide();
+						});
 					}
 					
 				}
@@ -741,12 +749,13 @@ function navbar_reset_top()
 			),
 			)); 
 		?>
-		<div class="err-logo" style="display:inline-block; margin-top:10px;"></div>
 		
-		<div class="myprogress" style="display:inline-block; margin-top:10px; width:80px;">
-			<div class="mybar" style="height:10px; width:0%; background-color:black;"></div >
-			<div class="mypercent">0%</div >
+		<div class="myprogress" style="position:relative; margin-top:10px; width:130px; border-radius:5px; border: 1px solid #ddd; height:20px; display:none;">
+			<div class="mybar" style="height:100%; width:0%; background-color:black; border-radius:5px;"></div >
+			<div class="mypercent" style="position:absolute; left:40%; top:0;">0%</div >
 		</div>
+		
+		<div class="err-logo" style="display:inline-block; margin-top:10px;"></div>
 			
 	</form> 
 	

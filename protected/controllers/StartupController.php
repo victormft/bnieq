@@ -1501,7 +1501,7 @@ class StartupController extends Controller
 				
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
 				
-		/*		$model->pic=CUploadedFile::getInstanceByName('imagem-2');
+				$model->pic=CUploadedFile::getInstanceByName('imagem-2');
 				if(!$model->validate())
 				{
 					echo CJSON::encode(array(
@@ -1510,7 +1510,7 @@ class StartupController extends Controller
 					));
 					exit;
 				}
-		*/		
+			
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
 				
 				unlink(Yii::getPathOfAlias('webroot').'/images/'.$model->logo0->name);
