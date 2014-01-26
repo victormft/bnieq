@@ -38,23 +38,41 @@ class ActivityStartupController extends Controller
 		{
 			if($offset <= $k && $k < $offset+2)
 			{
-			
-				$user = User::model()->findbypk($q->user_id);
+				if(isset($q->user_id)){
+					$user = User::model()->findbypk($q->user_id);
+				}
+				
 				switch ($q->activity_type) 
 				{        
 					case ActivityStartup::FOLLOW_STARTUP :
 						$html .= '		
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
 						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
 							<div class="team-item">
 								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
-								<div class="team-text">
+								<div class="team-text" style="float:left;>
 									<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
 								</div>
 							</div>
 						</div>
 						<div class="spacing-1"></div>
 						';
-						break;
+					break;
+						
+					case ActivityStartup::ADD_TRACTION :
+						$html .= '		
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+							<div class="team-item">
+								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
+								<div class="team-text" style="float:left;>
+									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou novo Traction.</div>
+								</div>
+							</div>
+						</div>
+						<div class="spacing-1"></div>
+						';
+					break;
 				   
 				}
 			}

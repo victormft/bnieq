@@ -5,6 +5,7 @@ $p_product = empty($model->product_description) ? 1 : 0;
 $p_stage = empty($model->company_stage) ? 1 : 0;
 
 Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_END);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/charCount.js', CClientScript::POS_END);
 
 
 Yii::app()->clientScript->registerScript('loading-img',
@@ -42,18 +43,56 @@ Yii::app()->clientScript->registerScript('loading-img',
 		}); 
 		
 		$('#form-2-btn').click(function(){ 
-		
+			
+			var elem = $(this);
+			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>');
+			
+			var mybar = $('.mybar');
+			var mypercent = $('.mypercent');
+			var myprogress = $('.myprogress');
+			
 			$('#formulario-2').ajaxForm({ 
 				dataType: 'json',		
 				type: 'POST',
 				data: {
 					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
 				},
+				
+				beforeSend: function() {
+					var percentVal = '0%';
+					mybar.width(percentVal);
+					mypercent.html(percentVal);
+					myprogress.css({'display':'inline-block', 'opacity':'1'});
+				},
+				
+				uploadProgress: function(event, position, total, percentComplete) {
+					var percentVal = percentComplete + '%';
+					mybar.width(percentVal);
+					mypercent.html(percentVal);
+				},
+					
 				success: function(data){
-		
-					$('#form-2-btn').animate({opacity: 0}, 500, function(){
-						$('#form-2-btn').hide();
-					});	
+				
+					if(data.res=='no')
+					{
+						$('.err-logo').html(data.msg);
+						elem.animate({opacity: 0}, 500, function(){
+							elem.hide().html('Confirmar?');
+						});
+						myprogress.animate({opacity: 0}, 500, function(){
+							myprogress.hide();
+						});
+					}
+					
+					else
+					{
+						elem.animate({opacity: 0}, 500, function(){
+							elem.hide().html('Confirmar?');
+						});	
+						myprogress.animate({opacity: 0}, 500, function(){
+							myprogress.hide();
+						});
+					}
 					
 				}
 			}).submit(); 
@@ -70,6 +109,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 	$('#imagem-2').change(function(){
 		readURL(this);
 		$('#form-2-btn').show().css({'opacity':'1'});
+		$('.err-logo').empty();
 		
 	});
 	
@@ -146,6 +186,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 			}
 		}, 1000);
 	});
+	
 	
 	$('.start-product').on('click','.editable-submit', function(event){
 		setTimeout(function(){
@@ -642,6 +683,11 @@ function navbar_reset_top()
 	}
 }
 
+	$('.editable-wrap').on('keyup','.input-xlarge',function(){
+			maxLen=1000;
+			$(this).closest('.editable-wrap').find('.counter').html(maxLen - this.value.length+' Caracteres Restantes');
+	});
+	
 ");
 
 ?>
@@ -701,15 +747,22 @@ function navbar_reset_top()
 			</div>
 		</a>
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'label'=>'Upload',
+			'label'=>'Confirmar?',
 			'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 			'size'=>'normal', // null, 'large', 'small' or 'mini'
 			'id'=>'form-2-btn',
 			'htmlOptions'=>array(
-				'style'=>'display:none;',
+				'style'=>'display:none; margin-top:5px; width:80px;',
 			),
 			)); 
 		?>
+		
+		<div class="myprogress" style="position:relative; margin-top:10px; width:130px; border-radius:5px; border: 1px solid #ddd; height:20px; display:none;">
+			<div class="mybar" style="height:100%; width:0%; background-color:black; border-radius:5px;"></div >
+			<div class="mypercent" style="position:absolute; left:40%; top:0;">0%</div >
+		</div>
+		
+		<div class="err-logo" style="display:inline-block; margin-top:10px;"></div>
 			
 	</form> 
 	
@@ -725,7 +778,7 @@ function navbar_reset_top()
 				<div class="header-label">
 					<b>Nome:</b> 
 				</div>
-					<span class="start-name">
+					<span class="start-name" data-toggle='tooltip' data-original-title='Nome que aparecerá para o público' style="padding-top:5px;">
 						<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 							'type'      => 'text',
 							'model'     => $model,
@@ -746,6 +799,7 @@ function navbar_reset_top()
 				<div class="header-label">
 					<b>Pitch de uma linha:</b> 
 				</div>
+					<span data-toggle='tooltip' data-original-title='Breve resumo da startup' style="padding-top:5px;">
 					<?php $this->widget('bootstrap.widgets.TbEditableField', array(
 						'type'      => 'text',
 						'model'     => $model,
@@ -756,9 +810,10 @@ function navbar_reset_top()
 						'mode'=>'inline',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'options'    => array(
-							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="80">'
+							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="100">'
 						)
-					 )); ?>  
+					 )); ?>
+					</span>
 			</div>
 			
 			<div class="content-info-unit">			
@@ -825,55 +880,8 @@ function navbar_reset_top()
 					)); ?> 
 			</div>
 				
-			<div class="content-info-unit">			
-				<div class="header-label">
-					<b>Logo:</b> 
-				</div>
 				
-				<div class="header-content">
-					<!-- !!!!!!!!!!!!!! image form begin!!!!!!!!!!!!!!!!-->
-		
-					<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-						'id'=>'logo-edit-form',
-						'type'=>'horizontal',
-						'clientOptions'=>array(
-							'validateOnSubmit'=>true,
-						),
-						'enableClientValidation'=>true,
-						'htmlOptions' => array(
-							'enctype' => 'multipart/form-data'
-						),
-						'inlineErrors'=>false,
-					)); 
-					?>
-					
-					<div class="pic-wrap">
-						<?php echo $form->fileFieldRow($model, 'pic', array('labelOptions' => array('label' => ''))); ?>
-						<!-- necessário isso aqui, por causa da classe de errorcss<?php echo $form->error($model,'pic', array('errorCssClass'=>'', 'successCssClass'=>'' )); ?>-->
-					</div>
-					
-					<?php $this->widget('bootstrap.widgets.TbButton', array(
-							'buttonType'=>'submit',
-							'id'=>'pic-btn',
-							'label'=>'Upload',
-							'size'=>'normal',
-							'htmlOptions'=>array(
-								'class'=>'pic-btn disabled',
-								'style'=>'width:70px;',
-							),
-							)); 
-					?>
-					
-					
-					<?php $this->endWidget(); ?>
-					
-					<!-- !!!!!!!!!!!!!! image form end !!!!!!!!!!!!!!!!-->
-				</div>
-					
-			</div>
-				
-				
-			</div>
+		</div>
 	</div>
 	
 	<span class="teste" style="float:right;">
@@ -931,10 +939,14 @@ function navbar_reset_top()
 							'emptytext' => 'Vazio',
 							'mode'=>'inline',
 							'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
+							'options'    => array(
+								'tpl'=>'<textarea class="input-xlarge" rows="7" maxlength="1000"></textarea>'
+							)
 						 )); ?>  
 									
 					</p>
 				</span>
+				<span class="counter"></span>
 			</div>
 			
 		</div>
@@ -1146,9 +1158,9 @@ function navbar_reset_top()
 						'emptytext' => 'Vazio',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
-					 )); ?>  
-					 			
+					 )); ?>  			
 				</p>
+				<span class="counter"></span>
 			</div>
 			
 		</div>
@@ -1176,9 +1188,9 @@ function navbar_reset_top()
 						'emptytext' => 'Vazio',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
-					 )); ?>  
-					 			
+					 )); ?>   			
 				</p>
+				<span class="counter"></span>
 			</div>
 			
 		</div>
@@ -1206,9 +1218,9 @@ function navbar_reset_top()
 						'emptytext' => 'Vazio',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
-					 )); ?>  
-					 			
+					 )); ?>  		 			
 				</p>
+				<span class="counter"></span>
 			</div>
 			
 		</div>
@@ -1236,9 +1248,9 @@ function navbar_reset_top()
 						'emptytext' => 'Vazio',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
-					 )); ?>  
-					 			
+					 )); ?>  		
 				</p>
+				<span class="counter"></span>
 			</div>
 			
 		</div>
@@ -1266,9 +1278,9 @@ function navbar_reset_top()
 						'emptytext' => 'Vazio',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
-					 )); ?>  
-					 			
+					 )); ?>  			
 				</p>
+				<span class="counter"></span>
 			</div>
 			
 		</div>
@@ -1296,9 +1308,9 @@ function navbar_reset_top()
 						'emptytext' => 'Vazio',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'mode'=>'inline'
-					 )); ?>  
-					 			
+					 )); ?>  			
 				</p>
+				<span class="counter"></span>
 			</div>
 			
 		</div>
@@ -1324,13 +1336,13 @@ function navbar_reset_top()
 				)); ?>
 		
 					<?php echo CHtml::label('Metric', false, array('style'=>'display:block; margin-right:30px;')); ?>
-					<?php echo CHtml::textField('metric'); ?>
+					<?php echo CHtml::textField('metric', '', array('data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-original-title'=>'Métrica para avaliação da empresa. Exemplo: "Produtos Vendidos".')); ?>
 					
 					<?php echo CHtml::label('Value', false, array('style'=>'display:block; margin-right:30px;')); ?>
-					<?php echo CHtml::textField('value'); ?>
+					<?php echo CHtml::textField('value', '', array('data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-html'=>'true', 'data-original-title'=>'Valor associado a métrica escolhida acima. Exemplo: "10.000".<br /><br />Pode ser um valor monetário também. Se a métrica fosse "Receita Gerada", o campo \'Valor\' poderia ser, por exemplo: "R$ 20.000,00."')); ?>
 					
 					<?php echo CHtml::label('Period', false); ?>
-					<?php echo CHtml::dropDownList('period', '', array_merge(array(''=>UserModule::t("Select...")), $model->getTractionPeriodOptions())) ?>
+					<?php echo CHtml::dropDownList('period', '', array_merge(array(''=>UserModule::t("Select...")), $model->getTractionPeriodOptions()), array('data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-original-title'=>'Período ao qual se aplica a métrica definida.')) ?>
 			
 					
 					<?php echo CHtml::label('Data', false, array('style'=>'display:block; margin-right:30px;')); ?>
@@ -1339,6 +1351,7 @@ function navbar_reset_top()
 							'options' => array(
 								'format' => 'yyyy-mm-dd',
 							),
+							'htmlOptions'=>array('data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-original-title'=>'Data em que a mérica foi observada/definida.'),
 						)); 
 					?>
 					
@@ -1415,11 +1428,11 @@ function navbar_reset_top()
 				)); ?>
 		
 					<?php echo CHtml::label('Investidor', false, array('style'=>'display:inline-block; margin-right:30px;')); ?><div class="past-loading" style="display:inline;"></div>
-					<input type="text" id="investor" size="40" name="past_investor_name" style="display:block;"/>
+					<input data-placement='right' data-toggle='tooltip' data-original-title='Nome do investidor. Verifique se ele está cadastrado na plataforma, digitando o nome e aguardando alguns segundos para ver se ele é encontrado.' type="text" id="investor" size="40" name="past_investor_name" style="display:block;"/>
 					<input type="hidden" id="investor_id" name="past_investor_id"/>
 					
 					<?php echo CHtml::label('Value', false, array('style'=>'display:block; margin-right:30px;')); ?>
-					<?php echo CHtml::textField('value-past'); ?>
+					<?php echo CHtml::textField('value-past', '', array('data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-original-title'=>'Valor investido.')); ?>
 							
 					
 					<?php echo CHtml::label('Data', false, array('style'=>'display:block; margin-right:30px;')); ?>
@@ -1428,6 +1441,7 @@ function navbar_reset_top()
 							'options' => array(
 								'format' => 'yyyy-mm-dd',
 							),
+							'htmlOptions'=>array('data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-original-title'=>'Data do Investimento.'),
 						)); 
 					?>
 					
