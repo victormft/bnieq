@@ -66,7 +66,7 @@ $('.arrow-container').mouseover(function(event){
 <div class="profile-header-edit" style="padding-bottom: 15px;">
     
     <div id="startup-profile-img">
-        <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>">    
+        <img src="<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$profile->logo->name ?>">    
     </div>
     
 	<div class="user-profile-header-info" style="width: 600px">    

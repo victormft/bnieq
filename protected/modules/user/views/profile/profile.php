@@ -156,7 +156,7 @@ function getUrlVars()
     <div class="profile-header">	
 
         <div id="startup-profile-img">
-            <img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name ?>">
+            <img src="<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$profile->logo->name ?>">
         </div>
 
         <div class="user-profile-header-info">     
@@ -196,13 +196,50 @@ function getUrlVars()
             <?php endif; ?>    
         </div>
 
+        
         <div class="profile-header-right">
 
-
+            
             <span class="follow-btn">
 
                 <div class="follow-info">
-                    <?php EQuickDlgs::ajaxLink(
+                    
+                    <div class="founder" data-html=true>
+                        <a href="#" data-toggle="modal" data-target="#modal-followers">
+                            <div class="follow-count"><?php echo count($model->followers) ?></div>
+                            <div class="follow-status"><?php echo UserModule::t('Followers') ?></div>
+                        </a>     
+                        
+                        <?php $this->beginWidget(
+                            'bootstrap.widgets.TbModal',
+                            array('id' => 'modal-followers')
+                        ); ?>
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">&times;</a>
+                                <h4 class="modal-title" id="myModalLabel"><?php echo UserModule::t('Followers') ?></h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <?php $this->renderPartial('_followpop',array('provider'=>$model->followers, 'attr'=>'follower')) ?>
+                            </div>
+
+                            <div class="modal-footer">
+                                
+                                <?php $this->widget(
+                                    'bootstrap.widgets.TbButton',
+                                    array(
+                                        'label' => 'Close',
+                                        'url' => '#',
+                                        'htmlOptions' => array('data-dismiss' => 'modal'),
+                                    )
+                                ); ?>
+                            </div>
+
+                        <?php $this->endWidget(); ?>
+
+                    </div>
+                    
+                    <?php /*EQuickDlgs::ajaxLink(
                         array(
                             'controllerRoute' => 'user/user/followpop',
                             'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
@@ -212,7 +249,10 @@ function getUrlVars()
                             'openButtonText' => '<div class="follow-count">'.count($model->followers).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
                             //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
                         )
-                        );?>
+                        );
+                     * 
+                     */
+                    ?>
                 </div>
 
                 <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
@@ -686,3 +726,7 @@ function getUrlVars()
 <?php endif; ?>
 
 </div>
+
+        
+        
+        

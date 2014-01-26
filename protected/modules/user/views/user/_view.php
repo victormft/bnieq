@@ -2,7 +2,7 @@
 <div class="view-list">
 
     <div class="startup-view-img">
-        <?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo->name.'" />', array('/' . $data->user->username)); ?>
+        <?php echo CHtml::link('<img src="'.'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$data->logo->name.'" />', array('/' . $data->user->username)); ?>
     </div>
     
     <div class="view-list-text">
@@ -61,38 +61,34 @@
         <div class="founder" data-id="<?php echo $data->user_id; ?>" data-toggle='tooltip' data-html=true data-original-title='FUNDADOR'>
             <img src="<?php echo Yii::app()->request->baseUrl.'/images/founder-icon-small.png'; ?>" data-toggle="modal" data-target="#modal-<?php echo $data->user_id ?>">
             
-            <!-- Modal -->
-            <div class="modal fade" id="modal-<?php echo $data->user_id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <?php $this->beginWidget(
+                'bootstrap.widgets.TbModal',
+                array('id' => 'modal-'.$data->user_id)
+            ); ?>
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
                     <h4 class="modal-title" id="myModalLabel">Startups do <?php echo $data->firstname .' '. $data->lastname ?></h4>
-                  </div>
-                  <div class="modal-body">
-                    
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-            
-            <?php /*EQuickDlgs::ajaxIcon(
-                Yii::app()->request->baseUrl.'/images/founder-icon-small.png',
-                array(
-                    'controllerRoute' => 'user/user/founderpop',
-                    'actionParams' => array('id'=>$data->user_id),
-                    'dialogTitle' => "Startups do " . $data->user->getFullName(),
-                    'dialogWidth' => 600,
-                    'dialogHeight' => 500,
-                    //'openButtonText' => '',
-                    //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-                )
-            );
-             * */?>
-             
+                </div>
+
+                <div class="modal-body">
+                   
+                </div>
+
+                <div class="modal-footer">
+
+                    <?php $this->widget(
+                        'bootstrap.widgets.TbButton',
+                        array(
+                            'label' => 'Close',
+                            'url' => '#',
+                            'htmlOptions' => array('data-dismiss' => 'modal'),
+                        )
+                    ); ?>
+                </div>
+
+            <?php $this->endWidget(); ?>
+
+                         
         </div>
     <?php endif ?>
     

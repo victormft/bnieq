@@ -47,7 +47,9 @@ return array(
         
         //rights
         'application.modules.rights.*', 
-        'application.modules.rights.components.*',        
+        'application.modules.rights.components.*',       
+        
+        'application.extensions.awss3.*', 
 	),
 
 	'modules'=>array(

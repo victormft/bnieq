@@ -86,8 +86,7 @@ class ProfileController extends Controller
 			$profile->pic=CUploadedFile::getInstance($profile,'pic');
 			
 			if($profile->pic !== null && $profile->validate())
-			{
-			
+			{			
 				if($profile->profile_picture==2)
 				{
 					$fileName=$profile->pic;
@@ -95,19 +94,29 @@ class ProfileController extends Controller
 					$extension_array = explode('.', $fileName); //extension of the file
 					$extension=end($extension_array);
 					$newFileName = md5("{$rnd}-{$fileName}").'.'.$extension;  // random number + file name
-								
+							
+                    //saves the image in the server
 					$profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
 
                     $image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
                     
                     if($image->width>=$image->height)
                     {
-                        $image->resize(120, 120, ImageExt::WIDTH)->sharpen(20);
+                        $image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
                     }
                     else
-                        $image->resize(120, 120, ImageExt::HEIGHT)->sharpen(20);
-
-                    $image->save(); // or $image->save('images/small.jpg');
+                        $image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
+                    
+                    //NOT WORKINNNNNG
+                    //$image->save(); // or $image->save('images/small.jpg');
+                    
+                    
+                    include('s3_config.php');
+                    $s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$newFileName, S3::BUCKET_NB , $newFileName, S3::ACL_PUBLIC_READ);
+                    
+                    //deletes from the server
+                    unlink(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+                    //$image->save(); // or $image->save('images/small.jpg');
                     
                     
                     $model_img=new Image;
@@ -122,27 +131,36 @@ class ProfileController extends Controller
 					
 					if($profile->save())
 					{
-						$this->render('edit',array(
+                        $this->refresh();
+						/*$this->render('edit',array(
                             'model'=>$model,
                             'profile'=>$profile,
                         ));
+                         * 
+                         */
 					}
 				}
 				else
 				{
-					unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
+					//unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
 					
+                    include('s3_config.php');
+                    $s3->deleteObject(S3::BUCKET_NB, $profile->logo->name);
+                    
 					$img=Image::model()->findByPk($profile->profile_picture);
 					$ext_arr = explode('.', $img->name);
 					$ext = end($ext_arr);
 					$new_name=md5($img->name).'.'.$ext;
 					
 					$img->name=$new_name;
-					
+                    
+                    //saves the model
 					$img->save();
 					
+                    //saves in the server
                     $profile->pic->saveAs(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
-					                    
+                                        
+                    
 					$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
 					if($image->width>=$image->height)
 					{
@@ -150,7 +168,15 @@ class ProfileController extends Controller
 					}
 					else
 						$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
-					$image->save(); // or $image->save('images/small.jpg');
+					
+                    //NOT WORKINNNNNG
+                    //$image->save(); // or $image->save('images/small.jpg');
+                    
+                    //saves in aws
+                    $s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$img->name, S3::BUCKET_NB , $new_name, S3::ACL_PUBLIC_READ);
+					
+                    //deletes from the server
+                    unlink(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
                     
 					$this->refresh();
 				}
