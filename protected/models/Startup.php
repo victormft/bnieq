@@ -125,8 +125,8 @@ class Startup extends CActiveRecord
 			//array('sectors', 'required', 'message'=>UserModule::t("Required"), 'on'=>'updateSectors'),
 			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),
 			array('name', 'length', 'max'=>40),
-			array('name', 'match', 'pattern' => '/^[\w\.\_\&\'\"\-\ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç\ ]+$/u','message' =>UserModule::t("Incorrect Symbols")),
-			array('one_line_pitch', 'length', 'max'=>80),
+			array('name', 'match', 'pattern' => '/^[\w\.\_\&\%\+\@\'\"\-\ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç\ ]+$/u','message' =>UserModule::t("Incorrect Symbols")),
+			array('one_line_pitch', 'length', 'max'=>100),
 			array('email, skype', 'length', 'max'=>99),
 			array('tech', 'filter', 'filter'=>'trim'),
 			array('product_description, tech, client_segment, revenue_generation, competitors, competitive_advantage, history', 'length', 'max'=>1000, 'tooLong' => 'Texto muito longo (máximo de 1000 caracteres).'),
@@ -134,7 +134,7 @@ class Startup extends CActiveRecord
 			array('facebook, linkedin, twitter, website, video', 'url'),
             array('selecionada', 'in', 'range'=>array(0,1)),
 			array('company_size, company_stage, telephone, company_number', 'length', 'max'=>45),
-			array('facebook, twitter, linkedin, website, video', 'length', 'max'=>150),
+			array('facebook, twitter, linkedin, website, video', 'length', 'max'=>150, 'tooLong' => 'Texto muito longo (máximo de 150 caracteres).'),
 			array('product_description, foundation, client_segment, tech, value_proposition, market_size, sales_marketing, revenue_generation, competitors, competitive_advantage, history, create_time, sec', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

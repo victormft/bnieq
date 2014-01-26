@@ -517,7 +517,7 @@ class StartupController extends Controller
 		
 		$startupname = $_POST['value'];
 		$startupname = trim($startupname);
-		$startupname = preg_replace('/[\/\&%><=#.\$]/', '', $startupname);
+		$startupname = preg_replace('/[\/\&@+%><=#.\$]/', '', $startupname);
 		$startupname = preg_replace('/[\"\']/', '', $startupname);
 		$startupname = preg_replace('/[-_]/', ' ', $startupname);
 		$startupname = preg_replace('/\s+/', '-', $startupname);
@@ -1139,6 +1139,11 @@ class StartupController extends Controller
 			</div>
 			
 			';
+			
+			$activity = new ActivityStartup;
+            $activity->activity_type = ActivityStartup::ADD_TRACTION;
+            $activity->startup_id = $model->id;
+            $activity->save(); 
 			
 			echo CJSON::encode(array(
 				'res'=>$html,

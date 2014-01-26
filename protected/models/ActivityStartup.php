@@ -17,6 +17,8 @@
 class ActivityStartup extends CActiveRecord
 {
 	const FOLLOW_STARTUP=1;
+	const ADD_TRACTION=2;
+	const ADD_PRESS=3;
 	
 	/**
 	 * @return string the associated database table name
@@ -34,7 +36,7 @@ class ActivityStartup extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, startup_id, activity_type', 'required'),
+			array('startup_id, activity_type', 'required'),
 			array('activity_type, seen', 'numerical', 'integerOnly'=>true),
 			array('user_id, startup_id', 'length', 'max'=>20),
 			array('time', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
@@ -113,4 +115,5 @@ class ActivityStartup extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
 }
