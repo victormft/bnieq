@@ -19,6 +19,8 @@ class ActivityStartup extends CActiveRecord
 	const FOLLOW_STARTUP=1;
 	const ADD_TRACTION=2;
 	const ADD_PRESS=3;
+	const ADD_MEMBER=4;
+	
 	
 	/**
 	 * @return string the associated database table name

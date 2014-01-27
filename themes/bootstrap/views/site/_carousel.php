@@ -2,9 +2,9 @@
 	
 	<div class="top-item">
 		
-		<div class="startup-view-img">
-			<?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'"/>', array('startup/view', 'name'=>$data->startupname)); //id="Startup-list-img"?>
-		</div>
+		
+		<?php echo CHtml::link('<div class="startup-view-img" style="background-image:url('.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>', array('startup/view', 'name'=>$data->startupname));?>
+		
 		
 		<div class="item-name">
 			<?php echo CHtml::link(CHtml::encode($data->name),array('startup/view','name'=>$data->startupname));?>
@@ -38,7 +38,7 @@
 					<div style="float:right; width:100px; height:15px;">
 						<?php
 					
-						if($data->company_stage=='Conceito')
+						if($data->company_stage=='Concept')
 						{
 							$this->widget('bootstrap.widgets.TbProgress', array(
 								'percent'=>25, // the progress
@@ -50,7 +50,7 @@
 							//echo '<br /><b>Stage 1:</b> Conceito';
 						}
 						
-						else if($data->company_stage=='Desenvolvimento')
+						else if($data->company_stage=='Development')
 						{
 							$this->widget('bootstrap.widgets.TbProgress', array(
 								'percent'=>50, // the progress
@@ -62,7 +62,7 @@
 							//echo '<br /><b>Stage 2:</b> Desenvolvimento';
 						}
 						
-						else if($data->company_stage=='Protótipo')
+						else if($data->company_stage=='Prototype')
 						{	
 							$this->widget('bootstrap.widgets.TbProgress', array(
 								'percent'=>75, // the progress
@@ -73,7 +73,7 @@
 							//echo '<br /><b>Stage 3:</b> Protótipo';
 						}
 						
-						else if($data->company_stage=='Produto Final')
+						else if($data->company_stage=='Final Product')
 						{	
 							$this->widget('bootstrap.widgets.TbProgress', array(
 								'percent'=>100, // the progress
