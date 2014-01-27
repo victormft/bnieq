@@ -8,9 +8,7 @@
             'validateOnSubmit'=>true,
         ),
     )); ?>
-
-    OBS: Você só pode enviar mensagem para quem você segue. <br><br>
-    
+   
     <?php echo $form->errorSummary($model, null, null, array('class' => 'alert-message block-message error')); ?>
 
     <?php echo $form->labelEx($model,'subject'); ?>
@@ -24,15 +22,11 @@
         <?php echo $form->textArea($model,'body', array('style' => 'width:300px; height:100px')); ?>
         <?php echo $form->error($model,'body'); ?>
     </div>
-<!--
-    <div class="buttons">
-        <button class="btn primary"><?php echo UserModule::t("Send") ?></button>
-    </div>
--->
+
     <?php
     $this->widget(
         'bootstrap.widgets.TbButton',
-        array('buttonType' => 'submit', 'label' => UserModule::t("Send"))
+        array('buttonType' => 'submit', 'label' => UserModule::t("Send"), 'type'=>'primary')
     ); ?>
 
 

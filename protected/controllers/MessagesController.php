@@ -65,7 +65,7 @@ class MessagesController extends Controller
     
     public function actionComposeWithId($id)
     {    
-		$message = new Message();        
+        $message = new Message();        
 		if (Yii::app()->request->getPost('Message')) {
             if(!Yii::app()->getModule('user')->isAdmin())
                 if($id == Yii::app()->user->getId() || !User::model()->findbyPk(Yii::app()->user->getId())->hasUserFollowed($id))
@@ -79,23 +79,27 @@ class MessagesController extends Controller
 			$message->sender_id = Yii::app()->user->getId();
 			if ($message->save()) {                
 				Yii::app()->user->setFlash('success', 'Message has been sent');
-			    $this->redirect($this->createUrl('user/profile?username='.$receiverName));
-			} else /*if ($message->hasErrors('receiver_id'))*/ {
+                $this->redirect(Yii::app()->request->urlReferrer);			
+                
+            } else {
 				Yii::app()->user->setFlash('error', 'Message incomplete');
-			    $this->redirect($this->createUrl('user/profile?username='.$receiverName));
-                //$message->receiver_id = null;
-				//$receiverName = '';
-			}
+                $this->redirect(Yii::app()->request->urlReferrer);                
+            }
 		} else {
 			if ($id) {
-				$receiver = call_user_func(array(call_user_func(array('User', 'model')), 'findByPk'), $id);
+				$receiver = User::model()->findbyPk($id);
 				if ($receiver) {
-					$receiverName = call_user_func(array($receiver, 'getFullName'));
-					$message->receiver_id = $receiver->id;
-                    
-                    EQuickDlgs::renderPartial('_compose',array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));
-                    //$this->renderPartial('_compose', array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));                    
-				}
+                    if($receiver->hasUserFollowing(Yii::app()->user->id)){
+                        $receiverName = $receiver->getFullName();
+                        $message->receiver_id = $receiver->id;
+
+                        $this->renderPartial('_compose', array('model' => $message, 'receiverName' => isset($receiverName) ? $receiverName : null));                    
+				
+                    }
+                    else{
+                        echo "Você só pode envar mensagens para quem você segue.";
+                    }
+                }
 			}
 		}		
 	}

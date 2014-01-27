@@ -277,27 +277,44 @@ function getUrlVars()
                         'url'=>'',//array('unfollow','name'=>$model->name),
                         'htmlOptions'=>array('style'=>'width:60px; padding-top:12px; padding-bottom:12px; font-size:13px', 'class'=>'unfollow'),
                         )); 
-                    }
-                    //echo "<button class='btn-msg-wrap' type='button'>";
+                    } ?>
 
-                    EQuickDlgs::ajaxLink(
-                        array(
-                            'controllerRoute' => 'messages/composewithid', //'member/view'
-                            'actionParams' => array('id'=>$model->id), //array('id'=>$model->member->id),
-                            'dialogTitle' => 'Enviar mensagem para ' . $model->getFullName(),
-                            'dialogWidth' => 450,
-                            'dialogHeight' => 400,
-                            'openButtonText' => UserModule::t('Message'),
-                            //'closeButtonText' => 'Close',
-                            'openButtonHtmlOptions' => array(
-                                'style' => 'width:70px; padding:12px 5px; margin-left: 10px; font-size:13px', 
-                                'class' => 'btn btn-warning',
-                            )
-                        )
-                    );
-                    //echo "</button>";
-                    //if($model->id !== Yii::app()->user->id) $this->renderPartial('_message', array('receiver'=>$model));
-                ?>
+                
+                    <?php $this->beginWidget(
+                        'bootstrap.widgets.TbModal',
+                        array('id' => 'modal-message')
+                    ); ?>
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">&times;</a>
+                            <h4><?php echo 'Enviar mensagem para ' . $model->getFullName() ?></h4>
+                        </div>
+
+                        <div class="modal-body" id="modal-message-body">
+                            
+                        </div>
+
+                    <?php $this->endWidget(); ?>
+
+                    
+                    <?php if($model->hasUserFollowing(Yii::app()->user->id)){
+                            
+                            echo CHtml::ajaxLink(UserModule::t('Message'), 
+                                array('/messages/composewithid/'.$model->id), 
+                                array('update'=>'#modal-message-body'),
+                                array('class' => 'btn btn-warning', 'style' => 'padding:12px 9px; margin-left: 10px; font-size:13px', 'data-toggle'=>'modal', 'data-target'=>'modal-message', 'onClick'=>'$("#modal-message").modal("toggle")'));
+                            
+                        }       
+                        else {
+                            $this->widget(
+                                'bootstrap.widgets.TbButton',
+                                array(
+                                    'label' => UserModule::t('Message'),
+                                    'htmlOptions' =>                                  
+                                        array('style' => 'width:70px; padding:12px 5px; margin-left: 10px; font-size:13px', 'data-toggle' => 'tooltip', 'data-original-title' => 'Siga primeiro'),
+                                )                        
+                            );
+                        }
+                    ?>
                 <?php endif; ?>
             </span>
 
