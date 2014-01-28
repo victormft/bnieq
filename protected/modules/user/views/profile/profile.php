@@ -239,20 +239,6 @@ function getUrlVars()
 
                     </div>
                     
-                    <?php /*EQuickDlgs::ajaxLink(
-                        array(
-                            'controllerRoute' => 'user/user/followpop',
-                            'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
-                            'dialogTitle' => UserModule::t('Followers'),
-                            'dialogWidth' => 600,
-                            'dialogHeight' => 500,
-                            'openButtonText' => '<div class="follow-count">'.count($model->followers).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
-                            //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-                        )
-                        );
-                     * 
-                     */
-                    ?>
                 </div>
 
                 <?php if(Yii::app()->user->checkAccess('followUser', array('userid'=>$model->id))): ?>
@@ -333,17 +319,6 @@ function getUrlVars()
                 </span>
 
             <?php endif; ?>
-
-            <?php //if($model->id !== Yii::app()->user->id): ?>
-            <?php //$this->widget('bootstrap.widgets.TbButton', array(
-                //'label'=>'Message',
-                //'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                //'size'=>'normal', // null, 'large', 'small' or 'mini'
-                //'url'=>array('/messages/compose','id'=>$model->id),
-                //'htmlOptions'=>array('style'=>'width:50px;'),
-               //     )); 
-                ?>
-            <?php //endif; ?>
 
         </div>
     </div>
@@ -558,43 +533,75 @@ function getUrlVars()
 		<div class="content-info" style="padding: 0;">            
             <div class="content-info-unit">
                 <div class="follow-block">
-                <?php EQuickDlgs::ajaxLink(
-                    array(
-                        'controllerRoute' => 'user/user/followpop',
-                        'actionParams' => array('id'=>$model->id, 'follow'=>'ing', 'attr'=>'followed'),
-                        'dialogTitle' => UserModule::t('Following'),
-                        'dialogWidth' => 600,
-                        'dialogHeight' => 500,
-                        'openButtonText' => UserModule::t('Following'),
-                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-                    )
-                );?>
+                    <a href="#" data-toggle="modal" data-target="#modal-following">
+                        <?php echo UserModule::t('Following') ?>
+                    </a>     
+
+                    <?php $this->beginWidget(
+                        'bootstrap.widgets.TbModal',
+                        array('id' => 'modal-following')
+                    ); ?>
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">&times;</a>
+                            <h4 class="modal-title" id="myModalLabel"><?php echo UserModule::t('Following') ?></h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <?php $this->renderPartial('_followpop',array('provider'=>$model->following, 'attr'=>'followed')) ?>
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <?php $this->widget(
+                                'bootstrap.widgets.TbButton',
+                                array(
+                                    'label' => 'Close',
+                                    'url' => '#',
+                                    'htmlOptions' => array('data-dismiss' => 'modal'),
+                                )
+                            ); ?>
+                        </div>
+
+                    <?php $this->endWidget(); ?>
+
                 </div>
                 <div class="follow-block">
-                <?php EQuickDlgs::ajaxLink(
-                    array(
-                        'controllerRoute' => 'user/user/followpop',
-                        'actionParams' => array('id'=>$model->id, 'follow'=>'stup'),
-                        'dialogTitle' => 'Startups followed',
-                        'dialogWidth' => 600,
-                        'dialogHeight' => 500,
-                        'openButtonText' => 'Startups',
-                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-                    )
-                );?>
+                    <a href="#" data-toggle="modal" data-target="#modal-startups-follow">
+                        <?php echo UserModule::t('Startups') ?>
+                    </a> 
+                    
+                    <?php $this->beginWidget(
+                        'bootstrap.widgets.TbModal',
+                        array('id' => 'modal-startups-follow')
+                    ); ?>
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">&times;</a>
+                            <h4 class="modal-title" id="myModalLabel"><?php echo UserModule::t('Startups followed') ?></h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <?php $this->renderPartial('_sfollowpop',array('provider'=>$model->startupFollows)) ?>
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <?php $this->widget(
+                                'bootstrap.widgets.TbButton',
+                                array(
+                                    'label' => 'Close',
+                                    'url' => '#',
+                                    'htmlOptions' => array('data-dismiss' => 'modal'),
+                                )
+                            ); ?>
+                        </div>
+
+                    <?php $this->endWidget(); ?>
+                
                 </div>
                 <div class="follow-block">
-                <?php EQuickDlgs::ajaxLink(
-                    array(
-                        'controllerRoute' => 'user/user/followpop',
-                        'actionParams' => array('id'=>$model->id, 'follow'=>'ers', 'attr'=>'follower'),
-                        'dialogTitle' => UserModule::t('Followers'),
-                        'dialogWidth' => 600,
-                        'dialogHeight' => 500,
-                        'openButtonText' => UserModule::t('Followers'),
-                        //'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-                    )
-                );?>
+                    <a href="#" data-toggle="modal" data-target="#modal-followers">
+                        <?php echo UserModule::t('Followers') ?>
+                    </a>
                 </div>                		 
             </div>            
 		</div>
