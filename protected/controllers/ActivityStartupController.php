@@ -66,7 +66,37 @@ class ActivityStartupController extends Controller
 							<div class="team-item">
 								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
 								<div class="team-text" style="float:left;>
-									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou novo Traction.</div>
+									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou novo <b>'. CHtml::link('Traction', array('/'.$q->startup->startupname . '?r='.rand(0,99999).'#traction')) . '.</b></div>
+								</div>
+							</div>
+						</div>
+						<div class="spacing-1"></div>
+						';
+					break;
+					
+					case ActivityStartup::ADD_PRESS :
+						$html .= '		
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+							<div class="team-item">
+								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
+								<div class="team-text" style="float:left;>
+									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou novo <b><span class="press-link">'. CHtml::link('Press', array('/'.$q->startup->startupname.'#press')) . '.</span></b></div>
+								</div>
+							</div>
+						</div>
+						<div class="spacing-1"></div>
+						';
+					break;
+					
+					case ActivityStartup::ADD_MEMBER :
+						$html .= '		
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+							<div class="team-item">
+								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
+								<div class="team-text" style="float:left;>
+									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou o membro <b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> </div>
 								</div>
 							</div>
 						</div>

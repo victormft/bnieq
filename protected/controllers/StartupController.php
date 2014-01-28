@@ -1017,6 +1017,11 @@ class StartupController extends Controller
         $note->target_id = $model->id;
         $note->save();
 	
+		$activity = new ActivityStartup;
+        $activity->activity_type = ActivityStartup::ADD_MEMBER;
+        $activity->startup_id = $model->id;
+		$activity->user_id = $usr->id;
+        $activity->save(); 
 		
 		echo CJSON::encode(array(
 				'res'=>$html
@@ -1075,6 +1080,10 @@ class StartupController extends Controller
 			
 			';
 			
+			$activity = new ActivityStartup;
+            $activity->activity_type = ActivityStartup::ADD_PRESS;
+            $activity->startup_id = $model->id;
+            $activity->save(); 
 			
 			echo CJSON::encode(array(
 				'res'=>$html
