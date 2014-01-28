@@ -810,7 +810,7 @@ function navbar_reset_top()
 						'mode'=>'inline',
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken),
 						'options'    => array(
-							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="100">'
+							'tpl'=>'<input type="text" class="input-large" style="padding-right: 24px;" maxlength="80">'
 						)
 					 )); ?>
 					</span>

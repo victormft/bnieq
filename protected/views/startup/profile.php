@@ -136,6 +136,37 @@ $('.chooser').click(function(event){
 	
 });
 
+$('.profile-column-l-activity').on('click', '.press-link', function(event){
+	
+	$('.clicked').removeClass('clicked');
+	$('.press').addClass('clicked');
+	if(!$('.press').hasClass('already-loaded'))
+	{
+		$('.profile-column-l-activity').css({'opacity':'0.5'});
+		$.ajax({
+			url: '".Yii::app()->request->baseUrl."/press/index?startupname=".$model->startupname."&offset=0',
+			type: 'POST',
+			data: {
+				YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
+			dataType: 'json',
+			success: function(data){
+				$('.profile-column-l-activity').css({'display':'none'});
+				$('.profile-column-l-activity').css({'opacity':'1'});
+				$('.content-info-press').html(data.res);
+				$('.profile-column-l-press').css({'display':'block'});
+				$('.press').addClass('already-loaded');
+			}
+		});
+	}
+	else
+	{
+		$('.profile-column-l-activity').css({'display':'none'});
+		$('.profile-column-l-press').css({'display':'block'});
+	}
+
+});
+
 $('.profile-column-l-activity').on('click','.more-activities',function(event){
 	var elem = $(this);
 	var offset = elem.attr('data-offset');
@@ -501,7 +532,7 @@ $('.video-images-items').carouFredSel({
 	<?php if($model->traction):?>
 	<div class="content-wrap">
 
-		<div class="content-head">
+		<div class="content-head" id="traction">
 			<i class="icon-book profile-icon"></i> Traction
 			<span class="tip">Metas de desempenho da empresa</span>
 		</div>
@@ -639,7 +670,7 @@ $('.video-images-items').carouFredSel({
 
 	<div class="content-wrap">
 
-		<div class="content-head">
+		<div class="content-head" id="press">
 			<span class="txt"><i class="icon-lightbulb profile-icon"></i>Press</span>
 			<span class="tip">Notícias da Empresa</span>
 		</div>

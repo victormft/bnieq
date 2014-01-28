@@ -126,7 +126,7 @@ class Startup extends CActiveRecord
 			array('location', 'compare', 'compareValue'=>0, 'operator'=>'!=', 'strict'=>true, 'message'=>UserModule::t("Required")),
 			array('name', 'length', 'max'=>40),
 			array('name', 'match', 'pattern' => '/^[\w\.\_\&\%\+\@\'\"\-\ÀÁÂÃÄÈÉÊËÌÍÎÏĨÒÓÔÕÖÙÚÛÜŨÇàáâãäèéêëìíîïĩòóôõöùúûüũç\ ]+$/u','message' =>UserModule::t("Incorrect Symbols")),
-			array('one_line_pitch', 'length', 'max'=>100),
+			array('one_line_pitch', 'length', 'max'=>80),
 			array('email, skype', 'length', 'max'=>99),
 			array('tech', 'filter', 'filter'=>'trim'),
 			array('product_description, tech, client_segment, revenue_generation, competitors, competitive_advantage, history', 'length', 'max'=>1000, 'tooLong' => 'Texto muito longo (máximo de 1000 caracteres).'),
