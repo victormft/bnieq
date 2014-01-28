@@ -100,11 +100,20 @@ $('.remove-search').click(function(event){
                         <li class="name-hover">
                             <a href="#"><i class="icon-arrow-left" style="margin:0 7px 0 1px; line-height:17px;"></i>Startups</a>
                             <ul class="dropdown-menu hov sub-menu">
-                                <?php foreach($user->getStartupsByRole("Founder") as $stup): ?>
+                                <?php $stups=$user->getStartupsByRole("Founder"); if($stups): ?>
+                                <li class="dropdown-header">Startups fundadas</li>
+                                <?php endif; ?>
+                                
+                                <?php foreach($stups as $stup): ?>                                
                                 <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/' . $stup->startupname ?>><?php echo $stup->name ?></a></li>
                                 <?php endforeach; ?>
-                                <li role="presentation" class="divider"></li>
-                                <?php foreach($user->getNonPubStartupsByRole("Founder") as $stup): ?>
+                                
+                                <?php $stupsNP=$user->getNonPubStartupsByRole("Founder"); if($stupsNP): ?>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Não publicadas</li>
+                                <?php endif; ?>
+                                
+                                <?php foreach($stupsNP as $stup): ?>
                                 <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/' . $stup->startupname ?>><?php echo $stup->name ?></a></li>
                                 <?php endforeach; ?>
                                 
