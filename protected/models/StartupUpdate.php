@@ -1,34 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "activity_startup".
+ * This is the model class for table "startup_update".
  *
- * The followings are the available columns in table 'activity_startup':
- * @property string $id
- * @property string $user_id
+ * The followings are the available columns in table 'startup_update':
+ * @property integer $id
  * @property string $startup_id
- * @property integer $activity_type
- * @property integer $seen
- * @property string $time
+ * @property string $title
+ * @property string $description
  *
  * The followings are the available model relations:
  * @property Startup $startup
  */
-class ActivityStartup extends CActiveRecord
+class StartupUpdate extends CActiveRecord
 {
-	const FOLLOW_STARTUP=1;
-	const ADD_TRACTION=2;
-	const ADD_PRESS=3;
-	const ADD_MEMBER=4;
-	const ADD_UPDATE=5;
-	
-	
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'activity_startup';
+		return 'startup_update';
 	}
 
 	/**
@@ -39,15 +30,14 @@ class ActivityStartup extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('startup_id, activity_type', 'required'),
-			array('activity_type, seen', 'numerical', 'integerOnly'=>true),
-			array('user_id, startup_id', 'length', 'max'=>20),
-			array('time', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
-            array('seen', 'default', 'value' => 0, 'setOnEmpty' => true, 'on' => 'insert'),
-			
+			array('startup_id, title, description', 'required'),
+			array('startup_id', 'length', 'max'=>20),
+			array('title', 'length', 'max'=>200),
+			array('description', 'length', 'max'=>1000),
+			array('date', 'default', 'value' => date('Y-m-d'), 'setOnEmpty' => true, 'on' => 'insert'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, startup_id, activity_type, seen, time', 'safe', 'on'=>'search'),
+			array('id, startup_id, title, description, date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,11 +60,9 @@ class ActivityStartup extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'user_id' => 'User',
 			'startup_id' => 'Startup',
-			'activity_type' => 'Activity Type',
-			'seen' => 'Seen',
-			'time' => 'Time',
+			'title' => 'Title',
+			'description' => 'Description',
 		);
 	}
 
@@ -96,12 +84,10 @@ class ActivityStartup extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('id',$this->id);
 		$criteria->compare('startup_id',$this->startup_id,true);
-		$criteria->compare('activity_type',$this->activity_type);
-		$criteria->compare('seen',$this->seen);
-		$criteria->compare('time',$this->time,true);
+		$criteria->compare('title',$this->title,true);
+		$criteria->compare('description',$this->description,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -112,11 +98,10 @@ class ActivityStartup extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ActivityStartup the static model class
+	 * @return StartupUpdate the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-	
 }

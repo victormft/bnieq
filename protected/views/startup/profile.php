@@ -70,6 +70,7 @@ $('.chooser').click(function(event){
 			{
 				$('.profile-column-l').css({'opacity':'0.5'});
 				$('.profile-column-l-press').css({'opacity':'0.5'});
+				$('.profile-column-l-update').css({'opacity':'0.5'});
 				$.ajax({
 					url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
@@ -80,8 +81,10 @@ $('.chooser').click(function(event){
 					success: function(data){
 						$('.profile-column-l').css({'display':'none'});
 						$('.profile-column-l-press').css({'display':'none'});
+						$('.profile-column-l-update').css({'display':'none'});
 						$('.profile-column-l').css({'opacity':'1'});
 						$('.profile-column-l-press').css({'opacity':'1'});
+						$('.profile-column-l-update').css({'opacity':'1'});
 						$('.content-info-activity').html(data.res);
 						$('.profile-column-l-activity').css({'display':'block'});
 						elem.addClass('already-loaded');
@@ -92,6 +95,7 @@ $('.chooser').click(function(event){
 			{
 				$('.profile-column-l').css({'display':'none'});
 				$('.profile-column-l-press').css({'display':'none'});
+				$('.profile-column-l-update').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'block'});
 			}
 		}
@@ -101,6 +105,7 @@ $('.chooser').click(function(event){
 			{
 				$('.profile-column-l').css({'opacity':'0.5'});
 				$('.profile-column-l-activity').css({'opacity':'0.5'});
+				$('.profile-column-l-update').css({'opacity':'0.5'});
 				$.ajax({
 					url: '".Yii::app()->request->baseUrl."/press/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
@@ -111,8 +116,10 @@ $('.chooser').click(function(event){
 					success: function(data){
 						$('.profile-column-l').css({'display':'none'});
 						$('.profile-column-l-activity').css({'display':'none'});
+						$('.profile-column-l-update').css({'display':'none'});
 						$('.profile-column-l').css({'opacity':'1'});
 						$('.profile-column-l-activity').css({'opacity':'1'});
+						$('.profile-column-l-update').css({'opacity':'1'});
 						$('.content-info-press').html(data.res);
 						$('.profile-column-l-press').css({'display':'block'});
 						elem.addClass('already-loaded');
@@ -123,13 +130,50 @@ $('.chooser').click(function(event){
 			{
 				$('.profile-column-l').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'none'});
+				$('.profile-column-l-update').css({'display':'none'});
 				$('.profile-column-l-press').css({'display':'block'});
+			}
+		}
+		else if(elem.hasClass('update'))
+		{
+			if(!elem.hasClass('already-loaded'))
+			{
+				$('.profile-column-l').css({'opacity':'0.5'});
+				$('.profile-column-l-activity').css({'opacity':'0.5'});
+				$('.profile-column-l-press').css({'opacity':'0.5'});
+				$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startupupdate/index?startupname=".$model->startupname."&offset=0',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					dataType: 'json',
+					success: function(data){
+						$('.profile-column-l').css({'display':'none'});
+						$('.profile-column-l-activity').css({'display':'none'});
+						$('.profile-column-l-press').css({'display':'none'});
+						$('.profile-column-l').css({'opacity':'1'});
+						$('.profile-column-l-activity').css({'opacity':'1'});
+						$('.profile-column-l-press').css({'opacity':'1'});
+						$('.content-info-update').html(data.res);
+						$('.profile-column-l-update').css({'display':'block'});
+						elem.addClass('already-loaded');
+					}
+				});
+			}
+			else
+			{
+				$('.profile-column-l').css({'display':'none'});
+				$('.profile-column-l-activity').css({'display':'none'});
+				$('.profile-column-l-press').css({'display':'none'});
+				$('.profile-column-l-update').css({'display':'block'});
 			}
 		}
 		else if(elem.hasClass('info'))
 		{
 			$('.profile-column-l-activity').css({'display':'none'});
 			$('.profile-column-l-press').css({'display':'none'});
+			$('.profile-column-l-update').css({'display':'none'});
 			$('.profile-column-l').css({'display':'block'});
 		}
 	}
@@ -163,6 +207,37 @@ $('.profile-column-l-activity').on('click', '.press-link', function(event){
 	{
 		$('.profile-column-l-activity').css({'display':'none'});
 		$('.profile-column-l-press').css({'display':'block'});
+	}
+
+});
+
+$('.profile-column-l-activity').on('click', '.update-link', function(event){
+	
+	$('.clicked').removeClass('clicked');
+	$('.update').addClass('clicked');
+	if(!$('.update').hasClass('already-loaded'))
+	{
+		$('.profile-column-l-activity').css({'opacity':'0.5'});
+		$.ajax({
+			url: '".Yii::app()->request->baseUrl."/startupupdate/index?startupname=".$model->startupname."&offset=0',
+			type: 'POST',
+			data: {
+				YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
+			dataType: 'json',
+			success: function(data){
+				$('.profile-column-l-activity').css({'display':'none'});
+				$('.profile-column-l-activity').css({'opacity':'1'});
+				$('.content-info-update').html(data.res);
+				$('.profile-column-l-update').css({'display':'block'});
+				$('.update').addClass('already-loaded');
+			}
+		});
+	}
+	else
+	{
+		$('.profile-column-l-activity').css({'display':'none'});
+		$('.profile-column-l-update').css({'display':'block'});
 	}
 
 });
@@ -208,6 +283,29 @@ $('.profile-column-l-press').on('click','.more-press',function(event){
 		error: function(data){
 			elem.remove();
 			$('.content-info-press').append('Error');
+		}
+	});
+
+});
+
+$('.profile-column-l-update').on('click','.more-update',function(event){
+	var elem = $(this);
+	var offset = elem.attr('data-offset');
+	elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+	$.ajax({
+		url: '".Yii::app()->request->baseUrl."/startupupdate/index?startupname=".$model->startupname."&offset='+offset,
+		type: 'POST',
+		data: {
+			YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+		},
+		dataType: 'json',
+		success: function(data){
+			elem.remove();
+			$('.content-info-update').append(data.res);
+		},
+		error: function(data){
+			elem.remove();
+			$('.content-info-update').append('Error');
 		}
 	});
 
@@ -375,11 +473,14 @@ $('.video-images-items').carouFredSel({
 			<li class="chooser info clicked">
 				<a href="javascript:void(0)"><?php echo UserModule::t('Informations');?></a>
 			</li>
-			<li class="chooser activity">
-				<a href="javascript:void(0)"><?php echo UserModule::t('Activities');?></a>
+			<li class="chooser activity" style="width:140px;">
+				<a href="javascript:void(0)"><?php echo UserModule::t('Activities');?><?php if($model->activities): ?><span style="margin-left:10px; padding:2px 4px; border:1px solid #ccc;"><?php echo count($model->activities); endif; ?></a>
 			</li>
 			<li class="chooser press">
-				<a href="javascript:void(0)"><?php echo UserModule::t('Press');?></a>
+				<a href="javascript:void(0)"><?php echo UserModule::t('Press');?><?php if($model->press): ?><span style="margin-left:10px; padding:2px 4px; border:1px solid #ccc;"><?php echo count($model->press); endif; ?></a>
+			</li>
+			<li class="chooser update">
+				<a href="javascript:void(0)">Update<?php if($model->update): ?><span style="margin-left:10px; padding:2px 4px; border:1px solid #ccc;"><?php echo count($model->update);  endif;?></span></a>
 			</li>
 		</ul>
 		
@@ -677,6 +778,23 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			<div class="content-info-press"></div>
+		</div>
+		
+	</div>	
+
+</div>
+
+<div class="profile-column-l-update">
+
+	<div class="content-wrap">
+
+		<div class="content-head" id="update">
+			<span class="txt"><i class="icon-lightbulb profile-icon"></i>Update</span>
+			<span class="tip">Atualizações da empresa</span>
+		</div>
+		
+		<div class="content-info">
+			<div class="content-info-update"></div>
 		</div>
 		
 	</div>	
