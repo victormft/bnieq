@@ -119,7 +119,7 @@ Yii::app()->clientScript->registerScript('loading-img',
 			var reader = new FileReader();
 
 			reader.onload = function (e) {
-				$('#startup-profile-img').find('img').attr('src', e.target.result);
+				$('#startup-profile-img').css({'background-image':'url('+e.target.result +')'});
 			}
 
 			reader.readAsDataURL(input.files[0]);
@@ -339,11 +339,11 @@ Yii::app()->clientScript->registerScript('loading-img',
 	});
 	
 	$('#startup-profile-img').mouseover(function(event) {
-		$(this).find('img').css({'box-shadow': '2px 2px 4px 1px #aaa'});		
+		$(this).css({'box-shadow': '2px 2px 4px 1px #aaa'});		
 	});
 	
 	$('#startup-profile-img').mouseout(function(event) {
-		$(this).find('img').css({'box-shadow': 'none'});
+		$(this).css({'box-shadow': 'inset 0px 0px 4px 1px #ddd'});
 	});
 	
 	$('.arrow-container').mouseover(function(event){
@@ -808,13 +808,13 @@ function navbar_reset_top()
 <div class="profile-header-edit">	
 
 	
-	<form id="formulario-2" method="post" enctype="multipart/form-data" action="<?php echo Yii::app()->request->baseUrl.'/startup/logoUp?name='.$model->startupname; ?>" style="overflow:auto; float:left; width:134px; margin-right:20px; text-align:center;"> 
+	<form id="formulario-2" method="post" enctype="multipart/form-data" action="<?php echo Yii::app()->request->baseUrl.'/startup/logoUp?name='.$model->startupname; ?>" style="overflow:auto; float:left; width:144px; height:230px; margin:0 20px 0 0; text-align:center;"> 
 			
 		<input type="file" id="imagem-2" name="imagem-2" style="display:none;"/>
-		<a href="javascript:void(0);" style="overflow:auto; float:left;">
-			<div id="startup-profile-img" style="margin-right:0;">
-				<img data-toggle='tooltip' data-original-title='Substituir Imagem' src="<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name ?>"/>
-			</div>
+		<a href="javascript:void(0);" style="float:left;">
+	
+		<div id="startup-profile-img" data-toggle='tooltip' data-original-title='Substituir Imagem' style="margin-right:0; background-image:url(<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name; ?>); background-size:cover; background-position: 50% 50%;"></div>
+		
 		</a>
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'label'=>'Confirmar?',

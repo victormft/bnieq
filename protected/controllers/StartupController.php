@@ -391,10 +391,10 @@ class StartupController extends Controller
 				//!!!!!!!!!! finishing the ratio !!!!!!!!!!!!!!
 				if($image->width>=$image->height)
 				{
-					$image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
+					$image->resize(200, 200, ImageExt::WIDTH)->sharpen(25);
 				}
 				else
-					$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
+					$image->resize(200, 200, ImageExt::HEIGHT)->sharpen(25);
 				
 				$image->save(); // or $image->save('images/small.jpg');
 				
@@ -1555,10 +1555,10 @@ class StartupController extends Controller
 				
 				if($image->width>=$image->height)
 				{
-					$image->resize(500, 312, ImageExt::WIDTH)->quality(75)->sharpen(20);
+					$image->resize(200, 200, ImageExt::WIDTH)->quality(75)->sharpen(20);
 				}
 				else
-					$image->resize(500, 312, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+					$image->resize(200, 200, ImageExt::HEIGHT)->quality(75)->sharpen(20);
 					
 				$image->save(); // or $image->save('images/small.jpg');
 				
@@ -1613,10 +1613,10 @@ class StartupController extends Controller
 					
 				if($image->width>=$image->height)
 				{
-					$image->resize(120, 120, ImageExt::WIDTH)->sharpen(25);
+					$image->resize(200, 200, ImageExt::WIDTH)->sharpen(25);
 				}
 				else
-					$image->resize(120, 120, ImageExt::HEIGHT)->sharpen(25);
+					$image->resize(200, 200, ImageExt::HEIGHT)->sharpen(25);
 					
 				$image->save(); // or $image->save('images/small.jpg');
 				
