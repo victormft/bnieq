@@ -3,7 +3,7 @@
 	<div class="top-item">
 		
 		
-		<?php echo CHtml::link('<div class="startup-view-img" style="background-image:url('.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>', array('startup/view', 'name'=>$data->startupname));?>
+		<?php echo CHtml::link('<div class="startup-view-img" style="background-image:url('.Yii::app()->request->baseUrl.'/images/'.$data->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>', array('/'.CHtml::encode($data->startupname)));?>
 		
 		
 		<div class="item-name">

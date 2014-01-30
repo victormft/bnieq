@@ -2171,3 +2171,37 @@ body input[type="file"]{
 { 
 	font-size: 13px;
 }
+
+.about-wrap .menu-right a
+{
+	text-align:center;
+	text-decoration:none;
+	height:40px;
+	border-bottom: 1px solid #ccc;
+	color: #333;
+	display:block;
+	vertical-align:middle;
+	line-height:40px;
+}
+
+.about-wrap .menu-right a:first-child
+{
+	border-radius: 5px 5px 0 0;
+}
+
+.about-wrap .menu-right a:last-child
+{
+	border-bottom: none;
+	border-radius: 0 0 5px 5px;
+}
+
+.about-wrap .menu-right a:hover
+{
+	background-color:#eee;
+}
+
+.about-wrap .menu-right .clicked
+{
+	font-weight:bold;
+	background-color:#eee;
+}
