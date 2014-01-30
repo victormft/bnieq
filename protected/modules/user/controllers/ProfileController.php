@@ -36,7 +36,7 @@ class ProfileController extends Controller
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors', 'updatestartuprelational', 'addstartuprelation', 'toggle', 'report'),
+				'actions'=>array('updateed', 'updatelocation', 'updateroles', 'updateskills', 'updatesectors', 'updatestartuprelational', 'addstartuprelation', 'toggle', 'report', 'sortable'),
                 'verbs'=>array('POST'),
 				'users'=>array('@'),
 			),
@@ -80,6 +80,11 @@ class ProfileController extends Controller
         if(!Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id)))
             throw new CHttpException(403, 'You cannot edit this profile.');	
         $profile = $model->profile;  
+        
+        $stupsForPort=new UserStartup('search');
+        $stupsForPort->unsetAttributes();
+        $stupsForPort->user_id=$model->id;
+        
         
         if(isset($_POST['Profile']['pic']))
 		{			
@@ -185,6 +190,7 @@ class ProfileController extends Controller
 		$this->render('edit',array(
             'model'=>$model,
             'profile'=>$profile,
+            'stupsForPort'=>$stupsForPort,
 		));
 	}
         
@@ -273,9 +279,13 @@ class ProfileController extends Controller
     {
         return array(
             'toggle' => array(
-                'class'=>'bootstrap.actions.TbToggle2Action',
+                'class'     =>'bootstrap.actions.TbToggle2Action',
                 'modelName' => 'UserStartup',
             ),
+            'sortable' => array(
+                'class'     => 'bootstrap.actions.TbSortableAction2',
+                'modelName' => 'UserStartup'
+            )
         );
     }
     

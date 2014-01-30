@@ -368,23 +368,28 @@ $('.arrow-container').mouseover(function(event){
             $criteria->params = array(
                 'userId' => $model->id,
             );        
-            $criteria->select="t.*,(SELECT startup.name FROM startup WHERE t.startup_id=startup.id) AS startup_name";                
+            //$criteria->select="t.*,(SELECT startup.name FROM startup WHERE t.startup_id=startup.id) AS startup_name";                
 
-            $startupProvider = new CActiveDataProvider('UserStartup', array('criteria' => $criteria,'pagination'=>array(
-                        'pageSize'=>50,
-                ),));            
+            $startupProvider = new CActiveDataProvider('UserStartup', 
+                    array('criteria' => $criteria,
+                        'pagination'=>array('pageSize'=>50),
+                        'sort'=>array(
+                            'defaultOrder'=>'order ASC',
+                        ),
+                    ));            
             ?>
             
             <?php $this->widget('bootstrap.widgets.TbExtendedGridView', array(
                 'id'=>'portfolio-grid',
                 'type'=>'striped bordered',
                 'enableSorting' => false,
-                //'sortableRows'=>true,
-                //'sortableAttribute' => 'order',
-                //'sortableAjaxSave' => true,
-                //'sortableAction' => 'user/profile/sortable',
-                //'afterSortableUpdate' => 'js:function(id, position){ console.log("id: "+id+", position:"+position);}',
-                'dataProvider' => $startupProvider,
+                'sortableRows'=>true,
+                'sortableAttribute' => 'sort_order',
+                'sortableAjaxSave' => true,
+                'sortableAction' => 'user/profile/sortable',
+                'afterSortableUpdate' => 'js:function(){}',
+                'responsiveTable'=>true,
+                'dataProvider' => $stupsForPort->search(),
                 'template' => "{items} {pager}",
                 'rowCssClassExpression'=>'$data->startup->published ? $data->approved ? "" : "approved" : "published";',
                 'columns' => array(
