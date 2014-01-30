@@ -37,7 +37,7 @@ class StartupController extends Controller
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'addPress', 'addTraction', 'addPast', 'deleteTeam', 'deletePress', 'deleteTraction', 'deletePast', 'RefreshStartupName', 'delete'),
+				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'addPress', 'addTraction', 'addPast', 'addUpdate', 'deleteTeam', 'deletePress', 'deleteTraction', 'deletePast', 'deleteUpdate', 'RefreshStartupName', 'delete'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
@@ -1163,6 +1163,60 @@ class StartupController extends Controller
 		
 	}
 	
+		public function actionAddUpdate($name)
+	{
+		$model=$this->loadModel($name);
+		
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+		
+		$update = new StartupUpdate;
+		
+		$update->startup_id = $model->id;
+		$update->title = $_POST['title-update'];
+		$update->description = $_POST['description-update'];   
+		
+		if(empty($_POST['title-update']) || empty($_POST['description-update']))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Preencha todos os campos!'
+			));
+			exit;
+		}
+		
+		else
+		{	
+		
+			$update->save();
+			
+			$html='
+		
+			<div class="update-item" style="display:none; opacity:0;">
+				<div class="update-text" style="margin-left:50px; width:80%;">
+					<div class="update-title" style="margin-bottom: 20px; display:inline-block; width:300px;"><span data-id="'. $update->id .'"><b>'. CHtml::encode($update->title) .'</b></span></div>
+					<div class="update-date" style="float:right;">'. date('d/m/y', strtotime(CHtml::encode($update->date))) . '</div>
+					<div class="update-description">'. CHtml::encode($update->description) .'</div></td>
+				</div>
+				<div class="update-delete"><i class="icon-remove-sign"></i></div>
+				<div class="update-error"></div>
+			</div>
+			
+			';
+			
+			$activity = new ActivityStartup;
+            $activity->activity_type = ActivityStartup::ADD_UPDATE;
+            $activity->startup_id = $model->id;
+            $activity->save(); 
+			
+			echo CJSON::encode(array(
+				'res'=>$html,
+			));
+			exit;
+		}
+		
+	}
+	
 	public function actionAddPast($name)
 	{
 		$model=$this->loadModel($name);
@@ -1298,6 +1352,21 @@ class StartupController extends Controller
 		echo CJSON::encode(array(
 				'res'=>'OK',
 				'exist'=>$exist
+			));
+		exit;
+	}
+	
+	public function actionDeleteUpdate($id, $name)
+	{
+		$model=$this->loadModel($name);
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+		
+		$update=StartupUpdate::model()->find('id=:u_id AND startup_id=:s_id', array(':u_id'=>$id, ':s_id'=>$model->id));
+		$update->delete();
+		
+		echo CJSON::encode(array(
+				'res'=>'OK',
 			));
 		exit;
 	}

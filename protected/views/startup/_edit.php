@@ -312,6 +312,14 @@ Yii::app()->clientScript->registerScript('loading-img',
 		$(this).find('.traction-delete').css({'color':'#ccc', 'font-size':'15px'});	
 	});
 	
+	$('.update-ready').on('mouseover','.update-item',function(event){
+		$(this).find('.update-delete').css({'color':'red', 'font-size':'22px'});	
+	});
+	
+	$('.update-ready').on('mouseout','.update-item',function(event){
+		$(this).find('.update-delete').css({'color':'#ccc', 'font-size':'15px'});	
+	});
+	
 	$('.past-ready').on('mouseover','.past-item',function(event){
 		$(this).find('.past-delete').css({'color':'red', 'font-size':'22px'});	
 	});
@@ -460,6 +468,35 @@ Yii::app()->clientScript->registerScript('loading-img',
 		
 	});
 	
+		$('#form-update').submit(function(event) {
+		
+		event.preventDefault(); 
+		$('.update-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+		
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/addUpdate?name=".$model->startupname."',
+				dataType: 'json',
+				type: 'POST',
+				data: $('#form-update').serialize(),
+				success: function(data){
+					if(data.res=='no')
+					{
+						$('#form-traction').find('.update-error').html(data.msg);
+						$('.update-btn').text('Save');
+					}
+					else
+					{
+						$('.update-error').html('');	
+						$('.update-ready').prepend(data.res);
+						$('.update-item').show('slow').animate({opacity: 1}, 250);
+						$('.update-btn').text('Save');
+					}
+				}
+			});
+		
+		
+	});
+	
 	$('#form-past').submit(function(event) {
 		
 		event.preventDefault(); 
@@ -584,6 +621,39 @@ Yii::app()->clientScript->registerScript('loading-img',
 						{
 							$('.deletable').removeClass('deletable');	
 							parent.find('.traction-error').html(data.msg);
+						}					
+						
+					},
+					error: function(){
+						$('.deletable').removeClass('deletable');	
+					}
+				});
+		}
+	
+	});
+	
+	$('.update-ready').on('click','.update-delete',function(event){
+		if(confirm('Are you sure?'))
+		{
+			var parent = $(this).parent();
+			var id = parent.find('span').attr('data-id');
+			parent.addClass('deletable');
+			$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startup/deleteUpdate?id='+id+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					success: function(data){
+						
+						if(data.res=='OK')
+							$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+						
+						else
+						{
+							$('.deletable').removeClass('deletable');	
+							parent.find('.update-error').html(data.msg);
 						}					
 						
 					},
@@ -1562,7 +1632,78 @@ function navbar_reset_top()
 		
 		</div>	
 	
-	</div>	
+	</div>
+	
+	<div class="content-wrap">
+	
+		<div class="content-head" style="border-radius: 5px 5px 0 0;">
+			<i class="icon-book profile-icon"></i> Updates
+			<span class="tip">Atualizações da startup para dar novas informações aos interessados.</span>
+			<div class="arrow-container"><div class="arrow arrow-down"></div></div>
+		</div>
+		
+		<div class="content-info edit" style="border-radius: 0;">
+			
+			<div class="editable-wrap-team">
+		
+				<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'form-update',
+					'action'=>'',
+					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+				)); ?>
+		
+					<?php echo CHtml::label('Title', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php echo CHtml::textField('title-update', '', array('maxlength'=>'200', 'data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-original-title'=>'Título da Atualização. A ideia é ser objetivo ao máximo. Exemplo: "Novo Produto Lançado!". ')); ?>
+					
+					<?php echo CHtml::label('Description', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php echo CHtml::textArea('description-update', '', array('rows'=>'5','maxlength'=>'200', 'data-placement'=>'right', 'data-toggle'=>'tooltip', 'data-html'=>'true', 'data-original-title'=>'Descrição da atualização a ser criada. Explique com detalhes do que se trata a atualização em questão.')); ?>
+							
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Save',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'style'=>'display:block; width:65px;',
+							'class'=>'update-btn btn-primary',
+							),
+						)); 
+					?>
+					<div class="update-error" style="display:inline; margin-left:10px; color:#b94a48;"></div>
+			
+				<?php $this->endWidget(); ?>
+				
+			</div>
+			
+		</div>	
+	
+	<div class="content-info update-ready" id="update-approve">
+		
+		<?php 
+			$qry = new CDbCriteria(array(
+				'condition' => "startup_id=:param",
+				'order' => "date DESC",
+				'params' => array(':param' => $model->id),  
+			));
+
+			$query = StartupUpdate::model()->findAll($qry); 
+				
+			foreach($query as $update):  
+		?>		
+		<div class="update-item">		
+			<div class="update-text" style="margin-left:50px; width:80%;">
+				<div class="update-title" style="margin-bottom: 20px; display:inline-block; width:300px;"><span data-id="<?php echo CHtml::encode($update->id); ?>"><b><?php echo CHtml::encode($update->title); ?></b></span></div>
+				<div class="update-date" style="float:right;"><?php echo date('d/m/y', strtotime(CHtml::encode($update->date))); ?></div>
+				<div class="update-description"><?php echo CHtml::encode($update->description); ?></div>
+			</div>
+			<div class="update-delete"><i class="icon-remove-sign"></i></div>
+			<div class="update-error"></div>
+		</div>
+		<?php endforeach;?>
+		
+		
+		</div>	
+	
+	</div>		
 
 </div>
 
