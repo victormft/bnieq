@@ -13,6 +13,9 @@
  */
 class UserStartup extends CActiveRecord
 {
+    //search no portfolio
+    public $startup_name;
+    
 	/**
 	 * @return string the associated database table name
 	 */
@@ -30,7 +33,7 @@ class UserStartup extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('user_id, startup_id, position', 'required'),
-			array('current_position, profile, approved', 'numerical', 'integerOnly'=>true),
+			array('current_position, profile, approved, sort_order', 'numerical', 'integerOnly'=>true),
 			array('user_id, startup_id', 'length', 'max'=>20),
 			array('position', 'length', 'max'=>45),
 			array('title', 'length', 'max'=>100),
@@ -38,7 +41,7 @@ class UserStartup extends CActiveRecord
 
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('user_id, startup_id, position, title, current_position, profile, order, approved', 'safe', 'on'=>'search'),
+			array('user_id, startup_id, position, title, current_position, profile, sort_order, approved, startup_name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +71,7 @@ class UserStartup extends CActiveRecord
 			'current_position' => 'Current Position',
 			'profile' => 'Profile',
             'approved' => 'Approved',
+            'sort_order' => 'Sort Order',
 		);
 	}
 
@@ -96,9 +100,16 @@ class UserStartup extends CActiveRecord
 		$criteria->compare('current_position',$this->current_position);
 		$criteria->compare('profile',$this->profile);
         $criteria->compare('approved',$this->approved);
-
+        $criteria->compare('sort_order',$this->sort_order);
+        
+        $criteria->select="t.*,(SELECT startup.name FROM startup WHERE t.startup_id=startup.id) AS startup_name";
+        
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+            'pagination'=>array('pageSize'=>50),
+            'sort'=>array(
+                'defaultOrder'=>'sort_order ASC',
+            ),
 		));
 	}
 
