@@ -300,7 +300,7 @@ $('.remove-search').click(function(event){
 		<div class="terms">
 			<a>Terms of Service</a> |
 			<a>License</a> |
-			<a>Contact Us</a>
+			<a href="<?php echo Yii::app()->request->baseUrl?>/site/contact">Contact Us</a>
 			<div>Copyright © 2013 NextBlue</div>
 		</div>
 	</div>
