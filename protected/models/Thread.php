@@ -60,9 +60,11 @@ class Thread extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'user_id' => 'User',
+			'startup_id' => 'Startup',
 			'replies' => 'Replies',
 			'views' => 'Views',
 			'last_post' => 'Last Post',
+			'last_post_user_id' => 'Last Post User Id',
 			'title' => 'Title',
 			'create_time' => 'Create Time',
 		);
@@ -88,9 +90,11 @@ class Thread extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('startup_id',$this->startup_id,true);
 		$criteria->compare('replies',$this->replies,true);
 		$criteria->compare('views',$this->views,true);
 		$criteria->compare('last_post',$this->last_post,true);
+		$criteria->compare('last_post_user_id',$this->last_post_user_id,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('create_time',$this->create_time,true);
 

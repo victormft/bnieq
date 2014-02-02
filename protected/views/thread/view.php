@@ -1,18 +1,17 @@
 
-
+<div id="teste2">
 <?php
    $this->layout='column1';
 /* @var $this ThreadController */
 /* @var $model Thread */
-/*
+/**/
 $this->breadcrumbs=array(
 	'Threads'=>array('index'),
 	$model->title,
 );
 
 
-
-$this->menu=array(
+/*$this->menu=array(
 	array('label'=>'List Thread', 'url'=>array('index')),
 	array('label'=>'Create Thread', 'url'=>array('create')),
 	array('label'=>'Update Thread', 'url'=>array('update', 'id'=>$model->id)),
@@ -21,7 +20,11 @@ $this->menu=array(
 );*/
 ?>
 
-
+<?php /*$this->widget('zii.widgets.CBreadcrumbs', array(
+	'links'=>$this->breadcrumbs,
+	));*/?>
+	
+	
 <h1>Q&A</h1>
 <span style="margin: 150px;">
 <?php 
@@ -32,6 +35,7 @@ $dataProvider=new CActiveDataProvider('Post', array(
         'condition'=>'thread_id='.$model->id,
         'order'=>'create_time ASC',
     ),));
+	
 $postData = $dataProvider->getData();
 foreach($postData as $i => $item)
 		Yii::app()->controller->renderPartial('_thread',
@@ -42,17 +46,21 @@ foreach($postData as $i => $item)
 	)); */
 ?>
 
-<?php echo CHtml::button('Responder', array('class'=>'thread-reply-button', 
+<?php /*echo CHtml::button('Responder', array('class'=>'thread-reply-button', 
 						'submit' => $this->createUrl('post/create',array('threadId'=>$model->id)),
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken)
-						)); ?>
+						));*/ ?>
 						
 
+						
+<?php echo CHtml::link('Responder',array('post/create', 'threadId' => 1), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-post-create'));?>  
+  <?php echo CHtml::link('Voltar',array('thread/index'), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-back-index'));?>
 
-<?php echo CHtml::button('Voltar', array('class'=>'thread-reply-button', 
+
+<?php /*echo CHtml::button('Voltar', array('class'=>'thread-reply-button', 
 						'submit' => $this->createUrl('index'),
 						'params'=> array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken)
-						)); ?>
+						));*/ ?>
 <?php /*$this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
@@ -66,4 +74,5 @@ foreach($postData as $i => $item)
 	),
 ));*/ ?>
 
+</div>
 
