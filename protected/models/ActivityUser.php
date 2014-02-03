@@ -5,6 +5,8 @@ class ActivityUser extends CActiveRecord
 {
 	const FOLLOW_USER=1;
 	const FOLLOW_STARTUP=2;
+    //founded startup
+    //is (role) in startup
     
 	/**
 	 * @return string the associated database table name
