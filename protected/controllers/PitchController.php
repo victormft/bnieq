@@ -33,7 +33,7 @@ class PitchController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view',  'detail'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -189,6 +189,16 @@ class PitchController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+	}
+	
+	public function actionDetail($id) {
+	
+	$model = $this->loadModel($id);
+	
+		$this->renderPartial('_detail',array(
+		'model'=>$model,
+	));
+	
 	}
 
 	/**

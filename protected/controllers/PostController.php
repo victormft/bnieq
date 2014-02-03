@@ -87,7 +87,7 @@ class PostController extends Controller
 				}
 		}
 
-		$this->render('create',array(
+		$this->renderPartial('create',array(
 			'model'=>$model,
 		));
 	}
@@ -139,6 +139,8 @@ class PostController extends Controller
 	 */
 	public function actionIndex()
 	{
+	
+		
 		$dataProvider=new CActiveDataProvider('Post');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,

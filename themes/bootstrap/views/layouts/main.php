@@ -100,7 +100,9 @@ $('.remove-search').click(function(event){
                         <li class="name-hover">
                             <a href="#"><i class="icon-arrow-left" style="margin:0 7px 0 1px; line-height:17px;"></i>Startups</a>
                             <ul class="dropdown-menu hov sub-menu">
-                                <?php $stups=$user->getStartupsByRole("Founder"); if($stups): ?>
+                                <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/startup/create' ?>><i class="icon-plus" style="margin:0 7px 0 1px; line-height:17px;"></i>Criar Startup</a></li>
+								<li class="divider"></li>
+								<?php $stups=$user->getStartupsByRole("Founder"); if($stups): ?>
                                 <li class="dropdown-header">Startups fundadas</li>
                                 <?php endif; ?>
                                 

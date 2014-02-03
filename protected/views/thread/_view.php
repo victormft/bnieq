@@ -6,8 +6,11 @@
 
 <div class="thread-row">
         <div class="thread-cell">
-            <p><?php echo CHtml::link(CHtml::encode($data->title),array('thread/view','id'=>$data->id) );?></p>
-        </div>
+            <p><?php echo CHtml::link(CHtml::encode($data->title),array('thread/view','id'=>$data->id), array('id' => 'thread-ajax-view'));?></p>
+			
+        
+		
+		</div>
         <div class="thread-cell">
             <p><?php $user_model =User::model()->findByPk($data->user_id);
 				echo $user_model->username;

@@ -6,7 +6,7 @@ class ThreadController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout='';
 
 	/**
 	 * @return array action filters
@@ -16,6 +16,7 @@ class ThreadController extends Controller
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
+			'ajaxOnly + index'
 		);
 	}
 
@@ -56,7 +57,7 @@ class ThreadController extends Controller
 		$model->views++;
 		$model->save();
 	
-		$this->render('view',array(
+		$this->renderPartial('view',array(
 			'model'=>$model ,
 		));
 	}
@@ -106,7 +107,7 @@ class ThreadController extends Controller
 			}
 		}
 
-		$this->render('create',array(
+		$this->renderPartial('create',array(
 			'model'=>$model, 'model_post'=>$model_post
 		));
 	}
@@ -154,14 +155,18 @@ class ThreadController extends Controller
 	 */
 	public function actionIndex()
 	{
+	
+	
 		$dataProvider=new CActiveDataProvider('Thread', array(
 			'criteria'=>array(
 			'order'=>'last_post DESC',
     ),));
-		$this->render('index',array(
+	
+		$this->renderPartial('index',array(
 			'dataProvider'=>$dataProvider,
 		));
 	}
+	
 
 	/**
 	 * Manages all models.
@@ -177,6 +182,8 @@ class ThreadController extends Controller
 			'model'=>$model,
 		));
 	}
+	
+	
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
