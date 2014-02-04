@@ -425,7 +425,7 @@ class StartupController extends Controller
                 $user_startup->position = "Founder";
                 $user_startup->approved = 1;
                 
-                if($user_startup->save())
+                if($user_startup->saveSort())
                 {		
                     $auth = Yii::app()->authManager;
                     $auth->assign("StartupOwner",Yii::app()->user->id);
