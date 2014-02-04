@@ -70,6 +70,7 @@ $('#follow').click(function(event) {
 			
 });
 
+/*
 $('.chooser').click(function(event){
 	var elem = $(this);
 	
@@ -88,7 +89,7 @@ $('.chooser').click(function(event){
 				jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/thread/index','cache':false,
 					'success':function(html){
 						jQuery('#pitch-ajax-container').html(html)
-						elem.addClass('already-loaded');
+						//elem.addClass('already-loaded');
 					
 					}
 					});
@@ -123,7 +124,7 @@ $('.chooser').click(function(event){
 						$('.profile-column-l-activity').css({'opacity':'1'});
 						$('.pitch-option-container').html(data.res);
 						$('.profile-column-l-press').css({'display':'block'});
-						elem.addClass('already-loaded');
+						//elem.addClass('already-loaded');
 					}
 				});
 			}
@@ -188,7 +189,7 @@ $('.profile-column-l-press').on('click','.more-press',function(event){
 		}
 	});
 
-});
+}); */
 
 
 function getUrlVars()
@@ -216,6 +217,44 @@ $('.video-images-items').carouFredSel({
 	
 	/*******Metodos para chamadas dinamicas dentro da view do pitch **********/
 	
+		/*metodo para exibir as opções selecionadas*/
+	jQuery('body').on('click','#pitch-ajax-detail',function(){
+	
+	
+		jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/pitch/detail/".$model->id."','cache':false,
+			'success':function(html){
+				var elem = $(this);
+				jQuery('#pitch-ajax-container').html(html)
+			},
+			'error': function(html){
+				$('.#pitch-ajax-container').append('asdsdsd');
+			}
+				
+		});
+		return false;
+		}
+	);
+	
+	
+	jQuery('body').on('click','#thread-ajax-index',function(){
+	
+	
+		jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/thread/index','cache':false,
+			'success':function(html){
+				var elem = $(this);
+				jQuery('#pitch-ajax-container').html(html)
+			},
+			'error': function(html){
+				$('.#pitch-ajax-container').append('asdsdsd');
+			}
+				
+		});
+		return false;
+		}
+	);
+	
+	
+	
 		/*******Metodo que chama a listagem de posts da thread **********/
 		
 	jQuery('body').on('click','#thread-ajax-view',function(){
@@ -230,6 +269,7 @@ $('.video-images-items').carouFredSel({
 	jQuery('body').on('click','#thread-ajax-create',function(){
 	
 	var elem = $(this);
+	elem.addClass('clicked');
 	var url_value = elem.attr('href');
 	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
 	);
@@ -237,6 +277,7 @@ $('.video-images-items').carouFredSel({
 	jQuery('body').on('click','#thread-ajax-post-create',function(){
 	
 	var elem = $(this);
+	elem.addClass('clicked');
 	var url_value = elem.attr('href');
 	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
 	);
@@ -380,10 +421,10 @@ $('.video-images-items').carouFredSel({
 
 	<div class="profile-column-l-chooser">
 		<ul>
-			<li class="chooser info clicked">
+			<li class="chooser info clicked" id="pitch-ajax-detail">
 				<a href="javascript:void(0)"><?php echo /*UserModule::t('Informations')*/'Detalhes';?></a>
 			</li>
-			<li class="chooser activity">
+			<li class="chooser activity" id="thread-ajax-index">
 				<a href="javascript:void(0)"><?php echo /*UserModule::t('Activities')*/'Q&A';?></a>
 			</li>
 			<li class="chooser press">
@@ -394,14 +435,23 @@ $('.video-images-items').carouFredSel({
 
 
 
-<div class="profile-column-l-activity">
+<div id = "pitch-ajax-container">
+
+<?php 
+	$this->renderPartial('_detail',array(
+	'model'=>$model,
+	)); 
+?>
+
+
 
 
 </div>
 
+
 <div class="profile-column-l-press">
 
-	<div class="content-wrap">
+	<!--<div class="content-wrap">
 
 		<div class="content-head">
 			<span class="txt"><i class="icon-lightbulb profile-icon"></i>Press</span>
@@ -412,33 +462,10 @@ $('.video-images-items').carouFredSel({
 			<div class="content-info-press"></div>
 		</div>
 		
-	</div>	
-
-</div>
-
-
-
-<div id = "pitch-ajax-container">
-<?php 
-
-	/*echo CHtml::ajaxLink('Oi', 
-										array('thread/index'), 
-										array('update' => '#pitch-ajax-container'),
-										array('id' => 'ajax-link-'.uniqid()) );
-	echo CHtml::ajaxLink('Alf', 
-										array('post/index'), 
-										array('update' => '#pitch-ajax-container'),
-										array('id' => 'ajax-link-'.uniqid()));*/
-										
-
+	</div>	-->
 	
-$this->renderPartial('_detail',array(
-	'model'=>$model,
-	)); 
+	
 
-
-
-?>
 </div>
 <!--<h1>View Pitch #<?php //echo $model->id; ?></h1>-->
 
