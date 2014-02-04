@@ -40,7 +40,7 @@ class NotificationsController extends Controller
                     $html .= '		
                     <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                         <div class="team-item">
-                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. CHtml::link($source->getFullName(), array('/'.$source->username)) . '</b> '. UserModule::t('followed you.') . '</div>
                             </div>
@@ -54,7 +54,7 @@ class NotificationsController extends Controller
                     $html .= '		
                     <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                         <div class="team-item">
-                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. CHtml::link($source->getFullName(), array('/'.$source->username)) . '</b> '. UserModule::t('asked for membership in') . ' <b>' . CHtml::link($startup->name, array('/'.$startup->startupname)) . '</b>.</div>
                             </div>
@@ -69,7 +69,7 @@ class NotificationsController extends Controller
                     $html .= '		
                     <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                         <div class="team-item">
-                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. CHtml::link($source->getFullName(), array('/'.$source->username)) . '</b> '. UserModule::t('added you to') . ' <b>' . CHtml::link($startup->name, array('/'.$startup->startupname)) . '</b>.</div>
                             </div>

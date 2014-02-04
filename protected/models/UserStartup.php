@@ -93,7 +93,7 @@ class UserStartup extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('user_id',$this->user_id,true);
+		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('startup_id',$this->startup_id,true);
 		$criteria->compare('position',$this->position,true);
 		$criteria->compare('title',$this->title,true);
@@ -112,8 +112,17 @@ class UserStartup extends CActiveRecord
             ),
 		));
 	}
+    
+    public function saveSort()
+    {
+        $user = User::model()->findbyPk($this->user_id);
+        $count = count(array_merge($user->startups, $user->startupsNonPub));
+        $this->sort_order = $count+1;
+        $this->save();
+        return true;
+    }
 
-	/**
+    /**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.

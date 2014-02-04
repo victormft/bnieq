@@ -223,7 +223,7 @@ class SiteController extends Controller
                     <a href="'. Yii::app()->request->baseUrl .'/' . $source->username . '"> 
                     <div style="overflow: auto; padding:0 10px 0 10px">
                         <div class="team-item">
-                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('followed you.') . '</div>
                             </div>
@@ -239,7 +239,7 @@ class SiteController extends Controller
                     <a href="'. Yii::app()->request->baseUrl .'/' . $startup->startupname . '"> 
                     <div style="overflow: auto; padding:0 10px 0 10px">
                         <div class="team-item">
-                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('asked for membership in') . ' <b>' . $startup->name . '</b>.</div>
                             </div>
@@ -256,7 +256,7 @@ class SiteController extends Controller
                     <a href="'. Yii::app()->request->baseUrl .'/' . $startup->startupname . '"> 
                     <div style="overflow: auto; padding:0 10px 0 10px">
                         <div class="team-item">
-                            <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $source->profile->logo->name .'" /></div>
+                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. $source->getFullName() . '</b> '. UserModule::t('added you to') . ' <b>' . $startup->name . '</b>.</div>
                             </div>

@@ -546,17 +546,24 @@ class HOAuthAction extends CAction
             break;
         }
 
-        if(!$profile->profile_picture || $profile->profile_picture==1)
+        if(!$profile->profile_picture || $profile->profile_picture==2)
         {
-            $content = $this->getSslPage($userProfile->photoURL);
+            $content = $this->getSslPage($userProfile->photoURL); //function below
             
             $rnd = rand(0,99999999);  // generate random number between 0-99999999
 
             $newFileName = md5("{$rnd}-{$userProfile->photoURL}").'.jpg';  // random number + file name
             
-            $filename = Yii::getPathOfAlias('webroot').'/images/'.$newFileName;        
+            $filename = Yii::getPathOfAlias('webroot').'/images/'.$newFileName;   
+            
             file_put_contents($filename, $content);
-
+            
+            //saves in aws
+            include('s3_config.php');
+            $s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$newFileName, S3::BUCKET_NB , $newFileName, S3::ACL_PUBLIC_READ);           
+            
+            unlink(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+            
             $model_img=new Image;
             $model_img->name=$newFileName;
             $model_img->extension='image/jpeg';

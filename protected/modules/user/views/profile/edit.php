@@ -362,22 +362,7 @@ $('.arrow-container').mouseover(function(event){
             });
 			</script>
             
-            <?php 
-            $criteria=new CDbCriteria;
-            $criteria->addCondition('t.user_id = :userId');
-            $criteria->params = array(
-                'userId' => $model->id,
-            );        
-            //$criteria->select="t.*,(SELECT startup.name FROM startup WHERE t.startup_id=startup.id) AS startup_name";                
-
-            $startupProvider = new CActiveDataProvider('UserStartup', 
-                    array('criteria' => $criteria,
-                        'pagination'=>array('pageSize'=>50),
-                        'sort'=>array(
-                            'defaultOrder'=>'order ASC',
-                        ),
-                    ));            
-            ?>
+           
             
             <?php $this->widget('bootstrap.widgets.TbExtendedGridView', array(
                 'id'=>'portfolio-grid',
