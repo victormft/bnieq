@@ -1,19 +1,25 @@
 <?php
 
-
-class ActivityUser extends CActiveRecord
+/**
+ * This is the model class for table "startup_comment".
+ *
+ * The followings are the available columns in table 'startup_comment':
+ * @property string $id
+ * @property string $startup_id
+ * @property string $user_id
+ * @property string $text
+ *
+ * The followings are the available model relations:
+ * @property Startup $startup
+ */
+class StartupComment extends CActiveRecord
 {
-	const FOLLOW_USER=1;
-	const FOLLOW_STARTUP=2;
-    //founded startup
-    //is (role) in startup
-    
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'activity_user';
+		return 'startup_comment';
 	}
 
 	/**
@@ -24,14 +30,13 @@ class ActivityUser extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, type, target_id', 'required'),
-			array('user_id, type, target_id', 'numerical', 'integerOnly'=>true),
-			array('user_id, target_id', 'length', 'max'=>20),
-			array('time', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
-			
+			array('startup_id, user_id, text', 'required'),
+			array('startup_id, user_id', 'length', 'max'=>20),
+			array('text', 'length', 'max'=>500),
+			array('date', 'default', 'value' => date('Y-m-d'), 'setOnEmpty' => true, 'on' => 'insert'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, type, target_id, time', 'safe', 'on'=>'search'),
+			array('id, startup_id, user_id, text', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -43,7 +48,7 @@ class ActivityUser extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+			'startup' => array(self::BELONGS_TO, 'Startup', 'startup_id'),
 		);
 	}
 
@@ -54,9 +59,9 @@ class ActivityUser extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'startup_id' => 'Startup',
 			'user_id' => 'User',
-			'type' => 'Activity Type',
-			'time' => 'Time',
+			'text' => 'Text',
 		);
 	}
 
@@ -79,10 +84,9 @@ class ActivityUser extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
+		$criteria->compare('startup_id',$this->startup_id,true);
 		$criteria->compare('user_id',$this->user_id,true);
-		$criteria->compare('type',$this->type);
-        $criteria->compare('target_id',$this->target_id,true);
-		$criteria->compare('time',$this->time,true);
+		$criteria->compare('text',$this->text,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -93,19 +97,10 @@ class ActivityUser extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return ActivityStartup the static model class
+	 * @return StartupComment the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-    
-    public function saveFollow()
-    {
-        $sql = "SELECT id FROM activity_user WHERE user_id=:uId AND target_id=:tId";
-        $command = Yii::app()->db->createCommand($sql);
-        $command->bindValue(":uId", $this->user_id, PDO::PARAM_INT);
-        $command->bindValue(":tId", $this->target_id, PDO::PARAM_INT);
-        if($command->execute()!==1) $this->save(); 
-    }
 }

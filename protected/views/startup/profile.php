@@ -169,6 +169,16 @@ $('.chooser').click(function(event){
 				$('.profile-column-l-update').css({'display':'block'});
 			}
 		}
+		else if(elem.hasClass('comment'))
+		{
+			
+				$('.profile-column-l').css({'display':'none'});
+				$('.profile-column-l-activity').css({'display':'none'});
+				$('.profile-column-l-press').css({'display':'none'});
+				$('.profile-column-l-update').css({'display':'none'});
+				$('.profile-column-l-comment').css({'display':'block'});
+			
+		}
 		else if(elem.hasClass('info'))
 		{
 			$('.profile-column-l-activity').css({'display':'none'});
@@ -309,6 +319,34 @@ $('.profile-column-l-update').on('click','.more-update',function(event){
 		}
 	});
 
+});
+
+$('#form-comment').submit(function(event) {
+		
+		event.preventDefault(); 
+		$('.comment-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+		
+		$.ajax({
+				url: '".Yii::app()->request->baseUrl."/startup/addComment?name=".$model->startupname."',
+				dataType: 'json',
+				type: 'POST',
+				data: $('#form-comment').serialize(),
+				success: function(data){
+					if(data.res=='no')
+					{
+						$('#form-comment').find('.comment-error').html(data.msg);
+						$('.comment-btn').text('Post');
+					}
+					else
+					{
+						$('.comment-error').html('');	
+						
+						$('.comment-btn').text('Post');
+					}
+				}
+			});
+		
+		
 });
 
 
@@ -480,6 +518,9 @@ $('.video-images-items').carouFredSel({
 			</li>
 			<li class="chooser update">
 				<a href="javascript:void(0)">Update<?php if($model->update): ?><span style="margin-left:10px; padding:2px 4px; border:1px solid #ccc;"><?php echo count($model->update);  endif;?></span></a>
+			</li>
+			<li class="chooser comment">
+				<a href="javascript:void(0)">Comments</a>
 			</li>
 		</ul>
 		
@@ -794,6 +835,48 @@ $('.video-images-items').carouFredSel({
 		
 		<div class="content-info">
 			<div class="content-info-update"></div>
+		</div>
+		
+	</div>	
+
+</div>
+
+<div class="profile-column-l-comment">
+
+	<div class="content-wrap">
+
+		<div class="content-head" id="comment">
+			<span class="txt"><i class="icon-lightbulb profile-icon"></i>Comment</span>
+			<span class="tip">Comentários sobre a empresa</span>
+		</div>
+		
+		<div class="content-info">
+			
+			<?php $form=$this->beginWidget('CActiveForm', array(
+					'id'=>'form-comment',
+					'action'=>'',
+					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
+				)); ?>
+		
+					<?php echo CHtml::label('Text', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php echo CHtml::textField('text'); ?>
+					
+			
+					<?php $this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'label'=>'Post',
+						'size'=>'normal',
+						'htmlOptions'=>array(
+							'style'=>'display:block; width:65px;',
+							'class'=>'comment-btn btn-primary',
+							),
+						)); 
+					?>
+					<div class="comment-error" style="display:inline; margin-left:10px; color:#b94a48;"></div>
+			
+				<?php $this->endWidget(); ?>
+			
+			<div class="content-info-comment"></div>
 		</div>
 		
 	</div>	

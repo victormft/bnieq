@@ -20,6 +20,7 @@ class Notification extends CActiveRecord
 	const ASK_MEMBERSHIP_STARTUP=2;
 	const ADDED_TO_STARTUP=3;
     
+    
     public $unseenNotificationsCount;
     
     
