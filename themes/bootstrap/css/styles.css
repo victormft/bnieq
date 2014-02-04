@@ -250,6 +250,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	display:none;
 }
 
+.profile-column-l-comment
+{
+	float:left;
+	height:auto;
+	width: 600px;
+	display:none;
+}
+
 .profile-column-r
 {
 	float:right;

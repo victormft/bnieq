@@ -37,7 +37,7 @@ class StartupController extends Controller
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'addPress', 'addTraction', 'addPast', 'addUpdate', 'deleteTeam', 'deletePress', 'deleteTraction', 'deletePast', 'deleteUpdate', 'RefreshStartupName', 'delete'),
+				'actions'=>array('update', 'updateName', 'updateLocation', 'updateSectors', 'follow', 'unfollow', 'approve', 'addTeam', 'addPress', 'addTraction', 'addPast', 'addUpdate', 'addComment', 'deleteTeam', 'deletePress', 'deleteTraction', 'deletePast', 'deleteUpdate', 'deleteComment', 'RefreshStartupName', 'delete'),
 				'users'=>array('@'),
                 'verbs'=>array('POST'),
 			),
@@ -1163,7 +1163,7 @@ class StartupController extends Controller
 		
 	}
 	
-		public function actionAddUpdate($name)
+	public function actionAddUpdate($name)
 	{
 		$model=$this->loadModel($name);
 		
@@ -1285,6 +1285,60 @@ class StartupController extends Controller
 			
 			echo CJSON::encode(array(
 				'res'=>$html
+			));
+			exit;
+		}
+		
+	}
+	
+	
+	public function actionAddComment($name)
+	{
+		if(Yii::app()->user->isGuest)
+		{
+			throw new CHttpException(403,'Ação inválida!');
+		}
+		
+		$model=$this->loadModel($name);
+		
+		$comment = new StartupComment;
+		
+		$comment->startup_id = $model->id;
+		$comment->user_id = Yii::app()->user->id;
+		$comment->text = $_POST['text'];   
+		
+		if(empty($_POST['text']))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Preencha o campo corretamente'
+			));
+			exit;
+		}
+		
+		else
+		{	
+		
+			$comment->save();
+			$user=User::model()->findbyPk($comment->user_id);
+			
+			$html='
+		
+			<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($comment->date))).'</div>
+				<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+					<div class="team-item">
+						<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+						<div class="team-text" style="float:left;>
+							<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) .'</b> comentou em '. CHtml::link($model->name, array('/'.$model->startupname)) .'</div>
+						</div>
+					</div>
+				</div>
+			<div class="spacing-1"></div>
+			
+			';
+			
+			echo CJSON::encode(array(
+				'res'=>$html,
 			));
 			exit;
 		}
