@@ -193,11 +193,9 @@ class PitchController extends Controller
 	
 	public function actionDetail($id) {
 	
-	$model = $this->loadModel($id);
-	
-		$this->renderPartial('_detail',array(
-		'model'=>$model,
-	));
+	$this->renderPartial('_detail',array(
+			'model'=>$this->loadModel(1),
+		));
 	
 	}
 

@@ -36,6 +36,34 @@ class SettingsController extends Controller
                     $model->newsletter=$_POST['User']['newsletter'];
                     if($model->validate()) {
                         $model->save();
+                        
+                        //(un)subscribe from MailChimp
+                        switch ($model->newsletter)
+                        {
+                            case 1:
+                                $MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
+                                $MailChimp->call('lists/subscribe', array(
+                                    'id'                => 'b6e780f08c',
+                                    'email'             => array('email'=>$model->email),
+                                    'merge_vars'        => array('NAME'=>$model->getFullName()),
+                                    'double_optin'      => false,
+                                    'update_existing'   => true,
+                                    'replace_interests' => false,
+                                    'send_welcome'      => false,
+                                ));                                
+                                break;
+                            case 0:
+                                $MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
+                                $MailChimp->call('lists/unsubscribe', array(
+                                    'id'                => 'b6e780f08c',
+                                    'email'             => array('email'=>$model->email),
+                                    'delete_member'     => false,
+                                    'send_goodbye   '   => true,
+                                    'send_notify'       => true,
+                                ));
+                                break;
+                        }
+                        
                         Yii::app()->user->setFlash('success',UserModule::t("Thanks!"));
                         $this->redirect(array("general"));
                     }

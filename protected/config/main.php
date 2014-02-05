@@ -49,7 +49,8 @@ return array(
         'application.modules.rights.*', 
         'application.modules.rights.components.*',       
         
-        'application.extensions.awss3.*', 
+        'application.extensions.awss3.*',
+        'application.extensions.mailchimp.*',
 	),
 
 	'modules'=>array(
