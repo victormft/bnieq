@@ -296,7 +296,7 @@ class ProfileController extends Controller
 		$user_startup->user_id = Yii::app()->user->id;
 		$user_startup->startup_id = $_POST['startup'];
 		$user_startup->position = $_POST['position'];    
-        if($user_startup->save())
+        if($user_startup->saveSort())
         {
             $founders = Startup::model()->findbypk($_POST['startup'])->getUsersByRole("Founder");
             foreach ($founders as $founder)

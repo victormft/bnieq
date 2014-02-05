@@ -123,8 +123,17 @@ class StartupController extends Controller
 			$model->published=1;
 			
 			if($model->save())
+            {
+                //salvar activity do cara no BD
+                $act = new ActivityUser;
+                $act->user_id = Yii::app()->user->id;
+                $act->type = ActivityUser::FOUNDED_STARTUP;
+                $act->target_id = $model->id;
+                $act->saveFollow(); 
+                
 				$this->redirect(array('/'.$model->startupname));
-			
+            }
+            
 			else
 			{
 				$user = Yii::app()->getComponent('user');
@@ -423,8 +432,8 @@ class StartupController extends Controller
                 $user_startup->user_id = Yii::app()->user->id;
                 $user_startup->startup_id = $model->id;
                 $user_startup->position = "Founder";
-                $user_startup->approved = 1;
-                
+                $user_startup->approved = 1;                
+                               
                 if($user_startup->saveSort())
                 {		
                     $auth = Yii::app()->authManager;
@@ -967,7 +976,7 @@ class StartupController extends Controller
 			exit;
 		}
 		
-        if($user_startup->save() && ($user_startup->position!=='Advisor' && $user_startup->position!=='Investor'))
+        if($user_startup->saveSort() && ($user_startup->position!=='Advisor' && $user_startup->position!=='Investor'))
         {		
             $auth = Yii::app()->authManager;
             $auth->assign("StartupMember",$user_startup->user_id);
@@ -1022,6 +1031,13 @@ class StartupController extends Controller
         $activity->startup_id = $model->id;
 		$activity->user_id = $usr->id;
         $activity->save(); 
+        
+        //salvar activity do cara no BD
+        $act = new ActivityUser;
+        $act->user_id = $usr->id;
+        $act->type = ActivityUser::IS_IN_STARTUP;
+        $act->target_id = $model->id;
+        $act->saveFollow(); 
 		
 		echo CJSON::encode(array(
 				'res'=>$html
@@ -1493,6 +1509,13 @@ class StartupController extends Controller
             </div>
 
             ';
+            
+            //salvar activity do cara no BD
+            $act = new ActivityUser;
+            $act->user_id = $user_startup->user_id;
+            $act->type = ActivityUser::IS_IN_STARTUP;
+            $act->target_id = $user_startup->startup_id;
+            $act->saveFollow();
 
             echo CJSON::encode(array(
                     'res'=>$html

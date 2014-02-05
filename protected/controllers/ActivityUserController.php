@@ -44,7 +44,7 @@ class ActivityUserController extends Controller
                                     <div class="team-item">
                                         <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name .'" /></div>
                                         <div class="team-text">
-                                                <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed') . ' ' . CHtml::link($target->getFullName(), array('/'.$target->username)) . '</div>
+                                            <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed') . ' ' . CHtml::link($target->getFullName(), array('/'.$target->username)) . '</div>
                                         </div>
                                     </div>
                                 </div>
@@ -53,19 +53,49 @@ class ActivityUserController extends Controller
                                 break;
                             
                             case ActivityUser::FOLLOW_STARTUP :
+                                $startup = Startup::model()->findbypk($q->target_id);
                                 $html .= '		
                                 <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                                     <div class="team-item">
                                         <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name .'" /></div>
                                         <div class="team-text">
-                                                <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
+                                            <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> seguiu a startup '. CHtml::link($startup->name, array('/'.$startup->startupname)) .'</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="spacing-1"></div>
                                 ';
                                 break;
-
+                            
+                            case ActivityUser::FOUNDED_STARTUP :
+                                $startup = Startup::model()->findbypk($q->target_id);
+                                $html .= '		
+                                <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+                                    <div class="team-item">
+                                        <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name .'" /></div>
+                                        <div class="team-text">
+                                            <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> publicou a startup '. CHtml::link($startup->name, array('/'.$startup->startupname)) . '</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="spacing-1"></div>
+                                ';
+                                break;
+                            
+                            case ActivityUser::IS_IN_STARTUP :
+                                $startup = Startup::model()->findbypk($q->target_id);
+                                $html .= '		
+                                <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+                                    <div class="team-item">
+                                        <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name .'" /></div>
+                                        <div class="team-text">
+                                            <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> entrou para a startup '. CHtml::link($startup->name, array('/'.$startup->startupname)) . '</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="spacing-1"></div>
+                                ';
+                                break;
                         }
                     }
 		}
