@@ -42,7 +42,8 @@ class LoginController extends Controller
                         $model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
                         $model->setCreateTime(time());                       
 
-                        if ($model->save()) {
+                        if ($model->save()) {         
+                            
                             $profile->user_id=$model->id;
 
                             //profile pic
@@ -72,6 +73,22 @@ class LoginController extends Controller
                             }
 
                             $profile->save();
+                            
+                            //subscribe to MailChimp
+                            if($model->newsletter == true)
+                            {
+                                $MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
+                                $MailChimp->call('lists/subscribe', array(
+                                    'id'                => 'b6e780f08c',
+                                    'email'             => array('email'=>$model->email),
+                                    'merge_vars'        => array('NAME'=>$model->getFullName()),
+                                    'double_optin'      => false,
+                                    'update_existing'   => true,
+                                    'replace_interests' => false,
+                                    'send_welcome'      => false,
+                                ));
+                            }
+                            
                             if (Yii::app()->controller->module->sendActivationMail) {
                                 $activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
                                 UserModule::sendMail($model->email,UserModule::t("You registered from {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("Please activate you account go to {activation_url}",array('{activation_url}'=>$activation_url)));
