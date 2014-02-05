@@ -140,16 +140,19 @@ function getUrlVars()
     'alerts' => array( // configurations per alert type
         // success, info, warning, error or danger
         'success' => array('block' => false, 'closeText' => '&times;'),
+        'news' => array('block' => false, 'closeText' => '&times;'),
         'error' => array('block' => false, 'closeText' => '&times;')
     ),
 ));?>
 
-<?php if(Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id)) && User::model()->findByPk(Yii::app()->user->id)->lastvisit_at == 0): ?>
+<!--
+<?php //if(Yii::app()->user->checkAccess('updateSelf', array('userid'=>$model->id)) && User::model()->findByPk(Yii::app()->user->id)->lastvisit_at == 0 && $model->newsletter == 0): ?>
 <div class="alert alert-warning alert-dismissable">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
   Quer ficar por dentro das oportunidades de investimento da NextBlue? Edite suas <a href="/bnieq/user/settings" class="alert-link">configurações</a>.
 </div>
-<?php endif; ?>
+<?php //endif; ?>
+-->
     
 
 <div class="profile-header-wrap">

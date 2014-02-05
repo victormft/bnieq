@@ -98,6 +98,7 @@ class LoginController extends Controller
                                    $identity=new UserIdentity($model->username,$soucePassword);
                                    $identity->authenticate();
                                    Yii::app()->user->login($identity,0);
+                                   Yii::app()->user->setFlash('news','Quer ficar por dentro das oportunidades de investimento da NextBlue? Edite suas <a href="/bnieq/user/settings" class="alert-link">configurações</a>');
                                    $this->redirect(Yii::app()->controller->module->returnUrl);
                             } else {
                                 if (!Yii::app()->controller->module->activeAfterRegister&&!Yii::app()->controller->module->sendActivationMail) {

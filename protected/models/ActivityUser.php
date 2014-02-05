@@ -3,10 +3,10 @@
 
 class ActivityUser extends CActiveRecord
 {
-	const FOLLOW_USER=1;
-	const FOLLOW_STARTUP=2;
-    //founded startup
-    //is (role) in startup
+	const FOLLOW_USER = 1;
+	const FOLLOW_STARTUP = 2;
+    const FOUNDED_STARTUP = 3;
+    const IS_IN_STARTUP = 4;
     
 	/**
 	 * @return string the associated database table name

@@ -16,9 +16,9 @@
  */
 class Notification extends CActiveRecord
 {
-    const FOLLOW_USER=1;
-	const ASK_MEMBERSHIP_STARTUP=2;
-	const ADDED_TO_STARTUP=3;
+    const FOLLOW_USER = 1;
+	const ASK_MEMBERSHIP_STARTUP = 2;
+	const ADDED_TO_STARTUP = 3;
     
     
     public $unseenNotificationsCount;
