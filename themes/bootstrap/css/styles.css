@@ -1048,6 +1048,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	color: #ccc;
 }
 
+.comment-delete
+{
+	position: absolute;
+	top:0;
+	right:0;
+	color: #ccc;
+}
+
 .update-ready .update-item .update-delete
 {
 	position: absolute;

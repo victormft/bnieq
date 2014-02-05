@@ -22,24 +22,64 @@ class StartupCommentController extends Controller
 		{
 			if($offset <= $k && $k < $offset+2)
 			{       
+				$user = User::model()->findbypk($q->user_id);
+				
+				if(Yii::app()->user->id==$q->user_id || Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+					$condition=true;
+				else
+					$condition=false;
 						
 				$html .= '		
-					<div class="update-item" style="margin-bottom: 30px;">
-						<div class="update-text" style="margin-left:50px; width:80%;">
-							<div class="update-title" style="margin-bottom: 20px; display:inline-block; width:300px;"><span data-id="'. $q->id .'"><b>'. CHtml::encode($q->title) .'</b></span></div>
-							<div class="update-date" style="float:right;">'. date('d/m/y', strtotime(CHtml::encode($q->date))) . '</div>
-							<div class="update-description">'. CHtml::encode($q->description) .'</div></td>
+				<div class="comment-wrap" style="position:relative;">	
+					<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->date))).'</div>
+						<div style="overflow: auto; padding:0 10px 0 10px;">
+							<div class="team-item">
+				';
+				
+				if($condition)
+				{
+				
+					$html .= '	
+									<div class="notif-image" data-id="' . $q->id . '"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+					';
+
+				}
+				
+				else
+				{
+					$html .= '	
+									<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+					';
+				}
+				
+				$html .= '	
+								<div class="team-text" style="float:left;">
+									<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) .'</b> comentou em '. CHtml::link($model->name, array('/'.$model->startupname)) .'</div>
+									<div class="team-comment" style="width:300px;">'. CHtml::encode($q->text) .'</div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div style="border-top:1px dashed #aaa; margin-bottom:30px;"></div>
-						';
+				';
+				
+				if($condition)
+				{
+					$html .= '
+						<div class="comment-delete"><i class="icon-remove-sign"></i></div>
+					';
+				}
+				
+				$html .= '	
+					<div class="spacing-1"></div>
+				</div>
+				
+				';
 			}
 		}
 		
 		$new_offset=$offset+2;
 		
 		if($new_offset < count($query))
-			$html .= '<div class="more-update" data-offset='.$new_offset.' style="text-align:center;"><a href="javascript:void(0)">More</a></div>';	
+			$html .= '<div class="more-comment" data-offset='.$new_offset.' style="text-align:center;"><a href="javascript:void(0)">More</a></div>';	
 
 		else 
 			$html .= '<div style="text-align:center;">No More</div>';

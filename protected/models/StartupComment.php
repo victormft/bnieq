@@ -33,7 +33,7 @@ class StartupComment extends CActiveRecord
 			array('startup_id, user_id, text', 'required'),
 			array('startup_id, user_id', 'length', 'max'=>20),
 			array('text', 'length', 'max'=>500),
-			array('date', 'default', 'value' => date('Y-m-d'), 'setOnEmpty' => true, 'on' => 'insert'),
+			array('date', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, startup_id, user_id, text', 'safe', 'on'=>'search'),
