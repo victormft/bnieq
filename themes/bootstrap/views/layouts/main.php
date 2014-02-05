@@ -121,6 +121,13 @@ $('.remove-search').click(function(event){
                                 
                             </ul>
                         </li>
+                        <?php else: ?>
+                        <li class="name-hover">
+                            <a href="#"><i class="icon-arrow-left" style="margin:0 7px 0 1px; line-height:17px;"></i>Startups</a>
+                            <ul class="dropdown-menu hov sub-menu">
+                                <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/startup/create' ?>><i class="icon-plus" style="margin:0 7px 0 1px; line-height:17px;"></i>Criar Startup</a></li>								                                
+                            </ul>
+                        </li>
                         <?php endif; ?>
                         <li class="name-hover">
                             <a href= <?php echo Yii::app()->homeUrl . '/' . Yii::app()->user->getUsername() ?> ><i class="icon-user" style="margin:0 7px 0 1px; line-height:17px;"></i><?php echo UserModule::t('Profile'); ?></a>

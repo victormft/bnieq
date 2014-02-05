@@ -42,7 +42,7 @@ class ActivityUserController extends Controller
                                 $html .= '		
                                 <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                                     <div class="team-item">
-                                        <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+                                        <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name .'" /></div>
                                         <div class="team-text">
                                                 <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed') . ' ' . CHtml::link($target->getFullName(), array('/'.$target->username)) . '</div>
                                         </div>
@@ -56,7 +56,7 @@ class ActivityUserController extends Controller
                                 $html .= '		
                                 <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                                     <div class="team-item">
-                                        <div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+                                        <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name .'" /></div>
                                         <div class="team-text">
                                                 <div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
                                         </div>
@@ -73,10 +73,10 @@ class ActivityUserController extends Controller
 		$new_offset=$offset+2;
 		
 		if($new_offset < count($query))
-			$html .= '<div class="more-activities" data-offset='.$new_offset.' style="display:inline;"><a href="javascript:void(0)">More</a></div>';	
+			$html .= '<div class="more-activities" data-offset='.$new_offset.' style="text-align:center;"><a href="javascript:void(0)">More</a></div>';	
 
 		else 
-			$html .= '<div>No More</div>';
+			$html .= '<div style="text-align:center;">No More</div>';
 		
 		echo CJSON::encode(array(
             'res'=>$html 
