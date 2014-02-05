@@ -1324,16 +1324,20 @@ class StartupController extends Controller
 			
 			$html='
 		
-			<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($comment->date))).'</div>
-				<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
+			<div class="comment-wrap" style="display:none; opacity:0; position:relative;">
+				<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($comment->date))).'</div>
+				<div style="overflow: auto; padding:0 10px 0 10px;">
 					<div class="team-item">
-						<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
-						<div class="team-text" style="float:left;>
+						<div class="notif-image" data-id="'. $comment->id .'"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+						<div class="team-text" style="float:left;">
 							<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) .'</b> comentou em '. CHtml::link($model->name, array('/'.$model->startupname)) .'</div>
+							<div class="team-comment" style="width:300px;">'. CHtml::encode($comment->text) .'</div>
 						</div>
 					</div>
 				</div>
-			<div class="spacing-1"></div>
+				<div class="comment-delete"><i class="icon-remove-sign"></i></div>
+				<div class="spacing-1"></div>
+			</div>
 			
 			';
 			
@@ -1433,6 +1437,29 @@ class StartupController extends Controller
 		
 		$past=PastInvestment::model()->find('id=:p_id AND startup_id=:s_id', array(':p_id'=>$id, ':s_id'=>$model->id));
 		$past->delete();
+			
+		echo CJSON::encode(array(
+				'res'=>'OK'
+			));
+		exit;
+	}
+	
+		public function actionDeleteComment($id, $name)
+	{
+		$model=$this->loadModel($name);
+		
+		
+		
+		if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+		{
+			$user_id=Yii::app()->user->id;
+			$comment_restrict=StartupComment::model()->find('id=:c_id AND startup_id=:s_id AND user_id=:u_id', array(':c_id'=>$id, ':s_id'=>$model->id, ':u_id'=>$user_id));
+			if(!$comment_restrict)
+				throw new CHttpException(403,'Ação inválida!');
+		}
+		
+		$comment=StartupComment::model()->find('id=:c_id AND startup_id=:s_id', array(':c_id'=>$id, ':s_id'=>$model->id));
+		$comment->delete();
 			
 		echo CJSON::encode(array(
 				'res'=>'OK'

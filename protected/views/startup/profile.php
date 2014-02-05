@@ -171,12 +171,38 @@ $('.chooser').click(function(event){
 		}
 		else if(elem.hasClass('comment'))
 		{
-			
+			if(!elem.hasClass('already-loaded'))
+			{
+				$('.profile-column-l').css({'opacity':'0.5'});
+				$('.profile-column-l-activity').css({'opacity':'0.5'});
+				$('.profile-column-l-press').css({'opacity':'0.5'});
+				$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startupcomment/index?startupname=".$model->startupname."&offset=0',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					dataType: 'json',
+					success: function(data){
+						$('.profile-column-l').css({'display':'none'});
+						$('.profile-column-l-activity').css({'display':'none'});
+						$('.profile-column-l-press').css({'display':'none'});
+						$('.profile-column-l').css({'opacity':'1'});
+						$('.profile-column-l-activity').css({'opacity':'1'});
+						$('.profile-column-l-press').css({'opacity':'1'});
+						$('.content-info-comment').html(data.res);
+						$('.profile-column-l-comment').css({'display':'block'});
+						elem.addClass('already-loaded');
+					}
+				});
+			}
+			else
+			{
 				$('.profile-column-l').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'none'});
 				$('.profile-column-l-press').css({'display':'none'});
-				$('.profile-column-l-update').css({'display':'none'});
 				$('.profile-column-l-comment').css({'display':'block'});
+			}
 			
 		}
 		else if(elem.hasClass('info'))
@@ -321,6 +347,29 @@ $('.profile-column-l-update').on('click','.more-update',function(event){
 
 });
 
+$('.profile-column-l-comment').on('click','.more-comment',function(event){
+	var elem = $(this);
+	var offset = elem.attr('data-offset');
+	elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+	$.ajax({
+		url: '".Yii::app()->request->baseUrl."/startupcomment/index?startupname=".$model->startupname."&offset='+offset,
+		type: 'POST',
+		data: {
+			YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+		},
+		dataType: 'json',
+		success: function(data){
+			elem.remove();
+			$('.content-info-comment').append(data.res);
+		},
+		error: function(data){
+			elem.remove();
+			$('.content-info-comment').append('Error');
+		}
+	});
+
+});
+
 $('#form-comment').submit(function(event) {
 		
 		event.preventDefault(); 
@@ -339,8 +388,9 @@ $('#form-comment').submit(function(event) {
 					}
 					else
 					{
-						$('.comment-error').html('');	
-						
+						$('.content-info-comment').prepend(data.res);
+						$('.comment-wrap').show('slow').animate({opacity: 1}, 250);
+						$('.comment-error').html('');			
 						$('.comment-btn').text('Post');
 					}
 				}
@@ -349,6 +399,46 @@ $('#form-comment').submit(function(event) {
 		
 });
 
+$('.content-info-comment').on('click','.comment-delete',function(event){
+		if(confirm('Are you sure?'))
+		{
+			var parent = $(this).parent();
+			var id = parent.find('.notif-image').attr('data-id');
+			parent.addClass('deletable');
+			$.ajax({
+					url: '".Yii::app()->request->baseUrl."/startup/deleteComment?id='+id+'&name=".$model->startupname."',
+					dataType: 'json',
+					type: 'POST',
+					data: {
+						YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+					},
+					success: function(data){
+						
+						if(data.res=='OK')
+							$('.deletable').animate({opacity: 0}, 100).hide('slow', function(){ $('.deletable').remove(); });
+						
+						else
+						{
+							$('.deletable').removeClass('deletable');	
+							parent.find('.traction-error').html(data.msg);
+						}					
+						
+					},
+					error: function(){
+						$('.deletable').removeClass('deletable');	
+					}
+				});
+		}
+	
+});
+
+	$('.content-info-comment').on('mouseover','.comment-wrap',function(event){
+		$(this).find('.comment-delete').css({'color':'red', 'font-size':'22px'});	
+	});
+	
+	$('.content-info-comment').on('mouseout','.comment-wrap',function(event){
+		$(this).find('.comment-delete').css({'color':'#ccc', 'font-size':'15px'});	
+	});
 
 function getUrlVars()
 {
