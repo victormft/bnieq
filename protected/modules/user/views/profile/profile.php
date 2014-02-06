@@ -71,7 +71,14 @@ $('.chooser').click(function(event){
 						$('.content-info-activity').html(data.res);
 						$('.profile-column-l-activity').css({'display':'block'});
 						elem.addClass('already-loaded');
-					}
+					},
+                    error: function(data){
+                        $('.profile-column-l').css({'display':'none'});
+						$('.profile-column-l').css({'opacity':'1'});
+						$('.profile-column-l-activity').css({'display':'block'});
+						elem.addClass('already-loaded');
+                        $('.content-info-activity').append('Error');
+                    }
 				});
 			}
 			else
@@ -92,8 +99,11 @@ $('.chooser').click(function(event){
 $('.profile-column-l-activity').on('click','.more-activities',function(event){
 	var elem = $(this);
 	var offset = elem.attr('data-offset');
+    var last_date = elem.attr('data-last_date');
+    
+    elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 	$.ajax({
-		url: '".Yii::app()->request->baseUrl."/activityuser/index?username=".$model->username."&offset='+offset,
+		url: '".Yii::app()->request->baseUrl."/activityuser/index?username=".$model->username."&offset='+offset+'&last_date='+last_date,
 		type: 'POST',
 		data: {
 			YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
@@ -104,7 +114,8 @@ $('.profile-column-l-activity').on('click','.more-activities',function(event){
 			$('.content-info-activity').append(data.res);
 		},
 		error: function(data){
-			$('.content-info-activity').append('asd');
+			elem.remove();
+			$('.content-info-activity').append('Error');
 		}
 	});
 
@@ -183,7 +194,7 @@ function getUrlVars()
             </div>
 
             <?php if($profile->facebook): ?>
-                <a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>
+                <a href="<?php echo $profile->facebook; ?>" target="_blank"><img src="<?php echo Yii::app()->request->baseUrl.'/images/social-icons/20px/facebook.png'?>" style="margin-right:3px;"/></a>                
             <?php endif; ?>
 
             <?php if($profile->twitter): ?>
