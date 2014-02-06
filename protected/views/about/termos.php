@@ -28,5 +28,7 @@
 			<?php echo CHtml::link('Ajuda', array('/about/ajuda')); ?>
 			
 			<?php echo CHtml::link('Termos', array('/about/termos'), array('class'=>'clicked')); ?>
+			
+			<?php echo CHtml::link('Contato', array('/about/contato')); ?>
 	</div>
 </div>

@@ -20,7 +20,7 @@ class AboutController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('como_funciona, quem_somos, ajuda, termos'),
+				'actions'=>array('como_funciona, quem_somos, ajuda, termos, contato, addContact'),
 				'users'=>array('*'),
 			),
 		);
@@ -62,6 +62,56 @@ class AboutController extends Controller
 		$this->render('termos',array(
                 
             ));
+	}
+	
+	public function actionContato()
+	{
+		if(Yii::app()->user->isGuest)
+		{
+			$app=Yii::app();
+			$app->user->setReturnUrl($app->request->getUrl());
+		}
+		
+		$this->render('contato',array(
+                
+            ));
+	}
+	
+	public function actionAddContact()
+	{
+		if(Yii::app()->user->isGuest)
+		{
+			throw new CHttpException(403,'Ação inválida!');
+		}
+		
+		
+		$contact = new Contact;
+		
+		$contact->user_id = Yii::app()->user->id;
+		$contact->type = 1;
+		$contact->text = $_POST['text'];   
+		
+		if(empty($_POST['text']))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Preencha o campo corretamente'
+			));
+			exit;
+		}
+		
+		else
+		{	
+		
+			$contact->save();
+			
+			echo CJSON::encode(array(
+				'res'=>'ok',
+				'msg'=>'Sucesso!'
+			));
+			exit;
+		}
+		
 	}
 
 
