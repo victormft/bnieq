@@ -9,7 +9,7 @@ $('#form-contact').submit(function(event) {
 		$('.contact-btn').html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
 		
 		$.ajax({
-				url: '".Yii::app()->request->baseUrl."/about/addMessage',
+				url: '".Yii::app()->request->baseUrl."/about/addContact',
 				dataType: 'json',
 				type: 'POST',
 				data: $('#form-contact').serialize(),
@@ -66,11 +66,8 @@ $('#form-contact').submit(function(event) {
 					'htmlOptions' => array('enctype' => 'multipart/form-data'), 
 				)); ?>
 		
-					<?php echo CHtml::label('Subject', false, array('style'=>'display:block; margin-right:30px;')); ?>
-					<?php echo CHtml::textField('subject'); ?>
-					
-					<?php echo CHtml::label('Body', false, array('style'=>'display:block; margin-right:30px;')); ?>
-					<?php echo CHtml::textField('body'); ?>
+					<?php echo CHtml::label('Text', false, array('style'=>'display:block; margin-right:30px;')); ?>
+					<?php echo CHtml::textField('text'); ?>
 					
 			
 					<?php $this->widget('bootstrap.widgets.TbButton', array(

@@ -20,7 +20,7 @@ class AboutController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('como_funciona, quem_somos, ajuda, termos, contato, addContact'),
+				'actions'=>array('como_funciona, quem_somos, ajuda, termos, contato, addMessage'),
 				'users'=>array('*'),
 			),
 		);
@@ -114,6 +114,43 @@ class AboutController extends Controller
 		
 	}
 
+	public function actionAddMessage()
+	{
+		if(Yii::app()->user->isGuest)
+		{
+			throw new CHttpException(403,'Ação inválida!');
+		}
+		
+		
+		$message = new Message;
+		
+		$message->sender_id = Yii::app()->user->id;
+		$message->receiver_id  = 1; // message for the admin
+		$message->subject = $_POST['subject'];   
+		$message->body = $_POST['body'];
+		
+		if(empty($_POST['subject']) || empty($_POST['body']))
+		{
+			echo CJSON::encode(array(
+				'res'=>'no',
+				'msg'=>'Preencha os campos corretamente'
+			));
+			exit;
+		}
+		
+		else
+		{	
+		
+			$message->save();
+			
+			echo CJSON::encode(array(
+				'res'=>'ok',
+				'msg'=>'Sucesso!'
+			));
+			exit;
+		}
+		
+	}
 
 	
 	
