@@ -34,36 +34,64 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	margin-top:2px;
 }
 
-
  .thread-table
     {
         display: table;
+		border-collapse: collapse;
+		width: 800px;
     }
     .thread-title
-    {
+	{
         display: table-caption;
         text-align: center;
         font-weight: bold;
         font-size: larger;
     }
     .thread-heading
-    {
+	{
         display: table-row;
         font-weight: bold;
         text-align: center;
+		border-bottom: 1px solid #ccc;
+		border-top: 1px solid #ccc;
+		
+		
     }
-    .thread-row
-    {
-        display: table-row;
-    }
+	
+	.thread-row:nth-child(odd) {
+	display: table-row;
+	background:#EAEAEA;
+	
+	}
+	
+	.thread-row:nth-child(even) {
+	display: table-row;
+	background:#FBFBFB;
+	
+	}
+	
     .thread-cell
     {
         display: table-cell;
-        border: solid;
+		
+        text-align: center;
+        border: none;
         border-width: thin;
         padding-left: 5px;
         padding-right: 5px;
+		
     }
+	
+	.thread-cell:first-child {
+	display: table-cell;
+	
+	}
+	
+	.thread-cell:last-child {
+	display: table-cell;
+	}
+	
+	
 	
 	.thread-post-list{
 	padding: 15px 0 15px 20px;

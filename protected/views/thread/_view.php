@@ -24,6 +24,10 @@
         </div>
 		<div class="thread-cell">
             <p><?php echo $data->last_post; ?></p>
+			<p><?php 
+				$last_post_user_model = User::model()->findByPk($data->last_post_user_id);
+				echo 'by:'.$last_post_user_model->username; ?> 
+			</p>
         </div>
    </div>
 	<!--<b><?php //echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>

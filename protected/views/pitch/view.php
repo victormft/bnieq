@@ -1,7 +1,6 @@
 <?php
 /* @var $this PitchController */
 /* @var $model Pitch */
-
 $this->layout='column1';
 /*
 $this->menu=array(
@@ -224,6 +223,8 @@ $('.video-images-items').carouFredSel({
 		jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/pitch/detail/".$model->id."','cache':false,
 			'success':function(html){
 				var elem = $(this);
+				jQuery('.clicked').removeClass('clicked');
+				jQuery('.info').addClass('clicked');
 				jQuery('#pitch-ajax-container').html(html)
 			},
 			'error': function(html){
@@ -239,9 +240,10 @@ $('.video-images-items').carouFredSel({
 	jQuery('body').on('click','#thread-ajax-index',function(){
 	
 	
-		jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/thread/index','cache':false,
+		jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/thread/index?startupId=".$model->startup_id."','cache':false,
 			'success':function(html){
-				var elem = $(this);
+				jQuery('.clicked').removeClass('clicked');
+				jQuery('.activity').addClass('clicked');
 				jQuery('#pitch-ajax-container').html(html)
 			},
 			'error': function(html){
@@ -269,7 +271,6 @@ $('.video-images-items').carouFredSel({
 	jQuery('body').on('click','#thread-ajax-create',function(){
 	
 	var elem = $(this);
-	elem.addClass('clicked');
 	var url_value = elem.attr('href');
 	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
 	);
@@ -317,15 +318,15 @@ $('.video-images-items').carouFredSel({
 		</div>
 		
 		<div class="profile-location">
-			<i class="icon-map-marker profile-icon"></i><?php if (isset($startup_model->city)) echo $startup_model->city->nome; ?>
+			<i class="icon-map-marker profile-icon"></i>&nbsp; <?php if (isset($startup_model->city)) echo $startup_model->city->nome; ?>
 		</div>
 		
 		
 		<div class="profile-location">
-			<i class="icon-circle-blank profile-icon"></i><span><?php echo 'Equity: ' . $model->equity . '%'; ?></span>
+			<i class="icon-circle-blank profile-icon"></i><span>&nbsp; &nbsp;<?php echo 'Equity: ' . $model->equity . '%'; ?></span>
 		</div>
 		<div class="profile-location">
-			<i class="icon-circle-blank profile-icon"></i><span><?php echo 'Meta: R$' . $model->investment_required; ?></span>
+			<i class="icon-money profile-icon"></i><span>&nbsp; &nbsp;&nbsp;<?php echo 'Meta: R$' . $model->investment_required; ?></span>
 		</div>
 		<!--
 		<div class="profile-links">

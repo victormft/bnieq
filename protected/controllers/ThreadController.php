@@ -16,7 +16,7 @@ class ThreadController extends Controller
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
-			'ajaxOnly + index'
+			'ajaxOnly + index',
 		);
 	}
 
@@ -94,6 +94,7 @@ class ThreadController extends Controller
 			$model->attributes=$_POST['Thread'];
 			$model->setCreateTime(time());
 			$model->last_post = $model->create_time;
+			$model->last_post_user_id = $model->id;
 			$valid = ($model->validate());
 			
 			$model_post->thread_id = $model->id;
@@ -155,12 +156,17 @@ class ThreadController extends Controller
 	 */
 	public function actionIndex()
 	{
-	
-	
+		$startup_id = $_GET['startupId'];
 		$dataProvider=new CActiveDataProvider('Thread', array(
+		'criteria'=>array(
+        'condition'=>'startup_id='.$startup_id,
+        'order'=>'create_time ASC',
+    ),));
+	
+		/*$dataProvider=new CActiveDataProvider('Thread', array(
 			'criteria'=>array(
 			'order'=>'last_post DESC',
-    ),));
+    ),));*/
 	
 		$this->renderPartial('index',array(
 			'dataProvider'=>$dataProvider,
@@ -210,6 +216,15 @@ class ThreadController extends Controller
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+	
+	public function filterStartup($filterchain) {
+	
+		if(isset($_GET['startupId'])) {
+				$this->_startup = Startup::model()->findByPk($_GET['startupId']);
+				if($this->_startup === null)
+					throw new CHttpException(404,'A página requisitada não existe');
 		}
 	}
 }

@@ -27,7 +27,7 @@
 	
 	?>
 <div  id="teste1">
-<h1>Threads</h1>
+<h1>Q&A</h1>
 <div class="thread-table">
 	<div class="thread-heading">
 		<div class = "thread-cell">Tópicos</div>  

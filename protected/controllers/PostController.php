@@ -81,6 +81,7 @@ class PostController extends Controller
 			if($model->save()) {
 				$model_thread = Thread::model()->findByPk($this->_thread_id);
 				$model_thread->last_post = $model->create_time;
+				$model_thread->last_post_user_id = $model->user_id;
 				$model_thread->replies++;
 				$model_thread->save();
 				$this->redirect(array('thread/'.$model_thread->id));
