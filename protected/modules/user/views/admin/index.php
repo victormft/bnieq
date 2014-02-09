@@ -34,6 +34,11 @@ $this->menu=array(
         'itemOptions' => array('class' => 'nav-header')
     ),
     array('label'=>'Manage Stups', 'url'=>array('startups')),
+	/*array(
+        'label' => 'Contact',
+        'itemOptions' => array('class' => 'nav-header')
+    ),
+    array('label'=>'Ver Contact', 'url'=>array('contact')),*/
     
 );
 

@@ -7,6 +7,7 @@ class AdminController extends Controller
 	
 	private $_model;
     private $_modelS;
+	private $_modelC;
 
 	/**
 	 * @return array action filters
@@ -26,7 +27,7 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view','startups', 'updatestartup', 'viewstartup', 'deletestartup', 'reportpop'),
+				'actions'=>array('admin','delete','create','update','view','startups',/*'contact'*/'updatestartup', 'viewstartup',/*'answercontact'*/ 'deletestartup' /*'deletecontact'*/, 'reportpop'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -181,12 +182,55 @@ class AdminController extends Controller
 			'dataProvider'=>$dataProvider,
 		));//*/
 	}
+	
+	public function actionContact()
+	{
+		$model=new Contact('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Contact']))
+            $model->attributes=$_GET['Contact'];
+
+        $this->render('index_contact',array(
+            'model'=>$model,
+        ));
+		/*$dataProvider=new CActiveDataProvider('User', array(
+			'pagination'=>array(
+				'pageSize'=>Yii::app()->controller->module->user_page_size,
+			),
+		));
+
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));//*/
+	}
     
 	public function actionUpdateStartup()
 	{
 		$model=$this->loadStartup();
 		$this->performAjaxValidation($model);
 		if(isset($_POST['Startup']))
+		{
+			$model->name=$_POST['Startup']['name'];
+			$model->one_line_pitch=$_POST['Startup']['one_line_pitch'];
+			$model->selecionada=$_POST['Startup']['selecionada'];
+			
+			
+			if($model->validate()) {
+				$model->save();
+				$this->redirect(array('startups'));
+			} 
+		}
+
+		$this->render('update_startup',array(
+			'model'=>$model,
+		));
+	}
+	
+	public function actionAnswerContact()
+	{
+		$model=$this->loadContact();
+		$this->performAjaxValidation($model);
+		if(isset($_POST['Contact']))
 		{
 			$model->name=$_POST['Startup']['name'];
 			$model->one_line_pitch=$_POST['Startup']['one_line_pitch'];
@@ -226,6 +270,21 @@ class AdminController extends Controller
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
+	
+    public function actionDeleteContact()
+	{
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+			$model = $this->loadContact();
+			$model->delete();
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_POST['ajax']))
+				$this->redirect(array('/user/admin/contact'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	}	
     
     public function actionReportPop($id)
     {
@@ -301,6 +360,18 @@ class AdminController extends Controller
 				throw new CHttpException(404,'The requested page does not exist.');
 		}
 		return $this->_modelS;
+	}
+	
+	public function loadContact()
+	{
+		if($this->_modelC===null)
+		{
+			if(isset($_GET['id']))
+				$this->_modelC=Contact::model()->findbyPk($_GET['id']);
+			if($this->_modelC===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+		}
+		return $this->_modelC;
 	}
 	
 }
