@@ -41,7 +41,7 @@ class SettingsController extends Controller
                         switch ($model->newsletter)
                         {
                             case 1:
-                                $MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
+                                /*$MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
                                 $MailChimp->call('lists/subscribe', array(
                                     'id'                => 'b6e780f08c',
                                     'email'             => array('email'=>$model->email),
@@ -50,17 +50,17 @@ class SettingsController extends Controller
                                     'update_existing'   => true,
                                     'replace_interests' => false,
                                     'send_welcome'      => false,
-                                ));                                
+                                ));  */                              
                                 break;
                             case 0:
-                                $MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
+                                /*$MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
                                 $MailChimp->call('lists/unsubscribe', array(
                                     'id'                => 'b6e780f08c',
                                     'email'             => array('email'=>$model->email),
                                     'delete_member'     => false,
                                     'send_goodbye   '   => true,
                                     'send_notify'       => true,
-                                ));
+                                ));*/
                                 break;
                         }
                         
@@ -163,6 +163,40 @@ class SettingsController extends Controller
 					}
 			}
 			$this->render('social',array('model'=>$model));
+	    }
+        else $this->redirect(Yii::app()->controller->module->loginUrl);
+	}
+    
+    public function actionDeleteAccount()
+	{
+        $del = new UserDelete;
+        $model = User::model()->findbyPk(Yii::app()->user->id);
+                
+		if (Yii::app()->user->id) {
+            
+            if(Yii::app()->request->isPostRequest)
+            {
+                // we only allow deletion via POST request 
+                if(isset($_POST['UserDelete'])) {
+                    $del->attributes=$_POST['UserDelete'];
+                    if($del->validate()) {
+                        $profile = Profile::model()->findByPk($model->id);
+                        Yii::app()->user->logout();
+                        $profile->delete();
+                        $model->delete();
+                        
+                        $user = Yii::app()->getComponent('user');
+                        $user->setFlash(
+                            'error',
+                            'Você deletou sua conta no NextBlue.'
+                        ); 
+                        $this->redirect(Yii::app()->user->module->loginUrl);
+                    }
+
+                }
+			
+			}
+			$this->render('delete',array('del'=>$del));
 	    }
         else $this->redirect(Yii::app()->controller->module->loginUrl);
 	}

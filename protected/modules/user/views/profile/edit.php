@@ -173,7 +173,7 @@ $('.arrow-container').mouseover(function(event){
                     'model'     => $profile,
                     'attribute' => 'location',
                     'url'       => $this->createUrl('updateLocation'), 
-                    'source'    => Cidade::model()->getCities(),
+                    //'source'    => Cidade::model()->getCities(),
                     'placement' => 'right',
                     'inputclass'=> 'input-large',
                     'htmlOptions'=>array('type'=>'hidden'),
@@ -400,9 +400,10 @@ $('.arrow-container').mouseover(function(event){
                         'class' => 'bootstrap.widgets.TbEditableColumn',
                         'editable' => array(
                             'type' => 'text',
-                            'url' => array('updatestartuprelational'),
+                            'url' => $this->createUrl('updatestartuprelational'),
                             'mode'=>'popup',
                             'emptytext'=>UserModule::t('Vazio'),
+                            'params'=>array('YII_CSRF_TOKEN'=>Yii::app()->request->csrfToken),                            
                         )
                     ),
                     array(

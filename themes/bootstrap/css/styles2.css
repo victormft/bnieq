@@ -504,6 +504,21 @@
     height: 20px;
 }
 
+.spacing-3
+{
+    height: 30px;
+}
+
+.spacing-4
+{
+    height: 40px;
+}
+
+.spacing-5
+{
+    height: 50px;
+}
+
 .bordered-table
 {
     margin-top: 20px;

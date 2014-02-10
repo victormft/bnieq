@@ -73,6 +73,8 @@
 
             <?php echo $form->toggleButtonRow($model, 'newsletter', array('checked'=>$model->newsletter)); ?>
             
+            <div class="spacing-5"></div>
+            <div class="spacing-5"></div>
             
             <div class="row submit">                
             <?php $this->widget('bootstrap.widgets.TbButton', array(

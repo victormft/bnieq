@@ -77,7 +77,7 @@ class LoginController extends Controller
                             //subscribe to MailChimp
                             if($model->newsletter == true)
                             {
-                                $MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
+                                /*$MailChimp = new MailChimp('62ef20e8abc7616367e9a4fb08d4cf23-us3');
                                 $MailChimp->call('lists/subscribe', array(
                                     'id'                => 'b6e780f08c',
                                     'email'             => array('email'=>$model->email),
@@ -86,7 +86,7 @@ class LoginController extends Controller
                                     'update_existing'   => true,
                                     'replace_interests' => false,
                                     'send_welcome'      => false,
-                                ));
+                                ));*/
                             }
                             
                             if (Yii::app()->controller->module->sendActivationMail) {
