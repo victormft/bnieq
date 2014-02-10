@@ -55,7 +55,7 @@ class User extends CActiveRecord
 		// will receive user inputs.CConsoleApplication
 		return ((get_class(Yii::app())=='CConsoleApplication' || (get_class(Yii::app())!='CConsoleApplication' && Yii::app()->getModule('user')->isAdmin()))?array(
 			array('username', 'length', 'max'=>128, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 128 characters).")),
-            array('username','in','range'=>array('user','messages','pitch','site','startup','message','rights'),'allowEmpty'=>false, 'not'=>true, 'message' => 'Username inválido'),
+            array('username','in','range'=>array_merge(array('user','messages','pitch','site','startup','message','rights'), Startup::getStartupnames()),'allowEmpty'=>false, 'not'=>true, 'message' => 'Username inválido'),
             array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
 			array('email', 'email'),
 			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),

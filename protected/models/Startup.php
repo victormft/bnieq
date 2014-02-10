@@ -619,4 +619,16 @@ class Startup extends CActiveRecord
         
         return $array;
     }
+    
+    public static function getStartupnames()
+    {
+        $array = Yii::app()->db->createCommand('SELECT startupname FROM startup')->queryAll();
+        $return = array();
+        
+        foreach ($array as $key => $value) {
+            $return[] = $value['startupname']; //pq na verdade $value = array([startupname]=>nome de fato)
+        }
+        
+        return $return;
+    }
 }
