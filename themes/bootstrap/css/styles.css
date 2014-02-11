@@ -364,7 +364,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 .profile-edit-header .header-content
 {
 	width:auto;
-	overflow:visible;
+	overflow:auto;
 }
 
 .profile-edit-header .header-content #logo-edit-form

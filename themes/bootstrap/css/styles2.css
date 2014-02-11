@@ -142,8 +142,7 @@
 
 .header-content
 {
-    float: left;
-    overflow: visible;
+    //float: left;
     width: 460px;
     margin-bottom: 15px
 }

@@ -1,9 +1,8 @@
 
 <div class="view-list">
+    
+    <?php echo CHtml::link('<div class="startup-view-img" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$data->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>', array('/'.CHtml::encode($data->user->username)));?>
 
-    <div class="startup-view-img">
-        <?php echo CHtml::link('<img src="'.'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$data->logo->name.'" />', array('/' . $data->user->username)); ?>
-    </div>
     
     <div class="view-list-text">
     

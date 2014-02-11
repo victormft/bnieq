@@ -134,7 +134,102 @@ function getUrlVars()
         vars[hash[0]] = hash[1];
     }
     return vars;
-}
+};
+
+$(document.body).on('click','.follow-press',function(event){
+
+    var user_name = encodeURIComponent($(this).parent().attr('data-name'));
+    var elem = $(this);
+
+    if(elem.hasClass('btn-follow'))
+    {	
+        elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+
+        $.ajax({
+            url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+user_name,
+            type: 'POST',
+			data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
+            dataType: 'json',
+            success: function(data){
+                elem.removeClass('btn-success');
+                elem.removeClass('btn-follow');
+                elem.addClass('btn-unfollow');
+                elem.text('".UserModule::t('Unfollow')."');	
+            }
+        });
+    }
+
+    else if(elem.hasClass('btn-unfollow'))
+    {
+        elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+
+        $.ajax({
+            url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+user_name,
+            type: 'POST',
+			data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
+            dataType: 'json',
+            success: function(data){
+                elem.addClass('btn-success');
+                elem.removeClass('btn-unfollow');
+                elem.addClass('btn-follow');
+                elem.text('".UserModule::t('Follow')."');				
+            }
+        });
+    }
+			
+});
+
+$(document.body).on('click','.start',function(event){
+
+    var startup_name = encodeURIComponent($(this).parent().attr('data-name'));
+    var elem = $(this);
+
+    if(elem.hasClass('btn-follow'))
+    {	
+        elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+
+        $.ajax({
+            url: '".Yii::app()->request->baseUrl."/startup/follow?name='+startup_name,
+            type: 'POST',
+            data: {
+                YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+            },
+            dataType: 'json',
+            success: function(data){
+                elem.removeClass('btn-success');
+                elem.removeClass('btn-follow');
+                elem.addClass('btn-unfollow');
+                elem.text('".UserModule::t('Unfollow')."');
+            }
+        });
+    }
+
+    else if(elem.hasClass('btn-unfollow'))
+    {
+        elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+
+        $.ajax({
+            url: '".Yii::app()->request->baseUrl."/startup/unfollow?name='+startup_name,
+            type: 'POST',
+            data: {
+                YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+            },
+            dataType: 'json',
+            success: function(data){
+                elem.addClass('btn-success');
+                elem.removeClass('btn-unfollow');
+                elem.addClass('btn-follow');
+                elem.text('".UserModule::t('Follow')."');			
+            }
+        });
+    }
+			
+});
+
 
 
 ");
@@ -168,10 +263,9 @@ function getUrlVars()
 
 <div class="profile-header-wrap">
     <div class="profile-header">	
+        
+        <div id="startup-profile-img" style="background-image:url(<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$profile->logo->name; ?>); background-size:cover; background-position: 50% 50%;"></div>
 
-        <div id="startup-profile-img">
-            <img src="<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$profile->logo->name ?>">
-        </div>
 
         <div class="user-profile-header-info">     
 
@@ -224,32 +318,7 @@ function getUrlVars()
                             <div class="follow-status"><?php echo UserModule::t('Followers') ?></div>
                         </a>     
                         
-                        <?php $this->beginWidget(
-                            'bootstrap.widgets.TbModal',
-                            array('id' => 'modal-followers')
-                        ); ?>
-                            <div class="modal-header">
-                                <a class="close" data-dismiss="modal">&times;</a>
-                                <h4 class="modal-title" id="myModalLabel"><?php echo UserModule::t('Followers') ?></h4>
-                            </div>
-
-                            <div class="modal-body">
-                                <?php $this->renderPartial('_followpop',array('provider'=>$model->followers, 'attr'=>'follower')) ?>
-                            </div>
-
-                            <div class="modal-footer">
-                                
-                                <?php $this->widget(
-                                    'bootstrap.widgets.TbButton',
-                                    array(
-                                        'label' => 'Close',
-                                        'url' => '#',
-                                        'htmlOptions' => array('data-dismiss' => 'modal'),
-                                    )
-                                ); ?>
-                            </div>
-
-                        <?php $this->endWidget(); ?>
+                        <!--modal embaixo-->
 
                     </div>
                     
@@ -368,7 +437,8 @@ function getUrlVars()
                 <?php if($relational_tbl->approved):?>
                     <?php if($relational_tbl->profile):?>
                     <div class="startup-card">
-                        <div class="startup-pic" style="overflow: auto;"><?php echo CHtml::link('<img src="'.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'"/>', array('/startup/view', 'name'=>$startup->startupname)); ?> </div>
+                        <?php echo CHtml::link('<div class="startup-pic" style="background-image:url('.Yii::app()->request->baseUrl.'/images/'.$startup->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>', array('/'.CHtml::encode($startup->startupname)));?>
+	
                         <div class="startup-name"><?php echo CHtml::link($startup->name, array('/startup/view', 'name'=>$startup->startupname)); ?></div>
                         <div class="user-position"><?php echo ($relational_tbl->title === NULL || $relational_tbl->title === '') ? UserModule::t($relational_tbl->position) :  UserModule::t($relational_tbl->title);?></div>
                     </div>
@@ -616,6 +686,35 @@ function getUrlVars()
                     <a href="#" data-toggle="modal" data-target="#modal-followers">
                         <?php echo UserModule::t('Followers') ?>
                     </a>
+                    
+                    <?php $this->beginWidget(
+                        'bootstrap.widgets.TbModal',
+                        array('id' => 'modal-followers')
+                    ); ?>
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">&times;</a>
+                            <h4 class="modal-title" id="myModalLabel"><?php echo UserModule::t('Followers') ?></h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <?php $this->renderPartial('_followpop',array('provider'=>$model->followers, 'attr'=>'follower')) ?>
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <?php $this->widget(
+                                'bootstrap.widgets.TbButton',
+                                array(
+                                    'label' => 'Close',
+                                    'url' => '#',
+                                    'htmlOptions' => array('data-dismiss' => 'modal'),
+                                )
+                            ); ?>
+                        </div>
+
+                    <?php $this->endWidget(); ?>
+
+                    
                 </div>                		 
             </div>            
 		</div>
