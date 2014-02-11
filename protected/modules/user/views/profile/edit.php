@@ -1,7 +1,7 @@
 <?php
 $this->layout='//layouts/column1';
 
-
+Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/jquery.form.js', CClientScript::POS_END);
 
 Yii::app()->clientScript->registerScript('loading-img',
 "
@@ -59,205 +59,297 @@ $('.arrow-container').mouseover(function(event){
 			});
 	});
     
+    $('#startup-profile-img').mouseover(function(event) {
+		$(this).css({'box-shadow': '2px 2px 4px 1px #aaa'});		
+	});
+    $('#startup-profile-img').mouseout(function(event) {
+		$(this).css({'box-shadow': 'inset 0px 0px 4px 1px #ddd'});
+	});
+    $('#startup-profile-img').click(function(event){	
+		$('#imagem-2').click();
+	});
+    $(document).ready(function(){ 
+			
+		$('#form-2-btn').click(function(){ 
+			
+			var elem = $(this);
+			elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\" alt=\"Enviando...\"/>');
+			
+			var mybar = $('.mybar');
+			var mypercent = $('.mypercent');
+			var myprogress = $('.myprogress');
+			
+			$('#formulario-2').ajaxForm({ 
+				dataType: 'json',		
+				type: 'POST',
+				data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+				},
+				
+				beforeSend: function() {
+					var percentVal = '0%';
+					mybar.width(percentVal);
+					mypercent.html(percentVal);
+					myprogress.css({'display':'inline-block', 'opacity':'1'});
+				},
+				
+				uploadProgress: function(event, position, total, percentComplete) {
+					var percentVal = percentComplete + '%';
+					mybar.width(percentVal);
+					mypercent.html(percentVal);
+				},
+					
+				success: function(data){
+				
+					if(data.res=='no')
+					{
+						$('.err-logo').html(data.msg);
+						elem.animate({opacity: 0}, 500, function(){
+							elem.hide().html('Confirmar?');
+						});
+						myprogress.animate({opacity: 0}, 500, function(){
+							myprogress.hide();
+						});
+					}
+					
+					else
+					{
+						elem.animate({opacity: 0}, 500, function(){
+							elem.hide().html('Confirmar?');
+						});	
+						myprogress.animate({opacity: 0}, 500, function(){
+							myprogress.hide();
+						});
+					}
+					
+				}
+			}).submit(); 
+		}); 
+		
+	});
+	
+	
+	$('#imagem-2').change(function(){
+		readURL(this);
+		$('#form-2-btn').show().css({'opacity':'1'});
+		$('.err-logo').empty();
+		
+	});
+	
+	function readURL(input) {
+
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();
+
+			reader.onload = function (e) {
+				$('#startup-profile-img').css({'background-image':'url('+e.target.result +')'});
+			}
+
+			reader.readAsDataURL(input.files[0]);
+		}
+	};
+    
 ");
     
 ?>
 
 <div class="profile-header-edit" style="padding-bottom: 15px;">
     
-    <div id="startup-profile-img">
-        <img src="<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$profile->logo->name ?>">    
-    </div>
-    
-	<div class="user-profile-header-info" style="width: 600px">    
-        
-        <div class="header-content-info-unit">         
-            <div class="header-label">			
-                <?php echo '<b>Nome: </b>'; ?>                 
-            </div>
-            <div class="header-content">			
-                <?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'firstname',
-                    'url'       => array('updateEd'),  //url for submit data 
-                    'inputclass'=> 'input-small',
-                 ));
-                ?>
-            </div>
-        </div>
-        <div class="header-content-info-unit">
-            <div class="header-label">			
-                <?php echo '<b>Sobrenome: </b>'; ?>                 
-            </div>
-            <div class="header-content">			
-                <?php            
-                 $this->widget('editable.EditableField', array(
-                    'type'      => 'text',
-                    'model'     => $profile,
-                    'attribute' => 'lastname',
-                    'url'       => array('updateEd'), 
-                    'inputclass'=> 'input-small',
-                 ));
-                ?>  				
-            </div>				 
-        </div>   
-        
-        <div class="header-content-info-unit">
-            <div class="header-label">			
-                <?php echo '<b>Mini-currículo: </b>';?>                 
-            </div>
-            <div class="header-content" id="resume-wrap">			
-                <?php
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'textarea',
-                    'model'     => $profile,
-                    'attribute' => 'resume',
-                    'url'       => array('updateEd'),  
-                    'mode'      => 'inline', 
-                    'htmlOptions'=> array(
-                        'id' => 'resume-edit'
-                    ),
-                    'options'    => array(
-                        'rows'      => 6,
-                        'tpl'=> '<textarea id="resume" onkeyup="countChar(this)" style="resize: none; width: 330px" maxlength="150"></textarea>'
-                    )
-                 ));
-                ?>  
-                <div id="count-resume" style="display: none;"></div>
-            </div>
-        </div>
-
-        <script type='text/javascript'>	
-            function countChar(val) {
-                var id = 'count-'+val.id;
-                var len = val.value.length;
-                if (len > val.maxLength) {
-                    val.value = val.value.substring(0, val.maxLength);
-                } else {
-                    $('#'+id).text(val.maxLength - len + '/' + val.maxLength);
-                }
-            };
-                  
-            $(function() {
-                $('#resume-wrap').tooltip({
-                    trigger: 'manual', 
-                    placement: 'right', 
-                    title: '<img src=<?php echo Yii::app()->request->baseUrl.'/images/sample-mini-resume.png';?> >',
-                    html: true,
-                });
-                $('#resume-edit').on('shown', function(e, editable) {
-                    $('#resume-wrap').tooltip('show');
-                    $(".tooltip").css("left","770px","top","100px");
-                    $(".tooltip").css("top","70px");
-                    
-                    $("#count-resume").css("display","block");
-                });	
-                $('#resume-edit').on('hidden', function(e, editable) {
-                    $('#resume-wrap').tooltip('hide');
-                    
-                    $("#count-resume").css("display","none");
-                });	
-            });
-        </script>
-        
-        <div class="header-content-info-unit">
-            <div class="header-label">			
-                <?php echo '<b>Cidade: </b>';?>                 
-            </div>
-            <div class="header-content">			
-                <?php           
-                $this->widget('editable.EditableField', array(
-                    'type'      => 'select2',
-                    'model'     => $profile,
-                    'attribute' => 'location',
-                    'url'       => $this->createUrl('updateLocation'), 
-                    //'source'    => Cidade::model()->getCities(),
-                    'placement' => 'right',
-                    'inputclass'=> 'input-large',
-                    'htmlOptions'=>array('type'=>'hidden'),
-                    'select2'   => array(
-                        'placeholder'=> 'Select...',
-                        'allowClear'=> true,   
-                        'dropdownAutoWidth'=> true,
-                        'minimumInputLength'=> 3,  
-                    ),                         
-                    'onHidden' => 'js: function(e, reason) {
-                        $("#select2-drop-mask").css("display","none");
-                        $("#select2-drop").css("display","none");
-                     }',
-                )); ?>  				
-            </div>
-        </div>
-        
-        <div class="header-content-info-unit">
-            <div class="header-label">			
-                <?php echo '<b>Papéis: </b>';?>                 
-            </div>
-            <div class="header-content">			
-                <?php           
-                $this->widget('editable.Editable', array(
-                    'type'      => 'select2',
-                    'name'      => 'role',
-                    'pk'        => $model->id,
-                    'url'       => $this->createUrl('updateRoles'), 
-                    'source'    => CHtml::listData(Role::model()->findAll(), 'role_id', 'name'),
-                    'text'      => $model->getRoleNames(),  
-                    'value'     => $model->getRoleIds(),
-                    'placement' => 'right',
-                    'inputclass'=> 'input-xlarge',
-                    'select2'   => array(
-                        'placeholder'=> 'Select...',
-                        'multiple'=>true,
-                    ),
-                    'onHidden' => 'js: function(e, reason) {
-                        $("#select2-drop-mask").css("display","none");
-                        $("#select2-drop").css("display","none");
-                     }'
-                )); ?>  				
-            </div>
-        </div>
-                
-        <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-            'id'=>'user-image-edit-form',
-            'type'=>'inline',
-            'clientOptions'=>array(
-                'validateOnSubmit'=>true,
-            ),
-            'htmlOptions' => array(
-                'enctype' => 'multipart/form-data',
-            ),                    
-        )); 
-        ?>
-        <div class="header-label">
-            <?php echo '<b>Foto: </b>';?>
-        </div>
-        <?php echo $form->fileFieldRow($profile, 'pic', array('labelOptions' => array('label' => ''))); ?>
-        <?php $this->widget('bootstrap.widgets.TbButton', array(
-                'buttonType'=>'submit',
-                'type'=>'primary',
-                'label'=>'Save',
-                'size'=>'normal',
-                )); 
-        ?>
-        <?php $this->endWidget(); ?>            
-        
-
-	</div>
+    <form id="formulario-2" method="post" enctype="multipart/form-data" action="<?php echo Yii::app()->request->baseUrl.'/user/profile/logoUp?username='.$profile->user->username; ?>" style="overflow:auto; float:left; width:144px; height:230px; margin:0 20px 0 0; text-align:center;"> 
+			
+		<input type="file" id="imagem-2" name="imagem-2" style="display:none;"/>
+		<a href="javascript:void(0);" style="float:left;">
 	
-	<div class="profile-edit-header-right">			
-        <span class="edit-btn">			
+		<div id="startup-profile-img" data-toggle='tooltip' data-original-title='Substituir Imagem' style="margin-right:0; background-image:url(<?php echo Yii::app()->request->baseUrl.'/images/'.$profile->logo->name; ?>); background-size:cover; background-position: 50% 50%;"></div>
+		
+		</a>
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'label'=>'Confirmar?',
+			'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+			'size'=>'normal', // null, 'large', 'small' or 'mini'
+			'id'=>'form-2-btn',
+			'htmlOptions'=>array(
+				'style'=>'display:none; margin-top:5px; width:80px;',
+			),
+			)); 
+		?>
+		
+		<div class="myprogress" style="position:relative; margin-top:10px; width:130px; border-radius:5px; border: 1px solid #ddd; height:20px; display:none;">
+			<div class="mybar" style="height:100%; width:0%; background-color:black; border-radius:5px;"></div >
+			<div class="mypercent" style="position:absolute; left:40%; top:0;">0%</div >
+		</div>
+		
+		<div class="err-logo" style="display:inline-block; margin-top:10px;"></div>
+			
+	</form>
+    
+    
+    <div class="profile-edit-header">
+        <div class="editable-wrap profile-editable-content" style="width: 600px">    
+
+            <div class="content-info-unit">         
+                <div class="header-label">			
+                    <?php echo '<b>Nome: </b>'; ?>                 
+                </div>
+                <div class="header-content">			
+                    <?php
+                    $this->widget('editable.EditableField', array(
+                        'type'      => 'text',
+                        'model'     => $profile,
+                        'attribute' => 'firstname',
+                        'url'       => array('updateEd'),  //url for submit data 
+                        'inputclass'=> 'input-small',
+                     ));
+                    ?>
+                </div>
+            </div>
+            <div class="content-info-unit">
+                <div class="header-label">			
+                    <?php echo '<b>Sobrenome: </b>'; ?>                 
+                </div>
+                <div class="header-content">			
+                    <?php            
+                     $this->widget('editable.EditableField', array(
+                        'type'      => 'text',
+                        'model'     => $profile,
+                        'attribute' => 'lastname',
+                        'url'       => array('updateEd'), 
+                        'inputclass'=> 'input-small',
+                     ));
+                    ?>  				
+                </div>				 
+            </div>   
+
+            <div class="content-info-unit">
+                <div class="header-label">			
+                    <?php echo '<b>Mini-currículo: </b>';?>                 
+                </div>
+                <div class="header-content" id="resume-wrap">			
+                    <?php
+                    $this->widget('editable.EditableField', array(
+                        'type'      => 'textarea',
+                        'model'     => $profile,
+                        'attribute' => 'resume',
+                        'url'       => array('updateEd'),  
+                        'mode'      => 'inline', 
+                        'htmlOptions'=> array(
+                            'id' => 'resume-edit'
+                        ),
+                        'options'    => array(
+                            'rows'      => 6,
+                            'tpl'=> '<textarea id="resume" onkeyup="countChar(this)" style="resize: none; width: 330px" maxlength="150"></textarea>'
+                        )
+                     ));
+                    ?>  
+                    <div id="count-resume" style="display: none;"></div>
+                </div>
+            </div>
+
+            <script type='text/javascript'>	
+                function countChar(val) {
+                    var id = 'count-'+val.id;
+                    var len = val.value.length;
+                    if (len > val.maxLength) {
+                        val.value = val.value.substring(0, val.maxLength);
+                    } else {
+                        $('#'+id).text(val.maxLength - len + '/' + val.maxLength);
+                    }
+                };
+
+                /*$(function() {
+                    $('#resume-wrap').tooltip({
+                        trigger: 'manual', 
+                        placement: 'right', 
+                        title: '<img src=<?php echo Yii::app()->request->baseUrl.'/images/sample-mini-resume.png';?> >',
+                        html: true,
+                    });
+                    $('#resume-edit').on('shown', function(e, editable) {
+                        $('#resume-wrap').tooltip('show');
+                        $(".tooltip").css("left","770px","top","100px");
+                        $(".tooltip").css("top","70px");
+
+                        $("#count-resume").css("display","block");
+                    });	
+                    $('#resume-edit').on('hidden', function(e, editable) {
+                        $('#resume-wrap').tooltip('hide');
+
+                        $("#count-resume").css("display","none");
+                    });	
+                });*/
+            </script>
+
+            <div class="content-info-unit">
+                <div class="header-label">			
+                    <?php echo '<b>Cidade: </b>';?>                 
+                </div>
+                <div class="header-content">			
+                    <?php           
+                    $this->widget('editable.EditableField', array(
+                        'type'      => 'select2',
+                        'model'     => $profile,
+                        'attribute' => 'location',
+                        'url'       => $this->createUrl('updateLocation'), 
+                        'source'    => Cidade::model()->getCities(),
+                        'placement' => 'right',
+                        'inputclass'=> 'input-large',
+                        'htmlOptions'=>array('type'=>'hidden'),
+                        'select2'   => array(
+                            'placeholder'=> 'Select...',
+                            'allowClear'=> true,   
+                            'dropdownAutoWidth'=> true,
+                            'minimumInputLength'=> 3,  
+                        ),                         
+                        'onHidden' => 'js: function(e, reason) {
+                            $("#select2-drop-mask").css("display","none");
+                            $("#select2-drop").css("display","none");
+                         }',
+                    )); ?>  				
+                </div>
+            </div>
+
+            <div class="content-info-unit">
+                <div class="header-label">			
+                    <?php echo '<b>Papéis: </b>';?>                 
+                </div>
+                <div class="header-content">			
+                    <?php           
+                    $this->widget('editable.Editable', array(
+                        'type'      => 'select2',
+                        'name'      => 'role',
+                        'pk'        => $model->id,
+                        'url'       => $this->createUrl('updateRoles'), 
+                        'source'    => CHtml::listData(Role::model()->findAll(), 'role_id', 'name'),
+                        'text'      => $model->getRoleNames(),  
+                        'value'     => $model->getRoleIds(),
+                        'placement' => 'right',
+                        'inputclass'=> 'input-xlarge',
+                        'select2'   => array(
+                            'placeholder'=> 'Select...',
+                            'multiple'=>true,
+                        ),
+                        'onHidden' => 'js: function(e, reason) {
+                            $("#select2-drop-mask").css("display","none");
+                            $("#select2-drop").css("display","none");
+                         }'
+                    )); ?>  				
+                </div>
+            </div>
+         
+
+
+        </div>
+    </div>
+			
+        <span class="teste" style="float: right;">			
             <?php $this->widget('bootstrap.widgets.TbButton', array(
                 'label'=>'Voltar',
                 'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                 'size'=>'normal', // null, 'large', 'small' or 'mini'
                 'url'=> array('/'.$model->username),
-                'htmlOptions'=>array('style'=>'width:50px;'),
+                //'htmlOptions'=>array('style'=>'width:50px;'),
                 )); 
             ?>
         </span>
-	</div>
 </div>
 	
 

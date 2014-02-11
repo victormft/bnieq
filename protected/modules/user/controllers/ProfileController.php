@@ -32,7 +32,7 @@ class ProfileController extends Controller
 				'users'=>array('*'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('edit', 'startupsforportfolio'),
+				'actions'=>array('edit', 'startupsforportfolio', 'logoUp'),
 				'users'=>array('@'),
 			),
             array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -192,6 +192,131 @@ class ProfileController extends Controller
             'profile'=>$profile,
             'stupsForPort'=>$stupsForPort,
 		));
+	}
+    
+    public function actionLogoUp($username)
+	{               
+		$model=$this->loadModel($username);
+        $profile = $model->profile;
+        
+		if(isset($_POST)){
+			$nome_imagem    = $_FILES['imagem-2']['name'];
+			$tamanho_imagem = $_FILES['imagem-2']['size'];
+			$tmp = $_FILES['imagem-2']['tmp_name'];
+			
+			if($profile->profile_picture==2)
+			{			
+				$rnd = rand(0,99999999);  // generate random number between 0-99999999
+				$extension_array = explode('.', $nome_imagem); //extension of the file
+				$extension=end($extension_array);
+				$newFileName = md5("{$rnd}-{$nome_imagem}").'.'.$extension;  // random number + file name 
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
+				
+				$profile->pic=CUploadedFile::getInstanceByName('imagem-2');
+                
+				if(!$profile->validate())
+				{
+					echo CJSON::encode(array(
+						'res'=>'no',
+						'msg'=>'<span style="color:red;">'. $profile->getErrors('pic')[0] .'</span>'
+					));
+					exit;
+				}
+                
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
+			
+				  
+				move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$newFileName); 
+					
+				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
+				
+				if($image->width>=$image->height)
+				{
+					$image->resize(200, 200, ImageExt::WIDTH)->quality(75)->sharpen(20);
+				}
+				else
+					$image->resize(200, 200, ImageExt::HEIGHT)->quality(75)->sharpen(20);
+					
+				$image->save(); // or $image->save('images/small.jpg');
+				
+                //$s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$img->name, S3::BUCKET_NB , $new_name, S3::ACL_PUBLIC_READ);
+					
+                //deletes from the server
+                //unlink(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+						
+				$model_img=new Image;
+				$model_img->name=$newFileName;
+				$model_img->extension=$extension;
+				$model_img->size=0;//$model->pic->size;	
+				if($model_img->save()){
+					$profile->profile_picture=$model_img->id;
+					$profile->save();
+				}
+				
+				echo CJSON::encode(array(
+                    'res'=>'OK',
+				));
+             
+				exit;
+			}
+			
+			else
+			{
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
+				
+				$profile->pic=CUploadedFile::getInstanceByName('imagem-2');
+				if(!$profile->validate())
+				{
+					echo CJSON::encode(array(
+						'res'=>'no',
+						'msg'=>'<span style="color:red;">'. $profile->getErrors('pic')[0] .'</span>'
+					));
+					exit;
+				}
+			
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
+				
+				unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
+					
+				$img=Image::model()->findByPk($profile->profile_picture);
+				$ext_arr = explode('.', $img->name);
+				$ext = end($ext_arr);
+				$new_name=md5($img->name).'.'.$ext;
+					
+				$img->name=$new_name;
+					
+				$img->save();
+					
+				move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+					
+				if($image->width>=$image->height)
+				{
+					$image->resize(200, 200, ImageExt::WIDTH)->sharpen(25);
+				}
+				else
+					$image->resize(200, 200, ImageExt::HEIGHT)->sharpen(25);
+					
+				$image->save(); // or $image->save('images/small.jpg');
+				
+                //$s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$img->name, S3::BUCKET_NB , $new_name, S3::ACL_PUBLIC_READ);
+					
+                //deletes from the server
+                //unlink(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+                
+				echo CJSON::encode(array(
+                    'res'=>'OK',
+				));
+             
+				exit;
+			}
+        
+		}
+		
 	}
         
     public function actionUpdateLocation()
