@@ -813,7 +813,7 @@ function navbar_reset_top()
 		<input type="file" id="imagem-2" name="imagem-2" style="display:none;"/>
 		<a href="javascript:void(0);" style="float:left;">
 	
-		<div id="startup-profile-img" data-toggle='tooltip' data-original-title='Substituir Imagem' style="margin-right:0; background-image:url(<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name; ?>); background-size:cover; background-position: 50% 50%;"></div>
+		<div id="startup-profile-img" data-toggle='tooltip' data-original-title='Substituir Imagem' style="margin-right:0; background-image:url(<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$model->logo0->name; ?>); background-size:cover; background-position: 50% 50%;"></div>
 		
 		</a>
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
