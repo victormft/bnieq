@@ -213,8 +213,7 @@ class ProfileController extends Controller
 				
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! testes
 				
-				$profile->pic=CUploadedFile::getInstanceByName('imagem-2');
-                
+				$profile->pic=CUploadedFile::getInstanceByName('imagem-2');                
 				if(!$profile->validate())
 				{
 					echo CJSON::encode(array(
@@ -279,7 +278,11 @@ class ProfileController extends Controller
 			
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
 				
-				unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
+                
+				include('s3_config.php');
+                $s3->deleteObject(S3::BUCKET_NB, $model->logo0->name);
+                
+				//unlink(Yii::getPathOfAlias('webroot').'/images/'.$profile->logo->name);
 					
 				$img=Image::model()->findByPk($profile->profile_picture);
 				$ext_arr = explode('.', $img->name);
@@ -289,24 +292,32 @@ class ProfileController extends Controller
 				$img->name=$new_name;
 					
 				$img->save();
-					
-				move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$img->name);
-					
-				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
-					
-				if($image->width>=$image->height)
+					                
+                $src=imagecreatefromjpeg($tmp);
+				
+				list($width,$height)=getimagesize($tmp);
+				
+				if($width>=$height)
 				{
-					$image->resize(200, 200, ImageExt::WIDTH)->sharpen(25);
+					$newwidth=200;
+					$newheight=($height/$width)*$newwidth;
+					$new_tmp=imagecreatetruecolor($newwidth,$newheight);
 				}
 				else
-					$image->resize(200, 200, ImageExt::HEIGHT)->sharpen(25);
-					
-				$image->save(); // or $image->save('images/small.jpg');
+				{
+					$newheight=200;
+					$newwidth=($width/$height)*$newheight;
+					$new_tmp=imagecreatetruecolor($newwidth,$newheight);
+				}
 				
-                //$s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$img->name, S3::BUCKET_NB , $new_name, S3::ACL_PUBLIC_READ);
-					
-                //deletes from the server
-                //unlink(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+				imagecopyresampled($new_tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
+				
+				imagejpeg($new_tmp,Yii::getPathOfAlias('webroot').'/images/'.$img->name,75);
+				
+				$s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$img->name, S3::BUCKET_NB , $new_name, S3::ACL_PUBLIC_READ);
+				
+                unlink(Yii::getPathOfAlias('webroot').'/images/'.$img->name);
+				
                 
 				echo CJSON::encode(array(
                     'res'=>'OK',

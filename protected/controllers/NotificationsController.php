@@ -19,7 +19,7 @@ class NotificationsController extends Controller
         
 
         $qry = new CDbCriteria( array(
-            'condition' => "user_id LIKE :param AND DAY(time) >= DAY(NOW())-7",
+            'condition' => "user_id LIKE :param AND time between DATE_SUB(NOW(), INTERVAL 10 DAY) and NOW()",
             'order' => "time DESC",
             'params'    => array(':param' => Yii::app()->user->id),  
             'limit'=> 40
@@ -40,7 +40,7 @@ class NotificationsController extends Controller
                     $html .= '		
                     <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                         <div class="team-item">
-                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
+                            <div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. CHtml::link($source->getFullName(), array('/'.$source->username)) . '</b> '. UserModule::t('followed you.') . '</div>
                             </div>
@@ -54,7 +54,7 @@ class NotificationsController extends Controller
                     $html .= '		
                     <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                         <div class="team-item">
-                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
+                            <div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. CHtml::link($source->getFullName(), array('/'.$source->username)) . '</b> '. UserModule::t('asked for membership in') . ' <b>' . CHtml::link($startup->name, array('/'.$startup->startupname)) . '</b>.</div>
                             </div>
@@ -69,7 +69,7 @@ class NotificationsController extends Controller
                     $html .= '		
                     <div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
                         <div class="team-item">
-                            <div class="notif-image"><img src="http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name .'" /></div>
+                            <div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$source->profile->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>
                             <div class="team-text">
                                 <div class="team-resume"><b>'. CHtml::link($source->getFullName(), array('/'.$source->username)) . '</b> '. UserModule::t('added you to') . ' <b>' . CHtml::link($startup->name, array('/'.$startup->startupname)) . '</b>.</div>
                             </div>

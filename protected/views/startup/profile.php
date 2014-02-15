@@ -468,7 +468,7 @@ $('.video-images-items').carouFredSel({
 
 <div class="profile-header-wrap">
 	<div class="profile-header">	
-		<div id="startup-profile-img" style="background-image:url(<?php echo Yii::app()->request->baseUrl.'/images/'.$model->logo0->name; ?>); background-size:cover; background-position: 50% 50%;"></div>
+		<div id="startup-profile-img" style="background-image:url(<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$model->logo0->name; ?>); background-size:cover; background-position: 50% 50%;"></div>
 		
 		<div class="profile-header-info">
 			

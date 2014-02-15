@@ -721,7 +721,7 @@ $(document.body).on('click','.start',function(event){
     </div>
     
     <?php if(!$model->isReallyYou()): ?> 
-        <span class="edit-btn-user">
+        <span style="float: right; margin-top: 20px;">
      
             <?php $this->widget('bootstrap.widgets.TbButton', array(
                 'label'=>UserModule::t('Report'),
