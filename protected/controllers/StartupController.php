@@ -1344,7 +1344,7 @@ class StartupController extends Controller
 				<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($comment->date))).'</div>
 				<div style="overflow: auto; padding:0 10px 0 10px;">
 					<div class="team-item">
-						<div class="notif-image" data-id="'. $comment->id .'"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+						<div class="notif-image" data-id="'. $comment->id .'" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>
 						<div class="team-text" style="float:left;">
 							<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) .'</b> comentou em '. CHtml::link($model->name, array('/'.$model->startupname)) .'</div>
 							<div class="team-comment" style="width:300px;">'. CHtml::encode($comment->text) .'</div>

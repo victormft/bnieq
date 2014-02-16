@@ -71,6 +71,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'opacity':'0.5'});
 				$('.profile-column-l-press').css({'opacity':'0.5'});
 				$('.profile-column-l-update').css({'opacity':'0.5'});
+                $('.profile-column-l-comment').css({'opacity':'0.5'});
 				$.ajax({
 					url: '".Yii::app()->request->baseUrl."/activitystartup/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
@@ -82,9 +83,11 @@ $('.chooser').click(function(event){
 						$('.profile-column-l').css({'display':'none'});
 						$('.profile-column-l-press').css({'display':'none'});
 						$('.profile-column-l-update').css({'display':'none'});
+                        $('.profile-column-l-comment').css({'display':'none'});
 						$('.profile-column-l').css({'opacity':'1'});
 						$('.profile-column-l-press').css({'opacity':'1'});
 						$('.profile-column-l-update').css({'opacity':'1'});
+                        $('.profile-column-l-comment').css({'opacity':'1'});
 						$('.content-info-activity').html(data.res);
 						$('.profile-column-l-activity').css({'display':'block'});
 						elem.addClass('already-loaded');
@@ -96,6 +99,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'display':'none'});
 				$('.profile-column-l-press').css({'display':'none'});
 				$('.profile-column-l-update').css({'display':'none'});
+                $('.profile-column-l-comment').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'block'});
 			}
 		}
@@ -106,6 +110,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'opacity':'0.5'});
 				$('.profile-column-l-activity').css({'opacity':'0.5'});
 				$('.profile-column-l-update').css({'opacity':'0.5'});
+                $('.profile-column-l-comment').css({'opacity':'0.5'});
 				$.ajax({
 					url: '".Yii::app()->request->baseUrl."/press/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
@@ -117,9 +122,11 @@ $('.chooser').click(function(event){
 						$('.profile-column-l').css({'display':'none'});
 						$('.profile-column-l-activity').css({'display':'none'});
 						$('.profile-column-l-update').css({'display':'none'});
+                        $('.profile-column-l-comment').css({'display':'none'});
 						$('.profile-column-l').css({'opacity':'1'});
 						$('.profile-column-l-activity').css({'opacity':'1'});
 						$('.profile-column-l-update').css({'opacity':'1'});
+                        $('.profile-column-l-comment').css({'opacity':'1'});
 						$('.content-info-press').html(data.res);
 						$('.profile-column-l-press').css({'display':'block'});
 						elem.addClass('already-loaded');
@@ -131,6 +138,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'none'});
 				$('.profile-column-l-update').css({'display':'none'});
+                $('.profile-column-l-comment').css({'display':'none'});
 				$('.profile-column-l-press').css({'display':'block'});
 			}
 		}
@@ -141,6 +149,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'opacity':'0.5'});
 				$('.profile-column-l-activity').css({'opacity':'0.5'});
 				$('.profile-column-l-press').css({'opacity':'0.5'});
+                $('.profile-column-l-comment').css({'opacity':'0.5'});
 				$.ajax({
 					url: '".Yii::app()->request->baseUrl."/startupupdate/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
@@ -152,9 +161,11 @@ $('.chooser').click(function(event){
 						$('.profile-column-l').css({'display':'none'});
 						$('.profile-column-l-activity').css({'display':'none'});
 						$('.profile-column-l-press').css({'display':'none'});
+                        $('.profile-column-l-comment').css({'display':'none'});
 						$('.profile-column-l').css({'opacity':'1'});
 						$('.profile-column-l-activity').css({'opacity':'1'});
 						$('.profile-column-l-press').css({'opacity':'1'});
+                        $('.profile-column-l-comment').css({'opacity':'1'});
 						$('.content-info-update').html(data.res);
 						$('.profile-column-l-update').css({'display':'block'});
 						elem.addClass('already-loaded');
@@ -166,6 +177,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'none'});
 				$('.profile-column-l-press').css({'display':'none'});
+                $('.profile-column-l-comment').css({'display':'none'});
 				$('.profile-column-l-update').css({'display':'block'});
 			}
 		}
@@ -176,6 +188,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'opacity':'0.5'});
 				$('.profile-column-l-activity').css({'opacity':'0.5'});
 				$('.profile-column-l-press').css({'opacity':'0.5'});
+                $('.profile-column-l-update').css({'opacity':'0.5'});
 				$.ajax({
 					url: '".Yii::app()->request->baseUrl."/startupcomment/index?startupname=".$model->startupname."&offset=0',
 					type: 'POST',
@@ -187,9 +200,11 @@ $('.chooser').click(function(event){
 						$('.profile-column-l').css({'display':'none'});
 						$('.profile-column-l-activity').css({'display':'none'});
 						$('.profile-column-l-press').css({'display':'none'});
+                        $('.profile-column-l-update').css({'display':'none'});
 						$('.profile-column-l').css({'opacity':'1'});
 						$('.profile-column-l-activity').css({'opacity':'1'});
 						$('.profile-column-l-press').css({'opacity':'1'});
+                        $('.profile-column-l-update').css({'opacity':'1'});
 						$('.content-info-comment').html(data.res);
 						$('.profile-column-l-comment').css({'display':'block'});
 						elem.addClass('already-loaded');
@@ -201,6 +216,7 @@ $('.chooser').click(function(event){
 				$('.profile-column-l').css({'display':'none'});
 				$('.profile-column-l-activity').css({'display':'none'});
 				$('.profile-column-l-press').css({'display':'none'});
+                $('.profile-column-l-update').css({'display':'none'});
 				$('.profile-column-l-comment').css({'display':'block'});
 			}
 			
@@ -210,6 +226,7 @@ $('.chooser').click(function(event){
 			$('.profile-column-l-activity').css({'display':'none'});
 			$('.profile-column-l-press').css({'display':'none'});
 			$('.profile-column-l-update').css({'display':'none'});
+            $('.profile-column-l-comment').css({'display':'none'});
 			$('.profile-column-l').css({'display':'block'});
 		}
 	}
@@ -1178,7 +1195,7 @@ $('.video-images-items').carouFredSel({
 				<?php foreach($relational_tbl as $rel):?>
 				<?php  $usr_startup=User::model()->find('id=:id', array(':id'=>$rel->user_id)); ?>
 				<div class="team-item">		
-					<div class="team-image"><img src="<?php echo Yii::app()->request->baseUrl.'/images/'.$usr_startup->profile->logo->name ?>" id="team-img"/></div>
+					<div class="team-image" style="background-image:url(<?php echo 'http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$usr_startup->profile->logo->name ?>); background-size:cover; background-position: 50% 50%;"></div>
 					<div class="team-text">
 						<div class="team-name"><span data-id="<?php echo CHtml::encode($usr_startup->id); ?>"><?php echo CHtml::link(CHtml::encode($usr_startup->profile->firstname .' '. $usr_startup->profile->lastname),array('/'.CHtml::encode($usr_startup->username)));?></span></div>
 						<div class="team-position"><?php echo CHtml::encode(UserModule::t($rel->position));?></div>

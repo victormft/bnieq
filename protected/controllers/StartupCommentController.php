@@ -40,7 +40,7 @@ class StartupCommentController extends Controller
 				{
 				
 					$html .= '	
-									<div class="notif-image" data-id="' . $q->id . '"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+									<div class="notif-image" data-id="' . $q->id . '" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>
 					';
 
 				}
@@ -48,7 +48,7 @@ class StartupCommentController extends Controller
 				else
 				{
 					$html .= '	
-									<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+									<div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>
 					';
 				}
 				

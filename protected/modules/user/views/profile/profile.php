@@ -590,7 +590,7 @@ $(document.body).on('click','.start',function(event){
 		
 		<div class="content-info">
             
-            <div class="content-info-unit" style="text-align: center;">        
+            <div class="content-info-unit" style="text-align: center; overflow: hidden;">        
                 <?php $this->widget('bootstrap.widgets.TbButton', array(
                         'label'=>'Create Startup',
                         'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
@@ -831,7 +831,7 @@ $(document.body).on('click','.start',function(event){
                         );
                     }
                     ?>  
-                    <a href="/bnieq/user/settings/investorstatus">[Edit]</a>
+                    <a href="<?php echo Yii::app()->request->baseUrl; ?>/user/settings/investorstatus">[Edit]</a>
                 </div>				 
             </div>
                     

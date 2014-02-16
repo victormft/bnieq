@@ -46,10 +46,10 @@ class ActivityStartupController extends Controller
 				{        
 					case ActivityStartup::FOLLOW_STARTUP :
 						$html .= '		
-						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/Y', strtotime(CHtml::encode($q->time))).'</div>
 						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
 							<div class="team-item">
-								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $user->profile->logo->name .'" /></div>
+								<div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$user->profile->logo->name.'); background-size:cover; background-position: 50% 50%;"></div>
 								<div class="team-text" style="float:left;>
 									<div class="team-resume"><b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> '. UserModule::t('followed you.') . '</div>
 								</div>
@@ -61,10 +61,10 @@ class ActivityStartupController extends Controller
 						
 					case ActivityStartup::ADD_TRACTION :
 						$html .= '		
-						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/Y', strtotime(CHtml::encode($q->time))).'</div>
 						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
 							<div class="team-item">
-								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
+								<div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$q->startup->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>
 								<div class="team-text" style="float:left;>
 									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou novo <b>'. CHtml::link('Traction', array('/'.$q->startup->startupname . '?r='.rand(0,99999).'#traction')) . '.</b></div>
 								</div>
@@ -76,10 +76,10 @@ class ActivityStartupController extends Controller
 					
 					case ActivityStartup::ADD_PRESS :
 						$html .= '		
-						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/Y', strtotime(CHtml::encode($q->time))).'</div>
 						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
 							<div class="team-item">
-								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
+								<div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$q->startup->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>
 								<div class="team-text" style="float:left;>
 									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou novo <b><span class="press-link">'. CHtml::link('Press', array('/'.$q->startup->startupname.'#press')) . '.</span></b></div>
 								</div>
@@ -91,10 +91,10 @@ class ActivityStartupController extends Controller
 					
 					case ActivityStartup::ADD_MEMBER :
 						$html .= '		
-						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/Y', strtotime(CHtml::encode($q->time))).'</div>
 						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
 							<div class="team-item">
-								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
+								<div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$q->startup->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>
 								<div class="team-text" style="float:left;>
 									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou o membro <b>'. CHtml::link($user->getFullName(), array('/'.$user->username)) . '</b> </div>
 								</div>
@@ -106,10 +106,10 @@ class ActivityStartupController extends Controller
 					
 					case ActivityStartup::ADD_UPDATE :
 						$html .= '		
-						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/y', strtotime(CHtml::encode($q->time))).'</div>
+						<div style="float:left; margin-right:30px; line-height:45px;">'.date('d/m/Y', strtotime(CHtml::encode($q->time))).'</div>
 						<div style="overflow: auto; padding:0 10px 0 10px; line-height: 40px;">
 							<div class="team-item">
-								<div class="notif-image"><img src="'. Yii::app()->request->baseUrl .'/images/'. $q->startup->logo0->name .'" /></div>
+								<div class="notif-image" style="background-image:url(http://'.S3::BUCKET_NB.'.s3.amazonaws.com/'.$q->startup->logo0->name.'); background-size:cover; background-position: 50% 50%;"></div>
 								<div class="team-text" style="float:left;>
 									<div class="team-resume"><b>'. CHtml::link($q->startup->name, array('/'.$q->startup->startupname)) . '</b> adicionou novo <b><span class="update-link">'. CHtml::link('Update', array('/'.$q->startup->startupname.'#update')) . '.</span></b></div>
 								</div>
