@@ -201,8 +201,50 @@ class SettingsController extends Controller
         else $this->redirect(Yii::app()->controller->module->loginUrl);
 	}
     
+    public function actionInvestorStatus()
+    {
+        $model = InvestorProfile::model()->findbyPk(Yii::app()->user->id);
+        if (Yii::app()->user->id) {
+			
+			// ajax validator
+			if(isset($_POST['ajax']) && $_POST['ajax']==='investorProfile-form')
+			{
+				echo UActiveForm::validate($model);
+				Yii::app()->end();
+			}
+			
+			if(isset($_POST['InvestorProfile'])) {
+                $model->attributes=$_POST['InvestorProfile'];
+                if($model->validate()) {
+                    $required = array('full_name', 'cpf', 'rg');
+                    
+                    $error = false;
+                    foreach ($required as $field)
+                    {
+                        if(empty($_POST['InvestorProfile'][$field])){
+                            $error = true;
+                            break;
+                        }
+                    }
+                    
+                    if(!$error) $model->complete = 1;
+                    else $model->complete = 0;
+                    
+                    $model->save();
+                    
+                    Yii::app()->user->setFlash('success',UserModule::t("Profile saved!"));
+                    $this->redirect(array("investorstatus"));
+                }
+			}
+			else $this->render('investor_status',array('model'=>$model));
+	    }
+        else $this->redirect(Yii::app()->controller->module->loginUrl);
+    }
+
     
-    
+
+
+
     /**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

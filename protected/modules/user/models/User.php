@@ -86,6 +86,7 @@ class User extends CActiveRecord
 	{
         return array(
             'profile' => array(self::HAS_ONE, 'Profile', 'user_id'),
+            'investorProfile' => array(self::HAS_ONE, 'InvestorProfile', 'user_id'),
 			'senders' => array(self::HAS_MANY, 'Message', 'sender_id'),
 			'receivers' => array(self::HAS_MANY, 'Message', 'receiver_id'),
 			'startups' => array(self::MANY_MANY, 'Startup', 'user_startup(user_id, startup_id)',

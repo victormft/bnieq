@@ -1,6 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("General");
-
-?>
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("General"); ?>
 
 <?php $this->renderPartial('_navigation', array('active'=>'general')); ?>
 

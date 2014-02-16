@@ -17,6 +17,7 @@ class LoginController extends Controller
             //$login=new UserLogin;
             $model = new RegistrationForm;
             $profile=new Profile;
+            $investorProfile = new InvestorProfile;
             $profile->regMode = true;
             
             // ajax validator
@@ -45,6 +46,7 @@ class LoginController extends Controller
                         if ($model->save()) {         
                             
                             $profile->user_id=$model->id;
+                            $investorProfile->user_id=$model->id;
 
                             //profile pic
                             $profile->profile_picture = 2;
@@ -73,6 +75,7 @@ class LoginController extends Controller
                             }
 
                             $profile->save();
+                            $investorProfile->save();
                             
                             //subscribe to MailChimp
                             if($model->newsletter == true)

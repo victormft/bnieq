@@ -792,6 +792,54 @@ $(document.body).on('click','.start',function(event){
 
     <?php endif; ?>     
 
+<?php if($model->isReallyYou()): ?>    
+    
+    <div class="content-wrap">   
+        
+        <div class="content-head clicked">
+            <i class="icon-gear profile-icon"></i> Configure seu perfil
+        </div>
+        
+		<div class="content-info">
+            
+            <div class="content-info-unit">         
+                <div class="clabel">			
+                    <?php echo '<b>Perfil de Investidor: </b>'; ?>                  
+                </div>
+                <div class="editable-wrap-r">		                    
+                    <?php 
+                    if($profile->user->investorProfile->isComplete())
+                    {
+                        $this->widget(
+                            'bootstrap.widgets.TbBadge',
+                            array(
+                                'type' => 'success',
+                                // 'success', 'warning', 'important', 'info' or 'inverse'
+                                'label' => 'Aprovado',
+                            )
+                        );
+                    }
+                    else 
+                    {
+                        $this->widget(
+                            'bootstrap.widgets.TbBadge',
+                            array(
+                                'type' => 'warning',
+                                // 'success', 'warning', 'important', 'info' or 'inverse'
+                                'label' => 'Incompleto',
+                            )
+                        );
+                    }
+                    ?>  
+                    <a href="/bnieq/user/settings/investorstatus">[Edit]</a>
+                </div>				 
+            </div>
+                    
+		</div>
+		
+	</div>	
+
+<?php endif; ?>
 
 		
     

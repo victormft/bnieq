@@ -103,7 +103,7 @@ $('.remove-search').click(function(event){
                                 <li class="name-hover"><a href= <?php echo Yii::app()->homeUrl . '/startup/create' ?>><i class="icon-plus" style="margin:0 7px 0 1px; line-height:17px;"></i>Criar Startup</a></li>
 								<li class="divider"></li>
 								<?php $stups=$user->getStartupsByRole("Founder"); if($stups): ?>
-                                <li class="dropdown-header">Startups fundadas</li>
+                                <li class="dropdown-header" style="text-align: center;">Startups fundadas</li>
                                 <?php endif; ?>
                                 
                                 <?php foreach($stups as $stup): ?>                                
@@ -112,7 +112,7 @@ $('.remove-search').click(function(event){
                                 
                                 <?php $stupsNP=$user->getNonPubStartupsByRole("Founder"); if($stupsNP): ?>
                                 <li class="divider"></li>
-                                <li class="dropdown-header">Não publicadas</li>
+                                <li class="dropdown-header" style="text-align: center;">Não publicadas</li>
                                 <?php endif; ?>
                                 
                                 <?php foreach($stupsNP as $stup): ?>
