@@ -36,7 +36,7 @@ class ActivityStartupController extends Controller
 		
 		foreach ($query as $k => $q)
 		{
-			if($offset <= $k && $k < $offset+2)
+			if($offset <= $k && $k < $offset+5)
 			{
 				if(isset($q->user_id)){
 					$user = User::model()->findbypk($q->user_id);
@@ -123,7 +123,7 @@ class ActivityStartupController extends Controller
 			}
 		}
 		
-		$new_offset=$offset+2;
+		$new_offset=$offset+5;
 		
 		if($new_offset < count($query))
 			$html .= '<div class="more-activities" data-offset='.$new_offset.' style="text-align:center;"><a href="javascript:void(0)">More</a></div>';	

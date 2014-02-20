@@ -107,6 +107,55 @@ class PitchController extends Controller
 		));
 	}
 
+    public function actionEdit($name)
+	{
+        $model=$this->loadModelByName($name);
+       
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model->startup)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Pitch!'));
+		
+		if(isset($_POST['Startup']['pic']))
+		{
+		
+			
+			$this->render('view_edit',array(
+					'model'=>$model,
+			));
+			
+		}
+		
+		else if(isset($_FILES['mult_pic']) && count($model->images)<4)
+		{
+	
+			
+			$this->render('view_edit',array(
+					'model'=>$this->loadModel($name),
+			));
+					
+		}
+		
+		
+		else
+		{
+			/*
+            if($model->published==0)
+			{
+				$user = Yii::app()->getComponent('user');
+				$user->setFlash(
+					'warning',
+					'<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)", "Produto" e "Estágio" e clique no botão \'Publicar\'.'
+				);
+			}
+             * 
+             */
+				
+			$this->render('edit',array(
+				'model'=>$model,
+			));
+		}
+	}
+	
+    
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -209,6 +258,22 @@ class PitchController extends Controller
 	public function loadModel($id)
 	{
 		$model=Pitch::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+    
+    /*
+     * Carrega o pitch pelo startupname
+     */
+    public function loadModelByName($name)
+	{
+        $startup = Startup::model()->find('startupname=:name',
+										array(
+										  ':name'=>$name,
+										));        
+		$model = $startup->pitch;
+        
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

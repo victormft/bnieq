@@ -1,4 +1,4 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t($model->getFullName()); ?>
+<?php $this->pageTitle=CHtml::encode($model->getFullName()); ?>
 
 <?php
 $this->layout='//layouts/column1'; 

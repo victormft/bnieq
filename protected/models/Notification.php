@@ -139,7 +139,7 @@ class Notification extends CActiveRecord
     
     public function saveFollow()
     {
-        $sql = "SELECT * FROM notification WHERE user_id=:uId AND source_id=:sId AND time between DATE_SUB(NOW(), INTERVAL 20 DAY) and NOW()";
+        $sql = "SELECT id FROM notification WHERE user_id=:uId AND source_id=:sId AND time between DATE_SUB(NOW(), INTERVAL 30 DAY) and NOW()";
         $command = Yii::app()->db->createCommand($sql);
         $command->bindValue(":uId", $this->user_id, PDO::PARAM_INT);
         $command->bindValue(":sId", $this->source_id, PDO::PARAM_INT);

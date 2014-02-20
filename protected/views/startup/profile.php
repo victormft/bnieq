@@ -1,3 +1,6 @@
+<?php $this->pageTitle=CHtml::encode($model->name); ?>
+
+
 <?php
 $this->layout='column1';
 ?>
@@ -479,7 +482,58 @@ $('.video-images-items').carouFredSel({
 		pagination: '#video-images-pagination'
 	});	
 
+$(document.body).on('click','.follow-press',function(event){
+
+    var user_name = encodeURIComponent($(this).parent().attr('data-name'));
+    var elem = $(this);
+
+    if(elem.hasClass('btn-follow'))
+    {	
+        elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+
+        $.ajax({
+            url: '".Yii::app()->request->baseUrl."/user/user/follow?username='+user_name,
+            type: 'POST',
+			data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
+            dataType: 'json',
+            success: function(data){
+                elem.removeClass('btn-success');
+                elem.removeClass('btn-follow');
+                elem.addClass('btn-unfollow');
+                elem.text('".UserModule::t('Unfollow')."');	
+            }
+        });
+    }
+
+    else if(elem.hasClass('btn-unfollow'))
+    {
+        elem.html('<img src=\"".Yii::app()->request->baseUrl."/images/loading.gif\">');
+
+        $.ajax({
+            url: '".Yii::app()->request->baseUrl."/user/user/unfollow?username='+user_name,
+            type: 'POST',
+			data: {
+					YII_CSRF_TOKEN: '".Yii::app()->request->csrfToken."',
+			},
+            dataType: 'json',
+            success: function(data){
+                elem.addClass('btn-success');
+                elem.removeClass('btn-unfollow');
+                elem.addClass('btn-follow');
+                elem.text('".UserModule::t('Follow')."');				
+            }
+        });
+    }
+			
+});
+
+
+
 ");
+
+
 
 ?>
 
@@ -549,21 +603,17 @@ $('.video-images-items').carouFredSel({
 				
 				
 					<div class="follow-info">
-						
-						
-						<?php EQuickDlgs::ajaxLink(
-						array(
-							'controllerRoute' => 'startup/followpop',
-							'actionParams' => array('id'=>$model->id),
-							'dialogTitle' => UserModule::t('Followers'),
-							'dialogWidth' => 600,
-							'dialogHeight' => 500,
-							'openButtonText' => '<div class="follow-count">'.count($model->users).'</div><div class="follow-status">'.UserModule::t('Followers').'</div>',
-							//'closeButtonText' => 'Close', //uncomment to add a closebutton to the dialog
-						)
-						);?>
-						
-						
+
+                        <div class="founder" data-html=true>
+                            <a href="#" data-toggle="modal" data-target="#modal-followers">
+                                <div class="follow-count"><?php echo count($model->users) ?></div>
+                                <div class="follow-status"><?php echo UserModule::t('Followers') ?></div>
+                            </a>     
+
+                            <!--modal no fim-->
+                            
+                            
+                        </div>
 						
 					</div>
 
@@ -1023,6 +1073,64 @@ $('.video-images-items').carouFredSel({
 		
 	</div>	
 	<?php endif;?>
+    
+    <?php if($model->isUserEditor(Yii::app()->user->id)): ?>
+        <div class="content-wrap">
+
+            <div class="content-head clicked">
+                <i class="icon-circle-arrow-up profile-icon"></i> Captar investimento (Pitch)
+            </div>
+
+            <div class="content-info">
+
+                <div class="content-info-unit" style="text-align: center; overflow: hidden;">        
+                    <?php $this->widget('bootstrap.widgets.TbButton', array(
+                            'label'=>'Create Pitch',
+                            'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                            'size'=>'large', // null, 'large', 'small' or 'mini'
+                            'url'=>$this->createUrl('/pitch/create?startupId='.$model->id),//array('unfollow','name'=>$model->name),
+                        )); ?>	 
+                </div>
+                
+                <div class="content-info-unit" style="margin-top: 30px">         
+                    <div class="clabel">			
+                        <?php echo '<b>Perfil de captação: </b>'; ?>                  
+                    </div>
+                    <div class="editable-wrap-r">		                    
+                        <?php 
+                        if($model->pitchProfile->complete == true)
+                        {
+                            $this->widget(
+                                'bootstrap.widgets.TbBadge',
+                                array(
+                                    'type' => 'success',
+                                    // 'success', 'warning', 'important', 'info' or 'inverse'
+                                    'label' => 'Aprovado',
+                                )
+                            );
+                        }
+                        else 
+                        {
+                            $this->widget(
+                                'bootstrap.widgets.TbBadge',
+                                array(
+                                    'type' => 'warning',
+                                    // 'success', 'warning', 'important', 'info' or 'inverse'
+                                    'label' => 'Incompleto',
+                                )
+                            );
+                        }
+                        ?>  
+                        <a href="<?php echo $this->createUrl('/startup/pitchprofile', array('name'=>$model->startupname)) ?>">[Edit]</a>
+                    </div>				 
+                </div>  
+
+            </div>
+            
+        </div>  
+    
+    <?php endif;?>
+    
 	
 	<?php if($model->company_stage):?>
 	<div class="content-wrap" style="position:relative;">
@@ -1404,5 +1512,33 @@ $('.video-images-items').carouFredSel({
 	<?php echo CHtml::encode($model->create_time); ?>
 	<br />
 -->
+
+<?php $this->beginWidget(
+    'bootstrap.widgets.TbModal',
+    array('id' => 'modal-followers')
+); ?>
+    <div class="modal-header" style="text-align: center;">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h4 class="modal-title" id="myModalLabel"><?php echo UserModule::t('Followers') ?></h4>
+    </div>
+
+    <div class="modal-body">
+        <?php $this->renderPartial('_followpop',array('provider'=>$model->users, 'attr'=>'follower')) ?>
+    </div>
+
+    <div class="modal-footer">
+
+        <?php $this->widget(
+            'bootstrap.widgets.TbButton',
+            array(
+                'label' => 'Close',
+                'url' => '#',
+                'htmlOptions' => array('data-dismiss' => 'modal'),
+            )
+        ); ?>
+    </div>
+
+<?php $this->endWidget(); ?>
+
 	 
 
