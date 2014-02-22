@@ -89,7 +89,7 @@ class PitchController extends Controller
 			$profile->save(false);
 			
 			
-			$this->redirect(array('view','id'=>$model->id));
+			$this->redirect(array('index?name='.$startup->startupname));
 			}
 		}
 
