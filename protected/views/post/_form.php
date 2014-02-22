@@ -29,7 +29,22 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php //echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php
+		echo CHtml::ajaxSubmitButton('Save','//pitch/index',array(
+		'type'=>'POST',
+		'dataType'=>'json',
+		'success'=> 'js:function(data){
+			if(data.result==="success"){
+			$("#pitch-ajax-container").html(data.msg);
+          // do something on success, like redirect
+       }
+	   else{
+       }
+   }',
+));
+?>
+
 	</div>
 
 <?php $this->endWidget(); ?>

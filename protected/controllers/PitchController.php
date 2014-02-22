@@ -194,7 +194,7 @@ class PitchController extends Controller
 	public function actionDetail($id) {
 	
 	$this->renderPartial('_detail',array(
-			'model'=>$this->loadModel(1),
+			'model'=>$this->loadModel($id),
 		));
 	
 	}
@@ -230,10 +230,30 @@ class PitchController extends Controller
 	
 	//need to put some secure to filter, loading the startup only if it's user is the same of current logged user
 	public function filterStartup($filterchain) {
-		if(isset($_GET['startupId'])) {
-			$this->_startup = Startup::model()->findByPk($_GET['startupId']);
+		if(isset($_GET['name'])) {
+		
+		
+		
+			$name = $_GET['name'];
+			
+			$this->_startup = Startup::model()->find('startupname=:name',
+										array(
+										  ':name'=>$name,
+										));
+		
+		
+		
+		
+		
+			//$this->_startup = Startup::model()->findByPk($_GET['startupId']);
+			
 			if($this->_startup === null)
 				throw new CHttpException(404,'A página requisitada não existe');
+			
+			
+			
+			//estou fazendo com que o create utilize startupname como parametro
+			
 			
 			if($this->_startup->pitches != NULL)
 				throw new CHttpException(403, 'Somente um pitch por vez.');
@@ -243,7 +263,7 @@ class PitchController extends Controller
 			
 			foreach($user->startups as $startup) {
 			
-			if($startup->id == $_GET['startupId'])
+			if($startup->startupname== $_GET['name'])
 				$authorization = true;	
 			}
 			

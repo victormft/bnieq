@@ -38,7 +38,7 @@ class Pitch extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('startup_id, investment_required, equity, video, pitch_text, exit_strategy', 'required'),
+			array('investment_required, equity,', 'required'),
 			array('equity', 'numerical'),
 			array('startup_id', 'length', 'max'=>20),
 			array('investment_required, funded', 'length', 'max'=>10),
@@ -78,6 +78,8 @@ class Pitch extends CActiveRecord
 			'pitch_text' => 'Pitch Text',
 			'exit_strategy' => 'Exit Strategy',
 			'create_time' => 'Create Time',
+			'published' => 'Published',
+			'completion' => 'Completion'
 		);
 	}
 

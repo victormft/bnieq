@@ -16,7 +16,7 @@ class ThreadController extends Controller
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
-			'ajaxOnly + index',
+			//'ajaxOnly + index',
 		);
 	}
 
@@ -75,6 +75,8 @@ class ThreadController extends Controller
 		
 		$model->user_id = $user->id;
 		$model_post->user_id = $user->id;
+		//if(isset($_GET['startupId']))
+				$model->startup_id = $_GET['startupId'];
 		
 
 		// Uncomment the following line if AJAX validation is needed
@@ -91,10 +93,15 @@ class ThreadController extends Controller
 				$model_post->setCreateTime(time());
 			}
 			
+			
+			
+		
 			$model->attributes=$_POST['Thread'];
 			$model->setCreateTime(time());
 			$model->last_post = $model->create_time;
-			$model->last_post_user_id = $model->id;
+			$model->last_post_user_id = $model->user_id;
+			
+			
 			$valid = ($model->validate());
 			
 			$model_post->thread_id = $model->id;
