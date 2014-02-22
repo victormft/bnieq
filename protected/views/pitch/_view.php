@@ -22,7 +22,7 @@
 	
 	<div>
 	<p>
-	<?php echo substr($data->pitch_text ,0,150) . '...' . CHtml::link('Continuar Lendo',array('pitch/view','id'=>$data->id) ); ?>
+	<?php echo substr($data->pitch_text ,0,150) . '...' . CHtml::link('Continuar Lendo',array('','name'=>$startup->startupname) ); ?>
 	
 	</div>
 	<br />

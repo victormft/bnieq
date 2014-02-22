@@ -50,16 +50,7 @@ class PitchController extends Controller
 		);
 	}
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
+	
 
 	/**
 	 * Creates a new model.
@@ -107,55 +98,6 @@ class PitchController extends Controller
 		));
 	}
 
-    public function actionEdit($name)
-	{
-        $model=$this->loadModelByName($name);
-       
-        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model->startup)))
-            throw new CHttpException(403,UserModule::t('You cannot edit this Pitch!'));
-		
-		if(isset($_POST['Startup']['pic']))
-		{
-		
-			
-			$this->render('view_edit',array(
-					'model'=>$model,
-			));
-			
-		}
-		
-		else if(isset($_FILES['mult_pic']) && count($model->images)<4)
-		{
-	
-			
-			$this->render('view_edit',array(
-					'model'=>$this->loadModel($name),
-			));
-					
-		}
-		
-		
-		else
-		{
-			/*
-            if($model->published==0)
-			{
-				$user = Yii::app()->getComponent('user');
-				$user->setFlash(
-					'warning',
-					'<strong>MODO RASCUNHO</strong><br/><br/>Para publicar o perfil, preencha no mínimo os campos "Setor(es)", "Produto" e "Estágio" e clique no botão \'Publicar\'.'
-				);
-			}
-             * 
-             */
-				
-			$this->render('edit',array(
-				'model'=>$model,
-			));
-		}
-	}
-	
-    
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -203,6 +145,34 @@ class PitchController extends Controller
 		$model=new Pitch('search');
 		$model->unsetAttributes();
 		
+		if(isset($_GET['name'])) {
+		
+		
+		
+			$name = $_GET['name'];
+			
+			$startup_model = Startup::model()->find('startupname=:name',
+										array(
+										  ':name'=>$name,
+										));
+			
+			if(isset($startup_model)) {
+			
+				$pitch_model = Pitch::model()->find('startup_id=:id',
+										array(
+										  ':id'=>$startup_model->id,
+										));
+				if(isset($pitch_model))
+					$this->render('view',array(
+					'model'=>$pitch_model,
+					));
+		}
+			else
+				throw new CHttpException(403, 'Nome de startup inválido.');
+				
+		}
+		else {
+		
 		if(isset($_GET['g']))
 		{
 			//if($_GET['g']=='Selecionadas')
@@ -223,6 +193,7 @@ class PitchController extends Controller
 		$this->render('index',array(
 			'dataProvider'=>$model,
 		));
+		}
 	}
 
 	/**
@@ -262,22 +233,6 @@ class PitchController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
-    
-    /*
-     * Carrega o pitch pelo startupname
-     */
-    public function loadModelByName($name)
-	{
-        $startup = Startup::model()->find('startupname=:name',
-										array(
-										  ':name'=>$name,
-										));        
-		$model = $startup->pitch;
-        
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
-	}
 
 
 	/**
@@ -294,6 +249,7 @@ class PitchController extends Controller
 	}
 	
 	//need to put some secure to filter, loading the startup only if it's user is the same of current logged user
+	
 	public function filterStartup($filterchain) {
 		if(isset($_GET['name'])) {
 		
