@@ -33,7 +33,7 @@ class StartupController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'logoUp', 'autoTest', 'pressUrl', 'followPop'),
+				'actions'=>array('create', 'edit'/* tinha parado aqui... o resto veio do * acima*/,'editsectors', 'multPic', 'publish', 'multUp', 'multDel', 'logoUp', 'autoTest', 'pressUrl', 'followPop', 'pitchprofile'),
 				'users'=>array('@'),
 			),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -328,6 +328,7 @@ class StartupController extends Controller
 	public function actionCreate()
 	{
 		$model=new Startup('create');
+        $pitchProfile = new StartupPitchProfile;
 		// Image Instance
 		
 
@@ -427,6 +428,9 @@ class StartupController extends Controller
 			            
 			if($model->save())
             {
+                $pitchProfile->startup_id = $model->id;
+                $pitchProfile->save();
+                
                 //who create is founder
                 $user_startup = new UserStartup;
                 $user_startup->user_id = Yii::app()->user->id;
@@ -803,7 +807,7 @@ class StartupController extends Controller
                 $activity->user_id = Yii::app()->user->id;
                 $activity->activity_type = ActivityStartup::FOLLOW_STARTUP;
                 $activity->startup_id = $model->id;
-                $activity->save(); 
+                $activity->saveFollow(); 
 				
 				echo CJSON::encode(array(
 					'res'=>count($model->users)
@@ -829,7 +833,7 @@ class StartupController extends Controller
                 $activity->user_id = Yii::app()->user->id;
                 $activity->activity_type = ActivityStartup::FOLLOW_STARTUP;
                 $activity->startup_id = $model->id;
-                $activity->save(); 
+                $activity->saveFollow(); 
 				
 				$model = $this->loadModel($_GET['name']);
 				
@@ -1865,6 +1869,48 @@ class StartupController extends Controller
 		EQuickDlgs::render('_followpop',array('provider'=>$model->users));
 	
 	}
+    
+    public function actionPitchProfile($name)
+    {
+        $model=$this->loadModel($name);
+        $profile = $model->pitchProfile;
+        
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));
+        
+        // ajax validator
+        if(isset($_POST['ajax']) && $_POST['ajax']==='pitchProfile-form')
+        {
+            echo UActiveForm::validate($profile);
+            Yii::app()->end();
+        }
+        
+        if(isset($_POST['StartupPitchProfile'])) {
+            $profile->attributes=$_POST['StartupPitchProfile'];
+            if($profile->validate()) {
+                $required = array('cnpj', 'full_address');
+
+                $error = false;
+                foreach ($required as $field)
+                {
+                    if(empty($_POST['StartupPitchProfile'][$field])){
+                        $error = true;
+                        break;
+                    }
+                }
+
+                if(!$error) $profile->complete = 1;
+                else $profile->complete = 0;
+
+                $profile->save();
+
+                Yii::app()->user->setFlash('success',UserModule::t("Profile saved!"));
+                
+                $this->redirect(array("pitchprofile?name=".$model->startupname));
+            }
+        }
+        else $this->render('pitch_profile', array('model'=>$model, 'profile'=>$profile));
+    }      
 					
 	
 }

@@ -61,35 +61,35 @@
                     <div class="editable-wrap-hover profile-editable-content" style="width: 675px">    
 
                         <div class="content-info-unit"> 
-                                <?php
-                                $form = $this->beginWidget(
-                                    'bootstrap.widgets.TbActiveForm',
-                                    array(
-                                        'id' => 'investorProfile-form',
-                                        'type' => 'horizontal',
-                                        'htmlOptions' => array('style' => 'margin-bottom: 0'), // for inset effect
-                                    )
-                                );
+                            <?php
+                            $form = $this->beginWidget(
+                                'bootstrap.widgets.TbActiveForm',
+                                array(
+                                    'id' => 'investorProfile-form',
+                                    'type' => 'horizontal',
+                                    'htmlOptions' => array('style' => 'margin-bottom: 0'),
+                                )
+                            );
 
-                                echo $form->textFieldRow($model, 'full_name', array('class' => 'span3'));
-                                echo $form->textFieldRow($model, 'cpf', array('class' => 'span3'));
-                                echo $form->textFieldRow($model, 'rg', array('class' => 'span3'));
-                                ?>
-                                <div class="form-actions" style="background-color: transparent; margin-bottom: 0">
-                                    <?php $this->widget(
-                                        'bootstrap.widgets.TbButton',
-                                        array(
-                                            'buttonType' => 'submit',
-                                            'type' => 'primary',
-                                            'label' => 'Submit'
-                                        )
-                                    ); ?>
-                                </div>
-                                <?php
-                                $this->endWidget();
-                                unset($form);
-                                ?>
-                                  
+                            echo $form->textFieldRow($model, 'full_name', array('class' => 'span3'));
+                            echo $form->textFieldRow($model, 'cpf', array('class' => 'span3'));
+                            echo $form->textFieldRow($model, 'rg', array('class' => 'span3'));
+                            ?>
+                            <div class="form-actions" style="background-color: transparent; margin-bottom: 0">
+                                <?php $this->widget(
+                                    'bootstrap.widgets.TbButton',
+                                    array(
+                                        'buttonType' => 'submit',
+                                        'type' => 'primary',
+                                        'label' => 'Submit'
+                                    )
+                                ); ?>
+                            </div>
+                            <?php
+                            $this->endWidget();
+                            unset($form);
+                            ?>
+
                         </div>
                     </div>
                 </div>

@@ -431,6 +431,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 	padding-bottom: 30px;
 }
 
+.pitch-profile
+{
+	padding-bottom:0px;
+}
+
 .profile-header-right .follow-btn
 {
 	position:absolute;

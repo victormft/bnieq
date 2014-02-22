@@ -40,7 +40,7 @@ class ActivityStartup extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('startup_id, activity_type', 'required'),
-			array('activity_type, seen', 'numerical', 'integerOnly'=>true),
+			array('activity_type, user_id, startup_id, seen', 'numerical', 'integerOnly'=>true),
 			array('user_id, startup_id', 'length', 'max'=>20),
 			array('time', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
             array('seen', 'default', 'value' => 0, 'setOnEmpty' => true, 'on' => 'insert'),
@@ -118,5 +118,14 @@ class ActivityStartup extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    
+    public function saveFollow()
+    {
+        $sql = "SELECT id FROM activity_startup WHERE user_id=:uId AND startup_id=:sId AND time between DATE_SUB(NOW(), INTERVAL 30 DAY) and NOW()";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":uId", $this->user_id, PDO::PARAM_INT);
+        $command->bindValue(":sId", $this->startup_id, PDO::PARAM_INT);
+        if($command->execute()!==1) $this->save(); 
+    }
 	
 }

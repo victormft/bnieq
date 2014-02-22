@@ -472,7 +472,7 @@ $('.arrow-container').mouseover(function(event){
                 'columns' => array(
                     array(
                         'class'=>'bootstrap.widgets.TbImageColumn',
-                        'imagePathExpression'=>'Yii::app()->request->baseUrl."/images/".$data->startup->logo0->name',
+                        'imagePathExpression'=>'"http://".S3::BUCKET_NB.".s3.amazonaws.com/".$data->startup->logo0->name',
                         'link'=>'$data->startup->startupname',
                         'usePlaceKitten'=>FALSE,
                         'htmlOptions'=>array('style'=>'width: 40px; height: 40px; padding: 5px; text-align: center;')

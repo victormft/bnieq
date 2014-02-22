@@ -165,6 +165,7 @@ class Startup extends CActiveRecord
 			'sectors' => array(self::MANY_MANY, 'Sector', 'startup_sector(startup_id, sector_id)'),
 			'users1' => array(self::MANY_MANY, 'User', 'user_startup(startup_id, user_id)'),
 			'city' => array(self::BELONGS_TO, 'Cidade', 'location'),
+            'pitchProfile' => array(self::HAS_ONE, 'StartupPitchProfile', 'startup_id'),
 		);
 	}
 
@@ -549,6 +550,13 @@ class Startup extends CActiveRecord
         return $command->execute()==1;
     }
     
+    public function isUserEditor($user_id)
+    {
+        if($this->isUserInRole('Founder', $user_id) || $this->isUserInRole('Member', $user_id)) return true;
+        return false;
+    }
+    
+    /*
     public function isUserEditor($userid)
     {
         foreach ($this->userStartups as $userstartup)
@@ -561,6 +569,8 @@ class Startup extends CActiveRecord
         }		
 		return false;
     }
+    */
+     
     
     public static function itemAlias($type,$code=NULL) {
 		$_items = array(
