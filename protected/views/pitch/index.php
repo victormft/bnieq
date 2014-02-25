@@ -173,7 +173,7 @@ function SearchFunc()   {
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider->search(),
 	'itemView'=>'_view', //teste
-	'id'=>'startupslistview',   
+	'id'=>'pitchlistview',   
 	'pagerCssClass'=>'pagination',
 	'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
 	'sorterHeader'=>'',

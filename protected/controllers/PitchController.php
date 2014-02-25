@@ -290,10 +290,15 @@ class PitchController extends Controller
 			
 			if(!$authorization)
 				throw new CHttpException(403,' Operação não permitida');
+				
+			if(!$this->_startup->pitchProfile->complete)
+				throw new CHttpException(403,'Complete dos dados da startup');
 		}	
 			else
 			throw new CHttpException(403, 'Preciso do StartupId');
 		$filterchain->run();
 			
 	}
+	
+	
 }
