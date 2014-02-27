@@ -765,27 +765,33 @@ function navbar_reset_top()
 ?>
 
 <div class="completion-bar bar-absolute" style="z-index:999;">
-	<span style="float:left; margin-right: 20px; margin-left: 30px; font-size:24px;">Status:</span>
-	<?php
-		
-		if($model->completion<=40)
-			$type="danger";
-		else if($model->completion>40 && $model->completion<75)
-			$type="warning";
-		else
-			$type="success";
-		
-		echo "<div style='float:left; width: 200px; border:2px solid #ccc; border-radius:5px;'>";
-		$this->widget('bootstrap.widgets.TbProgress', array(
-			'percent'=>$model->completion, // the progress
-			'striped'=>true,
-			'animated'=>true,
-			'type'=>$type,
-			'htmlOptions'=>array('style'=>'margin:0;'),
-		));
-		echo "</div>";
-	?>
-	<span class="completion-percent" style="float:left; margin-left: 10px; font-size:24px; font-style:italic; font-weight:bold;"><?php echo $model->completion; ?>%</span>
+    <div class="pull-left" style="margin-left: 80px">
+        <span style="float:left; margin-right: 20px; font-size:24px;">Edit Startup: <i><b><?php echo $model->name ?></b></i></span>
+        
+    </div>
+    <div class="pull-right" style="margin-right: 80px">
+        <span style="float:left; margin-right: 20px; font-size:24px;">Status:</span>
+        <?php
+
+            if($model->completion<=40)
+                $type="danger";
+            else if($model->completion>40 && $model->completion<75)
+                $type="warning";
+            else
+                $type="success";
+
+            echo "<div style='float:left; width: 200px; border:2px solid #ccc; border-radius:5px;'>";
+            $this->widget('bootstrap.widgets.TbProgress', array(
+                'percent'=>$model->completion, // the progress
+                'striped'=>true,
+                'animated'=>true,
+                'type'=>$type,
+                'htmlOptions'=>array('style'=>'margin:0;'),
+            ));
+            echo "</div>";
+        ?>
+        <span class="completion-percent" style="float:left; margin-left: 10px; font-size:24px; font-style:italic; font-weight:bold;"><?php echo $model->completion; ?>%</span>
+    </div>
 </div>
 
 

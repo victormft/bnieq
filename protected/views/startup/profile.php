@@ -1083,13 +1083,24 @@ $(document.body).on('click','.follow-press',function(event){
 
             <div class="content-info">
 
-                <div class="content-info-unit" style="text-align: center; overflow: hidden;">        
-                    <?php $this->widget('bootstrap.widgets.TbButton', array(
-                            'label'=>'Create Pitch',
-                            'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                            'size'=>'large', // null, 'large', 'small' or 'mini'
-                            'url'=>$this->createUrl('/pitch/create?startupId='.$model->id),//array('unfollow','name'=>$model->name),
-                        )); ?>	 
+                <div class="content-info-unit" style="text-align: center; overflow: hidden;"> 
+                    <?php if(!$model->hasActivePitch()): ?>
+                        <?php $this->widget('bootstrap.widgets.TbButton', array(
+                                'label'=>'Create Pitch',
+                                'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                                'size'=>'large', // null, 'large', 'small' or 'mini'
+                                'url'=>$this->createUrl('/pitch/create?startupId='.$model->id),//array('unfollow','name'=>$model->name),
+                            )); ?>	 
+                        
+                    <?php else: ?>
+                        <?php $this->widget('bootstrap.widgets.TbButton', array(
+                                'label'=>'Edit Pitch',
+                                'type'=>'info', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                                'size'=>'large', // null, 'large', 'small' or 'mini'
+                                'url'=>$this->createUrl('/pitch/edit/'.$model->getActivePitch()->id),//array('unfollow','name'=>$model->name),
+                            )); ?>	
+                    
+                    <?php endif; ?>
                 </div>
                 
                 <div class="content-info-unit" style="margin-top: 30px">         

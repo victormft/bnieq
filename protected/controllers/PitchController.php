@@ -37,7 +37,7 @@ class PitchController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update', 'edit'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -107,9 +107,9 @@ class PitchController extends Controller
 		));
 	}
 
-    public function actionEdit($name)
+    public function actionEdit($id)
 	{
-        $model=$this->loadModelByName($name);
+        $model=$this->loadModel($id);
        
         if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model->startup)))
             throw new CHttpException(403,UserModule::t('You cannot edit this Pitch!'));
@@ -155,13 +155,58 @@ class PitchController extends Controller
 		}
 	}
 	
+    public function actionUpdate(/*$name*/)
+	{
+        $model=$this->loadModel($_POST['pk']);
+        if(!Yii::app()->user->checkAccess('editStartup', array('startup'=>$model->startup)))
+            throw new CHttpException(403,UserModule::t('You cannot edit this Startup!'));	
+			
+		
+		$es = new TbEditableSaver('Pitch');  //'Startup' is name of model to be updated
+        $es->update();
+		
+		/*
+		$n_model=$this->loadModelId($_POST['pk']);
+		
+		if($_POST['name']=='product_description' && empty($model->product_description))
+		{
+			$n_model->completion=$model->completion+10;
+			$n_model->save();
+		}
+
+		else if($_POST['name']=='company_stage' && empty($model->company_stage))
+		{
+			$n_model->completion=$model->completion+5;
+			$n_model->save();
+		}	
+		
+		else
+		{
+			if(!($_POST['name']=='facebook' || $_POST['name']=='linkedin' || $_POST['name']=='twitter'))
+			{
+				if(empty($model->$_POST['name']) && !empty($n_model->$_POST['name']))
+				{
+					$n_model->completion=$model->completion+4;
+					$n_model->save();
+				}
+				else if(!empty($model->$_POST['name']) && empty($n_model->$_POST['name']))
+				{
+					$n_model->completion=$model->completion-4;
+					$n_model->save();
+				}
+			}
+		}
+         * 
+         */		
+	}
     
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	/*
+    public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
 
@@ -179,6 +224,8 @@ class PitchController extends Controller
 			'model'=>$model,
 		));
 	}
+     * 
+     */
 
 	/**
 	 * Deletes a particular model.
@@ -264,7 +311,7 @@ class PitchController extends Controller
 	}
     
     /*
-     * Carrega o pitch pelo startupname
+     * COM PROBLEMA!!!! STARTUP TEM MAIS DE UM PITCH
      */
     public function loadModelByName($name)
 	{

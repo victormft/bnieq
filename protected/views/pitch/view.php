@@ -361,7 +361,7 @@ $('.video-images-items').carouFredSel({
 				'label'=>'Editar',
 				'type'=>'primary', // null, 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
 				'size'=>'normal', // null, 'large', 'small' or 'mini'
-				'url'=>array('edit','name'=>$startup_model->startupname),
+				'url'=>array('edit','id'=>$model->id),
 				'htmlOptions'=>array('style'=>'text-shadow: 1px 1px 1px #555;', /*'class'=>'profile-btn'*/),
 					)); 
 				?>

@@ -1654,31 +1654,47 @@ class StartupController extends Controller
 					exit;
 				}
 				
+               
+                
 				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! fim dos testes
-			
-				  
-				move_uploaded_file($tmp,Yii::getPathOfAlias('webroot').'/images/'.$newFileName); 
-					
-				$image = Yii::app()->image->load(Yii::getPathOfAlias('webroot').'/images/'.$newFileName);
-				
-				if($image->width>=$image->height)
-				{
-					$image->resize(200, 200, ImageExt::WIDTH)->quality(75)->sharpen(20);
-				}
-				else
-					$image->resize(200, 200, ImageExt::HEIGHT)->quality(75)->sharpen(20);
-					
-				$image->save(); // or $image->save('images/small.jpg');
-				
-						
-				$model_img=new Image;
+                $model_img=new Image;
 				$model_img->name=$newFileName;
 				$model_img->extension=$extension;
 				$model_img->size=0;//$model->pic->size;	
 				if($model_img->save()){
 					$model->logo=$model_img->id;
 					$model->save();
+				}                
+                
+                
+                $src=imagecreatefromjpeg($tmp);
+				
+				list($width,$height)=getimagesize($tmp);
+				
+				if($width>=$height)
+				{
+					$newwidth=200;
+					$newheight=($height/$width)*$newwidth;
+					$new_tmp=imagecreatetruecolor($newwidth,$newheight);
 				}
+				else
+				{
+					$newheight=200;
+					$newwidth=($width/$height)*$newheight;
+					$new_tmp=imagecreatetruecolor($newwidth,$newheight);
+				}			
+                
+                
+				imagecopyresampled($new_tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
+				
+				imagejpeg($new_tmp,Yii::getPathOfAlias('webroot').'/images/'.$model_img->name,75);
+                
+				include('s3_config.php');
+				$s3->putObjectFile(Yii::getPathOfAlias('webroot').'/images/'.$model_img->name, S3::BUCKET_NB , $newFileName, S3::ACL_PUBLIC_READ);
+                
+					
+				//deletes from the server
+				unlink(Yii::getPathOfAlias('webroot').'/images/'.$model_img->name);				
 				
 				echo CJSON::encode(array(
 							'res'=>'OK',

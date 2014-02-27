@@ -641,4 +641,18 @@ class Startup extends CActiveRecord
         
         return $return;
     }
+    
+    public function hasActivePitch()
+    {
+        $sql = "SELECT * FROM pitch WHERE startup_id=:sId AND active=1";
+        $command = Yii::app()->db->createCommand($sql);
+        $command->bindValue(":sId", $this->id, PDO::PARAM_INT);
+        return $command->execute()==1;
+    }
+    
+    public function getActivePitch()
+    {
+        $pitch = Pitch::model()->find('startup_id=:s_id AND active=1', array(':s_id'=>$this->id));
+        return $pitch;
+    }
 }

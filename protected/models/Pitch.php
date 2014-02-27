@@ -38,16 +38,18 @@ class Pitch extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('startup_id, investment_required, equity, video, pitch_text, exit_strategy', 'required'),
+			array('startup_id, investment_required, equity, video, pitch_text', 'required'),
+            array('active, completion', 'numerical', 'integerOnly'=>true),
 			array('equity', 'numerical'),
 			array('startup_id', 'length', 'max'=>20),
 			array('investment_required, funded', 'length', 'max'=>10),
 			array('video','url', 'defaultScheme' => 'http'),
 			array('video','length', 'max'=>150),
+            array('exit_strategy','length', 'max'=>1000),
 			array('create_time', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, startup_id, investment_required, equity, video, pitch_text, exit_strategy, create_time', 'safe', 'on'=>'search'),
+			array('id, startup_id, investment_required, equity, video, pitch_text, exit_strategy, create_time, active, completion', 'safe', 'on'=>'search'),
 		);
 	}
 
