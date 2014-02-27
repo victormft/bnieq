@@ -228,7 +228,7 @@ $('.video-images-items').carouFredSel({
 				jQuery('#pitch-ajax-container').html(html)
 			},
 			'error': function(html){
-				$('.#pitch-ajax-container').append('asdsdsd');
+				$('#pitch-ajax-container').append('asdsdsd');
 			}
 				
 		});
@@ -247,7 +247,7 @@ $('.video-images-items').carouFredSel({
 				jQuery('#pitch-ajax-container').html(html)
 			},
 			'error': function(html){
-				$('.#pitch-ajax-container').append('asdsdsd');
+				$('#pitch-ajax-container').append('".Yii::app()->request->baseUrl."/thread/index?startupId=".$model->startup_id."');
 			}
 				
 		});
@@ -272,7 +272,7 @@ $('.video-images-items').carouFredSel({
 	
 	var elem = $(this);
 	var url_value = elem.attr('href');
-	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
+	jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/thread/create?startupId=".$model->startup_id."','cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
 	);
 	
 	jQuery('body').on('click','#thread-ajax-post-create',function(){
@@ -280,14 +280,14 @@ $('.video-images-items').carouFredSel({
 	var elem = $(this);
 	elem.addClass('clicked');
 	var url_value = elem.attr('href');
-	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
+	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').append(html)}});return false;}
 	);
 	
 	jQuery('body').on('click','#thread-ajax-back-index',function(){
 	
 	var elem = $(this);
 	var url_value = elem.attr('href');
-	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
+	jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/thread/index?startupId=".$model->startup_id."','cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
 	);
 		
 ");

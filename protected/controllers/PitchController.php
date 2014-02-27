@@ -240,15 +240,42 @@ class PitchController extends Controller
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
-
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
+    
+    
+    
+    public function actionIndex()
 	{
 		//$dataProvider=new CActiveDataProvider('Pitch');
 		$model=new Pitch('search');
 		$model->unsetAttributes();
+		
+		if(isset($_GET['name'])) {
+		
+		
+		
+			$name = $_GET['name'];
+			
+			$startup_model = Startup::model()->find('startupname=:name',
+										array(
+										  ':name'=>$name,
+										));
+			
+			if(isset($startup_model)) {
+			
+				$pitch_model = Pitch::model()->find('startup_id=:id',
+										array(
+										  ':id'=>$startup_model->id,
+										));
+				if(isset($pitch_model))
+					$this->render('view',array(
+					'model'=>$pitch_model,
+					));
+		}
+			else
+				throw new CHttpException(403, 'Nome de startup inválido.');
+				
+		}
+		else {
 		
 		if(isset($_GET['g']))
 		{
@@ -270,7 +297,9 @@ class PitchController extends Controller
 		$this->render('index',array(
 			'dataProvider'=>$model,
 		));
+		}
 	}
+
 
 	/**
 	 * Manages all models.
@@ -342,10 +371,30 @@ class PitchController extends Controller
 	
 	//need to put some secure to filter, loading the startup only if it's user is the same of current logged user
 	public function filterStartup($filterchain) {
-		if(isset($_GET['startupId'])) {
-			$this->_startup = Startup::model()->findByPk($_GET['startupId']);
+		if(isset($_GET['name'])) {
+		
+		
+		
+			$name = $_GET['name'];
+			
+			$this->_startup = Startup::model()->find('startupname=:name',
+										array(
+										  ':name'=>$name,
+										));
+		
+		
+		
+		
+		
+			//$this->_startup = Startup::model()->findByPk($_GET['startupId']);
+			
 			if($this->_startup === null)
 				throw new CHttpException(404,'A página requisitada não existe');
+			
+			
+			
+			//estou fazendo com que o create utilize startupname como parametro
+			
 			
 			if($this->_startup->pitches != NULL)
 				throw new CHttpException(403, 'Somente um pitch por vez.');
@@ -355,16 +404,21 @@ class PitchController extends Controller
 			
 			foreach($user->startups as $startup) {
 			
-			if($startup->id == $_GET['startupId'])
+			if($startup->startupname== $_GET['name'])
 				$authorization = true;	
 			}
 			
 			if(!$authorization)
 				throw new CHttpException(403,' Operação não permitida');
+				
+			if(!$this->_startup->pitchProfile->complete)
+				throw new CHttpException(403,'Complete dos dados da startup');
 		}	
 			else
 			throw new CHttpException(403, 'Preciso do StartupId');
 		$filterchain->run();
 			
 	}
+	
+	
 }

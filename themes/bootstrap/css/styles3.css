@@ -1,7 +1,6 @@
 .items .view-pitch-list
 {
 	padding: 15px 0 15px 20px; 
-	width: 600px;
 	border-radius: 5px 5px 5px 5px;
 	/*overflow: auto;*/
 	border-top: 1px solid #ccc;
@@ -168,3 +167,118 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', end
 }
 
 	
+#pitchlistview
+{
+	float:left;
+	width: 670px;
+	padding-top:0px;
+}
+
+#pitchlistview .sorter
+{
+	background:#fafafa;
+	margin:0;
+	padding: 10px 0;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	border-radius: 5px 5px 0 0;
+	overflow:auto;
+	-webkit-box-shadow: 0px 0px 15px -7px black;
+	box-shadow: 0px 15px 15px -7px black;
+	
+	
+	background: rgb(248,248,248);
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top, rgba(248,248,248,1) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,1) 70%, rgba(248,248,248,1) 100%);
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(248,248,248,1)), color-stop(30%,rgba(255,255,255,1)), color-stop(70%,rgba(255,255,255,1)), color-stop(100%,rgba(248,248,248,1)));
+background: -webkit-linear-gradient(top, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+background: -o-linear-gradient(top, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+background: -ms-linear-gradient(top, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+background: linear-gradient(to bottom, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#f8f8f8',GradientType=0 );
+}
+/*
+#pitchlistview .sorter ul
+{
+	float:right;
+	margin-right: 60px;
+}
+
+#pitchlistview .sorter ul li
+{
+	text-align:center;
+	margin-right:20px;
+}
+
+#pitchlistview .sorter ul li a
+{
+	padding-right:10px;
+}
+
+#pitchlistview .items
+{
+	/*margin-top: 41px; colocar fecha comentario aqui
+	-webkit-box-shadow: -0px 3px 15px -7px black;
+	box-shadow: -0px 3px 15px -7px black;
+}
+
+#pitchlistview .pagination
+{
+	margin: 7px 0 5px 0;
+	text-align:center;
+	overflow:auto;
+}
+
+#pitchlistview .pagination ul
+{
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	display:inline-block;
+}
+
+#pitchlistview .pagination li.active a
+{
+	color: #fff;
+	background: #0088cc;
+}
+
+#pitchlistview .pagination a
+{
+	margin: 0 2px 0 2px;
+	border: 1px solid;
+	border-color:#ddd #bbb #bbb #ddd;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	padding: 1px 8px;
+	font-size: 12px;
+}
+
+#pitchlistview .pagination a:hover
+{
+	border-color:#ddd;
+}
+
+#pitchlistview .pagination .disabled a:hover
+{
+	border-color:#ddd #bbb #bbb #ddd;
+}
+
+#pitchlistview .ias_trigger, #pitchlistview .ias_loader
+{
+	margin:0;
+	padding: 15px 0 15px 20px;
+	overflow: auto;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	background: rgb(248,248,248);
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJod…EiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-linear-gradient(top, rgba(248,248,248,1) 0%, rgba(255,255,255,1) 30%, rgba(255,255,255,1) 70%, rgba(248,248,248,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(248,248,248,1)), color-stop(30%,rgba(255,255,255,1)), color-stop(70%,rgba(255,255,255,1)), color-stop(100%,rgba(248,248,248,1)));
+	background: -webkit-linear-gradient(top, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+	background: -o-linear-gradient(top, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+	background: -ms-linear-gradient(top, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+	background: linear-gradient(to bottom, rgba(248,248,248,1) 0%,rgba(255,255,255,1) 30%,rgba(255,255,255,1) 70%,rgba(248,248,248,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#f8f8f8',GradientType=0 );
+}
+*/

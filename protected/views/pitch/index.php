@@ -173,7 +173,7 @@ function SearchFunc()   {
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider->search(),
 	'itemView'=>'_view', //teste
-	'id'=>'startupslistview',   
+	'id'=>'pitchlistview',   
 	'pagerCssClass'=>'pagination',
 	'pager'=>array('header'=>'', 'hiddenPageCssClass'=>'', 'nextPageLabel'=>'>', 'prevPageLabel'=>'<', 'selectedPageCssClass'=>'active',),
 	'sorterHeader'=>'',
@@ -191,11 +191,11 @@ function SearchFunc()   {
 	
 	<div id="G-Selection">
 		<div class="group-title">Busca Rápida</div>
-		<a class="g" href="<?php echo Yii::app()->baseUrl.'/startup' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=="") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todas</p></a>
+		<a class="g" href="<?php echo Yii::app()->baseUrl.'/pitch' ?>"><p <?php if(!isset($_GET['g']) || $_GET['g']=="") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-asterisk profile-icon"></i>Todas</p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Selecionadas") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-star profile-icon"></i>Selecionadas</p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Populares") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-group profile-icon"></i>Populares</p></a>
 		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Novidades") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-calendar profile-icon"></i>Novidades</p></a>
-		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Financiada") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-calendar profile-icon"></i>Financiada</p></a>
+		<a class="g" href="javascript:void(0)"><p <?php if(isset($_GET['g']) && $_GET['g']=="Financiada") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-money profile-icon"></i>Financiada</p></a>
 		<a class="g" href="javascript:void(0)"><p class="last-p" <?php if(isset($_GET['g']) && $_GET['g']=="Seguida") echo 'style="background:#fff; color:#333; font-size:17px;"'; ?>><i class="icon-calendar profile-icon"></i>Seguida</p></a>
 	</div>
 	

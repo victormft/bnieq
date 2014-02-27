@@ -53,7 +53,7 @@ foreach($postData as $i => $item)
 						
 
 						
-<?php echo CHtml::link('Responder',array('post/create', 'threadId' => 1), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-post-create'));?>  
+<?php echo CHtml::link('Responder',array('post/create', 'threadId' => $model->id), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-post-create'));?>  
   <?php echo CHtml::link('Voltar',array('thread/index'), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-back-index'));?>
 
 

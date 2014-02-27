@@ -84,7 +84,7 @@ class PostController extends Controller
 				$model_thread->last_post_user_id = $model->user_id;
 				$model_thread->replies++;
 				$model_thread->save();
-				$this->redirect(array('thread/'.$model_thread->id));
+				//$this->redirect(array('thread/'.$model_thread->id));
 				}
 		}
 

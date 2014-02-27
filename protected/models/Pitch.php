@@ -80,6 +80,8 @@ class Pitch extends CActiveRecord
 			'pitch_text' => 'Pitch Text',
 			'exit_strategy' => 'Exit Strategy',
 			'create_time' => 'Create Time',
+            'published' => 'Published',
+			'completion' => 'Completion'
 		);
 	}
 
