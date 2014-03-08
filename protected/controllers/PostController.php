@@ -9,6 +9,7 @@ class PostController extends Controller
 	public $layout='//layouts/column2';
 	
 	private $_thread_id;
+	private $_post_model;
 
 	/**
 	 * @return array action filters
@@ -19,6 +20,7 @@ class PostController extends Controller
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
 			'thread + create',
+			'ajaxOnly + ajaxCreate'
 		);
 	}
 
@@ -35,7 +37,7 @@ class PostController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update', 'ajaxCreate'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -66,6 +68,7 @@ class PostController extends Controller
 	public function actionCreate()
 	{
 		$model=new Post;
+		
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -85,13 +88,51 @@ class PostController extends Controller
 				$model_thread->replies++;
 				$model_thread->save();
 				//$this->redirect(array('thread/'.$model_thread->id));
+				
 				}
 		}
-
+		
+		$this->_post_model = $model;
+		
 		$this->renderPartial('create',array(
 			'model'=>$model,
 		));
 	}
+	
+	function actionAjaxCreate()
+	{
+	
+	/*$model= $this->_post_model; 
+	
+	if(isset($_POST['Post']))
+		{
+			
+			
+			$model->attributes=$_POST['Post'];
+			//$model->thread_id = $this->_thread_id;
+			$model->user_id = Yii::app()->user->id;
+			$model->setCreateTime(time());
+			
+			if($model->save()) {
+				//$model_thread = Thread::model()->findByPk($this->_thread_id);
+				$model_thread->last_post = $model->create_time;
+				$model_thread->last_post_user_id = $model->user_id;
+				$model_thread->replies++;
+				$model_thread->save();
+				//$this->redirect(array('thread/'.$model_thread->id));
+				print_r($_REQUEST);
+				}
+		}
+	
+	
+	else
+	
+	$this->redirect(array('//pitch'));
+	*/
+	
+	return 'elsem';
+	}
+	
 
 	/**
 	 * Updates a particular model.

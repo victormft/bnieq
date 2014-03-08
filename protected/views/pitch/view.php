@@ -280,7 +280,7 @@ $('.video-images-items').carouFredSel({
 	var elem = $(this);
 	elem.addClass('clicked');
 	var url_value = elem.attr('href');
-	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#pitch-ajax-container').append(html)}});return false;}
+	jQuery.ajax({'url':url_value,'cache':false,'success':function(html){jQuery('#post-create-wrap').append(html)}});return false;}
 	);
 	
 	jQuery('body').on('click','#thread-ajax-back-index',function(){
@@ -289,6 +289,29 @@ $('.video-images-items').carouFredSel({
 	var url_value = elem.attr('href');
 	jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/thread/index?startupId=".$model->startup_id."','cache':false,'success':function(html){jQuery('#pitch-ajax-container').html(html)}});return false;}
 	);
+	
+	
+	/*function sendPostCreateForm()
+	{
+		 var data=$('#pitch-ajax-container').serialize();
+ 
+ 
+		$.ajax({
+			type: 'POST',
+			url: '".Yii::app()->createAbsoluteUrl('post/ajaxCreate')."',
+			data:data,
+			success:function(data){
+                alert(data); 
+              },
+			error: function(data) { // if error occured
+			alert('Error occured.please try again');
+			alert(data);
+    },
+ 
+		dataType:'html'
+	});
+ 
+	}*/
 		
 ");
 

@@ -73,6 +73,6 @@ foreach($postData as $i => $item)
 		'create_time',
 	),
 ));*/ ?>
-
+<div id = "post-create-wrap"> </div>
 </div>
 

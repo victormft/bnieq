@@ -4,6 +4,34 @@
 /* @var $form CActiveForm */
 ?>
 
+<script type="text/javascript">
+ 
+function sendPostCreateForm()
+ {
+ 
+   var data=$("post-create-wrap").serialize();
+ 
+ 
+  $.ajax({
+   type: 'POST',
+    url: '<?php echo Yii::app()->createAbsoluteUrl("post/ajaxCreate"); ?>',
+   data:data,
+	success:function(data){
+                alert(data); 
+              },
+   error: function(data) { // if error occured
+         alert("Error occured.please try again");
+         alert(data);
+    },
+ 
+  dataType:'html'
+  });
+ 
+}
+ 
+</script>
+
+
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -20,7 +48,6 @@
 	<?php echo $form->errorSummary($model); ?>
 
 
-
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'body'); ?>
@@ -29,9 +56,10 @@
 	</div>
 
 	<div class="row buttons">
+		<?php echo CHtml::Button('SUBMIT',array('onclick'=>'sendPostCreateForm();')); ?>
 		<?php //echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 		<?php
-		echo CHtml::ajaxSubmitButton('Save','//pitch/index',array(
+		/*echo CHtml::ajaxSubmitButton('Save','//pitch/index',array(
 		'type'=>'POST',
 		'dataType'=>'json',
 		'success'=> 'js:function(data){
@@ -42,11 +70,16 @@
 	   else{
        }
    }',
-));
+));*/
 ?>
+
+
+
 
 	</div>
 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+
