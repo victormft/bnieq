@@ -316,12 +316,23 @@ class PitchController extends Controller
 		));
 	}
 	
-	public function actionDetail($id) {
-	
+	public function actionDetail() {
+	if(isset($_GET['name'])) {
+		
+		
+		
+			$name = $_GET['name'];
+			
+			$startup = Startup::model()->find('startupname=:name',
+										array(
+										  ':name'=>$name,
+										));
+										
 	$this->renderPartial('_detail',array(
-			'model'=>$this->loadModel(1),
+			'model'=>$this->loadModel($startup->pitches[0]->id),
 		));
 	
+		}
 	}
 
 	/**

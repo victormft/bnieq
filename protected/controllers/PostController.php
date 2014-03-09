@@ -20,7 +20,6 @@ class PostController extends Controller
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
 			'thread + create',
-			'ajaxOnly + ajaxCreate'
 		);
 	}
 
@@ -37,7 +36,7 @@ class PostController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'ajaxCreate'),
+				'actions'=>array('create','update', 'ajax'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -99,10 +98,10 @@ class PostController extends Controller
 		));
 	}
 	
-	function actionAjaxCreate()
+	function actionAjax()
 	{
 	
-	/*$model= $this->_post_model; 
+	$model= $this->_post_model; 
 	
 	if(isset($_POST['Post']))
 		{
@@ -120,17 +119,10 @@ class PostController extends Controller
 				$model_thread->replies++;
 				$model_thread->save();
 				//$this->redirect(array('thread/'.$model_thread->id));
-				print_r($_REQUEST);
+				//print_r($_REQUEST);
 				}
 		}
 	
-	
-	else
-	
-	$this->redirect(array('//pitch'));
-	*/
-	
-	return 'elsem';
 	}
 	
 

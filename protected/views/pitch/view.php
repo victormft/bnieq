@@ -220,7 +220,7 @@ $('.video-images-items').carouFredSel({
 	jQuery('body').on('click','#pitch-ajax-detail',function(){
 	
 	
-		jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/pitch/detail/".$model->id."','cache':false,
+		jQuery.ajax({'url':'".Yii::app()->request->baseUrl."/pitch/detail?name=".$startup_model->startupname."','cache':false,
 			'success':function(html){
 				var elem = $(this);
 				jQuery('.clicked').removeClass('clicked');

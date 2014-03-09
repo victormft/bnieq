@@ -14,7 +14,7 @@ function sendPostCreateForm()
  
   $.ajax({
    type: 'POST',
-    url: '<?php echo Yii::app()->createAbsoluteUrl("post/ajaxCreate"); ?>',
+    url: '<?php echo Yii::app()->createAbsoluteUrl("post/ajax"); ?>',
    data:data,
 	success:function(data){
                 alert(data); 
@@ -40,7 +40,7 @@ function sendPostCreateForm()
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
+	'enableAjaxValidation'=>true,
 )); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
@@ -56,8 +56,8 @@ function sendPostCreateForm()
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::Button('SUBMIT',array('onclick'=>'sendPostCreateForm();')); ?>
-		<?php //echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php //echo CHtml::Button('SUBMIT',array('onclick'=>'sendPostCreateForm();')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 		<?php
 		/*echo CHtml::ajaxSubmitButton('Save','//pitch/index',array(
 		'type'=>'POST',
