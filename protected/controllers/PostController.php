@@ -80,7 +80,8 @@ class PostController extends Controller
 			$model->user_id = Yii::app()->user->id;
 			$model->setCreateTime(time());
 			
-			if($model->save()) {
+			if($model->save()) 
+			{
 				$model_thread = Thread::model()->findByPk($this->_thread_id);
 				$model_thread->last_post = $model->create_time;
 				$model_thread->last_post_user_id = $model->user_id;
@@ -88,17 +89,51 @@ class PostController extends Controller
 				$model_thread->save();
 				//$this->redirect(array('thread/'.$model_thread->id));
 				
+				if(Yii::app()->request->isAjaxRequest)
+				{
+				
+					echo CJSON::encode(array(
+						'status'=>'success',
+						'div'=> 'Testando galera!'
+						
+					));
+					exit;
 				}
+				
+				else{
+					$this->redirect(array('thread/'.$model_thread->id));
+				
+				
+				}
+			}
 		}
 		
-		$this->_post_model = $model;
 		
-		$this->renderPartial('create',array(
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+            exit;               
+        }
+        else
+		{
+            //$this->render('create',array('model'=>$model,));
+			$this->renderPartial('create',array(
 			'model'=>$model,
 		));
+		}
+		
+		
+		//$this->_post_model = $model;
+		
+		/*$this->renderPartial('create',array(
+			'model'=>$model,
+		));*/
+	
 	}
 	
-	function actionAjax()
+	/*function actionAjax()
 	{
 	
 	$model= $this->_post_model; 
@@ -123,7 +158,7 @@ class PostController extends Controller
 				}
 		}
 	
-	}
+	}*/
 	
 
 	/**
@@ -131,6 +166,7 @@ class PostController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
+	 
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
