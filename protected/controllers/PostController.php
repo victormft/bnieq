@@ -89,40 +89,26 @@ class PostController extends Controller
 				$model_thread->save();
 				//$this->redirect(array('thread/'.$model_thread->id));
 				
-				if(Yii::app()->request->isAjaxRequest)
-				{
-				
-					echo CJSON::encode(array(
-						'status'=>'success',
-						'div'=> 'Testando galera!'
-						
-					));
-					exit;
-				}
-				
-				else{
-					$this->redirect(array('thread/'.$model_thread->id));
+				$this->redirect(array('thread/'.$model_thread->id));
 				
 				
-				}
+				
 			}
 		}
 		
 		
-        if (Yii::app()->request->isAjaxRequest)
-        {
-            echo CJSON::encode(array(
-                'status'=>'failure', 
-                'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
-            exit;               
-        }
-        else
-		{
-            //$this->render('create',array('model'=>$model,));
-			$this->renderPartial('create',array(
+        
+		$model_thread = Thread::model()->findByPk($this->_thread_id);
+                $startup_model = Startup::model()->findByPk($model_thread->startup_id);
+                $pitch_model = $startup_model->pitches[0];
+            
+		$this->render('create',array(
 			'model'=>$model,
+                        'pitch_model' => $pitch_model,
+                        'startup_model' => $startup_model,
+                        'param' => 'qa',
 		));
-		}
+		
 		
 		
 		//$this->_post_model = $model;

@@ -5,6 +5,7 @@ class PitchController extends Controller
 
 
 	private $_startup;
+	private $_viewOption;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -21,6 +22,7 @@ class PitchController extends Controller
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
 			'startup + create',
+			'viewOption + view'
 		);
 	}
 
@@ -58,6 +60,7 @@ class PitchController extends Controller
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+			'viewOption'=> $this->_viewOption
 		));
 	}
 
@@ -251,7 +254,16 @@ class PitchController extends Controller
 		
 		if(isset($_GET['name'])) {
 		
-		
+			if(isset($_GET['qa']))
+			{
+				$this->_viewOption = 'q&a';
+			}
+			else if(isset($_GET['update']))
+			{
+				$this->_viewOption = 'update';
+			}
+			else
+				$this->_viewOption = 'details';
 		
 			$name = $_GET['name'];
 			
@@ -269,6 +281,7 @@ class PitchController extends Controller
 				if(isset($pitch_model))
 					$this->render('view',array(
 					'model'=>$pitch_model,
+					'viewOption' =>$this->_viewOption,
 					));
 		}
 			else
@@ -429,6 +442,23 @@ class PitchController extends Controller
 			throw new CHttpException(403, 'Preciso do StartupId');
 		$filterchain->run();
 			
+	}
+	public function filterViewOption($filterchain)
+	{
+		if(isset($_GET['qa']))
+		{
+			$this->_viewOption = 'q&a';
+		}
+		else if(isset($_GET['update']))
+		{
+			$this->_viewOption = 'update';
+		}
+		else
+			$this->_viewOption = 'details';
+		
+		
+		
+	
 	}
 	
 	

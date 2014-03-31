@@ -1,4 +1,18 @@
 <?php
+		/*$dataProvider=new CActiveDataProvider('Thread', array(
+			'criteria'=>array(
+			'order'=>'last_post DESC',
+    ),));*/
+	
+$this->renderPartial('//pitch/_profileHeader',array(
+		'model'=>$pitch_model,
+                'startup_model' => $startup_model,
+                'param' => $param
+		));
+	?>
+
+
+<?php
 /* @var $this ThreadController */
 /* @var $model Thread */
 

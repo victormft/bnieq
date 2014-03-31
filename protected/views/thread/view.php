@@ -22,8 +22,16 @@ $this->breadcrumbs=array(
 
 <?php /*$this->widget('zii.widgets.CBreadcrumbs', array(
 	'links'=>$this->breadcrumbs,
+ * 
 	));*/?>
-	
+    
+    <?php 
+    $this->renderPartial('//pitch/_profileHeader',array(
+		'model'=>$pitch_model,
+                'startup_model' => $startup_model,
+                'param' => $param
+		));
+    ?>
 	
 <h1>Q&A</h1>
 <span style="margin: 150px;">
@@ -54,7 +62,7 @@ foreach($postData as $i => $item)
 
 						
 <?php echo CHtml::link('Responder',array('post/create', 'threadId' => $model->id), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-post-create'));?>  
-  <?php echo CHtml::link('Voltar',array('thread/index'), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-back-index'));?>
+  <?php echo CHtml::link('Voltar',array('thread/index', 'startupId' => $startup_model->id), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-back-index'));?>
 
 
 <?php /*echo CHtml::button('Voltar', array('class'=>'thread-reply-button', 

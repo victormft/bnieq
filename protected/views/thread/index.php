@@ -25,6 +25,11 @@
 			'order'=>'last_post DESC',
     ),));*/
 	
+$this->renderPartial('//pitch/_profileHeader',array(
+		'model'=>$pitch_model,
+                'startup_model' => $startup_model,
+                'param' => $param
+		));
 	?>
 <div  id="teste1">
 <h1>Q&A</h1>
@@ -57,7 +62,7 @@
 							array('class' => 'thread-reply-button',
 								   'id' => 'ajax-button-'.uniqid()) 
 							 ); */
-		echo CHtml::link('Novo tópico',array('thread/create'), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-create'));
+		echo CHtml::link('Novo tópico',array('thread/create', 'startupId' => $startup_model->id), array('class' => 'thread-reply-button' ,'id' => 'thread-ajax-create'));
 	?>
 </div>
 

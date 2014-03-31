@@ -56,9 +56,15 @@ class ThreadController extends Controller
 		$model = $this->loadModel($id);
 		$model->views++;
 		$model->save();
-	
-		$this->renderPartial('view',array(
+                
+                $startup_model = Startup::model()->findByPk($model->startup_id);
+                $pitch_model = $startup_model->pitches[0];
+                
+		$this->render('view',array(
 			'model'=>$model ,
+                        'pitch_model' => $pitch_model,
+                        'startup_model' => $startup_model,
+                        'param' => 'qa',
 		));
 	}
 
@@ -75,7 +81,7 @@ class ThreadController extends Controller
 		
 		$model->user_id = $user->id;
 		$model_post->user_id = $user->id;
-		//if(isset($_GET['startupId']))
+		if(isset($_GET['startupId']))
 				$model->startup_id = $_GET['startupId'];
 		
 
@@ -114,9 +120,17 @@ class ThreadController extends Controller
 						$this->redirect(array('view','id'=>$model->id));
 			}
 		}
-
-		$this->renderPartial('create',array(
-			'model'=>$model, 'model_post'=>$model_post
+                
+                $startup_id = $_GET['startupId'];
+                $startup_model = Startup::model()->findByPk($startup_id);
+                $pitch_model = $startup_model->pitches[0];
+                
+		$this->render('create',array(
+			'model'=>$model, 
+                        'model_post'=>$model_post,
+                        'startup_model' => $startup_model,
+                        'pitch_model' => $pitch_model,
+                        'param' => 'qa',
 		));
 	}
 
@@ -164,6 +178,8 @@ class ThreadController extends Controller
 	public function actionIndex()
 	{
 		$startup_id = $_GET['startupId'];
+                $startup_model = Startup::model()->findByPk($startup_id);
+                $pitch_model = $startup_model->pitches[0];
 		$dataProvider=new CActiveDataProvider('Thread', array(
 		'criteria'=>array(
         'condition'=>'startup_id='.$startup_id,
@@ -175,8 +191,11 @@ class ThreadController extends Controller
 			'order'=>'last_post DESC',
     ),));*/
 	
-		$this->renderPartial('index',array(
+		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
+                        'pitch_model'=>$pitch_model,
+                        'startup_model'=>$startup_model,
+                        'param' => 'qa',
 		));
 	}
 	
